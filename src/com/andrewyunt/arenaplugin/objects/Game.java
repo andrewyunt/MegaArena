@@ -13,6 +13,9 @@ public class Game {
 		
 		this.arena = arena;
 		this.players = players;
+		
+		for (ArenaPlayer player : players)
+			player.setGame(this);
 	}
 	
 	public Arena getArena() {

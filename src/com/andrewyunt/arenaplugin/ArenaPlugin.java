@@ -5,6 +5,10 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.andrewyunt.arenaplugin.commands.ArenaCommand;
+import com.andrewyunt.arenaplugin.commands.DuelAcceptCommand;
+import com.andrewyunt.arenaplugin.commands.DuelCommand;
+import com.andrewyunt.arenaplugin.commands.DuelDenyCommand;
 import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
@@ -24,9 +28,14 @@ public class ArenaPlugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		
+		logger.info("Enabling " + pdf.getName() + " v" + pdf.getVersion() + "... Please wait.");
+		
 		instance = this;
 		
-		logger.info("Enabling " + pdf.getName() + " v" + pdf.getVersion() + "... Please wait.");
+		getCommand("arena").setExecutor(new ArenaCommand());
+		getCommand("duel").setExecutor(new DuelCommand());
+		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
+		getCommand("dueldeny").setExecutor(new DuelDenyCommand());
 	}
 	
 	@Override

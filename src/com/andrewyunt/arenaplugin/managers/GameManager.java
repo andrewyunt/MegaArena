@@ -20,6 +20,14 @@ public class GameManager {
 		return game;
 	}
 	
+	public void startGame(Game game) {
+		
+	}
+	
+	public void endGame(Game game) {
+		
+	}
+	
 	public Set<Game> getGames() {
 		
 		return games;
