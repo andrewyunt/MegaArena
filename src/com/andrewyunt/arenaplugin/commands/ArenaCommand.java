@@ -13,6 +13,6 @@ public class ArenaCommand implements CommandExecutor {
 			return false;
 		
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 }

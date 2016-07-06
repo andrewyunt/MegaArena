@@ -7,6 +7,8 @@ public class ArenaPlayer {
 	
 	private String name;
 	private Game game;
+	private Queue queue;
+	private ArenaPlayer requestingPlayer;
 	
 	public ArenaPlayer(String name) {
 		
@@ -39,7 +41,32 @@ public class ArenaPlayer {
 	}
 
 	public boolean isQueued() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return queue != null;
+	}
+
+	public Queue getQueue() {
+		
+		return queue;
+	}
+	
+	public void setQueue(Queue queue) {
+		
+		this.queue = queue;
+	}
+	
+	public ArenaPlayer getRequestingPlayer() {
+		
+		return requestingPlayer;
+	}
+	
+	public void setRequestingPlayer(ArenaPlayer requestingPlayer) {
+		
+		this.requestingPlayer = requestingPlayer;
+	}
+	
+	public boolean hasDuelRequest() {
+		
+		return requestingPlayer != null;
 	}
 }

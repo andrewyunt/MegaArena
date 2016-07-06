@@ -3,6 +3,12 @@ package com.andrewyunt.arenaplugin.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class DuelDenyCommand implements CommandExecutor {
 
@@ -12,6 +18,21 @@ public class DuelDenyCommand implements CommandExecutor {
 		if (!cmd.getName().equalsIgnoreCase("dueldeny"))
 			return false;
 		
-		return false;
+		if (!(sender instanceof Player)) {
+			System.out.println("You may not execute that command from the console.");
+			return false;
+		}
+		
+		ArenaPlayer player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName());
+		
+		player.setRequestingPlayer(null);
+		
+		ArenaPlayer requestingPlayer = player.getRequestingPlayer();
+		
+		player.getBukkitPlayer().sendMessage(ChatColor.GOLD + "You denied %s's request to a duel.");
+		
+		requestingPlayer.getBukkitPlayer().sendMessage(ChatColor.GOLD + "%s denied your request to a duel.");
+		
+		return true;
 	}
 }
