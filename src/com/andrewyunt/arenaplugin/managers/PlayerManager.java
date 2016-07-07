@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class PlayerManager {
 	
 	private Map<String, ArenaPlayer> players = new HashMap<String, ArenaPlayer>();

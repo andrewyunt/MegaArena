@@ -10,6 +10,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class Queue {
 	
 	private ArenaType type;

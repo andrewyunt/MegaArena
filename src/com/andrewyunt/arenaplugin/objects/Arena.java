@@ -1,5 +1,10 @@
 package com.andrewyunt.arenaplugin.objects;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class Arena {
 
 	public enum ArenaType {
@@ -11,6 +16,7 @@ public class Arena {
 	private ArenaType type;
 	private String name;
 	private Game game;
+	private boolean isEdit;
 	
 	public Arena(String name, ArenaType type) {
 		
@@ -23,14 +29,14 @@ public class Arena {
 		return type;
 	}
 	
-	public String getName() {
-		
-		return name;
-	}
-	
 	public void setName(String name) {
 		
 		this.name = name;
+	}
+	
+	public String getName() {
+		
+		return name;
 	}
 	
 	public void setGame(Game game) {
@@ -46,5 +52,19 @@ public class Arena {
 	public boolean isInUse() {
 		
 		return game != null;
+	}
+	
+	public void addSpawn() {
+		
+	}
+	
+	public void setEdit(boolean isEdit) {
+		
+		this.isEdit = isEdit;
+	}
+	
+	public boolean isEdit() {
+		
+		return isEdit;
 	}
 }

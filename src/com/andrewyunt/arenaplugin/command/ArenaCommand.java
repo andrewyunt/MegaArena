@@ -1,9 +1,14 @@
-package com.andrewyunt.arenaplugin.commands;
+package com.andrewyunt.arenaplugin.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class ArenaCommand implements CommandExecutor {
 
 	@Override

@@ -7,6 +7,11 @@ import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Game;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class GameManager {
 	
 	public Set<Game> games = new HashSet<Game>();

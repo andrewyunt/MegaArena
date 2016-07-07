@@ -5,16 +5,22 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.andrewyunt.arenaplugin.commands.ArenaCommand;
-import com.andrewyunt.arenaplugin.commands.DuelAcceptCommand;
-import com.andrewyunt.arenaplugin.commands.DuelCommand;
-import com.andrewyunt.arenaplugin.commands.DuelDenyCommand;
+import com.andrewyunt.arenaplugin.command.ArenaCommand;
+import com.andrewyunt.arenaplugin.command.DuelAcceptCommand;
+import com.andrewyunt.arenaplugin.command.DuelCommand;
+import com.andrewyunt.arenaplugin.command.DuelDenyCommand;
 import com.andrewyunt.arenaplugin.configuration.ArenaConfiguration;
 import com.andrewyunt.arenaplugin.configuration.PlayerConfiguration;
+import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerListener;
 import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class ArenaPlugin extends JavaPlugin {
 	
 	public Logger logger = getLogger();
@@ -40,6 +46,8 @@ public class ArenaPlugin extends JavaPlugin {
 		getCommand("duel").setExecutor(new DuelCommand());
 		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
 		getCommand("dueldeny").setExecutor(new DuelDenyCommand());
+		
+		getServer().getPluginManager().registerEvents(new ArenaPluginPlayerListener(), this);
 	}
 	
 	@Override

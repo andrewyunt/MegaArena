@@ -8,6 +8,11 @@ import java.util.Map;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class ArenaManager {
 	
 	private Map<String, Arena> arenas = new HashMap<String, Arena>();

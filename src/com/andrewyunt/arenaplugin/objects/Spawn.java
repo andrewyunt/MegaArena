@@ -2,6 +2,11 @@ package com.andrewyunt.arenaplugin.objects;
 
 import org.bukkit.Location;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class Spawn {
 	
 	private Game game;
@@ -21,5 +26,10 @@ public class Spawn {
 	public Location getLocation() {
 		
 		return location;
+	}
+	
+	public Game getGame() {
+		
+		return game;
 	}
 }

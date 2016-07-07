@@ -1,4 +1,4 @@
-package com.andrewyunt.arenaplugin.commands;
+package com.andrewyunt.arenaplugin.command;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +14,11 @@ import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class DuelAcceptCommand implements CommandExecutor {
 
 	@Override

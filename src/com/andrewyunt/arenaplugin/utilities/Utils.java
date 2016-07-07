@@ -10,6 +10,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class Utils {
 	
 	public static Location deserializeLocation(ConfigurationSection section) {

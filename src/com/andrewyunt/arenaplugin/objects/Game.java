@@ -1,13 +1,20 @@
 package com.andrewyunt.arenaplugin.objects;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class Game {
 	
 	private Set<ArenaPlayer> players;
 	private Set<Spawn> spawns = new HashSet<Spawn>();
 	private Arena arena;
+	private boolean isActive;
 	
 	public Game(Arena arena, Set<ArenaPlayer> players) {
 		
@@ -23,6 +30,16 @@ public class Game {
 		return arena;
 	}
 	
+	public void setActive(boolean isActive) {
+		
+		this.isActive = isActive;
+	}
+	
+	public boolean isActive() {
+		
+		return isActive;
+	}
+	
 	public void addPlayer(ArenaPlayer player) {
 		
 		players.add(player);
@@ -35,6 +52,15 @@ public class Game {
 	
 	public void loadSpawns() {
 		
+		
+	}
+	
+	public Collection<Spawn> getSpawns() {
+		
+		return spawns;
+	}
+	
+	public void start() {
 		
 	}
 }

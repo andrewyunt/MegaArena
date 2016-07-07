@@ -1,4 +1,4 @@
-package com.andrewyunt.arenaplugin.commands;
+package com.andrewyunt.arenaplugin.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,6 +9,11 @@ import org.bukkit.entity.Player;
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class DuelCommand implements CommandExecutor {
 
 	@Override

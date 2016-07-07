@@ -12,6 +12,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class PlayerConfiguration {
 	
 	private FileConfiguration config = null;

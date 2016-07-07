@@ -7,6 +7,11 @@ import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Queue;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class QueueManager {
 
 	private Map<ArenaType, Queue> queues = new HashMap<ArenaType, Queue>();
