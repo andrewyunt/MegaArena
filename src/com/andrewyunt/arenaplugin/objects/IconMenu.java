@@ -1,4 +1,4 @@
-package com.andrewyunt.arenaplugin.utilities;
+package com.andrewyunt.arenaplugin.objects;
 
 import java.util.Arrays;
 import org.bukkit.Bukkit;

@@ -17,6 +17,8 @@ commands:
   duelaccept:
     description: Accept a request to duel a player.
     permission: arenaplugin.duelaccept
+  test:
+    description: test command.
 
 ############################################################
 # +------------------------------------------------------+ #

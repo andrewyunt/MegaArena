@@ -1,7 +1,5 @@
 package com.andrewyunt.arenaplugin.objects;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -11,8 +9,12 @@ import java.util.Set;
  */
 public class Game {
 	
+	public enum Side {
+		BLUE,
+		GREEN
+	}
+	
 	private Set<ArenaPlayer> players;
-	private Set<Spawn> spawns = new HashSet<Spawn>();
 	private Arena arena;
 	private boolean isActive;
 	
@@ -50,17 +52,12 @@ public class Game {
 		return players;
 	}
 	
-	public void loadSpawns() {
-		
-		
-	}
-	
-	public Collection<Spawn> getSpawns() {
-		
-		return spawns;
-	}
 	
 	public void start() {
+		
+	}
+	
+	public void end() {
 		
 	}
 }

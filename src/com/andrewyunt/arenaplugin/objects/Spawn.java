@@ -2,6 +2,8 @@ package com.andrewyunt.arenaplugin.objects;
 
 import org.bukkit.Location;
 
+import com.andrewyunt.arenaplugin.objects.Game.Side;
+
 /**
  * 
  * @author Andrew Yunt
@@ -9,13 +11,17 @@ import org.bukkit.Location;
  */
 public class Spawn {
 	
-	private Game game;
 	private boolean used;
+	private Arena arena;
 	private Location location;
+	private Side side;
+	private String name;
 	
-	private Spawn(Game game) {
+	public Spawn(String name, Arena arena, Location location, Side side) {
 		
-		this.game = game;;
+		this.arena = arena;
+		this.location = location;
+		this.side = side;
 	}
 	
 	public boolean isUsed() {
@@ -23,13 +29,23 @@ public class Spawn {
 		return used;
 	}
 	
+	public String getName() {
+		
+		return name;
+	}
+	
+	public Arena getArena() {
+		
+		return arena;
+	}
+	
 	public Location getLocation() {
 		
 		return location;
 	}
-	
-	public Game getGame() {
+
+	public Side getSide() {
 		
-		return game;
+		return side;
 	}
 }

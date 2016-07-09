@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.bukkit.configuration.ConfigurationSection;
+
+import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
@@ -39,5 +42,32 @@ public class ArenaManager {
 	public Arena getArena(String name) {
 		
 		return arenas.get(name);
+	}
+	
+	public boolean arenaExists(String name) {
+		
+		return arenas.containsKey(name);
+	}
+	
+	public Arena loadArena(ConfigurationSection section) {
+		
+		Arena arena = Arena.loadFromConfig(section);
+		
+		arenas.put(arena.getName(), arena);
+		
+		return arena;
+	}
+	
+	public void loadArenas() {
+		
+		arenas.clear(); // Clear current arenas list
+		
+		if(!ArenaPlugin.getInstance().getArenaConfig().getConfig().contains("arenas"))
+			return;
+		
+		ConfigurationSection arenas = ArenaPlugin.getInstance().getArenaConfig().getConfig().getConfigurationSection("arenas");
+		
+		for(String name : arenas.getValues(false).keySet())
+			loadArena(arenas.getConfigurationSection(name));
 	}
 }

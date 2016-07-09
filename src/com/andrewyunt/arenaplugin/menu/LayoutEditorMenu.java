@@ -10,4 +10,8 @@ public class LayoutEditorMenu {
 	public LayoutEditorMenu() {
 		
 	}
+	
+	public void destroy() {
+		
+	}
 }

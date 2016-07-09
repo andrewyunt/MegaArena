@@ -10,4 +10,8 @@ public class ShopMenu {
 	public ShopMenu() {
 		
 	}
+	
+	public void destroy() {
+		
+	}
 }

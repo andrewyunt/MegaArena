@@ -2,6 +2,9 @@ package com.andrewyunt.arenaplugin;
 
 import java.util.logging.Logger;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,6 +18,7 @@ import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerListener;
 import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
+import com.andrewyunt.arenaplugin.menu.ClassSelectorMenu;
 
 /**
  * 
@@ -84,5 +88,21 @@ public class ArenaPlugin extends JavaPlugin {
 	public PlayerConfiguration getPlayerConfig() {
 		
 		return playerConfiguration;
+	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
+		if(!(cmd.getName().equalsIgnoreCase("test")))
+			return false;
+		
+		if(!(sender instanceof Player))
+			return false;
+		
+		Player player = (Player) sender;
+		
+		new ClassSelectorMenu(player);
+		
+		return true;
 	}
 }

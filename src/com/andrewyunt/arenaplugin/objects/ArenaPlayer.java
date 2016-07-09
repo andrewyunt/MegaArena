@@ -16,6 +16,7 @@ public class ArenaPlayer {
 	private ArenaPlayer requestingPlayer;
 	private ClassType classType;
 	private int classLevel;
+	private boolean hasFallen;
 	
 	public ArenaPlayer(String name) {
 		
@@ -95,5 +96,15 @@ public class ArenaPlayer {
 	public int getClassLevel() {
 		
 		return classLevel;
+	}
+	
+	public void setHasFallen(boolean hasFallen) {
+		
+		this.hasFallen = hasFallen;
+	}
+	
+	public boolean hasFallen() {
+		
+		return hasFallen;
 	}
 }

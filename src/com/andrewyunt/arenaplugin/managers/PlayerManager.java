@@ -3,6 +3,7 @@ package com.andrewyunt.arenaplugin.managers;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
 /**
@@ -13,6 +14,15 @@ import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 public class PlayerManager {
 	
 	private Map<String, ArenaPlayer> players = new HashMap<String, ArenaPlayer>();
+	
+	public ArenaPlayer createPlayer(String name) {
+		
+		ArenaPlayer player = new ArenaPlayer(name);
+		
+		players.put(name, player);
+		
+		return player;
+	}
 	
 	public Collection<ArenaPlayer> getPlayers() {
 		
