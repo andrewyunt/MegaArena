@@ -49,7 +49,7 @@ public class ArenaPlugin extends JavaPlugin {
 		getCommand("arena").setExecutor(new ArenaCommand());
 		getCommand("duel").setExecutor(new DuelCommand());
 		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
-		getCommand("dueldeny").setExecutor(new DuelDenyCommand());
+		//getCommand("dueldeny").setExecutor(new DuelDenyCommand());
 		
 		getServer().getPluginManager().registerEvents(new ArenaPluginPlayerListener(), this);
 	}

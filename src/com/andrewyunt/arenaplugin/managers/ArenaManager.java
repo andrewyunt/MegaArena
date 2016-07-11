@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 import com.andrewyunt.arenaplugin.ArenaPlugin;
-import com.andrewyunt.arenaplugin.exception.ArenaCreationException;
+import com.andrewyunt.arenaplugin.exception.ArenaException;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
@@ -20,13 +20,13 @@ public class ArenaManager {
 	
 	private Map<String, Arena> arenas = new HashMap<String, Arena>();
 	
-	public Arena createArena(String name, ArenaType type) throws ArenaCreationException {
+	public Arena createArena(String name, ArenaType type) throws ArenaException {
 		
 		if (name == null || type == null)
-			throw new ArenaCreationException();
+			throw new ArenaException();
 		
 		if (arenas.containsKey(name))
-			throw new ArenaCreationException("The arena %s already exists and cannot be created again.");
+			throw new ArenaException("The arena %s already exists and cannot be created again.");
 		
 		Arena arena = new Arena(name, type);
 		

@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
-import com.andrewyunt.arenaplugin.exception.ArenaCreationException;
+import com.andrewyunt.arenaplugin.exception.ArenaException;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
 /**
@@ -65,7 +65,7 @@ public class ArenaCommand implements CommandExecutor {
 			} catch (IllegalArgumentException e) {
 				sender.sendMessage(ChatColor.RED + "Error: Invalid arena type specified.");
 				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
-			} catch (ArenaCreationException e) {
+			} catch (ArenaException e) {
 				sender.sendMessage(ChatColor.RED + e.getMessage());
 			}
 			

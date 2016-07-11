@@ -6,8 +6,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
 
 /**
  * 
@@ -15,6 +19,16 @@ import org.bukkit.inventory.meta.ItemMeta;
  *
  */
 public class ArenaPluginPlayerListener implements Listener {
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		
+		try {
+			ArenaPlugin.getInstance().getPlayerManager().createPlayer(event.getPlayer().getName());
+		} catch (PlayerException e) {
+			// player is already in the plugin's records, so do nothing
+		}
+	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
