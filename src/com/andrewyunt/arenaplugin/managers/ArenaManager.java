@@ -36,7 +36,7 @@ public class ArenaManager {
 		
 		arena.save();
 		
-		ArenaPlugin.getInstance().logger.info(String.format("Arena %s has been created and set to edit mode.", name)); 
+		ArenaPlugin.getInstance().getLogger().info(String.format("Arena %s has been created and set to edit mode.", name)); 
 		
 		return arena;
 	}

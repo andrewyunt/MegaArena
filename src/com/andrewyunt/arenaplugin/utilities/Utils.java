@@ -10,6 +10,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
+import com.andrewyunt.arenaplugin.objects.ClassType;
+
 /**
  * 
  * @author Andrew Yunt
@@ -46,5 +49,9 @@ public class Utils {
 			colorized.add(ChatColor.translateAlternateColorCodes('&', line));
 		
 		return colorized;
+	}
+	
+	public static int getClassLevel(ArenaPlayer player, ClassType type) {
+		
 	}
 }

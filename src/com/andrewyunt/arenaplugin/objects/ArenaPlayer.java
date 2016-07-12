@@ -12,10 +12,8 @@ public class ArenaPlayer {
 	
 	private String name;
 	private Game game;
-	private Queue queue;
 	private ArenaPlayer requestingPlayer;
 	private ClassType classType;
-	private int classLevel;
 	private boolean hasFallen;
 	
 	public ArenaPlayer(String name) {
@@ -47,21 +45,6 @@ public class ArenaPlayer {
 		
 		return game != null;
 	}
-
-	public boolean isQueued() {
-		
-		return queue != null;
-	}
-
-	public Queue getQueue() {
-		
-		return queue;
-	}
-	
-	public void setQueue(Queue queue) {
-		
-		this.queue = queue;
-	}
 	
 	public ArenaPlayer getRequestingPlayer() {
 		
@@ -86,16 +69,6 @@ public class ArenaPlayer {
 	public ClassType getClassType() {
 		
 		return classType;
-	}
-	
-	public void setClassLevel(int classLevel) {
-		
-		this.classLevel = classLevel;
-	}
-	
-	public int getClassLevel() {
-		
-		return classLevel;
 	}
 	
 	public void setHasFallen(boolean hasFallen) {

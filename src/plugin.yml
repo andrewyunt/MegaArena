@@ -1,6 +1,7 @@
 name: ArenaPlugin
 main: com.andrewyunt.arenaplugin.ArenaPlugin
 version: 1.0
+softdepend: [Vault,StaffPlus]
 
 ############################################################
 # +------------------------------------------------------+ #
