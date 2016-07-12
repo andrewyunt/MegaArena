@@ -2,16 +2,19 @@ package com.andrewyunt.arenaplugin.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
+import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
 /**
  * 
@@ -63,5 +66,15 @@ public class ArenaPluginPlayerListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		
+	}
+	
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		
+		Player player = event.getPlayer();
+		
+		ArenaPlayer ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+		
+		ap.getGame().removePlayer(ap);
 	}
 }

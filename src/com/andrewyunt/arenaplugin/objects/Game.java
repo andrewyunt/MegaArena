@@ -2,6 +2,10 @@ package com.andrewyunt.arenaplugin.objects;
 
 import java.util.Set;
 
+import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.GameException;
+import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
+
 /**
  * 
  * @author Andrew Yunt
@@ -16,6 +20,7 @@ public class Game {
 	
 	private Set<ArenaPlayer> players;
 	private Arena arena;
+	private int countdown;
 	private boolean isActive;
 	
 	public Game(Arena arena, Set<ArenaPlayer> players) {
@@ -47,17 +52,43 @@ public class Game {
 		players.add(player);
 	}
 	
+	public void removePlayer(ArenaPlayer player) {
+		
+		if (arena.getType() == ArenaType.DUEL) {
+			try {
+				ArenaPlugin.getInstance().getGameManager().deleteGame(this, String.format("Your opponent %s left the game.", player.getName()));
+			} catch (GameException e) {
+			}
+		}
+		
+		players.remove(player);
+	}
+	
 	public Set<ArenaPlayer> getPlayers() {
 		
 		return players;
 	}
 	
 	
-	public void start() {
+	public void start() throws GameException {
 		
+		if (arena.getType() == ArenaType.FFA || arena.getType() == ArenaType.TDM)
+			throw new GameException("You cannot start an FFA or TDM game.");
 	}
 	
-	public void end() {
+	public void end() throws GameException {
 		
+		if (arena.getType() == ArenaType.FFA || arena.getType() == ArenaType.TDM)
+			throw new GameException("You cannot end an FFA or TDM game.");
+	}
+	
+	public void setCountdown(int countdown) {
+		
+		this.countdown = countdown;
+	}
+	
+	public int getCountdown() {
+		
+		return countdown;
 	}
 }

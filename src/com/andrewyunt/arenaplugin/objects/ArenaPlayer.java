@@ -2,6 +2,9 @@ package com.andrewyunt.arenaplugin.objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import net.md_5.bungee.api.ChatColor;
 
 /**
  * 
@@ -15,6 +18,8 @@ public class ArenaPlayer {
 	private ArenaPlayer requestingPlayer;
 	private ClassType classType;
 	private boolean hasFallen;
+	private ItemStack[] previousContents;
+	private Arena selectedArena;
 	
 	public ArenaPlayer(String name) {
 		
@@ -79,5 +84,32 @@ public class ArenaPlayer {
 	public boolean hasFallen() {
 		
 		return hasFallen;
+	}
+	
+	public void setPreviousContents(ItemStack[] previousContents) {
+		
+		this.previousContents = previousContents;
+	}
+	
+	public ItemStack[] getPreviousContents() {
+		
+		return previousContents;
+	}
+	
+	public void selectArena(Arena selectedArena) {
+		
+		this.selectedArena = selectedArena;
+		
+		getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You have selected the arena %s", selectedArena.getName()));
+	}
+	
+	public boolean hasSelectedArena() {
+		
+		return selectedArena != null;
+	}
+	
+	public Arena getSelectedArena() {
+		
+		return selectedArena;
 	}
 }

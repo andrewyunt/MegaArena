@@ -1,5 +1,10 @@
 package com.andrewyunt.arenaplugin.exception;
 
+/**
+ * 
+ * @author Andrew Yunt
+ *
+ */
 public class PlayerException extends Exception {
 	
 	private static final long serialVersionUID = 4805896720720741044L;

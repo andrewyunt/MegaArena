@@ -1,5 +1,6 @@
 package com.andrewyunt.arenaplugin;
 
+import java.util.HashSet;
 import java.util.logging.Logger;
 
 import org.bukkit.Server;
@@ -21,9 +22,14 @@ import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.menu.ClassSelectorMenu;
+import com.andrewyunt.arenaplugin.objects.Arena;
+import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
+import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
+import com.andrewyunt.arenaplugin.objects.ClassType;
+import com.andrewyunt.arenaplugin.utilities.Utils;
 
+import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 
 /**
  * 
@@ -37,7 +43,6 @@ public class ArenaPlugin extends JavaPlugin {
 	private PluginDescriptionFile pdf = getDescription();
 	private Server server = getServer();
 	private PluginManager pm = server.getPluginManager();
-    private Permission permissions = null;
     private Economy economy = null;
 	
 	private final ArenaManager arenaManager = new ArenaManager();
@@ -53,45 +58,43 @@ public class ArenaPlugin extends JavaPlugin {
 		
 		logger.info("Enabling " + pdf.getName() + " v" + pdf.getVersion() + "... Please wait.");
 		
-		if (pm.getPlugin("StaffPlus") == null || !(setupPermissions()) || !(setupEconomy())) {
+		/* Check for dependencies */
+		if (pm.getPlugin("StaffPlus") == null || !(setupEconomy())) {
 			logger.severe("ArenaPlugin is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
 		}
-		
+		/* Set static instance to this */
 		instance = this;
 		
+		/* Set command executors */
 		getCommand("arena").setExecutor(new ArenaCommand());
 		getCommand("duel").setExecutor(new DuelCommand());
 		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
 		//getCommand("dueldeny").setExecutor(new DuelDenyCommand());
 		
+		/* Register events */
 		pm.registerEvents(new ArenaPluginPlayerListener(), this);
+		
+		/* Load all arenas from arenas.yml */
+		arenaManager.loadArenas();
+		
+		/* Create games for FFA and TDM arenas */
+		for (Arena arena : arenaManager.getArenas(ArenaType.TDM))
+			arena.setGame(gameManager.createGame(arena, new HashSet<ArenaPlayer>()));
+		
+		for (Arena arena : arenaManager.getArenas(ArenaType.FFA))
+			arena.setGame(gameManager.createGame(arena, new HashSet<ArenaPlayer>()));
 	}
-
-    private boolean setupPermissions() {
-    	
-        RegisteredServiceProvider<Permission> permissionProvider = server.getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        
-        if (permissionProvider != null)
-            permissions = permissionProvider.getProvider();
-            
-        return (permissions != null);
-    }
 
     private boolean setupEconomy() {
     	
-        RegisteredServiceProvider<Economy> economyProvider = server.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = server.getServicesManager().getRegistration(Economy.class);
         
         if (economyProvider != null)
             economy = economyProvider.getProvider();
 
         return (economy != null);
-    }
-    
-    public Permission getPermissions() {
-    	
-    	return permissions;
     }
     
     public Economy getEconomy() {
@@ -146,7 +149,9 @@ public class ArenaPlugin extends JavaPlugin {
 		
 		Player player = (Player) sender;
 		
-		new ClassSelectorMenu(player);
+		ArenaPlayer ap = playerManager.getPlayer(player.getName());
+		
+		sender.sendMessage(ChatColor.YELLOW + String.valueOf(Utils.getClassLevel(ap, ClassType.CREEPER)));
 		
 		return true;
 	}

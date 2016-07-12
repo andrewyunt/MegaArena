@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.ArenaException;
+import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
 /**
@@ -60,14 +61,20 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
+			
+			Arena arena = null;
+			
 			try {
-				ArenaPlugin.getInstance().getArenaManager().createArena(args[1], ArenaType.valueOf(args[2]));
+				arena = ArenaPlugin.getInstance().getArenaManager().createArena(args[1], ArenaType.valueOf(args[2]));
 			} catch (IllegalArgumentException e) {
 				sender.sendMessage(ChatColor.RED + "Error: Invalid arena type specified.");
 				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
 			} catch (ArenaException e) {
 				sender.sendMessage(ChatColor.RED + e.getMessage());
 			}
+			
+			if (arena != null)
+				ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName()).selectArena(arena);
 			
 		} else if (args[0].equalsIgnoreCase("delete")) {
 

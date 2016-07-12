@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.ClassType;
@@ -53,5 +54,14 @@ public class Utils {
 	
 	public static int getClassLevel(ArenaPlayer player, ClassType type) {
 		
+		Player bp = player.getBukkitPlayer();
+		
+		for (int i = 9; i > 1; i--)
+			if (bp.hasPermission(String.format("arenaplugin.%s.%f", type.toString().toLowerCase(), i)))
+				return i;
+		
+		/* Somehow the player doesn't have permissions for any class level including 1,
+		so set their class level to 1 as a default */
+		return 1; 
 	}
 }
