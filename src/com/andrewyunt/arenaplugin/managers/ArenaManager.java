@@ -41,6 +41,14 @@ public class ArenaManager {
 		return arena;
 	}
 	
+	public void deleteArena(Arena arena) throws ArenaException {
+		
+		if (arena == null)
+			throw new ArenaException();
+		
+		arenas.remove(arena);
+	}
+	
 	public Collection<Arena> getArenas(ArenaType type) {
 		
 		Collection<Arena> arenas = new HashSet<Arena>();
@@ -55,7 +63,10 @@ public class ArenaManager {
 		return arenas;
 	}
 	
-	public Arena getArena(String name) {
+	public Arena getArena(String name) throws ArenaException {
+		
+		if (!arenas.containsKey(name))
+			throw new ArenaException("The specified arena does not exist.");
 		
 		return arenas.get(name);
 	}

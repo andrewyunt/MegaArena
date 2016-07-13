@@ -29,7 +29,8 @@ public class GameManager {
 		else if (arena.getType() == ArenaType.DUEL) {
 			
 		}
-			
+		
+		arena.setGame(game);
 		
 		return game;
 	}

@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.andrewyunt.arenaplugin.exception.ArenaException;
+
 import net.md_5.bungee.api.ChatColor;
 
 /**
@@ -108,7 +110,10 @@ public class ArenaPlayer {
 		return selectedArena != null;
 	}
 	
-	public Arena getSelectedArena() {
+	public Arena getSelectedArena() throws ArenaException {
+		
+		if (selectedArena == null)
+			throw new ArenaException("The player has not selected an arena");
 		
 		return selectedArena;
 	}

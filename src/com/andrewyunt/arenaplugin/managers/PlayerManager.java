@@ -33,7 +33,10 @@ public class PlayerManager {
 		return players.values();
 	}
 	
-	public ArenaPlayer getPlayer(String name) {
+	public ArenaPlayer getPlayer(String name) throws PlayerException {
+		
+		if (!players.containsKey(name))
+			throw new PlayerException("The specified player does not exist.");
 		
 		return players.get(name);
 	}

@@ -76,10 +76,9 @@ public class Game {
 			throw new GameException("You cannot start an FFA or TDM game.");
 	}
 	
-	public void end() throws GameException {
+	public void end() {
 		
-		if (arena.getType() == ArenaType.FFA || arena.getType() == ArenaType.TDM)
-			throw new GameException("You cannot end an FFA or TDM game.");
+		
 	}
 	
 	public void setCountdown(int countdown) {

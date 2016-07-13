@@ -1,15 +1,14 @@
 package com.andrewyunt.arenaplugin.objects;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
-
 import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.SpawnException;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
 import com.andrewyunt.arenaplugin.utilities.Utils;
 
@@ -26,7 +25,7 @@ public class Arena {
 		TDM
 	}
 	
-	private Set<Spawn> spawns = new HashSet<Spawn>();
+	private Map<String, Spawn> spawns = new HashMap<String, Spawn>();
 	private ArenaType type;
 	private String name;
 	private Game game;
@@ -68,9 +67,18 @@ public class Arena {
 		return game != null;
 	}
 	
+	public Spawn addSpawn(String name, Arena arena, Location loc, Side side) {
+		
+		Spawn spawn = new Spawn(name, arena, loc, side);
+		
+		spawns.put(name, spawn);
+		
+		return spawn;
+	}
+	
 	public void addSpawn(Spawn spawn) {
 		
-		spawns.add(spawn);
+		spawns.put(spawn.getName(), spawn);
 	}
 	
 	public void removeSpawn(Spawn spawn) {
@@ -78,9 +86,17 @@ public class Arena {
 		spawns.remove(spawn);
 	}
 	
+	public Spawn getSpawn(String name) throws SpawnException {
+		
+		if (!spawns.containsKey(name))
+			throw new SpawnException(String.format("The spawn %s does not exist in the arena %s.", name, this.name));
+		
+		return spawns.get(name);
+	}
+	
 	public Collection<Spawn> getSpawns() {
 		
-		return spawns;
+		return spawns.values();
 	}
 	
 	public void setEdit(boolean isEdit) {
@@ -104,7 +120,7 @@ public class Arena {
 		
 		ConfigurationSection spawnsSection = arenaConfig.createSection("arenas." + name + ".spawns");
 		
-		for (Spawn spawn : spawns) {	
+		for (Spawn spawn : spawns.values()) {
 			ConfigurationSection spawnSection = spawnsSection.createSection(spawn.getName());
 			
 			spawnSection.createSection("location", Utils.serializeLocation(spawn.getLocation()));
