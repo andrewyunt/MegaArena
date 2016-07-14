@@ -11,18 +11,15 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import com.andrewyunt.arenaplugin.command.ArenaCommand;
 import com.andrewyunt.arenaplugin.command.DuelAcceptCommand;
 import com.andrewyunt.arenaplugin.command.DuelCommand;
 import com.andrewyunt.arenaplugin.configuration.ArenaConfiguration;
-import com.andrewyunt.arenaplugin.configuration.PlayerConfiguration;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerListener;
 import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
-import com.andrewyunt.arenaplugin.menu.ClassSelectorMenu;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
@@ -50,7 +47,6 @@ public class ArenaPlugin extends JavaPlugin {
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
-	private final PlayerConfiguration playerConfiguration = new PlayerConfiguration();
 	
 	private static ArenaPlugin instance = null;
 	
@@ -132,11 +128,6 @@ public class ArenaPlugin extends JavaPlugin {
 	public ArenaConfiguration getArenaConfig() {
 		
 		return arenaConfiguration;
-	}
-	
-	public PlayerConfiguration getPlayerConfig() {
-		
-		return playerConfiguration;
 	}
 	
 	@Override

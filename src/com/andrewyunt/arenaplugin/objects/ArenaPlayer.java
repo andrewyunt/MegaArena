@@ -1,12 +1,14 @@
 package com.andrewyunt.arenaplugin.objects;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.arenaplugin.exception.ArenaException;
-
-import net.md_5.bungee.api.ChatColor;
 
 /**
  * 
@@ -20,7 +22,6 @@ public class ArenaPlayer {
 	private ArenaPlayer requestingPlayer;
 	private ClassType classType;
 	private boolean hasFallen;
-	private ItemStack[] previousContents;
 	private Arena selectedArena;
 	
 	public ArenaPlayer(String name) {
@@ -88,16 +89,6 @@ public class ArenaPlayer {
 		return hasFallen;
 	}
 	
-	public void setPreviousContents(ItemStack[] previousContents) {
-		
-		this.previousContents = previousContents;
-	}
-	
-	public ItemStack[] getPreviousContents() {
-		
-		return previousContents;
-	}
-	
 	public void selectArena(Arena selectedArena) {
 		
 		this.selectedArena = selectedArena;
@@ -116,5 +107,50 @@ public class ArenaPlayer {
 			throw new ArenaException("The player has not selected an arena");
 		
 		return selectedArena;
+	}
+	
+	public boolean isStaffMode() {
+		
+		return StaffPlus.get().mode.isActive(name);
+	}
+	
+	public void setHotBar() {
+		
+		Player player = getBukkitPlayer();
+		
+		/* Create items */
+		ItemStack shop = new ItemStack(Material.EMERALD);
+		ItemStack layoutEditor = new ItemStack(Material.CHEST);
+		ItemStack classSelector = new ItemStack(Material.COMMAND);
+		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
+		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
+		
+		/* Get item metas */
+		ItemMeta shopMeta = shop.getItemMeta();
+		ItemMeta layoutEditorMeta = layoutEditor.getItemMeta();
+		ItemMeta classSelectorMeta = classSelector.getItemMeta();
+		ItemMeta playFFAMeta = playFFA.getItemMeta();
+		ItemMeta playTDMMeta = playTDM.getItemMeta();
+		
+		/* Set meta display names */
+		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
+		layoutEditorMeta.setDisplayName(ChatColor.YELLOW + "Layout Editor");
+		classSelectorMeta.setDisplayName(ChatColor.RED + "Class Selector");
+		playFFAMeta.setDisplayName("Play : Free-for-all");
+		playTDMMeta.setDisplayName("Play : Team-deathmatch");
+		
+		/* Set item metas */
+		shop.setItemMeta(shopMeta);
+		layoutEditor.setItemMeta(layoutEditorMeta);
+		classSelector.setItemMeta(classSelectorMeta);
+		playFFA.setItemMeta(playFFAMeta);
+		playTDM.setItemMeta(playTDMMeta);
+		
+		/* Set items in player's inventory */
+		player.getInventory().setItem(0, shop);
+		player.getInventory().setItem(1, layoutEditor);
+		player.getInventory().setItem(2, classSelector);
+		player.getInventory().setItem(7, playFFA);
+		player.getInventory().setItem(8, playTDM);
 	}
 }
