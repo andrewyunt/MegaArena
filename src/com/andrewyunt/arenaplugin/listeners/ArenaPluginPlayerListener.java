@@ -32,6 +32,21 @@ public class ArenaPluginPlayerListener implements Listener {
 			// player is already in the plugin's records, so do nothing
 		}
 	}
+	
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		
+		Player player = event.getPlayer();
+		
+		ArenaPlayer ap = null;
+		
+		try {
+			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+		
+		ap.getGame().removePlayer(ap);
+	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
@@ -66,15 +81,5 @@ public class ArenaPluginPlayerListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		
-	}
-	
-	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		
-		Player player = event.getPlayer();
-		
-		ArenaPlayer ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
-		
-		ap.getGame().removePlayer(ap);
 	}
 }

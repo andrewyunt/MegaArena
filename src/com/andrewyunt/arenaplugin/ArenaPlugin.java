@@ -17,6 +17,7 @@ import com.andrewyunt.arenaplugin.command.DuelAcceptCommand;
 import com.andrewyunt.arenaplugin.command.DuelCommand;
 import com.andrewyunt.arenaplugin.configuration.ArenaConfiguration;
 import com.andrewyunt.arenaplugin.configuration.PlayerConfiguration;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerListener;
 import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
@@ -149,7 +150,12 @@ public class ArenaPlugin extends JavaPlugin {
 		
 		Player player = (Player) sender;
 		
-		ArenaPlayer ap = playerManager.getPlayer(player.getName());
+		ArenaPlayer ap = null;
+		
+		try {
+			ap = playerManager.getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
 		
 		sender.sendMessage(ChatColor.YELLOW + String.valueOf(Utils.getClassLevel(ap, ClassType.CREEPER)));
 		

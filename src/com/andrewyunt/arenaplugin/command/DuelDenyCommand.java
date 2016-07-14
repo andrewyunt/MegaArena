@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
 import net.md_5.bungee.api.ChatColor;
@@ -28,7 +29,12 @@ public class DuelDenyCommand implements CommandExecutor {
 			return false;
 		}
 		
-		ArenaPlayer player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName());
+		ArenaPlayer player = null;
+		
+		try {
+			player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName());
+		} catch (PlayerException e) {
+		}
 		
 		player.setRequestingPlayer(null);
 		

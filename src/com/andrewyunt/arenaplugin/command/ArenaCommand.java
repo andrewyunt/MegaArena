@@ -45,6 +45,12 @@ public class ArenaCommand implements CommandExecutor {
 		}
 		
 		if (!(args.length > 0)) {
+			
+			if (!sender.hasPermission("arenaplugin.arena.help")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
+			
 			for (String line : help)
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
 			
@@ -53,12 +59,22 @@ public class ArenaCommand implements CommandExecutor {
 		
 		if (args[0].equalsIgnoreCase("help")) {
 			
+			if (!sender.hasPermission("arenaplugin.arena.help")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
+			
 			for (String line : help)
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
 			
 			return false;
 			
 		} else if (args[0].equalsIgnoreCase("create")) {
+			
+			if (!sender.hasPermission("arenaplugin.arena.create")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
 			
 			if (!(args.length >= 3)) {
 				sender.sendMessage(ChatColor.RED + "Usage: /arena create [name] [type]");
@@ -86,6 +102,11 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("delete")) {
 
+			if (!sender.hasPermission("arenaplugin.arena.delete")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
+			
 			Arena arena = null;
 			
 			try {
@@ -99,6 +120,12 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
+			if (arena.isEdit()) {
+				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
+				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
+				return false;
+			}
+			
 			if (arena.isInUse()) {
 				arena.getGame().end();
 				
@@ -109,6 +136,11 @@ public class ArenaCommand implements CommandExecutor {
 			}
 			
 		} else if (args[0].equalsIgnoreCase("select")) {
+			
+			if (!sender.hasPermission("arenaplugin.arena.select")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
 			
 			if (!(args.length > 2)) {
 				sender.sendMessage(ChatColor.RED + "Usage: /arena select [name]");
@@ -132,6 +164,11 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("addspawn")) {
 			
+			if (!sender.hasPermission("arenaplugin.arena.addspawn")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
+			
 			if (args.length < 3) {
 				sender.sendMessage(ChatColor.RED + "Usage: /arena addspawn [name] [side]");
 				return false;
@@ -146,6 +183,12 @@ public class ArenaCommand implements CommandExecutor {
 			} catch (PlayerException e) {
 			}
 			
+			if (arena.isEdit()) {
+				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
+				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
+				return false;
+			}
+			
 			Location loc = ((Player) sender).getLocation();
 			
 			Spawn spawn = arena.addSpawn(args[1], arena, loc, Side.valueOf(args[2]));
@@ -157,18 +200,29 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("removespawn")) {
 			
-			Arena arena = null;
+			if (!sender.hasPermission("arenaplugin.arena.removespawn")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
 			
 			if (args.length < 2) {
 				sender.sendMessage(ChatColor.RED + "Usage: /arena removespawn [name]");
 				return false;
 			}
 			
+			Arena arena = null;
+			
 			try {
 				arena = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
 			} catch (ArenaException e) {
 				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
 			} catch (PlayerException e) {
+			}
+			
+			if (arena.isEdit()) {
+				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
+				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
+				return false;
 			}
 			
 			Spawn spawn = null;
@@ -180,6 +234,26 @@ public class ArenaCommand implements CommandExecutor {
 			}
 			
 			arena.removeSpawn(spawn);
+			
+		} else if (args[0].equalsIgnoreCase("edit")) {
+			
+			Arena arena = null;
+			
+			try {
+				arena = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
+			} catch (ArenaException e) {
+				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+			} catch (PlayerException e) {
+			}
+			
+			if (arena.isEdit()) {
+				sender.sendMessage(ChatColor.RED + "The selected arena is already in edit mode.");
+				return false;
+			}
+			
+			arena.setEdit(true);
+			
+			sender.sendMessage(String.format(ChatColor.GOLD + "You have set the arena %s to edit mode.", arena.getName()));
 		}
 		
 		return true;

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.ClassType;
 import com.andrewyunt.arenaplugin.objects.IconMenu;
@@ -67,7 +68,12 @@ public class ClassSelectorMenu {
             	
             	String name = event.getName();
             	
-            	ArenaPlayer player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+            	ArenaPlayer player = null;
+            	
+				try {
+					player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+				} catch (PlayerException e) {
+				}
             	
             	if (name.equals("Zombie")) {
             		player.setClassType(ClassType.ZOMBIE);
@@ -120,7 +126,12 @@ public class ClassSelectorMenu {
             	
             	String name = event.getName();
             	
-            	ArenaPlayer player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+            	ArenaPlayer player = null;
+            	
+				try {
+					player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+				} catch (PlayerException e) {
+				}
             	
             	if (name.equals("Wither Minion")) {
             		player.setClassType(ClassType.WITHER_MINION);

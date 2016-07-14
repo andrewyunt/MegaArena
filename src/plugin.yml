@@ -45,7 +45,7 @@ permissions:
        arenaplugin.arena.delete: true
        arenaplugin.arena.addspawn: true
        arenaplugin.arena.removespawn: true
-   arenaplugin.arena.arena:
+   arenaplugin.arena.help:
      description: Gives you access to the arena help menu.
      default: op
    arenaplugin.arena.create:
@@ -53,6 +53,12 @@ permissions:
      default: op
    arenaplugin.arena.delete:
      description: Allows you to delete an existing arena.
+     default: op
+   arenaplugin.arena.select:
+     description: Allows you to select an existing arena.
+     default: op
+   arenaplugin.arena.edit:
+     description: Allows you to edit an existing arena.
      default: op
    arenaplugin.arena.addspawn:
      description: Allows you to add a spawn to an existing arena.

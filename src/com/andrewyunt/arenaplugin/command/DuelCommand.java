@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
 /**
@@ -37,14 +38,24 @@ public class DuelCommand implements CommandExecutor {
 			return false;
 		}
 		
-		ArenaPlayer player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName());
+		ArenaPlayer player = null;
+		
+		try {
+			player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName());
+		} catch (PlayerException e) {
+		}
 		
 		if (player.isInGame()) {
 			sender.sendMessage(ChatColor.RED + "You are currently in a game and cannot duel.");
 			return false;
 		}
 		
-		ArenaPlayer targetPlayer = ArenaPlugin.getInstance().getPlayerManager().getPlayer(args[0]);
+		ArenaPlayer targetPlayer = null;
+		
+		try {
+			targetPlayer = ArenaPlugin.getInstance().getPlayerManager().getPlayer(args[0]);
+		} catch (PlayerException e) {
+		}
 		
 		if (targetPlayer == null) {
 			sender.sendMessage(ChatColor.RED + "The target player is currently offline.");

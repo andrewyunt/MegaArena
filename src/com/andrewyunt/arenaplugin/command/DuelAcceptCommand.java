@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
@@ -32,7 +33,12 @@ public class DuelAcceptCommand implements CommandExecutor {
 			return false;
 		}
 		
-		ArenaPlayer player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName());
+		ArenaPlayer player = null;
+		
+		try {
+			player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName());
+		} catch (PlayerException e) {
+		}
 		
 		if (!(player.hasDuelRequest()))
 			return false;
