@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/Jars/spigot-1.10.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/Jars/StaffPlus.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/Jars/Vault.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Andrew/Desktop/Jars/PlayerVaults.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

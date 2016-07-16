@@ -133,7 +133,7 @@ public class ArenaPlayer {
 		ItemMeta playTDMMeta = playTDM.getItemMeta();
 		
 		/* Set meta display names */
-		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
+		shopMeta.setDisplayName(ChatColor.GREEN + "Class Upgrades");
 		layoutEditorMeta.setDisplayName(ChatColor.YELLOW + "Layout Editor");
 		classSelectorMeta.setDisplayName(ChatColor.RED + "Class Selector");
 		playFFAMeta.setDisplayName("Play : Free-for-all");
@@ -152,5 +152,18 @@ public class ArenaPlayer {
 		player.getInventory().setItem(2, classSelector);
 		player.getInventory().setItem(7, playFFA);
 		player.getInventory().setItem(8, playTDM);
+	}
+	
+	public int getClassLevel(ClassType type) {
+		
+		Player bp = getBukkitPlayer();
+		
+		for (int i = 9; i > 1; i--)
+			if (bp.hasPermission(String.format("arenaplugin.%s.%f", type.toString().toLowerCase(), i)))
+				return i;
+		
+		/* Somehow the player doesn't have permissions for any class level including 1,
+		so set their class level to 1 as a default */
+		return 1; 
 	}
 }

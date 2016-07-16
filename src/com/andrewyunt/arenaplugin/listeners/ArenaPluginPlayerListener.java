@@ -1,5 +1,8 @@
 package com.andrewyunt.arenaplugin.listeners;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,6 +18,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
+import com.andrewyunt.arenaplugin.menu.ClassSelectorMenu;
+import com.andrewyunt.arenaplugin.menu.UpgradesMenu;
+import com.andrewyunt.arenaplugin.objects.Arena;
+import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
 /**
@@ -27,11 +34,15 @@ public class ArenaPluginPlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		
+		ArenaPlayer player = null;
+		
 		try {
-			ArenaPlugin.getInstance().getPlayerManager().createPlayer(event.getPlayer().getName());
+			player = ArenaPlugin.getInstance().getPlayerManager().createPlayer(event.getPlayer().getName());
 		} catch (PlayerException e) {
 			// player is already in the plugin's records, so do nothing
 		}
+		
+		player.setHotBar();
 	}
 	
 	@EventHandler
@@ -63,19 +74,42 @@ public class ArenaPluginPlayerListener implements Listener {
 			return;
 		
 		ItemMeta meta = item.getItemMeta();
-		
 		String name = meta.getDisplayName();
+		Player player = event.getPlayer();
+		ArenaPlayer ap = null;
 		
-		if (name.equals(ChatColor.GREEN + "Shop")) {
+		try {
+			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (name.equals(ChatColor.GREEN + "Class Upgrades")) {
 			
+			new UpgradesMenu(player);
+		
 		} else if (name.equals(ChatColor.YELLOW + "Layout Editor")) {
+			
+			
 			
 		} else if (name.equals(ChatColor.RED + "Class Selector")) {
 			
+			new ClassSelectorMenu(player);
+		
 		} else if (name.equals("Play : Team-deathmatch")) {
+			
+			List<Arena> arenas = (List<Arena>) ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.TDM);
+			Collections.shuffle(arenas);
+			Arena arena = arenas.get(0);
+			
+			arena.getGame().addPlayer(ap);
 			
 		} else if (name.equals("Play : Free-for-all")) {
 			
+			List<Arena> arenas = (List<Arena>) ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.FFA);
+			Collections.shuffle(arenas);
+			Arena arena = arenas.get(0);
+			
+			arena.getGame().addPlayer(ap);
 		}
 	}
 	

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.andrewyunt.arenaplugin.command.ArenaCommand;
 import com.andrewyunt.arenaplugin.command.DuelAcceptCommand;
@@ -25,9 +26,11 @@ import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.ClassType;
 import com.andrewyunt.arenaplugin.utilities.Utils;
+import com.drtshock.playervaults.PlayerVaults;
 
 import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 
 /**
  * 
@@ -41,7 +44,9 @@ public class ArenaPlugin extends JavaPlugin {
 	private PluginDescriptionFile pdf = getDescription();
 	private Server server = getServer();
 	private PluginManager pm = server.getPluginManager();
+	private ServicesManager sm = server.getServicesManager();
     private Economy economy = null;
+    private Permission permissions = null;
 	
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
@@ -56,7 +61,7 @@ public class ArenaPlugin extends JavaPlugin {
 		logger.info("Enabling " + pdf.getName() + " v" + pdf.getVersion() + "... Please wait.");
 		
 		/* Check for dependencies */
-		if (pm.getPlugin("StaffPlus") == null || !(setupEconomy())) {
+		if (pm.getPlugin("StaffPlus") == null || !(setupEconomy() || !(setupPermissions()))) {
 			logger.severe("ArenaPlugin is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
@@ -86,12 +91,22 @@ public class ArenaPlugin extends JavaPlugin {
 
     private boolean setupEconomy() {
     	
-        RegisteredServiceProvider<Economy> economyProvider = server.getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = sm.getRegistration(Economy.class);
         
         if (economyProvider != null)
             economy = economyProvider.getProvider();
 
         return (economy != null);
+    }
+    
+    private boolean setupPermissions() {
+    	
+        RegisteredServiceProvider<Permission> permissionProvider = sm.getRegistration(Permission.class);
+        
+        if (permissionProvider != null)
+            permissions = permissionProvider.getProvider();
+            
+        return (permissions != null);
     }
     
     public Economy getEconomy() {
@@ -148,7 +163,7 @@ public class ArenaPlugin extends JavaPlugin {
 		} catch (PlayerException e) {
 		}
 		
-		sender.sendMessage(ChatColor.YELLOW + String.valueOf(Utils.getClassLevel(ap, ClassType.CREEPER)));
+		sender.sendMessage(ChatColor.YELLOW + String.valueOf(ap.getClassLevel(ClassType.CREEPER)));
 		
 		return true;
 	}
