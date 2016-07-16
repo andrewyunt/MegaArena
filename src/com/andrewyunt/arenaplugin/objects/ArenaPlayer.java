@@ -202,4 +202,9 @@ public class ArenaPlayer {
 		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s", 
 				String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
 	}
+	
+	public void giveItems() {
+		
+		getBukkitPlayer().getInventory().setContents(classType.getItems());
+	}
 }

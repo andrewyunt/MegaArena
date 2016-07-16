@@ -1,5 +1,11 @@
 package com.andrewyunt.arenaplugin.objects;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import com.andrewyunt.arenaplugin.ArenaPlugin;
+
 /**
  * 
  * @author Andrew Yunt
@@ -43,4 +49,24 @@ public enum ClassType {
 		
 		return upgradeRowStart;
 	}
+	
+	public ItemStack[] getItems() {
+		
+		Inventory inv = ArenaPlugin.getInstance().getServer().createInventory(null, 54);
+		
+		if (this == ZOMBIE) {
+			 inv.setItem(0, new ItemStack(Material.DIRT, 64)); // test item
+		} else if (this == SKELETON) {
+			
+		} else if (this == HEROBRINE) {
+			
+		} else if (this == CREEPER) {
+			
+		} else if (this == SPIRIT_WARRIOR) {
+			
+		} else if (this == WITHER_MINION) {
+			
+		}
+		return inv.getContents();
+ 	}
 }
