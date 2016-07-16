@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -115,7 +116,7 @@ public class ArenaPluginPlayerListener implements Listener {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		
+		// to be used for layout editor
 	}
 	
 	@EventHandler
@@ -145,5 +146,42 @@ public class ArenaPluginPlayerListener implements Listener {
 				event.setCancelled(true);
 			}
 		}
+	}
+	
+	@EventHandler
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+		
+		if (!(event.getEntity() instanceof Player))
+			return;
+		
+		if (!(event.getDamager() instanceof Player))
+			return;
+		
+		Player player = (Player) event.getEntity();
+		Player damager = (Player) event.getDamager();
+		
+		ArenaPlayer playerAP = null;
+		ArenaPlayer damagerAP = null;
+		
+		try {
+			playerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+			damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damager.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (!playerAP.isInGame() || !damagerAP.isInGame())
+			return;
+		
+		if (playerAP.getGame() != damagerAP.getGame())
+			return;
+		
+		if (playerAP.getGame().getArena().getType() == ArenaType.DUEL || playerAP.getGame().getArena().getType() == ArenaType.FFA)
+			return;
+		
+		if (playerAP.getSide() != damagerAP.getSide())
+			return;
+		
+		event.setCancelled(true);
+		player.sendMessage(ChatColor.RED + "You may not damage your teammates!");
 	}
 }

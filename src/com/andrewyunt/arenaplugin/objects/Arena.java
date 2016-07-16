@@ -2,6 +2,7 @@ package com.andrewyunt.arenaplugin.objects;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -97,6 +98,20 @@ public class Arena {
 	public Collection<Spawn> getSpawns() {
 		
 		return spawns.values();
+	}
+	
+	public Collection<Spawn> getSpawns(Side side) {
+		
+		Collection<Spawn> spawns = new HashSet<Spawn>();
+		
+		for (Map.Entry<String, Spawn> entry : this.spawns.entrySet()) {
+			Spawn spawn = entry.getValue();
+			
+			if (spawn.getSide() == side)
+				spawns.add(spawn);
+		}
+		
+		return spawns;
 	}
 	
 	public void setEdit(boolean isEdit) {

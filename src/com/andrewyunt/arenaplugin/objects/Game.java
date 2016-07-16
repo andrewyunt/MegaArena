@@ -2,8 +2,11 @@ package com.andrewyunt.arenaplugin.objects;
 
 import java.util.Set;
 
+import org.bukkit.entity.Player;
+
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.GameException;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
 /**
@@ -15,7 +18,8 @@ public class Game {
 	
 	public enum Side {
 		BLUE,
-		GREEN
+		GREEN,
+		INDEPENDENT
 	}
 	
 	private Set<ArenaPlayer> players;
@@ -49,7 +53,45 @@ public class Game {
 	
 	public void addPlayer(ArenaPlayer player) {
 		
+		Player bp = player.getBukkitPlayer();
+		
+		player.setPreviousHealth(player.getBukkitPlayer().getHealth());
+		bp.setHealth(40);
+		
+		Side side = null;
+		
+		if (arena.getType() == ArenaType.DUEL) {
+			
+			for (Spawn spawn : arena.getSpawns()) {
+				if (spawn.isUsed())
+					continue;
+				
+				bp.teleport(spawn.getLocation());
+				spawn.setUsed(true);
+			}	
+			
+		} else if (arena.getType() == ArenaType.FFA) {
+			
+			for (Spawn spawn : arena.getSpawns())
+				player.spawn(spawn);
+			
+		} else if (arena.getType() == ArenaType.TDM) {
+			
+			double rand = Math.random();
+			
+			if (rand <= 50)
+				side = Side.BLUE;
+			else
+				side = Side.GREEN;
+			
+			for (Spawn spawn : arena.getSpawns(side))	
+				player.spawn(spawn);
+		}
+		
+		player.setSide(side);
+		
 		players.add(player);
+		player.setGame(this);
 	}
 	
 	public void removePlayer(ArenaPlayer player) {
@@ -62,6 +104,11 @@ public class Game {
 		}
 		
 		players.remove(player);
+		
+		try {
+			player.getBukkitPlayer().setHealth(ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName()).getPreviousHealth());
+		} catch (PlayerException e) {
+		}
 	}
 	
 	public Set<ArenaPlayer> getPlayers() {
@@ -78,7 +125,8 @@ public class Game {
 	
 	public void end() {
 		
-		
+		for (ArenaPlayer player : players)
+			removePlayer(player);
 	}
 	
 	public void setCountdown(int countdown) {

@@ -11,7 +11,7 @@ import com.andrewyunt.arenaplugin.objects.Game.Side;
  */
 public class Spawn {
 	
-	private boolean used;
+	private boolean isUsed;
 	private Arena arena;
 	private Location location;
 	private Side side;
@@ -24,9 +24,14 @@ public class Spawn {
 		this.side = side;
 	}
 	
+	public void setUsed(boolean isUsed) {
+		
+		this.isUsed = isUsed;
+	}
+	
 	public boolean isUsed() {
 		
-		return used;
+		return isUsed;
 	}
 	
 	public String getName() {

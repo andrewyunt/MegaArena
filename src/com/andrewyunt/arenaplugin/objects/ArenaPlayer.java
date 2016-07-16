@@ -2,6 +2,7 @@ package com.andrewyunt.arenaplugin.objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.arenaplugin.exception.ArenaException;
+import com.andrewyunt.arenaplugin.objects.Game.Side;
 
 /**
  * 
@@ -23,6 +25,8 @@ public class ArenaPlayer {
 	private ClassType classType;
 	private boolean hasFallen;
 	private Arena selectedArena;
+	private double previousHealth;
+	public Side side;
 	
 	public ArenaPlayer(String name) {
 		
@@ -165,5 +169,37 @@ public class ArenaPlayer {
 		/* Somehow the player doesn't have permissions for any class level including 1,
 		so set their class level to 1 as a default */
 		return 1; 
+	}
+	
+	public double getPreviousHealth() {
+		
+		return previousHealth;
+	}
+	
+	public void setPreviousHealth(double previousHealth) {
+		
+		this.previousHealth = previousHealth;
+	}
+	
+	public Side getSide() {
+		
+		return side;
+	}
+	
+	public void setSide(Side side) {
+		
+		this.side = side;
+		
+		getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You have joined the %s side.", side.toString()));
+	}
+	
+	public void spawn(Spawn spawn) {
+		
+		Player player = getBukkitPlayer();
+		Location loc = spawn.getLocation();
+		
+		player.teleport(loc);
+		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s", 
+				String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
 	}
 }
