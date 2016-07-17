@@ -10,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.arenaplugin.exception.ArenaException;
-import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
 
 /**

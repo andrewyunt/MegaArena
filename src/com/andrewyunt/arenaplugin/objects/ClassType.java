@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import static com.andrewyunt.arenaplugin.objects.Ability.*;
+
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 
 /**
@@ -13,31 +15,33 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
  */
 public enum ClassType {
 	
-	ZOMBIE("Zombie", 0, 4) {
+	ZOMBIE("Zombie", HEAL, 0, 4) {
 	},
 	
-	SKELETON("Skeleton", 9, 15) {
+	SKELETON("Skeleton", SPLIT_ARROW, 9, 15) {
 	},
 	
-	HEROBRINE("Herobrine", 18, 10) {
+	HEROBRINE("Herobrine", LIGHTNING, 18, 10) {
 	},
 	
-	CREEPER("Creeper", 27, 10) {
+	CREEPER("Creeper", EXPLODE, 27, 10) {
 	},
 	
-	SPIRIT_WARRIOR("Spirit Warrior", 36, 5) {
+	SPIRIT_WARRIOR("Spirit Warrior", HURRICANE, 36, 5) {
 	},
 	
-	WITHER_MINION("Wither Minion", 45, 5) {	
+	WITHER_MINION("Wither Minion", MASTERS_ATTACK, 45, 5) {	
 	};
 	
 	private String name;
 	private int upgradeRowStart;
 	private int energyPerClick;
+	private Ability ability;
 	
-	ClassType(String name, int upgradeRowStart, int energyPerClick) {
+	ClassType(String name, Ability ability, int upgradeRowStart, int energyPerClick) {
 		
 		this.name = name;
+		this.ability = ability;
 		this.upgradeRowStart = upgradeRowStart;
 		this.energyPerClick = energyPerClick;
 	}
@@ -45,6 +49,11 @@ public enum ClassType {
 	public String getName() {
 		
 		return name;
+	}
+	
+	public Ability getAbility() {
+		
+		return ability;
 	}
 	
 	public int getUpgradeRowStart() {
