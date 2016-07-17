@@ -6,7 +6,10 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -19,6 +22,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
@@ -28,6 +32,7 @@ import com.andrewyunt.arenaplugin.menu.UpgradesMenu;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
+import com.andrewyunt.arenaplugin.objects.ClassType;
 
 /**
  * 
@@ -158,9 +163,6 @@ public class ArenaPluginPlayerListener implements Listener {
 		if (!(event.getEntity() instanceof Player))
 			return;
 		
-		if (!(event.getDamager() instanceof Player))
-			return;
-		
 		Player player = (Player) event.getEntity();
 		Player damager = (Player) event.getDamager();
 		
@@ -169,8 +171,20 @@ public class ArenaPluginPlayerListener implements Listener {
 		
 		try {
 			playerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
-			damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damager.getName());
+			
+			if (event.getDamager() instanceof Player)
+				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damager.getName());
 		} catch (PlayerException e) {
+		}
+		
+		if (event.getDamager() instanceof Arrow) {
+			if (!(((Projectile) event.getDamager()).getShooter() instanceof Player))
+				return;
+			
+			try {
+				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) event.getDamager()).getShooter()).getName());
+			} catch (PlayerException e) {
+			}
 		}
 		
 		if (!playerAP.isInGame() || !damagerAP.isInGame())
@@ -179,11 +193,17 @@ public class ArenaPluginPlayerListener implements Listener {
 		if (playerAP.getGame() != damagerAP.getGame())
 			return;
 		
-		if (playerAP.getGame().getArena().getType() == ArenaType.DUEL || playerAP.getGame().getArena().getType() == ArenaType.FFA)
+		if (playerAP.getGame().getArena().getType() == ArenaType.DUEL || playerAP.getGame().getArena().getType() == ArenaType.FFA) {
+			if (damagerAP.getClassType() == ClassType.SKELETON)
+				damagerAP.addEnergy(15);
 			return;
+		}
 		
-		if (playerAP.getSide() != damagerAP.getSide())
+		if (playerAP.getSide() != damagerAP.getSide()) {
+			if (damagerAP.getClassType() == ClassType.SKELETON)
+				damagerAP.addEnergy(15);
 			return;
+		}
 		
 		event.setCancelled(true);
 		player.sendMessage(ChatColor.RED + "You may not damage your teammates!");
