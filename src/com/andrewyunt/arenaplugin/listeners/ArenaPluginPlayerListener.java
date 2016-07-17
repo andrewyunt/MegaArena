@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -16,6 +19,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
@@ -183,5 +187,51 @@ public class ArenaPluginPlayerListener implements Listener {
 		
 		event.setCancelled(true);
 		player.sendMessage(ChatColor.RED + "You may not damage your teammates!");
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		
+		ArenaPlayer player = null; 
+		
+		try {
+			player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (!player.isInGame())
+			return;
+		
+		Block block = event.getBlock();
+		
+		if (block.getType() != Material.COBBLESTONE) {
+			event.setCancelled(true);
+			return;
+		}
+		
+        BukkitScheduler scheduler = ArenaPlugin.getInstance().getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(ArenaPlugin.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+            	
+            	block.setType(Material.AIR);
+            }
+        }, 200L);
+	}
+	
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		
+		ArenaPlayer player = null; 
+		
+		try {
+			player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (!player.isInGame())
+			return;
+		
+		event.setCancelled(true);
 	}
 }

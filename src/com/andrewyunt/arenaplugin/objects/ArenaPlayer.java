@@ -26,7 +26,8 @@ public class ArenaPlayer {
 	private boolean hasFallen;
 	private Arena selectedArena;
 	private double previousHealth;
-	public Side side;
+	private Side side;
+	private int energy;
 	
 	public ArenaPlayer(String name) {
 		
@@ -198,13 +199,25 @@ public class ArenaPlayer {
 		Player player = getBukkitPlayer();
 		Location loc = spawn.getLocation();
 		
+		giveItems();
+		
 		player.teleport(loc);
-		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s", 
+		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s.", 
 				String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
 	}
 	
 	public void giveItems() {
 		
 		getBukkitPlayer().getInventory().setContents(classType.getItems());
+	}
+	
+	public void addEnergy(int energy) {
+		
+		this.energy = this.energy + energy;
+	}
+	
+	public int getEnergy() {
+		
+		return this.energy;
 	}
 }
