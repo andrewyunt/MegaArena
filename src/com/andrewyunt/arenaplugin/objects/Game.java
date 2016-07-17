@@ -1,5 +1,7 @@
 package com.andrewyunt.arenaplugin.objects;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.entity.Player;
@@ -56,24 +58,35 @@ public class Game {
 		Player bp = player.getBukkitPlayer();
 		
 		player.setPreviousHealth(player.getBukkitPlayer().getHealth());
-		bp.setHealth(40);
+		player.setPreviousExp(bp.getExp());
+		player.setPreviousLevel(bp.getLevel());
+	
+		List<Spawn> spawns = null;
 		
 		Side side = null;
 		
 		if (arena.getType() == ArenaType.DUEL) {
 			
+			side = Side.INDEPENDENT;
+			
+			spawns = (List<Spawn>) arena.getSpawns(side);
+			
 			for (Spawn spawn : arena.getSpawns()) {
 				if (spawn.isUsed())
 					continue;
 				
-				bp.teleport(spawn.getLocation());
+				player.spawn(spawn);
 				spawn.setUsed(true);
 			}	
 			
 		} else if (arena.getType() == ArenaType.FFA) {
 			
-			for (Spawn spawn : arena.getSpawns())
-				player.spawn(spawn);
+			side = Side.INDEPENDENT;
+			
+			spawns = (List<Spawn>) arena.getSpawns(side);
+			Collections.shuffle(spawns);
+			
+			player.spawn(spawns.get(0));
 			
 		} else if (arena.getType() == ArenaType.TDM) {
 			
@@ -84,8 +97,10 @@ public class Game {
 			else
 				side = Side.GREEN;
 			
-			for (Spawn spawn : arena.getSpawns(side))	
-				player.spawn(spawn);
+			spawns = (List<Spawn>) arena.getSpawns(side);
+			Collections.shuffle(spawns);
+			
+			player.spawn(spawns.get(0));
 		}
 		
 		player.setSide(side);
@@ -109,6 +124,10 @@ public class Game {
 			player.getBukkitPlayer().setHealth(ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName()).getPreviousHealth());
 		} catch (PlayerException e) {
 		}
+		
+		player.getBukkitPlayer().setHealth(player.getPreviousHealth());
+		player.getBukkitPlayer().setExp(player.getPreviousExp());
+		player.getBukkitPlayer().setLevel(player.getPreviousLevel());
 	}
 	
 	public Set<ArenaPlayer> getPlayers() {

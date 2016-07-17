@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.arenaplugin.exception.ArenaException;
+import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
 
 /**
@@ -26,6 +27,8 @@ public class ArenaPlayer {
 	private boolean hasFallen;
 	private Arena selectedArena;
 	private double previousHealth;
+	private float previousExp;
+	private int previousLevel;
 	private Side side;
 	private int energy;
 	
@@ -182,6 +185,26 @@ public class ArenaPlayer {
 		this.previousHealth = previousHealth;
 	}
 	
+	public float getPreviousExp() {
+		
+		return previousExp;
+	}
+	
+	public void setPreviousExp(float previousExp) {
+		
+		this.previousExp = previousExp;
+	}
+	
+	public int getPreviousLevel() {
+		
+		return previousLevel;
+	}
+	
+	public void setPreviousLevel(int previousLevel) {
+		
+		this.previousLevel = previousLevel;
+	}
+	
 	public Side getSide() {
 		
 		return side;
@@ -199,9 +222,13 @@ public class ArenaPlayer {
 		Player player = getBukkitPlayer();
 		Location loc = spawn.getLocation();
 		
+		player.setHealth(40);
+		setEnergy(0);
+		
 		giveItems();
 		
 		player.teleport(loc);
+		
 		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s.", 
 				String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
 	}
@@ -213,7 +240,17 @@ public class ArenaPlayer {
 	
 	public void addEnergy(int energy) {
 		
-		this.energy = this.energy + energy;
+		setEnergy(this.energy + energy);
+	}
+	
+	public void setEnergy(int energy) {
+		
+		this.energy = energy;
+		
+		if (this.energy > 100)
+			this.energy = 100;
+		
+		getBukkitPlayer().setExp(this.energy);
 	}
 	
 	public int getEnergy() {

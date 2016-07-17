@@ -9,9 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
-import com.andrewyunt.arenaplugin.objects.ClassType;
 
 /**
  * 

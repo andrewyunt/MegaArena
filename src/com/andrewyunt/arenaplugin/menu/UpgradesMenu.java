@@ -41,7 +41,6 @@ public class UpgradesMenu {
 		}
 		
 		for (ClassType type : ClassType.values()) {
-			
 			int classLevel = ap.getClassLevel(type);
 			
 			int rowStart = type.getUpgradeRowStart();
