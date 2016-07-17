@@ -172,8 +172,9 @@ public class ArenaPluginPlayerListener implements Listener {
 		try {
 			playerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
 			
-			if (event.getDamager() instanceof Player)
+			if (event.getDamager() instanceof Player) {
 				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damager.getName());
+			}
 		} catch (PlayerException e) {
 		}
 		
@@ -183,6 +184,18 @@ public class ArenaPluginPlayerListener implements Listener {
 			
 			try {
 				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) event.getDamager()).getShooter()).getName());
+				ClassType type = damagerAP.getClassType();
+				
+				switch (type) {
+					case SKELETON:
+						break;
+					case ZOMBIE:
+					case HEROBRINE:
+					case CREEPER:
+					case SPIRIT_WARRIOR:
+					case WITHER_MINION:
+						damagerAP.addEnergy(type.getEnergyPerClick());
+				}
 			} catch (PlayerException e) {
 			}
 		}
@@ -195,13 +208,13 @@ public class ArenaPluginPlayerListener implements Listener {
 		
 		if (playerAP.getGame().getArena().getType() == ArenaType.DUEL || playerAP.getGame().getArena().getType() == ArenaType.FFA) {
 			if (damagerAP.getClassType() == ClassType.SKELETON)
-				damagerAP.addEnergy(15);
+				damagerAP.addEnergy(ClassType.SKELETON.getEnergyPerClick());
 			return;
 		}
 		
 		if (playerAP.getSide() != damagerAP.getSide()) {
 			if (damagerAP.getClassType() == ClassType.SKELETON)
-				damagerAP.addEnergy(15);
+				damagerAP.addEnergy(ClassType.SKELETON.getEnergyPerClick());
 			return;
 		}
 		

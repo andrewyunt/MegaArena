@@ -13,31 +13,33 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
  */
 public enum ClassType {
 	
-	ZOMBIE("Zombie", 0) {
+	ZOMBIE("Zombie", 0, 4) {
 	},
 	
-	SKELETON("Skeleton", 9) {
+	SKELETON("Skeleton", 9, 15) {
 	},
 	
-	HEROBRINE("Herobrine", 18) {
+	HEROBRINE("Herobrine", 18, 10) {
 	},
 	
-	CREEPER("Creeper", 27) {
+	CREEPER("Creeper", 27, 10) {
 	},
 	
-	SPIRIT_WARRIOR("Spirit Warrior", 36) {
+	SPIRIT_WARRIOR("Spirit Warrior", 36, 5) {
 	},
 	
-	WITHER_MINION("Wither Minion", 45) {	
+	WITHER_MINION("Wither Minion", 45, 5) {	
 	};
 	
 	private String name;
 	private int upgradeRowStart;
+	private int energyPerClick;
 	
-	ClassType(String name, int upgradeRowStart) {
+	ClassType(String name, int upgradeRowStart, int energyPerClick) {
 		
 		this.name = name;
 		this.upgradeRowStart = upgradeRowStart;
+		this.energyPerClick = energyPerClick;
 	}
 	
 	public String getName() {
@@ -48,6 +50,11 @@ public enum ClassType {
 	public int getUpgradeRowStart() {
 		
 		return upgradeRowStart;
+	}
+	
+	public int getEnergyPerClick() {
+		
+		return energyPerClick;
 	}
 	
 	public ItemStack[] getItems() {
