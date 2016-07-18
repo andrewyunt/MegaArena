@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
@@ -21,7 +22,7 @@ public class UpgradesMenu {
 	
 	public UpgradesMenu(Player player) {
 		
-		menu = new IconMenu("Class Upgrades", 27, new IconMenu.OptionClickEventHandler() {
+		menu = new IconMenu("Class Upgrades", 54, new IconMenu.OptionClickEventHandler() {
             @Override
             public void onOptionClick(IconMenu.OptionClickEvent event) {
             	
@@ -46,25 +47,25 @@ public class UpgradesMenu {
 			int rowStart = type.getUpgradeRowStart();
 			int i = rowStart;
 			
-			while (i <= rowStart + 9) {
+			while (i <= rowStart + 8) {
 				int rowNum = i - rowStart;
 				
 				ItemStack is = null;
 				String name = type.getName() + " - Level " + String.valueOf(rowNum + 1);
 				String description = null;
 				
-				if (classLevel >= rowNum) {
-					is = new ItemStack(Material.HARD_CLAY, 1, (short) 5);
+				if (classLevel - 1 >= rowNum) {
+					is = new ItemStack(Material.STAINED_CLAY, 1, (short) 5);
 					name = ChatColor.GREEN + name;
 					description = ChatColor.GREEN + "Purchased";
 				} else {
 					if (ArenaPlugin.getInstance().getEconomy().getBalance(player) < 
 							ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(rowNum) + "-upgrade-cost")) {
-						is = new ItemStack(Material.HARD_CLAY, 1, (short) 14);
+						is = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 						name = ChatColor.RED + name;
 						description = ChatColor.RED + "You cannot afford to purchase this class upgrade.";
 					} else {
-						is = new ItemStack(Material.HARD_CLAY, 1, (short) 4);
+						is = new ItemStack(Material.STAINED_CLAY, 1, (short) 4);
 						name = ChatColor.YELLOW + name;
 						description = "";
 					}

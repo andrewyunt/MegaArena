@@ -166,7 +166,7 @@ public class ArenaPlayer {
 		Player bp = getBukkitPlayer();
 		
 		for (int i = 9; i > 1; i--)
-			if (bp.hasPermission(String.format("arenaplugin.%s.%f", type.toString().toLowerCase(), i)))
+			if (bp.hasPermission(String.format("arenaplugin.%s.%s", type.toString().toLowerCase(), i)))
 				return i;
 		
 		/* Somehow the player doesn't have permissions for any class level including 1,
