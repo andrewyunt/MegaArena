@@ -61,50 +61,10 @@ public class Game {
 		player.setPreviousExp(bp.getExp());
 		player.setPreviousLevel(bp.getLevel());
 	
-		List<Spawn> spawns = null;
-		
 		Side side = null;
 		
-		if (arena.getType() == ArenaType.DUEL) {
-			
-			side = Side.INDEPENDENT;
-			
-			spawns = (List<Spawn>) arena.getSpawns(side);
-			
-			for (Spawn spawn : arena.getSpawns()) {
-				if (spawn.isUsed())
-					continue;
-				
-				player.spawn(spawn);
-				spawn.setUsed(true);
-			}	
-			
-		} else if (arena.getType() == ArenaType.FFA) {
-			
-			side = Side.INDEPENDENT;
-			
-			spawns = (List<Spawn>) arena.getSpawns(side);
-			Collections.shuffle(spawns);
-			
-			player.spawn(spawns.get(0));
-			
-		} else if (arena.getType() == ArenaType.TDM) {
-			
-			double rand = Math.random();
-			
-			if (rand <= 50)
-				side = Side.BLUE;
-			else
-				side = Side.GREEN;
-			
-			spawns = (List<Spawn>) arena.getSpawns(side);
-			Collections.shuffle(spawns);
-			
-			player.spawn(spawns.get(0));
-		}
-		
+		spawnPlayer(player, side);
 		player.setSide(side);
-		
 		players.add(player);
 		player.setGame(this);
 	}
@@ -156,5 +116,48 @@ public class Game {
 	public int getCountdown() {
 		
 		return countdown;
+	}
+	
+	public void spawnPlayer(ArenaPlayer player, Side side) {
+		
+		List<Spawn> spawns = null;
+		
+		if (arena.getType() == ArenaType.DUEL) {
+			
+			side = Side.INDEPENDENT;
+			
+			spawns = (List<Spawn>) arena.getSpawns(side);
+			
+			for (Spawn spawn : arena.getSpawns()) {
+				if (spawn.isUsed())
+					continue;
+				
+				player.spawn(spawn);
+				spawn.setUsed(true);
+			}	
+			
+		} else if (arena.getType() == ArenaType.FFA) {
+			
+			side = Side.INDEPENDENT;
+			
+			spawns = (List<Spawn>) arena.getSpawns(side);
+			Collections.shuffle(spawns);
+			
+			player.spawn(spawns.get(0));
+			
+		} else if (arena.getType() == ArenaType.TDM) {
+			
+			double rand = Math.random();
+			
+			if (rand <= 50)
+				side = Side.BLUE;
+			else
+				side = Side.GREEN;
+			
+			spawns = (List<Spawn>) arena.getSpawns(side);
+			Collections.shuffle(spawns);
+			
+			player.spawn(spawns.get(0));
+		}
 	}
 }

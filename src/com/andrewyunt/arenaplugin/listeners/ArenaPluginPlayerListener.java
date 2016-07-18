@@ -11,14 +11,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -31,6 +34,7 @@ import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.ClassType;
+import com.andrewyunt.arenaplugin.objects.Game;
 
 /**
  * 
@@ -70,6 +74,9 @@ public class ArenaPluginPlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		
+		if (!(event.getAction() == Action.RIGHT_CLICK_AIR) && !(event.getAction() == Action.RIGHT_CLICK_BLOCK))
+			return;
 		
 		ItemStack item = event.getItem();
 		
@@ -264,5 +271,43 @@ public class ArenaPluginPlayerListener implements Listener {
 			return;
 		
 		event.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		
+		Player player = (Player) event.getPlayer();
+		ArenaPlayer ap = null;
+		
+		try {
+			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (ap.isInGame()) {
+			ap.getGame().spawnPlayer(ap, ap.getSide());
+			return;
+		}
+		
+		ap.giveItems();
+	}
+	
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		
+		Player player = event.getEntity();
+		ArenaPlayer ap = null;
+		
+		try {
+			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (ap.isInGame()) {
+			Game game = ap.getGame();
+			
+			if (ap.getGame().getArena().getType() == ArenaType.DUEL)
+				game.end();
+		}
 	}
 }

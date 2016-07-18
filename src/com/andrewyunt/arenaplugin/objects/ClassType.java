@@ -30,7 +30,7 @@ public enum ClassType {
 	SPIRIT_WARRIOR("Spirit Warrior", HURRICANE, 36, 5) {
 	},
 	
-	WITHER_MINION("Wither Minion", MASTERS_ATTACK, 45, 5) {	
+	WITHER_MINION("Wither Minion", MASTERS_ATTACK, 45, 5) {
 	};
 	
 	private String name;

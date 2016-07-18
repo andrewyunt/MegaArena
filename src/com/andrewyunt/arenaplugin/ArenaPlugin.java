@@ -3,6 +3,7 @@ package com.andrewyunt.arenaplugin;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.andrewyunt.arenaplugin.command.ArenaCommand;
 import com.andrewyunt.arenaplugin.command.DuelAcceptCommand;
 import com.andrewyunt.arenaplugin.command.DuelCommand;
+import com.andrewyunt.arenaplugin.command.DuelDenyCommand;
 import com.andrewyunt.arenaplugin.configuration.ArenaConfiguration;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerListener;
@@ -25,10 +27,6 @@ import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.ClassType;
-import com.andrewyunt.arenaplugin.utilities.Utils;
-import com.drtshock.playervaults.PlayerVaults;
-
-import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -112,6 +110,11 @@ public class ArenaPlugin extends JavaPlugin {
     public Economy getEconomy() {
     	
     	return economy;
+    }
+    
+    public Permission getPermissions() {
+    	
+    	return permissions;
     }
 	
 	@Override

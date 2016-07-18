@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
+import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.ArenaException;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
 
@@ -172,6 +173,11 @@ public class ArenaPlayer {
 		/* Somehow the player doesn't have permissions for any class level including 1,
 		so set their class level to 1 as a default */
 		return 1; 
+	}
+	
+	public void setClassLevel(String className, int level) {
+		
+		ArenaPlugin.getInstance().getPermissions().playerAdd(getBukkitPlayer(), String.format("arenaplugin.%s.%s", className.toLowerCase(), level));
 	}
 	
 	public double getPreviousHealth() {

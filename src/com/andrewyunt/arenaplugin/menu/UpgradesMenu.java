@@ -1,5 +1,6 @@
 package com.andrewyunt.arenaplugin.menu;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,11 +27,29 @@ public class UpgradesMenu {
             @Override
             public void onOptionClick(IconMenu.OptionClickEvent event) {
             	
-            	String name = event.getName();
+            	String name = event.getName().substring(0, event.getName().indexOf(' '));
+            	int level = Integer.parseInt(event.getName().replaceAll("[\\D]", ""));
+            	int cumulativeCost = ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(level) + "-upgrade-cost");
+            	int i = level;
             	
-            	int level = Integer.parseInt(name.replaceAll("[\\D]", ""));
+            	while (i > 1) {
+            		i--;
+            		
+            		Bukkit.getServer().broadcastMessage(String.valueOf(i));
+            		
+            		cumulativeCost = cumulativeCost + ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(i) + "-upgrade-cost");
+            	}
+            	
+            	try {
+					ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName()).setClassLevel(name, level);
+				} catch (PlayerException e) {
+				}
+            	
+            	player.sendMessage(String.format(ChatColor.GOLD + "You have upgraded the %s class to level %s.", name, level));
             	
             	event.setWillClose(false);
+            	
+            	// add check if player can afford to buy the rank and check if the player has the rank
             }
 		}, ArenaPlugin.getInstance());
 		
@@ -59,8 +78,15 @@ public class UpgradesMenu {
 					name = ChatColor.GREEN + name;
 					description = ChatColor.GREEN + "Purchased";
 				} else {
-					if (ArenaPlugin.getInstance().getEconomy().getBalance(player) < 
-							ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(rowNum) + "-upgrade-cost")) {
+					int cumulativeCost = ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(rowNum) + "-upgrade-cost");
+					
+					while (rowNum > 0) {
+						rowNum--;
+						
+						cumulativeCost = cumulativeCost + ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(rowNum) + "-upgrade-cost");
+					}
+					
+					if (ArenaPlugin.getInstance().getEconomy().getBalance(player) < cumulativeCost) {
 						is = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 						name = ChatColor.RED + name;
 						description = ChatColor.RED + "You cannot afford to purchase this class upgrade.";

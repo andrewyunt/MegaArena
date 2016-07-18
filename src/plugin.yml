@@ -18,6 +18,9 @@ commands:
   duelaccept:
     description: Accept a request to duel a player.
     permission: arenaplugin.duelaccept
+  duelaccept:
+    description: Deny a request to duel a player.
+    permission: arenaplugin.dueldeny
   test:
     description: test command.
 
@@ -71,4 +74,7 @@ permissions:
      default: true
    arenaplugin.duelaccept:
      description: Allows you to accept a duel from another player.
+     default: true
+   arenaplugin.dueldeny:
+     description: Allows you to deny a duel from another player.
      default: true
