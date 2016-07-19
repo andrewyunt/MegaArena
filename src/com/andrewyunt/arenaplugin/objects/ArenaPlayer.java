@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
-import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.ArenaException;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
 
@@ -23,7 +22,7 @@ public class ArenaPlayer {
 	private String name;
 	private Game game;
 	private ArenaPlayer requestingPlayer;
-	private ClassType classType;
+	private Class classType;
 	private boolean hasFallen;
 	private Arena selectedArena;
 	private double previousHealth;
@@ -77,12 +76,12 @@ public class ArenaPlayer {
 		return requestingPlayer != null;
 	}
 	
-	public void setClassType(ClassType classType) {
+	public void setClassType(Class classType) {
 		
 		this.classType = classType;
 	}
 	
-	public ClassType getClassType() {
+	public Class getClassType() {
 		
 		return classType;
 	}
@@ -162,24 +161,6 @@ public class ArenaPlayer {
 		player.getInventory().setItem(8, playTDM);
 	}
 	
-	public int getClassLevel(ClassType type) {
-		
-		Player bp = getBukkitPlayer();
-		
-		for (int i = 9; i > 1; i--)
-			if (bp.hasPermission(String.format("arenaplugin.%s.%s", type.toString().toLowerCase(), i)))
-				return i;
-		
-		/* Somehow the player doesn't have permissions for any class level including 1,
-		so set their class level to 1 as a default */
-		return 1; 
-	}
-	
-	public void setClassLevel(String className, int level) {
-		
-		ArenaPlugin.getInstance().getPermissions().playerAdd(getBukkitPlayer(), String.format("arenaplugin.%s.%s", className.toLowerCase(), level));
-	}
-	
 	public double getPreviousHealth() {
 		
 		return previousHealth;
@@ -230,7 +211,7 @@ public class ArenaPlayer {
 		player.setHealth(40);
 		setEnergy(0);
 		
-		giveItems();
+		giveKitItems();
 		
 		player.teleport(loc);
 		
@@ -238,9 +219,9 @@ public class ArenaPlayer {
 				String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
 	}
 	
-	public void giveItems() {
+	public void giveKitItems() {
 		
-		getBukkitPlayer().getInventory().setContents(classType.getItems());
+		getBukkitPlayer().getInventory().setContents(classType.getKitItems(this));
 	}
 	
 	public void addEnergy(int energy) {

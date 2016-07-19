@@ -4,6 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.andrewyunt.arenaplugin.ArenaPlugin;
+
 /**
  * 
  * @author Andrew Yunt
@@ -47,7 +49,7 @@ public enum Ability {
 		
 		if (this == HEAL) {
 			
-			double hearts = 3 + (1 * player.getClassLevel(player.getClassType()));
+			double hearts = 3 + (1 * getLevel(player));
 			
 			for (Entity entity : bp.getNearbyEntities(5, 5, 5)) {
 				if (!(entity instanceof Player))
@@ -73,5 +75,22 @@ public enum Ability {
 		} else if (this == MASTERS_ATTACK) {
 			
 		}
+	}
+	
+	public int getLevel(ArenaPlayer player) {
+		
+		Player bp = player.getBukkitPlayer();
+		
+		for (int i = 9; i > 1; i--)
+			if (bp.hasPermission(String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), i)))
+				return i;
+		
+		return 1; 
+	}
+	
+	public void setLevel(ArenaPlayer player, int level) {
+		
+		ArenaPlugin.getInstance().getPermissions().playerAdd(player.getBukkitPlayer(),
+				String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), level));
 	}
 }

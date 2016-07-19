@@ -3,6 +3,7 @@ package com.andrewyunt.arenaplugin.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -82,23 +83,33 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
+			ArenaType type = null;
+			
+			try {
+				type = ArenaType.valueOf(args[2].toUpperCase());
+			} catch (IllegalArgumentException e) {
+				sender.sendMessage(ChatColor.RED + "Error: Invalid arena type specified.");
+				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
+				return false;
+			}
 			
 			Arena arena = null;
 			
 			try {
-				arena = ArenaPlugin.getInstance().getArenaManager().createArena(args[1], ArenaType.valueOf(args[2]));
-			} catch (IllegalArgumentException e) {
-				sender.sendMessage(ChatColor.RED + "Error: Invalid arena type specified.");
-				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
+				arena = ArenaPlugin.getInstance().getArenaManager().createArena(args[1], type);
 			} catch (ArenaException e) {
 				sender.sendMessage(ChatColor.RED + e.getMessage());
 			}
 			
-			if (arena != null)
-				try {
-					ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName()).selectArena(arena);
-				} catch (PlayerException e) {
-				}
+			if (arena == null)
+				return false;
+			
+			try {
+				ArenaPlugin.getInstance().getPlayerManager().getPlayer(sender.getName()).selectArena(arena);
+			} catch (PlayerException e) {
+			}
+			
+			arena.setEdit(true);
 			
 		} else if (args[0].equalsIgnoreCase("delete")) {
 
@@ -142,7 +153,7 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			if (!(args.length > 2)) {
+			if (!(args.length >= 2)) {
 				sender.sendMessage(ChatColor.RED + "Usage: /arena select [name]");
 				return false;
 			}
@@ -183,18 +194,30 @@ public class ArenaCommand implements CommandExecutor {
 			} catch (PlayerException e) {
 			}
 			
-			if (arena.isEdit()) {
+			if (!(arena.isEdit())) {
 				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
 				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
 				return false;
 			}
 			
+			for (Spawn itrSpawn : arena.getSpawns())
+				if (itrSpawn.getName().equalsIgnoreCase(args[1])) {
+					sender.sendMessage(ChatColor.RED + "A spawn with that name already exists.");
+					return false;
+				}
+			
+			if (arena.getType() == ArenaType.FFA || arena.getType() == ArenaType.DUEL)
+				if (!args[2].equalsIgnoreCase("INDEPENDENT")) {
+					sender.sendMessage(ChatColor.RED + "You can only add INDEPENDENT spawns to a DUEL or TDM arena.");
+					return false;
+				}
+			
 			Location loc = ((Player) sender).getLocation();
 			
 			Spawn spawn = arena.addSpawn(args[1], arena, loc, Side.valueOf(args[2]));
-		
+			
 			sender.sendMessage(String.format(ChatColor.GOLD + "You have created the spawn %s in the arena %s at %s.", 
-					spawn.getName(), 
+					spawn.getName(),
 					arena.getName(),
 					String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
 			
@@ -219,7 +242,7 @@ public class ArenaCommand implements CommandExecutor {
 			} catch (PlayerException e) {
 			}
 			
-			if (arena.isEdit()) {
+			if (!(arena.isEdit())) {
 				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
 				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
 				return false;
@@ -237,6 +260,11 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("edit")) {
 			
+			if (!sender.hasPermission("arenaplugin.arena.edit")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
+			
 			Arena arena = null;
 			
 			try {
@@ -247,13 +275,22 @@ public class ArenaCommand implements CommandExecutor {
 			}
 			
 			if (arena.isEdit()) {
-				sender.sendMessage(ChatColor.RED + "The selected arena is already in edit mode.");
+				arena.setEdit(false);
+				sender.sendMessage(String.format(ChatColor.GOLD + "You have disabled edit mode for the arena %s.", arena.getName()));
+			} else {
+				arena.setEdit(true);
+				sender.sendMessage(String.format(ChatColor.GOLD + "You have enabled edit mode for the arena %s.", arena.getName()));
+			}
+		
+		} else if (args[0].equalsIgnoreCase("list")) {
+			
+			if (!sender.hasPermission("arenaplugin.arena.list")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
 			
-			arena.setEdit(true);
-			
-			sender.sendMessage(String.format(ChatColor.GOLD + "You have set the arena %s to edit mode.", arena.getName()));
+			for (Arena arena : ArenaPlugin.getInstance().getArenaManager().getArenas())
+				sender.sendMessage(ChatColor.GOLD + arena.getName());
 		}
 		
 		return true;

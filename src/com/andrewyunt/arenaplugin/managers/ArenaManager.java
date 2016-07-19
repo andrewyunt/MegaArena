@@ -63,6 +63,16 @@ public class ArenaManager {
 		return arenas;
 	}
 	
+	public Collection<Arena> getArenas() {
+		
+		Collection<Arena> arenas = new HashSet<Arena>();
+		
+		for (Map.Entry<String, Arena> entry : this.arenas.entrySet())
+			arenas.add(entry.getValue());
+		
+		return arenas;
+	}
+	
 	public Arena getArena(String name) throws ArenaException {
 		
 		if (!arenas.containsKey(name))

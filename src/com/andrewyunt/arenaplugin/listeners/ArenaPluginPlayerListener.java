@@ -29,11 +29,10 @@ import org.bukkit.scheduler.BukkitScheduler;
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.menu.ClassSelectorMenu;
-import com.andrewyunt.arenaplugin.menu.UpgradesMenu;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
-import com.andrewyunt.arenaplugin.objects.ClassType;
+import com.andrewyunt.arenaplugin.objects.Class;
 import com.andrewyunt.arenaplugin.objects.Game;
 
 /**
@@ -100,7 +99,7 @@ public class ArenaPluginPlayerListener implements Listener {
 		
 		if (name.equals(ChatColor.GREEN + "Class Upgrades")) {
 			
-			new UpgradesMenu(player);
+			//new UpgradesMenu(player);
 		
 		} else if (name.equals(ChatColor.YELLOW + "Layout Editor")) {
 			
@@ -189,7 +188,7 @@ public class ArenaPluginPlayerListener implements Listener {
 			
 			try {
 				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) event.getDamager()).getShooter()).getName());
-				ClassType type = damagerAP.getClassType();
+				Class type = damagerAP.getClassType();
 				
 				switch (type) {
 					case SKELETON:
@@ -212,14 +211,14 @@ public class ArenaPluginPlayerListener implements Listener {
 			return;
 		
 		if (playerAP.getGame().getArena().getType() == ArenaType.DUEL || playerAP.getGame().getArena().getType() == ArenaType.FFA) {
-			if (damagerAP.getClassType() == ClassType.SKELETON)
-				damagerAP.addEnergy(ClassType.SKELETON.getEnergyPerClick());
+			if (damagerAP.getClassType() == Class.SKELETON)
+				damagerAP.addEnergy(Class.SKELETON.getEnergyPerClick());
 			return;
 		}
 		
 		if (playerAP.getSide() != damagerAP.getSide()) {
-			if (damagerAP.getClassType() == ClassType.SKELETON)
-				damagerAP.addEnergy(ClassType.SKELETON.getEnergyPerClick());
+			if (damagerAP.getClassType() == Class.SKELETON)
+				damagerAP.addEnergy(Class.SKELETON.getEnergyPerClick());
 			return;
 		}
 		
@@ -289,7 +288,7 @@ public class ArenaPluginPlayerListener implements Listener {
 			return;
 		}
 		
-		ap.giveItems();
+		ap.giveKitItems();
 	}
 	
 	@EventHandler

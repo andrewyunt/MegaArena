@@ -1,14 +1,10 @@
 package com.andrewyunt.arenaplugin.objects;
 
-import static com.andrewyunt.arenaplugin.objects.Ability.EXPLODE;
-import static com.andrewyunt.arenaplugin.objects.Ability.HEAL;
-import static com.andrewyunt.arenaplugin.objects.Ability.HURRICANE;
-import static com.andrewyunt.arenaplugin.objects.Ability.LIGHTNING;
-import static com.andrewyunt.arenaplugin.objects.Ability.MASTERS_ATTACK;
-import static com.andrewyunt.arenaplugin.objects.Ability.SPLIT_ARROW;
+import static com.andrewyunt.arenaplugin.objects.Ability.*;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -22,7 +18,7 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
  * @author Andrew Yunt
  *
  */
-public enum ClassType {
+public enum Class {
 	
 	ZOMBIE("Zombie", HEAL, 0, 4) {
 	},
@@ -47,7 +43,7 @@ public enum ClassType {
 	private int energyPerClick;
 	private Ability ability;
 	
-	ClassType(String name, Ability ability, int upgradeRowStart, int energyPerClick) {
+	Class(String name, Ability ability, int upgradeRowStart, int energyPerClick) {
 		
 		this.name = name;
 		this.ability = ability;
@@ -75,10 +71,27 @@ public enum ClassType {
 		return energyPerClick;
 	}
 	
-	public ItemStack[] getItems(ArenaPlayer ap) {
+	public int getKitLevel(ArenaPlayer player) {
+		
+		Player bp = player.getBukkitPlayer();
+		
+		for (int i = 9; i > 1; i--)
+			if (bp.hasPermission(String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), i)))
+				return i;
+		
+		return 1; 
+	}
+	
+	public void setKitLevel(ArenaPlayer player, int level) {
+		
+		ArenaPlugin.getInstance().getPermissions().playerAdd(player.getBukkitPlayer(),
+				String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), level));
+	}
+	
+	public ItemStack[] getKitItems(ArenaPlayer ap) {
 		
 		Inventory inv = ArenaPlugin.getInstance().getServer().createInventory(ap.getBukkitPlayer(), 54);
-		int classLevel = ap.getClassLevel(this);
+		int kitLevel = getKitLevel(ap);
 		ItemStack potH = new ItemStack(Material.POTION, 1);
 		PotionMeta pmH = (PotionMeta)potH.getItemMeta();
 		PotionEffect effectH = new PotionEffect(PotionEffectType.HEAL, 1, 2, false);
@@ -100,8 +113,9 @@ public enum ClassType {
 		ItemStack helmet;
 		ItemStack leggings;
 		ItemStack boots;
+		
 		if (this == ZOMBIE) {
-			switch (classLevel){
+			switch (kitLevel){
 				case 1: 
 					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
@@ -215,9 +229,9 @@ public enum ClassType {
 					break;
 			}
 		} else if (this == SKELETON) {
-			switch (classLevel){
+			switch (kitLevel){
 				case 1:
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.STONE_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
 					inv.setItem(4, new ItemStack(Material.COBBLESTONE, 32));
@@ -229,7 +243,7 @@ public enum ClassType {
 					inv.setItem(100, new ItemStack(Material.IRON_BOOTS, 1));
 					break;
 				case 2:
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.STONE_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
 					inv.setItem(4, new ItemStack(Material.COBBLESTONE, 48));
@@ -241,7 +255,7 @@ public enum ClassType {
 					inv.setItem(100, new ItemStack(Material.IRON_BOOTS, 1));
 					break;
 				case 3:
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.STONE_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
 					inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
@@ -253,7 +267,7 @@ public enum ClassType {
 					inv.setItem(100, new ItemStack(Material.IRON_BOOTS, 1));
 					break;
 				case 4:
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.STONE_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
 					inv.setItem(4, potH);
@@ -266,7 +280,7 @@ public enum ClassType {
 					inv.setItem(100, new ItemStack(Material.IRON_BOOTS, 1));
 					break;
 				case 5:	
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
 					inv.setItem(3, potS);
@@ -280,7 +294,7 @@ public enum ClassType {
 					inv.setItem(100, new ItemStack(Material.IRON_BOOTS, 1));
 					break;
 				case 6:
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					bow = new ItemStack(Material.BOW);
 					bow.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
@@ -296,7 +310,7 @@ public enum ClassType {
 					inv.setItem(100, new ItemStack(Material.IRON_BOOTS, 1));
 					break;
 				case 7:
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					bow = new ItemStack(Material.BOW);
 					bow.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
@@ -314,7 +328,7 @@ public enum ClassType {
 					inv.setItem(100, new ItemStack(Material.IRON_BOOTS, 1));
 					break;
 				case 8:
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					bow = new ItemStack(Material.BOW);
 					bow.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
@@ -332,7 +346,7 @@ public enum ClassType {
 					inv.setItem(100, new ItemStack(Material.IRON_BOOTS, 1));
 					break;
 				case 9:
-					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1)); // stone maybe ?
+					inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 					inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
 					bow = new ItemStack(Material.BOW);
 					bow.addEnchantment(Enchantment.ARROW_DAMAGE, 2);
@@ -353,7 +367,7 @@ public enum ClassType {
 					break;
 			}
 		} else if (this == HEROBRINE) {
-		 switch (classLevel){
+		 switch (kitLevel){
 			case 1:
 				inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 				inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
@@ -463,7 +477,7 @@ public enum ClassType {
 				break;
 		  }
 		} else if (this == CREEPER) {
-		  switch (classLevel){
+		  switch (kitLevel){
 			case 1:
 				inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 				inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
@@ -579,7 +593,7 @@ public enum ClassType {
 		  }
 			
 		} else if (this == SPIRIT_WARRIOR) {
-		  switch (classLevel){
+		  switch (kitLevel){
 			case 1:
 				inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 				inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));
@@ -696,7 +710,7 @@ public enum ClassType {
 		  }
 			
 		} else if (this == WITHER_MINION) {
-		  switch (classLevel){
+		  switch (kitLevel){
 			case 1:
 				inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 				inv.setItem(1, new ItemStack(Material.IRON_PICKAXE, 1));

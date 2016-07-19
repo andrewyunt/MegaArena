@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
-import com.andrewyunt.arenaplugin.objects.ClassType;
+import com.andrewyunt.arenaplugin.objects.Class;
 import com.andrewyunt.arenaplugin.objects.IconMenu;
 
 import net.md_5.bungee.api.ChatColor;
@@ -57,6 +57,7 @@ public class ClassSelectorMenu {
 		for (int i = 15; i < 27; i++)
 			menu.setOption(i, glassPane, "", "");
 		
+		menu.setSpecificTo(player);
 		menu.open(player);
 	}
 	
@@ -76,13 +77,13 @@ public class ClassSelectorMenu {
 				}
             	
             	if (name.equals("Zombie")) {
-            		player.setClassType(ClassType.ZOMBIE);
+            		player.setClassType(Class.ZOMBIE);
             	} else if (name.equals("Skeleton")) {
-            		player.setClassType(ClassType.SKELETON);
+            		player.setClassType(Class.SKELETON);
             	} else if (name.equals("Creeper")) {	
-            		player.setClassType(ClassType.CREEPER);
+            		player.setClassType(Class.CREEPER);
             	} else if (name.equals("Herobrine")) {
-            		player.setClassType(ClassType.HEROBRINE);
+            		player.setClassType(Class.HEROBRINE);
             	} else if (name.equals("Go Back")) {
             		openMainMenu();
             		event.setWillClose(false);
@@ -115,6 +116,7 @@ public class ClassSelectorMenu {
 		for (int i = 23; i < 27; i++)
 			menu.setOption(i, glassPane, "", "");
 		
+		menu.setSpecificTo(player);
 		menu.open(player);
 	}
 	
@@ -134,9 +136,9 @@ public class ClassSelectorMenu {
 				}
             	
             	if (name.equals("Wither Minion")) {
-            		player.setClassType(ClassType.WITHER_MINION);
+            		player.setClassType(Class.WITHER_MINION);
             	} else if (name.equals("Spirit Warrior")) {
-            		player.setClassType(ClassType.SPIRIT_WARRIOR);
+            		player.setClassType(Class.SPIRIT_WARRIOR);
             	} else if (name.equals("Go Back")) {
             		openMainMenu();
             		event.setWillClose(false);
@@ -167,6 +169,7 @@ public class ClassSelectorMenu {
 		for (int i = 23; i < 27; i++)
 			menu.setOption(i, glassPane, "", "");
 		
+		menu.setSpecificTo(player);
 		menu.open(player);
 	}
 	

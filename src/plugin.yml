@@ -18,11 +18,9 @@ commands:
   duelaccept:
     description: Accept a request to duel a player.
     permission: arenaplugin.duelaccept
-  duelaccept:
+  dueldeny:
     description: Deny a request to duel a player.
     permission: arenaplugin.dueldeny
-  test:
-    description: test command.
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -68,6 +66,9 @@ permissions:
      default: op
    arenaplugin.arena.removespawn:
      description: Allows you to remove a spawn from an existing arena.
+     default: op
+   arenaplugin.arena.list:
+     description: Allows you to list all arenas.
      default: op
    arenaplugin.duel:
      description: Allows you to request to duel a player.

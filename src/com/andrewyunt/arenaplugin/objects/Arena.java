@@ -4,10 +4,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
+
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.SpawnException;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
@@ -74,6 +75,8 @@ public class Arena {
 		
 		spawns.put(name, spawn);
 		
+		save();
+		
 		return spawn;
 	}
 	
@@ -129,20 +132,15 @@ public class Arena {
 		ArenaPlugin plugin = ArenaPlugin.getInstance();
 		FileConfiguration arenaConfig = plugin.getArenaConfig().getConfig();
 		
-		ConfigurationSection typeSection = arenaConfig.createSection("arenas." + name + ".type");
-		
-		MemorySection.createPath(typeSection, type.toString());
+		arenaConfig.set("arenas." + name + ".type", type.toString());
 		
 		ConfigurationSection spawnsSection = arenaConfig.createSection("arenas." + name + ".spawns");
 		
 		for (Spawn spawn : spawns.values()) {
 			ConfigurationSection spawnSection = spawnsSection.createSection(spawn.getName());
-			
+	
 			spawnSection.createSection("location", Utils.serializeLocation(spawn.getLocation()));
-			
-			ConfigurationSection sideSection = arenaConfig.createSection("arenas." + name + ".side");
-			
-			MemorySection.createPath(sideSection, spawn.getSide().toString());
+			arenaConfig.set("arenas." + name + "spawns." + spawn.getName() + ".side", spawn.getSide().toString());
 		}
 		
 		ArenaPlugin.getInstance().getArenaConfig().saveConfig();

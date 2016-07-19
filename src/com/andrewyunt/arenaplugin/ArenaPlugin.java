@@ -3,22 +3,18 @@ package com.andrewyunt.arenaplugin;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import com.andrewyunt.arenaplugin.command.ArenaCommand;
 import com.andrewyunt.arenaplugin.command.DuelAcceptCommand;
 import com.andrewyunt.arenaplugin.command.DuelCommand;
 import com.andrewyunt.arenaplugin.command.DuelDenyCommand;
 import com.andrewyunt.arenaplugin.configuration.ArenaConfiguration;
-import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerListener;
 import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
@@ -26,7 +22,6 @@ import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
-import com.andrewyunt.arenaplugin.objects.ClassType;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -67,11 +62,15 @@ public class ArenaPlugin extends JavaPlugin {
 		/* Set static instance to this */
 		instance = this;
 		
+		/* Save default configs to plugin folder */
+		saveDefaultConfig();
+		arenaConfiguration.saveDefaultConfig();
+		
 		/* Set command executors */
 		getCommand("arena").setExecutor(new ArenaCommand());
 		getCommand("duel").setExecutor(new DuelCommand());
 		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
-		//getCommand("dueldeny").setExecutor(new DuelDenyCommand());
+		getCommand("dueldeny").setExecutor(new DuelDenyCommand());
 		
 		/* Register events */
 		pm.registerEvents(new ArenaPluginPlayerListener(), this);
@@ -146,28 +145,5 @@ public class ArenaPlugin extends JavaPlugin {
 	public ArenaConfiguration getArenaConfig() {
 		
 		return arenaConfiguration;
-	}
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		
-		if(!(cmd.getName().equalsIgnoreCase("test")))
-			return false;
-		
-		if(!(sender instanceof Player))
-			return false;
-		
-		Player player = (Player) sender;
-		
-		ArenaPlayer ap = null;
-		
-		try {
-			ap = playerManager.getPlayer(player.getName());
-		} catch (PlayerException e) {
-		}
-		
-		sender.sendMessage(ChatColor.YELLOW + String.valueOf(ap.getClassLevel(ClassType.CREEPER)));
-		
-		return true;
 	}
 }
