@@ -19,6 +19,7 @@ public class Spawn {
 	
 	public Spawn(String name, Arena arena, Location location, Side side) {
 		
+		this.name = name;
 		this.arena = arena;
 		this.location = location;
 		this.side = side;

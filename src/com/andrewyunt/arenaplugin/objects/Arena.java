@@ -138,13 +138,14 @@ public class Arena {
 		
 		for (Spawn spawn : spawns.values()) {
 			ConfigurationSection spawnSection = spawnsSection.createSection(spawn.getName());
-	
+			
+			arenaConfig.set("arenas." + name + ".spawns." + spawn.getName() + ".side", spawn.getSide().toString());
 			spawnSection.createSection("location", Utils.serializeLocation(spawn.getLocation()));
-			arenaConfig.set("arenas." + name + "spawns." + spawn.getName() + ".side", spawn.getSide().toString());
 		}
 		
 		ArenaPlugin.getInstance().getArenaConfig().saveConfig();
 		
+		/* Error starts here */
 		ArenaPlugin.getInstance().getArenaManager().loadArena(arenaConfig.getConfigurationSection("arenas." + name));
 	}
 	

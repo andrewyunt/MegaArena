@@ -8,6 +8,7 @@ import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Game;
+import com.andrewyunt.arenaplugin.objects.Game.Side;
 
 /**
  * 
@@ -18,18 +19,20 @@ public class GameManager {
 	
 	public Set<Game> games = new HashSet<Game>();
 	
-	public Game createGame(Arena arena, Set<ArenaPlayer> players) {
+	public Game createGame(Arena arena, Set<ArenaPlayer> players) throws GameException {
 		
+		if (arena.getType() == ArenaType.FFA)
+			if (arena.getSpawns().size() < 2) {
+				throw new GameException(String.format("The match for the arena %s was not able to start because the minimum number"
+						+ " of INDEPENDENT spawns were not defined.", arena.getName()));
+		} else
+			if (arena.getSpawns(Side.GREEN).size() < 1 || arena.getSpawns(Side.BLUE).size() < 1)
+				throw new GameException(String.format("The TDM match for the arena %s was not able to start because the"
+						+ " minimum number of spawns for each team were not defined.", arena.getName()));
+			
 		Game game = new Game(arena, players);
 		
 		games.add(game);
-		
-		if (arena.getType() == ArenaType.TDM || arena.getType() == ArenaType.FFA)
-			game.setActive(true);
-		else if (arena.getType() == ArenaType.DUEL) {
-			
-		}
-		
 		arena.setGame(game);
 		
 		return game;

@@ -15,6 +15,7 @@ import com.andrewyunt.arenaplugin.command.DuelAcceptCommand;
 import com.andrewyunt.arenaplugin.command.DuelCommand;
 import com.andrewyunt.arenaplugin.command.DuelDenyCommand;
 import com.andrewyunt.arenaplugin.configuration.ArenaConfiguration;
+import com.andrewyunt.arenaplugin.exception.GameException;
 import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerListener;
 import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
@@ -80,10 +81,18 @@ public class ArenaPlugin extends JavaPlugin {
 		
 		/* Create games for FFA and TDM arenas */
 		for (Arena arena : arenaManager.getArenas(ArenaType.TDM))
-			arena.setGame(gameManager.createGame(arena, new HashSet<ArenaPlayer>()));
+			try {
+				arena.setGame(gameManager.createGame(arena, new HashSet<ArenaPlayer>()));
+			} catch (GameException e) {
+				logger.warning(e.getMessage());
+			}
 		
 		for (Arena arena : arenaManager.getArenas(ArenaType.FFA))
-			arena.setGame(gameManager.createGame(arena, new HashSet<ArenaPlayer>()));
+			try {
+				arena.setGame(gameManager.createGame(arena, new HashSet<ArenaPlayer>()));
+			} catch (GameException e) {
+				logger.warning(e.getMessage());
+			}
 	}
 
     private boolean setupEconomy() {

@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.GameException;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
@@ -59,12 +60,13 @@ public class DuelAcceptCommand implements CommandExecutor {
 		
 		Arena arena = null;
 		
-		for (Arena duelArena : ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.DUEL)) {
+		for (Arena duelArena : ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.DUEL))
 			if (!duelArena.isInUse()) {
+				if (duelArena.getSpawns().size() < 2)
+					continue;
 				arena = duelArena;
 				break;
 			}
-		}
 		
 		if (arena == null) {
 			sender.sendMessage(ChatColor.RED + "There are currently no arenas available for a duel.");
@@ -76,7 +78,10 @@ public class DuelAcceptCommand implements CommandExecutor {
 		players.add(player);
 		players.add(requestingPlayer);
 		
-		ArenaPlugin.getInstance().getGameManager().createGame(arena, players);
+		try {
+			ArenaPlugin.getInstance().getGameManager().createGame(arena, players);
+		} catch (GameException e) {
+		}
 		
 		return true;
 	}

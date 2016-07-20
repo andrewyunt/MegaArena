@@ -30,6 +30,7 @@ public class ArenaPlayer {
 	private int previousLevel;
 	private Side side;
 	private int energy;
+	private Location location;
 	
 	public ArenaPlayer(String name) {
 		
@@ -99,8 +100,6 @@ public class ArenaPlayer {
 	public void selectArena(Arena selectedArena) {
 		
 		this.selectedArena = selectedArena;
-		
-		getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You have selected the arena %s", selectedArena.getName()));
 	}
 	
 	public boolean hasSelectedArena() {
@@ -242,5 +241,15 @@ public class ArenaPlayer {
 	public int getEnergy() {
 		
 		return this.energy;
+	}
+
+	public void setPreviousLocation(Location location) {
+		
+		this.location = location;
+	}
+	
+	public Location getPreviousLocation() {
+		
+		return location;
 	}
 }

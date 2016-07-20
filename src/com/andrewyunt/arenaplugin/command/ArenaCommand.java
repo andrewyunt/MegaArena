@@ -3,7 +3,6 @@ package com.andrewyunt.arenaplugin.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -110,6 +109,11 @@ public class ArenaCommand implements CommandExecutor {
 			}
 			
 			arena.setEdit(true);
+			
+			sender.sendMessage(String.format(ChatColor.GOLD + "You have"
+					+ " created the arena %s, "
+					+ "selected the arena, and set it to edit mode.",
+					arena.getName()));
 			
 		} else if (args[0].equalsIgnoreCase("delete")) {
 
@@ -278,6 +282,7 @@ public class ArenaCommand implements CommandExecutor {
 				arena.setEdit(false);
 				sender.sendMessage(String.format(ChatColor.GOLD + "You have disabled edit mode for the arena %s.", arena.getName()));
 			} else {
+				arena.getGame().end();
 				arena.setEdit(true);
 				sender.sendMessage(String.format(ChatColor.GOLD + "You have enabled edit mode for the arena %s.", arena.getName()));
 			}

@@ -90,6 +90,9 @@ public class ArenaManager {
 		
 		Arena arena = Arena.loadFromConfig(section);
 		
+		if (arenaExists(arena.getName()))
+			arenas.remove(arena.getName());
+		
 		arenas.put(arena.getName(), arena);
 		
 		return arena;

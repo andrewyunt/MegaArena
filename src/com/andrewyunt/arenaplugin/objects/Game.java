@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
@@ -26,9 +27,7 @@ public class Game {
 	
 	private Set<ArenaPlayer> players;
 	private Arena arena;
-	private int countdown;
-	private boolean isActive;
-	
+
 	public Game(Arena arena, Set<ArenaPlayer> players) {
 		
 		this.arena = arena;
@@ -43,16 +42,6 @@ public class Game {
 		return arena;
 	}
 	
-	public void setActive(boolean isActive) {
-		
-		this.isActive = isActive;
-	}
-	
-	public boolean isActive() {
-		
-		return isActive;
-	}
-	
 	public void addPlayer(ArenaPlayer player) {
 		
 		Player bp = player.getBukkitPlayer();
@@ -60,6 +49,7 @@ public class Game {
 		player.setPreviousHealth(player.getBukkitPlayer().getHealth());
 		player.setPreviousExp(bp.getExp());
 		player.setPreviousLevel(bp.getLevel());
+		player.setPreviousLocation(bp.getLocation());
 	
 		Side side = null;
 		
@@ -85,9 +75,12 @@ public class Game {
 		} catch (PlayerException e) {
 		}
 		
-		player.getBukkitPlayer().setHealth(player.getPreviousHealth());
-		player.getBukkitPlayer().setExp(player.getPreviousExp());
-		player.getBukkitPlayer().setLevel(player.getPreviousLevel());
+		Player bp = player.getBukkitPlayer();
+		
+		bp.setHealth(player.getPreviousHealth());
+		bp.setExp(player.getPreviousExp());
+		bp.setLevel(player.getPreviousLevel());
+		bp.teleport(player.getPreviousLocation());
 	}
 	
 	public Set<ArenaPlayer> getPlayers() {
@@ -104,18 +97,10 @@ public class Game {
 	
 	public void end() {
 		
-		for (ArenaPlayer player : players)
+		for (ArenaPlayer player : players) {
 			removePlayer(player);
-	}
-	
-	public void setCountdown(int countdown) {
-		
-		this.countdown = countdown;
-	}
-	
-	public int getCountdown() {
-		
-		return countdown;
+			player.getBukkitPlayer().sendMessage(String.format(ChatColor.RED + "The game for the arena %s just ended.", arena.getName()));
+		}
 	}
 	
 	public void spawnPlayer(ArenaPlayer player, Side side) {
