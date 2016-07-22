@@ -1,5 +1,6 @@
 package com.andrewyunt.arenaplugin.objects;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -28,13 +29,9 @@ public class Game {
 	private Set<ArenaPlayer> players;
 	private Arena arena;
 
-	public Game(Arena arena, Set<ArenaPlayer> players) {
+	public Game(Arena arena) {
 		
 		this.arena = arena;
-		this.players = players;
-		
-		for (ArenaPlayer player : players)
-			player.setGame(this);
 	}
 	
 	public Arena getArena() {
@@ -111,7 +108,7 @@ public class Game {
 			
 			side = Side.INDEPENDENT;
 			
-			spawns = (List<Spawn>) arena.getSpawns(side);
+			spawns = new ArrayList<Spawn>(arena.getSpawns(side));
 			
 			for (Spawn spawn : arena.getSpawns()) {
 				if (spawn.isUsed())

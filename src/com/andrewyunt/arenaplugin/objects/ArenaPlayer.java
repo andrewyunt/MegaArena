@@ -87,6 +87,11 @@ public class ArenaPlayer {
 		return classType;
 	}
 	
+	public boolean hasSelectedClass() {
+		
+		return classType != null;
+	}
+	
 	public void setHasFallen(boolean hasFallen) {
 		
 		this.hasFallen = hasFallen;
@@ -207,20 +212,15 @@ public class ArenaPlayer {
 		Player player = getBukkitPlayer();
 		Location loc = spawn.getLocation();
 		
-		player.setHealth(40);
+		player.setHealth(20);
 		setEnergy(0);
 		
-		giveKitItems();
+		classType.giveKitItems(this);
 		
 		player.teleport(loc);
 		
 		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s.", 
 				String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
-	}
-	
-	public void giveKitItems() {
-		
-		getBukkitPlayer().getInventory().setContents(classType.getKitItems(this));
 	}
 	
 	public void addEnergy(int energy) {

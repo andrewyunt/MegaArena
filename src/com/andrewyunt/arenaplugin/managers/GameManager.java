@@ -19,7 +19,7 @@ public class GameManager {
 	
 	public Set<Game> games = new HashSet<Game>();
 	
-	public Game createGame(Arena arena, Set<ArenaPlayer> players) throws GameException {
+	public Game createGame(Arena arena) throws GameException {
 		
 		if (arena.getType() == ArenaType.FFA)
 			if (arena.getSpawns().size() < 2) {
@@ -30,7 +30,7 @@ public class GameManager {
 				throw new GameException(String.format("The TDM match for the arena %s was not able to start because the"
 						+ " minimum number of spawns for each team were not defined.", arena.getName()));
 			
-		Game game = new Game(arena, players);
+		Game game = new Game(arena);
 		
 		games.add(game);
 		arena.setGame(game);

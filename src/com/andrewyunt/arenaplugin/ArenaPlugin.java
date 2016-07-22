@@ -1,6 +1,5 @@
 package com.andrewyunt.arenaplugin;
 
-import java.util.HashSet;
 import java.util.logging.Logger;
 
 import org.bukkit.Server;
@@ -22,7 +21,6 @@ import com.andrewyunt.arenaplugin.managers.GameManager;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
-import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -82,14 +80,14 @@ public class ArenaPlugin extends JavaPlugin {
 		/* Create games for FFA and TDM arenas */
 		for (Arena arena : arenaManager.getArenas(ArenaType.TDM))
 			try {
-				arena.setGame(gameManager.createGame(arena, new HashSet<ArenaPlayer>()));
+				arena.setGame(gameManager.createGame(arena));
 			} catch (GameException e) {
 				logger.warning(e.getMessage());
 			}
 		
 		for (Arena arena : arenaManager.getArenas(ArenaType.FFA))
 			try {
-				arena.setGame(gameManager.createGame(arena, new HashSet<ArenaPlayer>()));
+				arena.setGame(gameManager.createGame(arena));
 			} catch (GameException e) {
 				logger.warning(e.getMessage());
 			}

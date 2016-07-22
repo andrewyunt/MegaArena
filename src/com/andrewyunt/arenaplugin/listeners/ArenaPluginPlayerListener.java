@@ -288,7 +288,7 @@ public class ArenaPluginPlayerListener implements Listener {
 			return;
 		}
 		
-		ap.giveKitItems();
+		ap.getClassType().giveKitItems(ap);
 	}
 	
 	@EventHandler

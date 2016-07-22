@@ -20,7 +20,7 @@ public class UpgradesMenu {
 	public UpgradesMenu(Player player, Class classType) {
 		
 		FileConfiguration config = ArenaPlugin.getInstance().getConfig();
-		Set<String> configKeys = config.getConfigurationSection(classType.toString().toLowerCase()).getKeys(false);
+		Set<String> configKeys = config.getConfigurationSection("classes." + classType.toString()).getKeys(false);
 		
 		menu = new IconMenu("Class Upgrades", (configKeys.size() * 9) + 9, new IconMenu.OptionClickEventHandler() {
             @Override

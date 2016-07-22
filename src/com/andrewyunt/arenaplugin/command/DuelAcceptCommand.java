@@ -1,8 +1,6 @@
 package com.andrewyunt.arenaplugin.command;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,6 +13,7 @@ import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
+import com.andrewyunt.arenaplugin.objects.Game;
 
 /**
  * 
@@ -26,6 +25,7 @@ public class DuelAcceptCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
+		Bukkit.getServer().broadcastMessage("");
 		if (!cmd.getName().equalsIgnoreCase("duelaccept"))
 			return false;
 		
@@ -58,6 +58,12 @@ public class DuelAcceptCommand implements CommandExecutor {
 			return false;
 		}
 		
+		if (!player.hasSelectedClass()) {
+			player.getBukkitPlayer().sendMessage(ChatColor.RED + "You must select a class before accepting a duel.");
+			requestingPlayer.getBukkitPlayer().sendMessage(ChatColor.RED + "The player you requested to duel must select a class before accepting to duel.");
+			return false;
+		}
+		
 		Arena arena = null;
 		
 		for (Arena duelArena : ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.DUEL))
@@ -73,15 +79,15 @@ public class DuelAcceptCommand implements CommandExecutor {
 			return false;
 		}
 		
-		Set<ArenaPlayer> players = new HashSet<ArenaPlayer>();
-		
-		players.add(player);
-		players.add(requestingPlayer);
+		Game game = null;
 		
 		try {
-			ArenaPlugin.getInstance().getGameManager().createGame(arena, players);
+			game = ArenaPlugin.getInstance().getGameManager().createGame(arena);
 		} catch (GameException e) {
 		}
+		
+		game.addPlayer(player);
+		game.addPlayer(requestingPlayer);
 		
 		return true;
 	}
