@@ -3,6 +3,7 @@ package com.andrewyunt.arenaplugin.objects;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -45,8 +46,11 @@ public class Game {
 		Player bp = player.getBukkitPlayer();
 		
 		player.setPreviousHealth(player.getBukkitPlayer().getHealth());
+		player.setPreviousFoodLevel(player.getPreviousFoodLevel());
 		player.setPreviousExp(bp.getExp());
 		player.setPreviousLevel(bp.getLevel());
+		player.setPreviousGameMode(bp.getGameMode());
+		player.setPreviousContents(bp.getInventory().getContents());
 		player.setPreviousLocation(bp.getLocation());
 	
 		Side side = null;
@@ -87,8 +91,11 @@ public class Game {
 		Player bp = player.getBukkitPlayer();
 		
 		bp.setHealth(player.getPreviousHealth());
+		bp.setFoodLevel(player.getPreviousFoodLevel());
 		bp.setExp(player.getPreviousExp());
 		bp.setLevel(player.getPreviousLevel());
+		bp.setGameMode(player.getPreviousGameMode());
+		bp.getInventory().setContents(player.getPreviousContents());
 		bp.teleport(player.getPreviousLocation());
 	}
 	
@@ -106,7 +113,12 @@ public class Game {
 	
 	public void end() {
 		
-		for (ArenaPlayer player : players) {
+		Set<ArenaPlayer> toRemove = new HashSet<ArenaPlayer>();
+		
+		for (ArenaPlayer player : players)
+			toRemove.add(player);
+		
+		for (ArenaPlayer player : toRemove) {
 			removePlayer(player);
 			player.getBukkitPlayer().sendMessage(String.format(ChatColor.RED + "The game for the arena %s just ended.", arena.getName()));
 		}

@@ -165,7 +165,7 @@ public class ArenaPluginPlayerListener implements Listener {
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		
-		if (!(event.getEntity() instanceof Player))
+		if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player || event.getDamager() instanceof Projectile))
 			return;
 		
 		Player player = (Player) event.getEntity();

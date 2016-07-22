@@ -2,6 +2,7 @@ package com.andrewyunt.arenaplugin.objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,6 +29,9 @@ public class ArenaPlayer {
 	private double previousHealth;
 	private float previousExp;
 	private int previousLevel;
+	private int previousFoodLevel;
+	private GameMode previousGameMode;
+	private ItemStack[] previousContents;
 	private Side side;
 	private int energy;
 	private Location location;
@@ -213,7 +217,9 @@ public class ArenaPlayer {
 		Location loc = spawn.getLocation();
 		
 		player.setHealth(20);
+		player.setFoodLevel(20);
 		setEnergy(0);
+		player.setGameMode(GameMode.SURVIVAL);
 		
 		player.getInventory().clear();
 		classType.giveKitItems(this);
@@ -252,5 +258,35 @@ public class ArenaPlayer {
 	public Location getPreviousLocation() {
 		
 		return location;
+	}
+	
+	public void setPreviousFoodLevel(int previousFoodLevel) {
+		
+		this.previousFoodLevel = previousFoodLevel;
+	}
+	
+	public int getPreviousFoodLevel() {
+		
+		return previousFoodLevel;
+	}
+	
+	public void setPreviousGameMode(GameMode previousGameMode) {
+		
+		this.previousGameMode = previousGameMode;
+	}
+	
+	public GameMode getPreviousGameMode() {
+		
+		return previousGameMode;
+	}
+	
+	public void setPreviousContents(ItemStack[] previousContents) {
+		
+		this.previousContents = previousContents;
+	}
+	
+	public ItemStack[] getPreviousContents() {
+		
+		return previousContents;
 	}
 }
