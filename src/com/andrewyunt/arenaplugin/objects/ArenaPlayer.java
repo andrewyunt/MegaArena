@@ -215,6 +215,7 @@ public class ArenaPlayer {
 		player.setHealth(20);
 		setEnergy(0);
 		
+		player.getInventory().clear();
 		classType.giveKitItems(this);
 		
 		player.teleport(loc);

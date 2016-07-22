@@ -2,6 +2,7 @@ package com.andrewyunt.arenaplugin.objects;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class Game {
 		INDEPENDENT
 	}
 	
-	private Set<ArenaPlayer> players;
+	private Set<ArenaPlayer> players = new HashSet<ArenaPlayer>();
 	private Arena arena;
 
 	public Game(Arena arena) {
@@ -49,6 +50,17 @@ public class Game {
 		player.setPreviousLocation(bp.getLocation());
 	
 		Side side = null;
+		
+		if (arena.getType() == ArenaType.DUEL || arena.getType() == ArenaType.FFA)
+			side = Side.INDEPENDENT;
+		else if (arena.getType() == ArenaType.TDM) {
+			double rand = Math.random();
+			
+			if (rand <= 50)
+				side = Side.BLUE;
+			else
+				side = Side.GREEN;
+		}
 		
 		spawnPlayer(player, side);
 		player.setSide(side);
@@ -106,8 +118,6 @@ public class Game {
 		
 		if (arena.getType() == ArenaType.DUEL) {
 			
-			side = Side.INDEPENDENT;
-			
 			spawns = new ArrayList<Spawn>(arena.getSpawns(side));
 			
 			for (Spawn spawn : arena.getSpawns()) {
@@ -116,11 +126,10 @@ public class Game {
 				
 				player.spawn(spawn);
 				spawn.setUsed(true);
+				break;
 			}	
 			
 		} else if (arena.getType() == ArenaType.FFA) {
-			
-			side = Side.INDEPENDENT;
 			
 			spawns = (List<Spawn>) arena.getSpawns(side);
 			Collections.shuffle(spawns);
@@ -128,13 +137,6 @@ public class Game {
 			player.spawn(spawns.get(0));
 			
 		} else if (arena.getType() == ArenaType.TDM) {
-			
-			double rand = Math.random();
-			
-			if (rand <= 50)
-				side = Side.BLUE;
-			else
-				side = Side.GREEN;
 			
 			spawns = (List<Spawn>) arena.getSpawns(side);
 			Collections.shuffle(spawns);

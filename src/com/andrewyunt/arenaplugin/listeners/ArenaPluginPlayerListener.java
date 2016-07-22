@@ -68,7 +68,8 @@ public class ArenaPluginPlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		ap.getGame().removePlayer(ap);
+		if (ap.isInGame())
+			ap.getGame().removePlayer(ap);
 	}
 
 	@EventHandler
@@ -103,7 +104,7 @@ public class ArenaPluginPlayerListener implements Listener {
 		
 		} else if (name.equals(ChatColor.YELLOW + "Layout Editor")) {
 			
-			
+			player.sendMessage(ChatColor.RED + "The layout editor is coming soon!");
 			
 		} else if (name.equals(ChatColor.RED + "Class Selector")) {
 			
