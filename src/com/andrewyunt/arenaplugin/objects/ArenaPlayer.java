@@ -251,7 +251,8 @@ public class ArenaPlayer {
 		if (this.energy > 100)
 			this.energy = 100;
 		
-		getBukkitPlayer().setExp(this.energy);
+		getBukkitPlayer().setLevel(this.energy);
+		getBukkitPlayer().setExp(this.energy / 100);
 	}
 	
 	public int getEnergy() {
