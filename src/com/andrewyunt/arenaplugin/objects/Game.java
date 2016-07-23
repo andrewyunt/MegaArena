@@ -84,12 +84,8 @@ public class Game {
 	
 	public void removePlayer(ArenaPlayer player) {
 		
-		if (arena.getType() == ArenaType.DUEL) {
-			try {
-				ArenaPlugin.getInstance().getGameManager().deleteGame(this, String.format("Your opponent %s left the game.", player.getName()));
-			} catch (GameException e) {
-			}
-		}
+		if (arena.getType() == ArenaType.DUEL)
+			ArenaPlugin.getInstance().getGameManager().deleteGame(this, String.format("%s left the game and has left you victorious!", player.getName()));
 		
 		players.remove(player);
 		player.setGame(null);
@@ -143,11 +139,9 @@ public class Game {
 	
 	public void spawnPlayer(ArenaPlayer player, Side side) {
 		
-		List<Spawn> spawns = null;
+		List<Spawn> spawns = new ArrayList<Spawn>(arena.getSpawns(side));
 		
 		if (arena.getType() == ArenaType.DUEL) {
-			
-			spawns = new ArrayList<Spawn>(arena.getSpawns(side));
 			
 			for (Spawn spawn : arena.getSpawns()) {
 				if (spawn.isUsed())
@@ -160,16 +154,12 @@ public class Game {
 			
 		} else if (arena.getType() == ArenaType.FFA) {
 			
-			spawns = (List<Spawn>) arena.getSpawns(side);
 			Collections.shuffle(spawns);
-			
 			player.spawn(spawns.get(0));
 			
 		} else if (arena.getType() == ArenaType.TDM) {
 			
-			spawns = (List<Spawn>) arena.getSpawns(side);
 			Collections.shuffle(spawns);
-			
 			player.spawn(spawns.get(0));
 		}
 	}

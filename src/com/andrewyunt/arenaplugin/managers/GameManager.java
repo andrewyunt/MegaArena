@@ -1,7 +1,13 @@
 package com.andrewyunt.arenaplugin.managers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.exception.GameException;
 import com.andrewyunt.arenaplugin.objects.Arena;
@@ -21,11 +27,11 @@ public class GameManager {
 	
 	public Game createGame(Arena arena) throws GameException {
 		
-		if (arena.getType() == ArenaType.FFA)
-			if (arena.getSpawns().size() < 2) {
+		if (arena.getType() == ArenaType.DUEL)
+			if (arena.getSpawns().size() < 2)
 				throw new GameException(String.format("The match for the arena %s was not able to start because the minimum number"
 						+ " of INDEPENDENT spawns were not defined.", arena.getName()));
-		} else
+		else if (arena.getType() == ArenaType.TDM)
 			if (arena.getSpawns(Side.GREEN).size() < 1 || arena.getSpawns(Side.BLUE).size() < 1)
 				throw new GameException(String.format("The TDM match for the arena %s was not able to start because the"
 						+ " minimum number of spawns for each team were not defined.", arena.getName()));
@@ -38,10 +44,7 @@ public class GameManager {
 		return game;
 	}
 	
-	public void deleteGame(Game game, String msg) throws GameException {
-		
-		if (game.getArena().getType() == ArenaType.TDM || game.getArena().getType() == ArenaType.FFA)
-			throw new GameException("FFA and TDM games cannot be deleted.");
+	public void deleteGame(Game game, String msg) {
 		
 		games.remove(game);
 		
@@ -52,5 +55,41 @@ public class GameManager {
 	public Set<Game> getGames() {
 		
 		return games;
+	}
+	
+	public Set<Game> getGames(ArenaType type) {
+		
+		Set<Game> games = new HashSet<Game>();
+		
+		for (Game game : this.games)
+			if (game.getArena().getType() == type)
+				games.add(game);
+		
+		return games;
+	}
+	
+	public void matchMake(ArenaPlayer player, ArenaType type) throws GameException {
+		
+		if (type == ArenaType.DUEL)
+			throw new GameException("Matchmaking is not available for duels.");
+		
+		Player bp = player.getBukkitPlayer();
+		
+		if (!(player.hasSelectedClass())) {
+			bp.sendMessage(ChatColor.RED + "You must select a class before entering a game.");
+			return;
+		}
+		
+		List<Game> games = new ArrayList<Game>(getGames(type));
+		
+		if (games.size() < 1) {
+			bp.sendMessage(String.format(ChatColor.RED + "There are not active %s games at the moment.", type.toString()));
+			return;
+		}
+		
+		Collections.shuffle(games);
+		Game game = games.get(0);
+		
+		game.addPlayer(player);
 	}
 }

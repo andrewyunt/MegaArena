@@ -1,5 +1,6 @@
 package com.andrewyunt.arenaplugin.listeners;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,10 +30,10 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.GameException;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.menu.ClassSelectorMenu;
-import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Class;
@@ -91,7 +92,8 @@ public class ArenaPluginPlayerListener implements Listener {
 		
 		Material type = item.getType();
 		
-		if (!(type == Material.EMERALD || type == Material.COMMAND || type == Material.CHEST))
+		if (!(type == Material.EMERALD || type == Material.COMMAND || type == Material.CHEST 
+				|| type == Material.DIAMOND_SWORD || type == Material.IRON_SWORD))
 			return;
 		
 		ItemMeta meta = item.getItemMeta();
@@ -118,19 +120,17 @@ public class ArenaPluginPlayerListener implements Listener {
 		
 		} else if (name.equals("Play : Team-deathmatch")) {
 			
-			List<Arena> arenas = (List<Arena>) ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.TDM);
-			Collections.shuffle(arenas);
-			Arena arena = arenas.get(0);
-			
-			arena.getGame().addPlayer(ap);
+			try {
+				ArenaPlugin.getInstance().getGameManager().matchMake(ap, ArenaType.TDM);
+			} catch (GameException e) {
+			}
 			
 		} else if (name.equals("Play : Free-for-all")) {
 			
-			List<Arena> arenas = (List<Arena>) ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.FFA);
-			Collections.shuffle(arenas);
-			Arena arena = arenas.get(0);
-			
-			arena.getGame().addPlayer(ap);
+			try {
+				ArenaPlugin.getInstance().getGameManager().matchMake(ap, ArenaType.FFA);
+			} catch (GameException e) {
+			}
 		}
 	}
 	
@@ -283,20 +283,24 @@ public class ArenaPluginPlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		
-		Player player = (Player) event.getPlayer();
-		ArenaPlayer ap = null;
-		
-		try {
-			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
-		} catch (PlayerException e) {
-		}
-		
-		if (ap.isInGame()) {
-			ap.getGame().spawnPlayer(ap, ap.getSide());
-			return;
-		}
-		
-		ap.getClassType().giveKitItems(ap);
+        BukkitScheduler scheduler = ArenaPlugin.getInstance().getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(ArenaPlugin.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+        		Player player = (Player) event.getPlayer();
+        		ArenaPlayer ap = null;
+        		
+        		try {
+        			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+        		} catch (PlayerException e) {
+        		}
+        		
+        		if (ap.isInGame()) {
+        			ap.getGame().spawnPlayer(ap, ap.getSide());
+        			return;
+        		}
+            }
+        }, 1L);
 	}
 	
 	@EventHandler
@@ -313,8 +317,11 @@ public class ArenaPluginPlayerListener implements Listener {
 		if (ap.isInGame()) {
 			Game game = ap.getGame();
 			
-			if (ap.getGame().getArena().getType() == ArenaType.DUEL)
-				game.end();
+			if (game.getArena().getType() == ArenaType.DUEL) {
+				ArenaPlugin.getInstance().getGameManager().deleteGame(game,
+						String.format(ChatColor.GOLD + "%s suffered a bitter defeat to %s.", 
+								player.getName(), player.getKiller().getName()));
+			}
 		}
 	}
 	

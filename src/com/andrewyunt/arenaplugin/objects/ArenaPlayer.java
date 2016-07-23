@@ -226,6 +226,7 @@ public class ArenaPlayer {
 		player.getInventory().clear();
 		classType.giveKitItems(this);
 		
+		loc.setY(loc.getY() + 1);
 		player.teleport(loc);
 		
 		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s.", 

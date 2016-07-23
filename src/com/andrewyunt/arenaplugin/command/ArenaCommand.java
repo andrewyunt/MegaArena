@@ -3,6 +3,7 @@ package com.andrewyunt.arenaplugin.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -16,6 +17,7 @@ import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.exception.SpawnException;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
+import com.andrewyunt.arenaplugin.objects.Game;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
 import com.andrewyunt.arenaplugin.objects.Spawn;
 
@@ -142,7 +144,8 @@ public class ArenaCommand implements CommandExecutor {
 			}
 			
 			if (arena.isInUse()) {
-				arena.getGame().end();
+				ArenaPlugin.getInstance().getGameManager().deleteGame(arena.getGame(), 
+						ChatColor.GOLD + "The arena you were playing in has been deleted.");
 				
 				try {
 					ArenaPlugin.getInstance().getArenaManager().deleteArena(arena);
@@ -282,7 +285,8 @@ public class ArenaCommand implements CommandExecutor {
 				arena.setEdit(false);
 				sender.sendMessage(String.format(ChatColor.GOLD + "You have disabled edit mode for the arena %s.", arena.getName()));
 			} else {
-				arena.getGame().end();
+				ArenaPlugin.getInstance().getGameManager().deleteGame(arena.getGame(),
+						ChatColor.RED + "The game you were in has ended due to admins setting the arena to edit mode.");
 				arena.setEdit(true);
 				sender.sendMessage(String.format(ChatColor.GOLD + "You have enabled edit mode for the arena %s.", arena.getName()));
 			}
