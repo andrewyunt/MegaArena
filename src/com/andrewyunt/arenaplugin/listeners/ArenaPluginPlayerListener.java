@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -50,7 +51,10 @@ public class ArenaPluginPlayerListener implements Listener {
 		try {
 			player = ArenaPlugin.getInstance().getPlayerManager().createPlayer(event.getPlayer().getName());
 		} catch (PlayerException e) {
-			// player is already in the plugin's records, so do nothing
+			try {
+				player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+			} catch (PlayerException e1) {
+			}
 		}
 		
 		player.setHotBar();
@@ -165,11 +169,12 @@ public class ArenaPluginPlayerListener implements Listener {
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		
-		if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player || event.getDamager() instanceof Projectile))
+		Entity damager = event.getDamager();
+		
+		if (!(event.getEntity() instanceof Player) || !(damager instanceof Player || damager instanceof Projectile))
 			return;
 		
 		Player player = (Player) event.getEntity();
-		Player damager = (Player) event.getDamager();
 		
 		ArenaPlayer playerAP = null;
 		ArenaPlayer damagerAP = null;
@@ -177,18 +182,18 @@ public class ArenaPluginPlayerListener implements Listener {
 		try {
 			playerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
 			
-			if (event.getDamager() instanceof Player) {
+			if (damager instanceof Player) {
 				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damager.getName());
 			}
 		} catch (PlayerException e) {
 		}
 		
-		if (event.getDamager() instanceof Arrow) {
-			if (!(((Projectile) event.getDamager()).getShooter() instanceof Player))
+		if (damager instanceof Arrow) {
+			if (!(((Projectile) damager).getShooter() instanceof Player))
 				return;
 			
 			try {
-				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) event.getDamager()).getShooter()).getName());
+				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) damager).getShooter()).getName());
 				Class type = damagerAP.getClassType();
 				
 				switch (type) {

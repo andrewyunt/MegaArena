@@ -133,6 +133,8 @@ public class ArenaPlayer {
 		
 		Player player = getBukkitPlayer();
 		
+		player.getInventory().clear();
+		
 		/* Create items */
 		ItemStack shop = new ItemStack(Material.EMERALD);
 		ItemStack layoutEditor = new ItemStack(Material.CHEST);

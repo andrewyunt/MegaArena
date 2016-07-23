@@ -3,7 +3,6 @@ package com.andrewyunt.arenaplugin.objects;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -82,6 +81,7 @@ public class Game {
 		}
 		
 		players.remove(player);
+		player.setGame(null);
 		
 		try {
 			player.getBukkitPlayer().setHealth(ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName()).getPreviousHealth());
@@ -122,6 +122,8 @@ public class Game {
 			removePlayer(player);
 			player.getBukkitPlayer().sendMessage(String.format(ChatColor.RED + "The game for the arena %s just ended.", arena.getName()));
 		}
+		
+		arena.setGame(null);
 	}
 	
 	public void spawnPlayer(ArenaPlayer player, Side side) {
