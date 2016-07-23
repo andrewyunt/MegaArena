@@ -7,6 +7,10 @@ import static com.andrewyunt.arenaplugin.objects.Ability.LIGHTNING;
 import static com.andrewyunt.arenaplugin.objects.Ability.MASTERS_ATTACK;
 import static com.andrewyunt.arenaplugin.objects.Ability.SPLIT_ARROW;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -20,8 +24,8 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
 
 /**
  * 
- * @author Andrew Yunt
- *
+ * @author Andrew Yunt 
+ * @weLoveYou Andrew Yunt
  */
 public enum Class {
 	
@@ -94,6 +98,11 @@ public enum Class {
 		ItemStack potH = new ItemStack(Material.POTION, 1);
 		PotionMeta pmH = (PotionMeta)potH.getItemMeta();
 		PotionEffect effectH = new PotionEffect(PotionEffectType.HEAL, 1, 2, false);
+		List<String> lstH = new ArrayList<String>();
+		lstH.add(ChatColor.RESET+"HEAL 8"+ChatColor.RED+"\u2764");
+		pmH.setDisplayName(ChatColor.RESET+""+ChatColor.DARK_RED+"Health Potion");
+		pmH.setLore(lstH);
+		pmH.setMainEffect(PotionEffectType.HEAL);
 		pmH.addCustomEffect(effectH, true);
 		potH.setItemMeta(pmH);
 		ItemStack potH2 = new ItemStack(Material.POTION, 2);
@@ -102,10 +111,15 @@ public enum Class {
 		ItemStack potS = new ItemStack(Material.POTION, 1);
 		PotionMeta pmS = (PotionMeta)potS.getItemMeta();
 		PotionEffect effectS = new PotionEffect(PotionEffectType.SPEED, (15*20), 1, false);
+		List<String> lstS = new ArrayList<String>();
+		lstS.add(ChatColor.RESET+"Duration: "+ChatColor.GRAY+"15s");
+		pmS.setLore(lstS);
+		pmS.setDisplayName(ChatColor.RESET+""+ChatColor.AQUA+"Speed Potion");
+		pmS.setMainEffect(PotionEffectType.SPEED);
 		pmS.addCustomEffect(effectS, true);
 		potS.setItemMeta(pmS);
 		ItemStack potS2 = new ItemStack(Material.POTION, 2);
-		potS.setItemMeta(pmS);
+		potS2.setItemMeta(pmS);
 		
 		ItemStack chest;
 		ItemStack bow;
@@ -198,20 +212,20 @@ public enum Class {
 				case 2:
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
 					inv.setItem(4, new ItemStack(Material.COBBLESTONE, 48));
-					inv.setItem(8, new ItemStack(Material.ARROW, 48));
+					inv.setItem(7, new ItemStack(Material.ARROW, 48));
 					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 8));
 					break;
 				case 3:
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
 					inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
-					inv.setItem(8, new ItemStack(Material.ARROW, 64));
+					inv.setItem(7, new ItemStack(Material.ARROW, 64));
 					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 					break;
 				case 4:
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
 					inv.setItem(4, potH);
 					inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
-					inv.setItem(8, new ItemStack(Material.ARROW, 64));
+					inv.setItem(7, new ItemStack(Material.ARROW, 64));
 					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 					break;
 				case 5:	
@@ -220,7 +234,7 @@ public enum Class {
 					inv.setItem(3, potS);
 					inv.setItem(4, potH);
 					inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
-					inv.setItem(8, new ItemStack(Material.ARROW, 64));
+					inv.setItem(7, new ItemStack(Material.ARROW, 64));
 					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 					break;
 				case 6:
@@ -231,7 +245,7 @@ public enum Class {
 					inv.setItem(3, potS2);
 					inv.setItem(4, potH);
 					inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
-					inv.setItem(8, new ItemStack(Material.ARROW, 64));
+					inv.setItem(7, new ItemStack(Material.ARROW, 64));
 					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 					break;
 				case 7:
@@ -242,7 +256,7 @@ public enum Class {
 					inv.setItem(3, potS2);
 					inv.setItem(4, potH);
 					inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
-					inv.setItem(8, new ItemStack(Material.ARROW, 64));
+					inv.setItem(7, new ItemStack(Material.ARROW, 64));
 					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 					helmet = new ItemStack(Material.IRON_HELMET);
 					helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 2);
@@ -256,7 +270,7 @@ public enum Class {
 					inv.setItem(3, potS2);
 					inv.setItem(4, potH2);
 					inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
-					inv.setItem(8, new ItemStack(Material.ARROW, 64));
+					inv.setItem(7, new ItemStack(Material.ARROW, 64));
 					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 					helmet = new ItemStack(Material.IRON_HELMET);
 					helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 3);
@@ -270,7 +284,7 @@ public enum Class {
 					inv.setItem(3, potS2);
 					inv.setItem(4, potH2);
 					inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
-					inv.setItem(8, new ItemStack(Material.ARROW, 64));
+					inv.setItem(7, new ItemStack(Material.ARROW, 64));
 					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 					helmet = new ItemStack(Material.DIAMOND_HELMET);
 					helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 4);
