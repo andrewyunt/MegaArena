@@ -25,34 +25,32 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
  */
 public enum Class {
 	
-	ZOMBIE("Zombie", HEAL, 0, 4) {
+	ZOMBIE("Zombie", HEAL, 4) {
 	},
 	
-	SKELETON("Skeleton", SPLIT_ARROW, 9, 15) {
+	SKELETON("Skeleton", SPLIT_ARROW, 15) {
 	},
 	
-	HEROBRINE("Herobrine", LIGHTNING, 18, 10) {
+	HEROBRINE("Herobrine", LIGHTNING, 10) {
 	},
 	
-	CREEPER("Creeper", EXPLODE, 27, 10) {
+	CREEPER("Creeper", EXPLODE, 10) {
 	},
 	
-	SPIRIT_WARRIOR("Spirit Warrior", HURRICANE, 36, 5) {
+	SPIRIT_WARRIOR("Spirit Warrior", HURRICANE, 5) {
 	},
 	
-	WITHER_MINION("Wither Minion", MASTERS_ATTACK, 45, 5) {
+	WITHER_MINION("Wither Minion", MASTERS_ATTACK, 5) {
 	};
 	
 	private String name;
 	private Ability ability;
-	private int upgradeRowStart;
 	private int energyPerClick;
 	
-	Class(String name, Ability ability, int upgradeRowStart, int energyPerClick) {
+	Class(String name, Ability ability, int energyPerClick) {
 		
 		this.name = name;
 		this.ability = ability;
-		this.upgradeRowStart = upgradeRowStart;
 		this.energyPerClick = energyPerClick;
 	}
 	
@@ -64,11 +62,6 @@ public enum Class {
 	public Ability getAbility() {
 		
 		return ability;
-	}
-	
-	public int getUpgradeRowStart() {
-		
-		return upgradeRowStart;
 	}
 	
 	public int getEnergyPerClick() {
