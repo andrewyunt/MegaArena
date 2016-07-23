@@ -123,6 +123,10 @@ public class Game {
 			player.getBukkitPlayer().sendMessage(String.format(ChatColor.RED + "The game for the arena %s just ended.", arena.getName()));
 		}
 		
+		if (arena.getType() == ArenaType.DUEL)
+			for (Spawn spawn : arena.getSpawns())
+				spawn.setUsed(false);
+		
 		arena.setGame(null);
 	}
 	
@@ -141,7 +145,7 @@ public class Game {
 				player.spawn(spawn);
 				spawn.setUsed(true);
 				break;
-			}	
+			}
 			
 		} else if (arena.getType() == ArenaType.FFA) {
 			
