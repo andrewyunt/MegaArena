@@ -59,7 +59,7 @@ public class Game {
 		Player bp = player.getBukkitPlayer();
 		
 		player.setPreviousHealth(((Damageable) bp).getHealth());
-		player.setPreviousFoodLevel(player.getPreviousFoodLevel());
+		player.setPreviousFoodLevel(bp.getFoodLevel());
 		player.setPreviousExp(bp.getExp());
 		player.setPreviousLevel(bp.getLevel());
 		player.setPreviousGameMode(bp.getGameMode());
