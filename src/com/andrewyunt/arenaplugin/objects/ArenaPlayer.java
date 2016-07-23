@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
@@ -129,11 +130,16 @@ public class ArenaPlayer {
 		return StaffPlus.get().mode.isActive(name);
 	}
 	
-	public void setHotBar() {
+	public void updateHotBar() {
 		
 		Player player = getBukkitPlayer();
+		PlayerInventory inv = player.getInventory();
 		
-		player.getInventory().clear();
+		inv.setHelmet(new ItemStack(Material.AIR));
+		inv.setChestplate(new ItemStack(Material.AIR));
+		inv.setLeggings(new ItemStack(Material.AIR));
+		inv.setBoots(new ItemStack(Material.AIR));
+		inv.clear();
 		
 		/* Create items */
 		ItemStack shop = new ItemStack(Material.EMERALD);

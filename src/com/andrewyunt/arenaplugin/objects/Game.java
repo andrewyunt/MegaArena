@@ -70,7 +70,7 @@ public class Game {
 		else if (arena.getType() == ArenaType.TDM) {
 			double rand = Math.random();
 			
-			if (rand <= 50)
+			if (rand <= .5)
 				side = Side.BLUE;
 			else
 				side = Side.GREEN;

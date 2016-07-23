@@ -3,7 +3,6 @@ package com.andrewyunt.arenaplugin.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -17,7 +16,6 @@ import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.exception.SpawnException;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
-import com.andrewyunt.arenaplugin.objects.Game;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
 import com.andrewyunt.arenaplugin.objects.Spawn;
 
