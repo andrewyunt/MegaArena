@@ -66,13 +66,16 @@ public class DuelAcceptCommand implements CommandExecutor {
 		
 		Arena arena = null;
 		
-		for (Arena duelArena : ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.DUEL))
+		for (Arena duelArena : ArenaPlugin.getInstance().getArenaManager().getArenas(ArenaType.DUEL)) {
+			if (duelArena.isEdit())
+				continue;
 			if (!duelArena.isInUse()) {
 				if (duelArena.getSpawns().size() < 2)
 					continue;
 				arena = duelArena;
 				break;
 			}
+		}
 		
 		if (arena == null) {
 			sender.sendMessage(ChatColor.RED + "There are currently no arenas available for a duel.");

@@ -53,7 +53,7 @@ public class ArenaPlugin extends JavaPlugin {
 		logger.info("Enabling " + pdf.getName() + " v" + pdf.getVersion() + "... Please wait.");
 		
 		/* Check for dependencies */
-		if (pm.getPlugin("StaffPlus") == null || !(setupEconomy() || !(setupPermissions()))) {
+		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("TagAPI") == null||  !(setupEconomy() || !(setupPermissions()))) {
 			logger.severe("ArenaPlugin is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;

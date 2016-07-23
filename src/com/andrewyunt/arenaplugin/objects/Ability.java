@@ -1,6 +1,7 @@
 package com.andrewyunt.arenaplugin.objects;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -55,12 +56,14 @@ public enum Ability {
 				if (!(entity instanceof Player))
 					continue;
 				
-				((Player) entity).setHealth(((Player) entity).getHealth() + hearts);
+				Player ep = (Player) entity;
 				
-				entity.sendMessage(String.format(ChatColor.GOLD + "You have been healed by %s.", player.getName()));
+				((Damageable) ep).setHealth(((Damageable) ep).getHealth() + hearts);
+				
+				ep.sendMessage(String.format(ChatColor.GOLD + "You have been healed by %s.", player.getName()));
 			}
 			
-			bp.setHealth(bp.getHealth() + hearts);
+			bp.setHealth(((Damageable) bp).getHealth() + hearts);
 			
 			bp.sendMessage(String.format(ChatColor.GOLD + "You have used the heal ability and have restored %s hearts.", hearts / 2));
 			

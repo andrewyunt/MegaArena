@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
@@ -22,9 +23,19 @@ import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 public class Game {
 	
 	public enum Side {
-		BLUE,
-		GREEN,
-		INDEPENDENT
+		BLUE(ChatColor.BLUE),
+		GREEN(ChatColor.GREEN),
+		INDEPENDENT(ChatColor.RED);
+		
+		private ChatColor nameColor;
+		
+		Side(ChatColor nameColor) {
+			this.nameColor = nameColor;
+		}
+		
+		public ChatColor getNameColor() {
+			return nameColor;
+		}
 	}
 	
 	private Set<ArenaPlayer> players = new HashSet<ArenaPlayer>();
@@ -44,7 +55,7 @@ public class Game {
 		
 		Player bp = player.getBukkitPlayer();
 		
-		player.setPreviousHealth(player.getBukkitPlayer().getHealth());
+		player.setPreviousHealth(((Damageable) bp).getHealth());
 		player.setPreviousFoodLevel(player.getPreviousFoodLevel());
 		player.setPreviousExp(bp.getExp());
 		player.setPreviousLevel(bp.getLevel());

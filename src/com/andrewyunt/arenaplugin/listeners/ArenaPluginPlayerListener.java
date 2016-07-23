@@ -26,9 +26,11 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
+import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.menu.ClassSelectorMenu;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
@@ -183,7 +185,7 @@ public class ArenaPluginPlayerListener implements Listener {
 			playerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
 			
 			if (damager instanceof Player) {
-				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damager.getName());
+				damagerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) damager).getName());
 			}
 		} catch (PlayerException e) {
 		}
@@ -314,5 +316,25 @@ public class ArenaPluginPlayerListener implements Listener {
 			if (ap.getGame().getArena().getType() == ArenaType.DUEL)
 				game.end();
 		}
+	}
+	
+	@EventHandler
+	public void onAsyncPlayerReceiveNameTag(AsyncPlayerReceiveNameTagEvent event) {
+		
+		PlayerManager playerManager = ArenaPlugin.getInstance().getPlayerManager();
+		ArenaPlayer namedAP = null;
+		ArenaPlayer playerAP = null;
+		
+		try {
+			namedAP = playerManager.getPlayer(event.getNamedPlayer().getName());
+			playerAP = playerManager.getPlayer(event.getPlayer().getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (namedAP.isInGame()) {
+			if (namedAP.getGame().getPlayers().contains(playerAP))
+				event.setTag(namedAP.getSide().getNameColor() + namedAP.getName());
+		} else
+			event.setTag(namedAP.getName());
 	}
 }
