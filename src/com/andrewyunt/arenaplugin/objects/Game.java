@@ -24,8 +24,8 @@ public class Game {
 	
 	public enum Side {
 		BLUE(ChatColor.BLUE),
-		GREEN(ChatColor.GREEN),
-		INDEPENDENT(ChatColor.RED);
+		GREEN(ChatColor.DARK_GREEN),
+		INDEPENDENT(ChatColor.DARK_RED);
 		
 		private ChatColor nameColor;
 		

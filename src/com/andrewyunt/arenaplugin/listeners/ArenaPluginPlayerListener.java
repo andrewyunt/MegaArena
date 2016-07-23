@@ -1,9 +1,5 @@
 package com.andrewyunt.arenaplugin.listeners;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -60,7 +56,7 @@ public class ArenaPluginPlayerListener implements Listener {
 			}
 		}
 		
-		player.setHotBar();
+		player.updateHotBar();
 	}
 	
 	@EventHandler
@@ -299,6 +295,8 @@ public class ArenaPluginPlayerListener implements Listener {
         			ap.getGame().spawnPlayer(ap, ap.getSide());
         			return;
         		}
+        		
+        		ap.updateHotBar();
             }
         }, 1L);
 	}
