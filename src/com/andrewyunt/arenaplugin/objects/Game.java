@@ -23,6 +23,7 @@ import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 public class Game {
 	
 	public enum Side {
+		
 		BLUE(ChatColor.BLUE),
 		GREEN(ChatColor.DARK_GREEN),
 		INDEPENDENT(ChatColor.DARK_RED);
@@ -30,10 +31,12 @@ public class Game {
 		private ChatColor nameColor;
 		
 		Side(ChatColor nameColor) {
+			
 			this.nameColor = nameColor;
 		}
 		
 		public ChatColor getNameColor() {
+			
 			return nameColor;
 		}
 	}

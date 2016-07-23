@@ -70,10 +70,15 @@ public class GameManager {
 	
 	public void matchMake(ArenaPlayer player, ArenaType type) throws GameException {
 		
+		Player bp = player.getBukkitPlayer();
+		
+		if (player.isInGame()) {
+			bp.sendMessage(ChatColor.RED + "You are already in a game.");
+			return;
+		}
+		
 		if (type == ArenaType.DUEL)
 			throw new GameException("Matchmaking is not available for duels.");
-		
-		Player bp = player.getBukkitPlayer();
 		
 		if (!(player.hasSelectedClass())) {
 			bp.sendMessage(ChatColor.RED + "You must select a class before entering a game.");
