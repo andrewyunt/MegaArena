@@ -283,7 +283,7 @@ public class ArenaPluginPlayerListener implements Listener {
         scheduler.scheduleSyncDelayedTask(ArenaPlugin.getInstance(), new Runnable() {
             @Override
             public void run() {
-        		Player player = (Player) event.getPlayer();
+            	Player player = (Player) event.getPlayer();
         		ArenaPlayer ap = null;
         		
         		try {
@@ -291,12 +291,10 @@ public class ArenaPluginPlayerListener implements Listener {
         		} catch (PlayerException e) {
         		}
         		
-        		if (ap.isInGame()) {
-        			ap.getGame().spawnPlayer(ap, ap.getSide());
-        			return;
-        		}
+        		if (ap.isInGame())
+        			ap.getGame().removePlayer(ap);
         		
-        		ap.updateHotBar();
+        		player.sendMessage(ChatColor.GOLD + "You have died and have been returned to the lobby.");
             }
         }, 1L);
 	}
