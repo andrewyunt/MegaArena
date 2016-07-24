@@ -42,7 +42,7 @@ public class ClassSelectorMenu {
                 	openNormalClassSelector();
                 else if (name.equals("HERO CLASSES"))
                 	openHeroClassSelector();
-                
+   
             	event.setWillClose(false);
             }
 		}, ArenaPlugin.getInstance());
@@ -62,6 +62,8 @@ public class ClassSelectorMenu {
 	}
 	
 	private void openNormalClassSelector() {
+		
+		menu.destroy();
 		
 		menu = new IconMenu("Normal Classes", 27, new IconMenu.OptionClickEventHandler() {
             @Override
@@ -93,9 +95,10 @@ public class ClassSelectorMenu {
             		return;
             	}
             	
-            	player.getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You selected the %s class.", name));
+            	event.setWillClose(true);
+            	event.setWillDestroy(true);
             	
-                event.setWillClose(true);
+                player.getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You selected the %s class.", name));
             }
 		}, ArenaPlugin.getInstance());
 		
@@ -121,6 +124,8 @@ public class ClassSelectorMenu {
 	}
 	
 	private void openHeroClassSelector() {
+		
+		menu.destroy();
 		
 		menu = new IconMenu("Hero Classes", 27, new IconMenu.OptionClickEventHandler() {
             @Override
@@ -151,6 +156,7 @@ public class ClassSelectorMenu {
             	player.getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You selected the %s class.", name));
             	
                 event.setWillClose(true);
+                event.setWillDestroy(true);
             }
 		}, ArenaPlugin.getInstance());
 		

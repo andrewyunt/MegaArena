@@ -8,8 +8,11 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
+import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.GameException;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
@@ -70,31 +73,37 @@ public class GameManager {
 	
 	public void matchMake(ArenaPlayer player, ArenaType type) throws GameException {
 		
-		Player bp = player.getBukkitPlayer();
-		
-		if (player.isInGame()) {
-			bp.sendMessage(ChatColor.RED + "You are already in a game.");
-			return;
-		}
-		
 		if (type == ArenaType.DUEL)
 			throw new GameException("Matchmaking is not available for duels.");
 		
-		if (!(player.hasSelectedClass())) {
-			bp.sendMessage(ChatColor.RED + "You must select a class before entering a game.");
-			return;
-		}
-		
-		List<Game> games = new ArrayList<Game>(getGames(type));
-		
-		if (games.size() < 1) {
-			bp.sendMessage(String.format(ChatColor.RED + "There are not active %s games at the moment.", type.toString()));
-			return;
-		}
-		
-		Collections.shuffle(games);
-		Game game = games.get(0);
-		
-		game.addPlayer(player);
+		BukkitScheduler scheduler = ArenaPlugin.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncDelayedTask(ArenaPlugin.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				Player bp = player.getBukkitPlayer();
+	    		
+	    		if (player.isInGame()) {
+	    			bp.sendMessage(ChatColor.RED + "You are already in a game.");
+	    			return;
+	    		}
+	    		
+	    		if (!(player.hasSelectedClass())) {
+	    			bp.sendMessage(ChatColor.RED + "You must select a class before entering a game.");
+	    			return;
+	    		}
+	    		
+	    		List<Game> games = new ArrayList<Game>(getGames(type));
+	    		
+	    		if (games.size() < 1) {
+	    			bp.sendMessage(String.format(ChatColor.RED + "There are not active %s games at the moment.", type.toString()));
+	    			return;
+	    		}
+	    		
+	    		Collections.shuffle(games);
+	    		Game game = games.get(0);
+	    		
+	    		game.addPlayer(player);
+			}
+        }, 1L);
 	}
 }
