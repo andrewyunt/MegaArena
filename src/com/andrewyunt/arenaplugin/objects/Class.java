@@ -1,11 +1,6 @@
 package com.andrewyunt.arenaplugin.objects;
 
-import static com.andrewyunt.arenaplugin.objects.Ability.EXPLODE;
-import static com.andrewyunt.arenaplugin.objects.Ability.HEAL;
-import static com.andrewyunt.arenaplugin.objects.Ability.HURRICANE;
-import static com.andrewyunt.arenaplugin.objects.Ability.LIGHTNING;
-import static com.andrewyunt.arenaplugin.objects.Ability.MASTERS_ATTACK;
-import static com.andrewyunt.arenaplugin.objects.Ability.SPLIT_ARROW;
+import static com.andrewyunt.arenaplugin.objects.Ability.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +39,7 @@ public enum Class {
 	SPIRIT_WARRIOR("Spirit Warrior", HURRICANE, 5) {
 	},
 	
-	WITHER_MINION("Wither Minion", MASTERS_ATTACK, 5) {
+	WITHER_MINION("Wither Minion", WITHER_HEADS, 5) {
 	};
 	
 	private String name;

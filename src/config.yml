@@ -1,233 +1,679 @@
-# Coins needed for each tier upgrade (Tier 1 is not included as it is default)
-tier-2-upgrade-cost: 50
-tier-3-upgrade-cost: 125
-tier-4-upgrade-cost: 300
-tier-5-upgrade-cost: 600
-tier-6-upgrade-cost: 3500
-tier-7-upgrade-cost: 6500
-tier-8-upgrade-cost: 8500
-tier-9-upgrade-cost: 14000
-
-# Descriptions for each tier upgrade seperated by \n
-zombie:
-     ability-tier1-desc:"Heal yourself and nearby team mates by 2.0 hearts"
-     ability-tier2-desc:"Heal yourself and nearby team mates by 2.5 hearts"
-     ability-tier3-desc:"Heal yourself and nearby team mates by 3.0 hearts"
-     ability-tier4-desc:"Heal yourself and nearby team mates by 3.5 hearts"
-     ability-tier5-desc:"Heal yourself and nearby team mates by 4.0 hearts"
-     ability-tier6-desc:"Heal yourself and nearby team mates by 4.5 hearts"
-     ability-tier7-desc:"Heal yourself and nearby team mates by 5.0 hearts"
-     ability-tier8-desc:"Heal yourself and nearby team mates by 5.5 hearts"
-     ability-tier9-desc:"Heal yourself and nearby team mates by 6.0 hearts"
-     skill1-tier1-desc:"Getting hit has a 11% chance to receive Resistance I for 1 seconds"
-     skill1-tier2-desc:"Getting hit has a 14% chance to receive Resistance I for 1 seconds"
-     skill1-tier3-desc:"Getting hit has a 17% chance to receive Resistance I for 1 seconds"
-     skill1-tier4-desc:"Getting hit has a 20% chance to receive Resistance I for 1 seconds"
-     skill1-tier5-desc:"Getting hit has a 23% chance to receive Resistance I for 1 seconds"
-     skill1-tier6-desc:"Getting hit has a 26% chance to receive Resistance I for 1 seconds"
-     skill1-tier7-desc:"Getting hit has a 29% chance to receive Resistance I for 1 seconds"
-     skill1-tier8-desc:"Getting hit has a 32% chance to receive Resistance I for 1 seconds"
-     skill1-tier9-desc:"Getting hit has a 35% chance to receive Resistance I for 1 seconds"
-     skill2-tier1-desc:"Getting hit by an arrow has a 10% chance to give you Speed II for 3 seconds"
-     skill2-tier2-desc:"Getting hit by an arrow has a 15% chance to give you Speed II for 3 seconds"
-     skill2-tier3-desc:"Getting hit by an arrow has a 20% chance to give you Speed II for 3 seconds"
-     skill2-tier4-desc:"Getting hit by an arrow has a 25% chance to give you Speed II for 3 seconds"
-     skill2-tier5-desc:"Getting hit by an arrow has a 30% chance to give you Speed II for 3 seconds"
-     skill2-tier6-desc:"Getting hit by an arrow has a 35% chance to give you Speed II for 3 seconds"
-     skill2-tier7-desc:"Getting hit by an arrow has a 40% chance to give you Speed II for 3 seconds"
-     skill2-tier8-desc:"Getting hit by an arrow has a 45% chance to give you Speed II for 3 seconds"
-     skill2-tier9-desc:"Getting hit by an arrow has a 50% chance to give you Speed II for 3 seconds"
-     kit-tier1-desc:"Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
-     kit-tier2-desc:"Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
-     kit-tier3-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
-     kit-tier4-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
-     kit-tier5-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier6-desc:"Iron Chestplate (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier7-desc:"Iron Chestplate (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier8-desc:"Iron Chestplate (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier9-desc:"Diamond Chestplate (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-skeleton:
-     ability-tier1-desc:"Fire an explosive arrow that deals 2.0 damage to nearby enemies with 100% armor penetration"
-     ability-tier2-desc:"Fire an explosive arrow that deals 2.5 damage to nearby enemies with 100% armor penetration"
-     ability-tier3-desc:"Fire an explosive arrow that deals 3.0 damage to nearby enemies with 100% armor penetration"
-     ability-tier4-desc:"Fire an explosive arrow that deals 3.5 damage to nearby enemies with 100% armor penetration"
-     ability-tier5-desc:"Fire an explosive arrow that deals 4.0 damage to nearby enemies with 100% armor penetration"
-     ability-tier6-desc:"Fire an explosive arrow that deals 4.5 damage to nearby enemies with 100% armor penetration"
-     ability-tier7-desc:"Fire an explosive arrow that deals 5.0 damage to nearby enemies with 100% armor penetration"
-     ability-tier8-desc:"Fire an explosive arrow that deals 5.5 damage to nearby enemies with 100% armor penetration"
-     ability-tier9-desc:"Fire an explosive arrow that deals 6.0 damage to nearby enemies with 100% armor penetration"
-     skill1-tier1-desc:"20% chance to retrieve arrow on arrow hit"
-     skill1-tier2-desc:"30% chance to retrieve arrow on arrow hit"
-     skill1-tier3-desc:"40% chance to retrieve arrow on arrow hit"
-     skill1-tier4-desc:"50% chance to retrieve arrow on arrow hit"
-     skill1-tier5-desc:"60% chance to retrieve arrow on arrow hit"
-     skill1-tier6-desc:"70% chance to retrieve arrow on arrow hit"
-     skill1-tier7-desc:"80% chance to retrieve arrow on arrow hit"
-     skill1-tier8-desc:"90% chance to retrieve arrow on arrow hit"
-     skill1-tier9-desc:"100% chance to retrieve arrow on arrow hit"
-     skill2-tier1-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 2.0 second"
-     skill2-tier2-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 2.5 second"
-     skill2-tier3-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 3.0 second"
-     skill2-tier4-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 3.5 second"
-     skill2-tier5-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 4.0 second"
-     skill2-tier6-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 4.5 second"
-     skill2-tier7-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 5.0 second"
-     skill2-tier8-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 5.5 second"
-     skill2-tier9-desc:"Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 6.0 second"
-     kit-tier1-desc:"Iron Armor \n Stone Sword \n 4 Steak \n 32 Cobblestone \n Bow \n 32 Arrows"
-     kit-tier2-desc:"Iron Armor \n Stone Sword \n 8 Steak \n 48 Cobblestone \n Bow \n 48 Arrows"
-     kit-tier3-desc:"Iron Armor \n Stone Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows"
-     kit-tier4-desc:"Iron Armor \n Stone Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows \n Potion Of Heal (8 \u2764)"
-     kit-tier5-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier6-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier7-desc:"Iron Helmet (Projectile Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier8-desc:"Iron Helmet (Projectile Protection III) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier9-desc:"Diamond Helmet (Projectile Protection IV) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power II) \n 64 Arrows \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-herobrine:
-     ability-tier1-desc:"Strike nearby enemies with lightning that does 1.0 damage with 100% armor penetration"
-     ability-tier2-desc:"Strike nearby enemies with lightning that does 1.5 damage with 100% armor penetration"
-     ability-tier3-desc:"Strike nearby enemies with lightning that does 2.0 damage with 100% armor penetration"
-     ability-tier4-desc:"Strike nearby enemies with lightning that does 2.5 damage with 100% armor penetration"
-     ability-tier5-desc:"Strike nearby enemies with lightning that does 3.0 damage with 100% armor penetration"
-     ability-tier6-desc:"Strike nearby enemies with lightning that does 3.5 damage with 100% armor penetration"
-     ability-tier7-desc:"Strike nearby enemies with lightning that does 4.0 damage with 100% armor penetration"
-     ability-tier8-desc:"Strike nearby enemies with lightning that does 4.5 damage with 100% armor penetration"
-     ability-tier9-desc:"Strike nearby enemies with lightning that does 5.0 damage with 100% armor penetration"
-     skill1-tier1-desc:"Killing an enemy gives you Regeneration I and Resistance I for 2.0 seconds"
-     skill1-tier2-desc:"Killing an enemy gives you Regeneration I and Resistance I for 2.5 seconds"
-     skill1-tier3-desc:"Killing an enemy gives you Regeneration I and Resistance I for 3.0 seconds"
-     skill1-tier4-desc:"Killing an enemy gives you Regeneration I and Resistance I for 3.5 seconds"
-     skill1-tier5-desc:"Killing an enemy gives you Regeneration I and Resistance I for 4.0 seconds"
-     skill1-tier6-desc:"Killing an enemy gives you Regeneration I and Resistance I for 4.5 seconds"
-     skill1-tier7-desc:"Killing an enemy gives you Regeneration I and Resistance I for 5.0 seconds"
-     skill1-tier8-desc:"Killing an enemy gives you Regeneration I and Resistance I for 5.5 seconds"
-     skill1-tier9-desc:"Killing an enemy gives you Regeneration I and Resistance I for 6.0 seconds"
-     skill2-tier1-desc:"10% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     skill2-tier2-desc:"15% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     skill2-tier3-desc:"20% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     skill2-tier4-desc:"25% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     skill2-tier5-desc:"30% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     skill2-tier6-desc:"35% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     skill2-tier7-desc:"40% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     skill2-tier8-desc:"45% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     skill2-tier9-desc:"50% chance to gain Speed I for 2 seconds upon hitting an enemy"
-     kit-tier1-desc:"Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
-     kit-tier2-desc:"Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
-     kit-tier3-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
-     kit-tier4-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
-     kit-tier5-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier6-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier7-desc:"Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier8-desc:"Iron Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier9-desc:"Diamond Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-creeper:
-     ability-tier1-desc:"Detonate an explosion that deals 3.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     ability-tier2-desc:"Detonate an explosion that deals 3.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     ability-tier3-desc:"Detonate an explosion that deals 4.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     ability-tier4-desc:"Detonate an explosion that deals 4.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     ability-tier5-desc:"Detonate an explosion that deals 5.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     ability-tier6-desc:"Detonate an explosion that deals 5.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     ability-tier7-desc:"Detonate an explosion that deals 6.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     ability-tier8-desc:"Detonate an explosion that deals 6.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     ability-tier9-desc:"Detonate an explosion that deals 7.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
-     skill1-tier1-desc:"Gain Speed I permanently when you are under 16.0 hearts"
-     skill1-tier2-desc:"Gain Speed I permanently when you are under 17.0 hearts"
-     skill1-tier3-desc:"Gain Speed I permanently when you are under 18.0 hearts"
-     skill1-tier4-desc:"Gain Speed I permanently when you are under 19.0 hearts"
-     skill1-tier5-desc:"Gain Speed I permanently when you are under 20.0 hearts"
-     skill1-tier6-desc:"Gain Speed I permanently when you are under 21.0 hearts"
-     skill1-tier7-desc:"Gain Speed I permanently when you are under 22.0 hearts"
-     skill1-tier8-desc:"Gain Speed I permanently when you are under 23.0 hearts"
-     skill1-tier9-desc:"Gain Speed I permanently when you are under 24.0 hearts"
-     skill2-tier1-desc:"6.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     skill2-tier2-desc:"6.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     skill2-tier3-desc:"7.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     skill2-tier4-desc:"7.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     skill2-tier5-desc:"8.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     skill2-tier6-desc:"8.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     skill2-tier7-desc:"9.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     skill2-tier8-desc:"9.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     skill2-tier9-desc:"10.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
-     kit-tier1-desc:"Iron Armor \n Iron Sword \n 4 Steak \ 32 Cobblestone"
-     kit-tier2-desc:"Iron Armor \n Iron Sword \n 8 Steak \ 48 Cobblestone"
-     kit-tier3-desc:"Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone"
-     kit-tier4-desc:"Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764)"
-     kit-tier5-desc:"Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier6-desc:"Iron Leggings (Blast Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier7-desc:"Iron Leggings (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier8-desc:"Iron Leggings (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier9-desc:"Diamond Leggings (Blast Protection II, Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-spiritwarrior:
-     ability-tier1-desc:"Summon a hurricane for 2.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     ability-tier2-desc:"Summon a hurricane for 2.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     ability-tier3-desc:"Summon a hurricane for 3.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     ability-tier4-desc:"Summon a hurricane for 3.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     ability-tier5-desc:"Summon a hurricane for 4.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     ability-tier6-desc:"Summon a hurricane for 4.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     ability-tier7-desc:"Summon a hurricane for 5.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     ability-tier8-desc:"Summon a hurricane for 5.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     ability-tier9-desc:"Summon a hurricane for 6.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
-     skill1-tier1-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 2.0 seconds"
-     skill1-tier2-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 2.5 seconds"
-     skill1-tier3-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 3.0 seconds"
-     skill1-tier4-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 3.5 seconds"
-     skill1-tier5-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 4.0 seconds"
-     skill1-tier6-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 4.5 seconds"
-     skill1-tier7-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 5.0 seconds"
-     skill1-tier8-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 5.5 seconds"
-     skill1-tier9-desc:"Upon hitting an enemy player, 20% chance to inflict Weakness I for 6.0 seconds"
-     skill2-tier1-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 4.0 seconds. Wolf has permanent Speed II"
-     skill2-tier2-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 5.0 seconds. Wolf has permanent Speed II"
-     skill2-tier3-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 6.0 seconds. Wolf has permanent Speed II"
-     skill2-tier4-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 7.0 seconds. Wolf has permanent Speed II"
-     skill2-tier5-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 8.0 seconds. Wolf has permanent Speed II"
-     skill2-tier6-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 9.0 seconds. Wolf has permanent Speed II"
-     skill2-tier7-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 10.0 seconds. Wolf has permanent Speed II"
-     skill2-tier8-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 11.0 seconds. Wolf has permanent Speed II"
-     skill2-tier9-desc:"Upon getting hit, 10% chance to spawn a wolf that protects you for 12.0 seconds. Wolf has permanent Speed II"
-     kit-tier1-desc:"Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
-     kit-tier2-desc:"Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
-     kit-tier3-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
-     kit-tier4-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
-     kit-tier5-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier6-desc:"Iron Boots (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier7-desc:"Iron Boots (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier8-desc:"Iron Boots (Protection II, Feather Falling I) \n Diamond Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier9-desc:"Diamond Boots (Protection II, Feather Falling II) \n Diamond Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-witherminion:
-     ability-tier1-desc:"Fire three wither heads which explode on impact, dealing 2.0 damage per head with 100% armor penetration"
-     ability-tier2-desc:"Fire three wither heads which explode on impact, dealing 2.5 damage per head with 100% armor penetration"
-     ability-tier3-desc:"Fire three wither heads which explode on impact, dealing 3.0 damage per head with 100% armor penetration"
-     ability-tier4-desc:"Fire three wither heads which explode on impact, dealing 3.5 damage per head with 100% armor penetration"
-     ability-tier5-desc:"Fire three wither heads which explode on impact, dealing 4.0 damage per head with 100% armor penetration"
-     ability-tier6-desc:"Fire three wither heads which explode on impact, dealing 4.5 damage per head with 100% armor penetration"
-     ability-tier7-desc:"Fire three wither heads which explode on impact, dealing 5.0 damage per head with 100% armor penetration"
-     ability-tier8-desc:"Fire three wither heads which explode on impact, dealing 5.5 damage per head with 100% armor penetration"
-     ability-tier9-desc:"Fire three wither heads which explode on impact, dealing 6.0 damage per head with 100% armor penetration"
-     skill1-tier1-desc:"Attacking an enemy has a 12% chance to gain 1.0 health"
-     skill1-tier2-desc:"Attacking an enemy has a 13% chance to gain 1.0 health"
-     skill1-tier3-desc:"Attacking an enemy has a 14% chance to gain 1.0 health"
-     skill1-tier4-desc:"Attacking an enemy has a 15% chance to gain 1.0 health"
-     skill1-tier5-desc:"Attacking an enemy has a 16% chance to gain 1.0 health"
-     skill1-tier6-desc:"Attacking an enemy has a 17% chance to gain 1.0 health"
-     skill1-tier7-desc:"Attacking an enemy has a 18% chance to gain 1.0 health"
-     skill1-tier8-desc:"Attacking an enemy has a 19% chance to gain 1.0 health"
-     skill1-tier9-desc:"Attacking an enemy has a 20% chance to gain 1.0 health"
-     skill2-tier1-desc:"7% chance to gain 1.0 health upon being hit"
-     skill2-tier2-desc:"8% chance to gain 1.0 health upon being hit"
-     skill2-tier3-desc:"9% chance to gain 1.0 health upon being hit"
-     skill2-tier4-desc:"10% chance to gain 1.0 health upon being hit"
-     skill2-tier5-desc:"11% chance to gain 1.0 health upon being hit"
-     skill2-tier6-desc:"12% chance to gain 1.0 health upon being hit"
-     skill2-tier7-desc:"13% chance to gain 1.0 health upon being hit"
-     skill2-tier8-desc:"14% chance to gain 1.0 health upon being hit"
-     skill2-tier9-desc:"15% chance to gain 1.0 health upon being hit"
-     kit-tier1-desc:"Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
-     kit-tier2-desc:"Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
-     kit-tier3-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
-     kit-tier4-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
-     kit-tier5-desc:"Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier6-desc:"Iron Helmet (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
-     kit-tier7-desc:"Iron Helmet (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier8-desc:"Iron Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
-     kit-tier9-desc:"Diamond Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+classes:
+  ZOMBIE:
+    HEAL:
+      1:
+         title: "Ability - Heal I"
+         description: "Heal yourself and nearby team mates by 2.0 hearts"
+      2:
+         title: "Ability - Heal II"
+         description: "Heal yourself and nearby team mates by 2.5 hearts"
+      3:
+         title: "Ability - Heal III"
+         description: "Heal yourself and nearby team mates by 3.0 hearts"
+      4:
+         title: "Ability - Heal IV"
+         description: "Heal yourself and nearby team mates by 3.5 hearts"
+      5:
+         title: "Ability - Heal V"
+         description: "Heal yourself and nearby team mates by 4.0 hearts"
+      6:
+         title: "Ability - Heal VI"
+         description: "Heal yourself and nearby team mates by 4.5 hearts"
+      7:
+         title: "Ability - Heal VII"
+         description: "Heal yourself and nearby team mates by 5.0 hearts"
+      8:
+         title: "Ability - Heal VIII"
+         description: "Heal yourself and nearby team mates by 5.5 hearts"
+      9:
+         title: "Ability - Heal IX"
+         description: "Heal yourself and nearby team mates by 6.0 hearts"
+    RESIST:
+      1:
+         title: "Skill 1 - Resist I"
+         description: "Getting hit has a 11% chance to receive Resistance I for 1 seconds"
+      2:
+         title: "Skill 1 - Resist II"
+         description: "Getting hit has a 14% chance to receive Resistance I for 1 seconds"
+      3:
+         title: "Skill 1 - Resist III"
+         description: "Getting hit has a 17% chance to receive Resistance I for 1 seconds"
+      4:
+         title: "Skill 1 - Resist IV"
+         description: "Getting hit has a 20% chance to receive Resistance I for 1 seconds"
+      5:
+         title: "Skill 1 - Resist V"
+         description: "Getting hit has a 23% chance to receive Resistance I for 1 seconds"
+      6:
+         title: "Skill 1 - Resist VI"
+         description: "Getting hit has a 26% chance to receive Resistance I for 1 seconds"
+      7:
+         title: "Skill 1 - Resist VII"
+         description: "Getting hit has a 29% chance to receive Resistance I for 1 seconds"
+      8:
+         title: "Skill 1 - Resist VIII"
+         description: "Getting hit has a 32% chance to receive Resistance I for 1 seconds"
+      9:
+         title: "Skill 1 - Resist IX"
+         description: "Getting hit has a 35% chance to receive Resistance I for 1 seconds"
+    SWIFTNESS:
+      1:
+         title: "Skill 2 - Swiftness I"
+         description: "Getting hit by an arrow has a 10% chance to give you Speed II for 3 seconds"
+      2:
+         title: "Skill 2 - Swiftness II"
+         description: "Getting hit by an arrow has a 15% chance to give you Speed II for 3 seconds"
+      3:
+         title: "Skill 2 - Swiftness III"
+         description: "Getting hit by an arrow has a 20% chance to give you Speed II for 3 seconds"
+      4:
+         title: "Skill 2 - Swiftness IV"
+         description: "Getting hit by an arrow has a 25% chance to give you Speed II for 3 seconds"
+      5:
+         title: "Skill 2 - Swiftness V"
+         description: "Getting hit by an arrow has a 30% chance to give you Speed II for 3 seconds"
+      6:
+         title: "Skill 2 - Swiftness VI"
+         description: "Getting hit by an arrow has a 35% chance to give you Speed II for 3 seconds"
+      7:
+         title: "Skill 2 - Swiftness VII"
+         description: "Getting hit by an arrow has a 40% chance to give you Speed II for 3 seconds"
+      8:
+         title: "Skill 2 - Swiftness VIII"
+         description: "Getting hit by an arrow has a 45% chance to give you Speed II for 3 seconds"
+      9:
+         title: "Skill 2 - Swiftness IX"
+         description: "Getting hit by an arrow has a 50% chance to give you Speed II for 3 seconds"
+    ZOMBIE:
+      1:
+         title: "Kit Items - Zombie I"
+         description: "Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
+      2:
+         title: "Kit Items - Zombie II"
+         description: "Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
+      3:
+         title: "Kit Items - Zombie III"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
+      4:
+         title: "Kit Items - Zombie IV"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+      5:
+         title: "Kit Items - Zombie V"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      6:
+         title: "Kit Items - Zombie VI"
+         description: "Iron Chestplate (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      7:
+         title: "Kit Items - Zombie VII"
+         description: "Iron Chestplate (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      8:
+         title: "Kit Items - Zombie VIII"
+         description: "Iron Chestplate (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      9:
+         title: "Kit Items - Zombie IX"
+         description: "Diamond Chestplate (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+  SKELETON:
+    SPLIT_ARROW:
+      1:
+         title: "Ability - Explosive Arrow I"
+         description: "Fire an explosive arrow that deals 2.0 damage to nearby enemies with 100% armor penetration"
+      2:
+         title: "Ability - Explosive Arrow II"
+         description: "Fire an explosive arrow that deals 2.5 damage to nearby enemies with 100% armor penetration"
+      3:
+         title: "Ability - Explosive Arrow III"
+         description: "Fire an explosive arrow that deals 3.0 damage to nearby enemies with 100% armor penetration"
+      4:
+         title: "Ability - Explosive Arrow IV"
+         description: "Fire an explosive arrow that deals 3.5 damage to nearby enemies with 100% armor penetration"
+      5:
+         title: "Ability - Explosive Arrow V"
+         description: "Fire an explosive arrow that deals 4.0 damage to nearby enemies with 100% armor penetration"
+      6:
+         title: "Ability - Explosive Arrow VI"
+         description: "Fire an explosive arrow that deals 4.5 damage to nearby enemies with 100% armor penetration"
+      7:
+         title: "Ability - Explosive Arrow VII"
+         description: "Fire an explosive arrow that deals 5.0 damage to nearby enemies with 100% armor penetration"
+      8:
+         title: "Ability - Explosive Arrow VIII"
+         description: "Fire an explosive arrow that deals 5.5 damage to nearby enemies with 100% armor penetration"
+      9:
+         title: "Ability - Explosive Arrow IX"
+         description: "Fire an explosive arrow that deals 6.0 damage to nearby enemies with 100% armor penetration"
+    BOOMERANG:
+      1:
+         title: "Skill 1 - Boomerang I"
+         description: "20% chance to retrieve arrow on arrow hit"
+      2:
+         title: "Skill 1 - Boomerang II"
+         description: "30% chance to retrieve arrow on arrow hit"
+      3:
+         title: "Skill 1 - Boomerang III"
+         description: "40% chance to retrieve arrow on arrow hit"
+      4:
+         title: "Skill 1 - Boomerang IV"
+         description: "50% chance to retrieve arrow on arrow hit"
+      5:
+         title: "Skill 1 - Boomerang V"
+         description: "60% chance to retrieve arrow on arrow hit"
+      6:
+         title: "Skill 1 - Boomerang VI"
+         description: "70% chance to retrieve arrow on arrow hit"
+      7:
+         title: "Skill 1 - Boomerang VII"
+         description: "80% chance to retrieve arrow on arrow hit"
+      8:
+         title: "Skill 1 - Boomerang VIII"
+         description: "90% chance to retrieve arrow on arrow hit"
+      9:
+         title: "Skill 1 - Boomerang IX"
+         description: "100% chance to retrieve arrow on arrow hit"
+    MUTUAL_WEAKNESS:
+      1:
+         title: "Skill 2 - Mutual Weakness I"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 2.0 second"
+      2:
+         title: "Skill 2 - Mutual Weakness II"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 2.5 second"
+      3:
+         title: "Skill 2 - Mutual Weakness III"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 3.0 second"
+      4:
+         title: "Skill 2 - Mutual Weakness IV"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 3.5 second"
+      5:
+         title: "Skill 2 - Mutual Weakness V"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 4.0 second"
+      6:
+         title: "Skill 2 - Mutual Weakness VI"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 4.5 second"
+      7:
+         title: "Skill 2 - Mutual Weakness VII"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 5.0 second"
+      8:
+         title: "Skill 2 - Mutual Weakness VIII"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 5.5 second"
+      9:
+         title: "Skill 2 - Mutual Weakness IX"
+         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 6.0 second"
+    SKELETON:
+      1:
+         title: "Kit Items - Skeleton I"
+         description: "Iron Armor \n Stone Sword \n 4 Steak \n 32 Cobblestone \n Bow \n 32 Arrows"
+      2:
+         title: "Kit Items - Skeleton II"
+         description: "Iron Armor \n Stone Sword \n 8 Steak \n 48 Cobblestone \n Bow \n 48 Arrows"
+      3:
+         title: "Kit Items - Skeleton III"
+         description: "Iron Armor \n Stone Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows"
+      4:
+         title: "Kit Items - Skeleton IV"
+         description: "Iron Armor \n Stone Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows \n Potion Of Heal (8 \u2764)"
+      5:
+         title: "Kit Items - Skeleton V"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      6:
+         title: "Kit Items - Skeleton VI"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      7:
+         title: "Kit Items - Skeleton VII"
+         description: "Iron Helmet (Projectile Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      8:
+         title: "Kit Items - Skeleton VIII"
+         description: "Iron Helmet (Projectile Protection III) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      9:
+         title: "Kit Items - Skeleton IX"
+         description: "Diamond Helmet (Projectile Protection IV) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power II) \n 64 Arrows \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+  HEROBRINE:
+    LIGHTNING:
+      1:
+         title: "Ability - Lightning I"
+         description: "Strike nearby enemies with lightning that does 1.0 damage with 100% armor penetration"
+      2:
+         title: "Ability - Lightning II"
+         description: "Strike nearby enemies with lightning that does 1.5 damage with 100% armor penetration"
+      3:
+         title: "Ability - Lightning III"
+         description: "Strike nearby enemies with lightning that does 2.0 damage with 100% armor penetration"
+      4:
+         title: "Ability - Lightning IV"
+         description: "Strike nearby enemies with lightning that does 2.5 damage with 100% armor penetration"
+      5:
+         title: "Ability - Lightning V"
+         description: "Strike nearby enemies with lightning that does 3.0 damage with 100% armor penetration"
+      6:
+         title: "Ability - Lightning VI"
+         description: "Strike nearby enemies with lightning that does 3.5 damage with 100% armor penetration"
+      7:
+         title: "Ability - Lightning VII"
+         description: "Strike nearby enemies with lightning that does 4.0 damage with 100% armor penetration"
+      8:
+         title: "Ability - Lightning VIII"
+         description: "Strike nearby enemies with lightning that does 4.5 damage with 100% armor penetration"
+      9:
+         title: "Ability - Lightning IX"
+         description: "Strike nearby enemies with lightning that does 5.0 damage with 100% armor penetration"
+    RECHARGE:
+      1:
+         title: "Skill 1 - Recharge I"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 2.0 seconds"
+      2:
+         title: "Skill 1 - Recharge II"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 2.5 seconds"
+      3:
+         title: "Skill 1 - Recharge III"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 3.0 seconds"
+      4:
+         title: "Skill 1 - Recharge IV"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 3.5 seconds"
+      5:
+         title: "Skill 1 - Recharge V"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 4.0 seconds"
+      6:
+         title: "Skill 1 - Recharge VI"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 4.5 seconds"
+      7:
+         title: "Skill 1 - Recharge VII"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 5.0 seconds"
+      8:
+         title: "Skill 1 - Recharge VIII"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 5.5 seconds"
+      9:
+         title: "Skill 1 - Recharge IX"
+         description: "Killing an enemy gives you Regeneration I and Resistance I for 6.0 seconds"
+    FLURRY:
+      1:
+         title: "Skill 2 - Flurry I"
+         description: "10% chance to gain Speed I for 2 seconds upon hitting an enemy"
+      2:
+         title: "Skill 2 - Flurry II"
+         description: "15% chance to gain Speed I for 2 seconds upon hitting an enemy"
+      3:
+         title: "Skill 2 - Flurry III"
+         description: "20% chance to gain Speed I for 2 seconds upon hitting an enemy"
+      4:
+         title: "Skill 2 - Flurry IV"
+         description: "25% chance to gain Speed I for 2 seconds upon hitting an enemy"
+      5:
+         title: "Skill 2 - Flurry V"
+         description: "30% chance to gain Speed I for 2 seconds upon hitting an enemy"
+      6:
+         title: "Skill 2 - Flurry VI"
+         description: "35% chance to gain Speed I for 2 seconds upon hitting an enemy"
+      7:
+         title: "Skill 2 - Flurry VII"
+         description: "40% chance to gain Speed I for 2 seconds upon hitting an enemy"
+      8:
+         title: "Skill 2 - Flurry VIII"
+         description: "45% chance to gain Speed I for 2 seconds upon hitting an enemy"
+      9:
+         title: "Skill 2 - Flurry IX"
+         description: "50% chance to gain Speed I for 2 seconds upon hitting an enemy"
+    HEROBRINE:
+      1:
+         title: "Kit Items - Herobrine I"
+         description: "Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
+      2:
+         title: "Kit Items - Herobrine II"
+         description: "Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
+      3:
+         title: "Kit Items - Herobrine III"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
+      4:
+         title: "Kit Items - Herobrine IV"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+      5:
+         title: "Kit Items - Herobrine V"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      6:
+         title: "Kit Items - Herobrine VI"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      7:
+         title: "Kit Items - Herobrine VII"
+         description: "Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      8:
+         title: "Kit Items - Herobrine VIII"
+         description: "Iron Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      9:
+         title: "Kit Items - Herobrine IX"
+         description: "Diamond Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+  CREEPER:
+    EXPLODE:
+      1:
+         title: "Ability - Explode I"
+         description: "Detonate an explosion that deals 3.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+      2:
+         title: "Ability - Explode II"
+         description: "Detonate an explosion that deals 3.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+      3:
+         title: "Ability - Explode III"
+         description: "Detonate an explosion that deals 4.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+      4:
+         title: "Ability - Explode IV"
+         description: "Detonate an explosion that deals 4.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+      5:
+         title: "Ability - Explode V"
+         description: "Detonate an explosion that deals 5.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+      6:
+         title: "Ability - Explode VI"
+         description: "Detonate an explosion that deals 5.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+      7:
+         title: "Ability - Explode VII"
+         description: "Detonate an explosion that deals 6.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+      8:
+         title: "Ability - Explode VIII"
+         description: "Detonate an explosion that deals 6.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+      9:
+         title: "Ability - Explode IX"
+         description: "Detonate an explosion that deals 7.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+    POWERFUL_WEAKNESS:
+      1:
+         title: "Skill 1 - Powerful Weakness I"
+         description: "Gain Speed I permanently when you are under 16.0 hearts"
+      2:
+         title: "Skill 1 - Powerful Weakness II"
+         description: "Gain Speed I permanently when you are under 17.0 hearts"
+      3:
+         title: "Skill 1 - Powerful Weakness III"
+         description: "Gain Speed I permanently when you are under 18.0 hearts"
+      4:
+         title: "Skill 1 - Powerful Weakness IV"
+         description: "Gain Speed I permanently when you are under 19.0 hearts"
+      5:
+         title: "Skill 1 - Powerful Weakness V"
+         description: "Gain Speed I permanently when you are under 20.0 hearts"
+      6:
+         title: "Skill 1 - Powerful Weakness VI"
+         description: "Gain Speed I permanently when you are under 21.0 hearts"
+      7:
+         title: "Skill 1 - Powerful Weakness VII"
+         description: "Gain Speed I permanently when you are under 22.0 hearts"
+      8:
+         title: "Skill 1 - Powerful Weakness VIII"
+         description: "Gain Speed I permanently when you are under 23.0 hearts"
+      9:
+         title: "Skill 1 - Powerful Weakness IX"
+         description: "Gain Speed I permanently when you are under 24.0 hearts"
+    SUPPORT:
+      1:
+         title: "Skill 2 - Support I"
+         description: "6.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+      2:
+         title: "Skill 2 - Support II"
+         description: "6.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+      3:
+         title: "Skill 2 - Support III"
+         description: "7.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+      4:
+         title: "Skill 2 - Support IV"
+         description: "7.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+      5:
+         title: "Skill 2 - Support V"
+         description: "8.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+      6:
+         title: "Skill 2 - Support VI"
+         description: "8.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+      7:
+         title: "Skill 2 - Support VII"
+         description: "9.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+      8:
+         title: "Skill 2 - Support VIII"
+         description: "9.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+      9:
+         title: "Skill 2 - Support IX"
+         description: "10.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+    CREEPER:
+      1:
+         title: "Kit Items - Creeper I"
+         description: "Iron Armor \n Iron Sword \n 4 Steak \ 32 Cobblestone"
+      2:
+         title: "Kit Items - Creeper II"
+         description: "Iron Armor \n Iron Sword \n 8 Steak \ 48 Cobblestone"
+      3:
+         title: "Kit Items - Creeper III"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone"
+      4:
+         title: "Kit Items - Creeper IV"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+      5:
+         title: "Kit Items - Creeper V"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      6:
+         title: "Kit Items - Creeper VI"
+         description: "Iron Leggings (Blast Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      7:
+         title: "Kit Items - Creeper VII"
+         description: "Iron Leggings (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      8:
+         title: "Kit Items - Creeper VIII"
+         description: "Iron Leggings (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      9:
+         title: "Kit Items - Creeper IX"
+         description: "Diamond Leggings (Blast Protection II, Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+  SPIRIT_WARRIOR:
+    HURRICANE:
+      1:
+         title: "Ability - Hurricane I"
+         description: "Summon a hurricane for 2.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+      2:
+         title: "Ability - Hurricane II"
+         description: "Summon a hurricane for 2.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+      3:
+         title: "Ability - Hurricane III"
+         description: "Summon a hurricane for 3.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+      4:
+         title: "Ability - Hurricane IV"
+         description: "Summon a hurricane for 3.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+      5:
+         title: "Ability - Hurricane V"
+         description: "Summon a hurricane for 4.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+      6:
+         title: "Ability - Hurricane VI"
+         description: "Summon a hurricane for 4.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+      7:
+         title: "Ability - Hurricane VII"
+         description: "Summon a hurricane for 5.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+      8:
+         title: "Ability - Hurricane VIII"
+         description: "Summon a hurricane for 5.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+      9:
+         title: "Ability - Hurricane IX"
+         description: "Summon a hurricane for 6.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+    WEAKENING_SWING:
+      1:
+         title: "Skill 1 - Weakening Swing I"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 2.0 seconds"
+      2:
+         title: "Skill 1 - Weakening Swing II"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 2.5 seconds"
+      3:
+         title: "Skill 1 - Weakening Swing III"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 3.0 seconds"
+      4:
+         title: "Skill 1 - Weakening Swing IV"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 3.5 seconds"
+      5:
+         title: "Skill 1 - Weakening Swing V"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 4.0 seconds"
+      6:
+         title: "Skill 1 - Weakening Swing VI"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 4.5 seconds"
+      7:
+         title: "Skill 1 - Weakening Swing VII"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 5.0 seconds"
+      8:
+         title: "Skill 1 - Weakening Swing VIII"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 5.5 seconds"
+      9:
+         title: "Skill 1 - Weakening Swing IX"
+         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 6.0 seconds"
+    SWIFT_BACKUP:
+      1:
+         title: "Skill 2 - Swift Backup I"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 4.0 seconds. Wolf has permanent Speed II"
+      2:
+         title: "Skill 2 - Swift Backup II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 5.0 seconds. Wolf has permanent Speed II"
+      3:
+         title: "Skill 2 - Swift Backup III"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 6.0 seconds. Wolf has permanent Speed II"
+      4:
+         title: "Skill 2 - Swift Backup IV"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 7.0 seconds. Wolf has permanent Speed II"
+      5:
+         title: "Skill 2 - Swift Backup V"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 8.0 seconds. Wolf has permanent Speed II"
+      6:
+         title: "Skill 2 - Swift Backup VI"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 9.0 seconds. Wolf has permanent Speed II"
+      7:
+         title: "Skill 2 - Swift Backup VII"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 10.0 seconds. Wolf has permanent Speed II"
+      8:
+         title: "Skill 2 - Swift Backup VIII"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 11.0 seconds. Wolf has permanent Speed II"
+      9:
+         title: "Skill 2 - Swift Backup IX"
+         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 12.0 seconds. Wolf has permanent Speed II"
+    SPIRIT_WARRIOR:
+      1:
+         title: "Kit Items - Spirit Warrior I"
+         description: "Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
+      2:
+         title: "Kit Items - Spirit Warrior II"
+         description: "Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
+      3:
+         title: "Kit Items - Spirit Warrior III"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
+      4:
+         title: "Kit Items - Spirit Warrior IV"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+      5:
+         title: "Kit Items - Spirit Warrior V"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      6:
+         title: "Kit Items - Spirit Warrior VI"
+         description: "Iron Boots (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      7:
+         title: "Kit Items - Spirit Warrior VII"
+         description: "Iron Boots (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      8:
+         title: "Kit Items - Spirit Warrior VIII"
+         description: "Iron Boots (Protection II, Feather Falling I) \n Diamond Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      9:
+         title: "Kit Items - Spirit Warrior IX"
+         description: "Diamond Boots (Protection II, Feather Falling II) \n Diamond Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+  WITHER_MINION:
+    WITHER_HEADS:
+      1:
+         title: "Ability - Wither Heads I"
+         description: "Fire three wither heads which explode on impact, dealing 2.0 damage per head with 100% armor penetration"
+      2:
+         title: "Ability - Wither Heads II"
+         description: "Fire three wither heads which explode on impact, dealing 2.5 damage per head with 100% armor penetration"
+      3:
+         title: "Ability - Wither Heads III"
+         description: "Fire three wither heads which explode on impact, dealing 3.0 damage per head with 100% armor penetration"
+      4:
+         title: "Ability - Wither Heads IV"
+         description: "Fire three wither heads which explode on impact, dealing 3.5 damage per head with 100% armor penetration"
+      5:
+         title: "Ability - Wither Heads V"
+         description: "Fire three wither heads which explode on impact, dealing 4.0 damage per head with 100% armor penetration"
+      6:
+         title: "Ability - Wither Heads VI"
+         description: "Fire three wither heads which explode on impact, dealing 4.5 damage per head with 100% armor penetration"
+      7:
+         title: "Ability - Wither Heads VII"
+         description: "Fire three wither heads which explode on impact, dealing 5.0 damage per head with 100% armor penetration"
+      8:
+         title: "Ability - Wither Heads VIII"
+         description: "Fire three wither heads which explode on impact, dealing 5.5 damage per head with 100% armor penetration"
+      9:
+         title: "Ability - Wither Heads IX"
+         description: "Fire three wither heads which explode on impact, dealing 6.0 damage per head with 100% armor penetration"
+    SOUL_SUCKER:
+      1:
+         title: "Skill 1 - Soul Sucker I"
+         description: "Attacking an enemy has a 12% chance to gain 1.0 health"
+      2:
+         title: "Skill 1 - Soul Sucker II"
+         description: "Attacking an enemy has a 13% chance to gain 1.0 health"
+      3:
+         title: "Skill 1 - Soul Sucker III"
+         description: "Attacking an enemy has a 14% chance to gain 1.0 health"
+      4:
+         title: "Skill 1 - Soul Sucker IV"
+         description: "Attacking an enemy has a 15% chance to gain 1.0 health"
+      5:
+         title: "Skill 1 - Soul Sucker V"
+         description: "Attacking an enemy has a 16% chance to gain 1.0 health"
+      6:
+         title: "Skill 1 - Soul Sucker VI"
+         description: "Attacking an enemy has a 17% chance to gain 1.0 health"
+      7:
+         title: "Skill 1 - Soul Sucker VII"
+         description: "Attacking an enemy has a 18% chance to gain 1.0 health"
+      8:
+         title: "Skill 1 - Soul Sucker VIII"
+         description: "Attacking an enemy has a 19% chance to gain 1.0 health"
+      9:
+         title: "Skill 1 - Soul Sucker IX"
+         description: "Attacking an enemy has a 20% chance to gain 1.0 health"
+    UNDEAD:
+      1:
+         title: "Skill 2 - Undead I"
+         description: "7% chance to gain 1.0 health upon being hit"
+      2:
+         title: "Skill 2 - Undead II"
+         description: "8% chance to gain 1.0 health upon being hit"
+      3:
+         title: "Skill 2 - Undead III"
+         description: "9% chance to gain 1.0 health upon being hit"
+      4:
+         title: "Skill 2 - Undead IV"
+         description: "10% chance to gain 1.0 health upon being hit"
+      5:
+         title: "Skill 2 - Undead V"
+         description: "11% chance to gain 1.0 health upon being hit"
+      6:
+         title: "Skill 2 - Undead VI"
+         description: "12% chance to gain 1.0 health upon being hit"
+      7:
+         title: "Skill 2 - Undead VII"
+         description: "13% chance to gain 1.0 health upon being hit"
+      8:
+         title: "Skill 2 - Undead VIII"
+         description: "14% chance to gain 1.0 health upon being hit"
+      9:
+         title: "Skill 2 - Undead IX"
+         description: "15% chance to gain 1.0 health upon being hit"
+    WITHER_MINION:
+      1:
+         title: "Kit Items - Spirit Warrior I"
+         description: "Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
+      2:
+         title: "Kit Items - Spirit Warrior II"
+         description: "Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
+      3:
+         title: "Kit Items - Spirit Warrior III"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
+      4:
+         title: "Kit Items - Spirit Warrior IV"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+      5:
+         title: "Kit Items - Spirit Warrior V"
+         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      6:
+         title: "Kit Items - Spirit Warrior VI"
+         description: "Iron Helmet (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+      7:
+         title: "Kit Items - Spirit Warrior VII"
+         description: "Iron Helmet (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      8:
+         title: "Kit Items - Spirit Warrior VIII"
+         description: "Iron Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+      9:
+         title: "Kit Items - Spirit Warrior IX"
+         description: "Diamond Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"

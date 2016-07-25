@@ -14,7 +14,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -128,11 +127,6 @@ public class ArenaPluginPlayerListener implements Listener {
 			} catch (GameException e) {
 			}
 		}
-	}
-	
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		// to be used for layout editor
 	}
 	
 	@EventHandler

@@ -1,9 +1,13 @@
 package com.andrewyunt.arenaplugin.objects;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 
@@ -29,7 +33,7 @@ public enum Ability {
 	HURRICANE("Hurricane") {
 	},
 	
-	MASTERS_ATTACK("Master's Attack") {	
+	WITHER_HEADS("Master's Attack") {	
 	};
 	
 	private String name;
@@ -50,7 +54,7 @@ public enum Ability {
 		
 		if (this == HEAL) {
 			
-			double hearts = 3 + (1 * getLevel(player));
+			double hearts = .5 + (.5 * getLevel(player));
 			
 			for (Entity entity : bp.getNearbyEntities(5, 5, 5)) {
 				if (!(entity instanceof Player))
@@ -65,17 +69,23 @@ public enum Ability {
 			
 			bp.setHealth(((Damageable) bp).getHealth() + hearts);
 			
-			bp.sendMessage(String.format(ChatColor.GOLD + "You have used the heal ability and have restored %s hearts.", hearts / 2));
+			bp.sendMessage(String.format(ChatColor.GOLD + "You have used the heal ability and have restored %s hearts.", hearts * 2));
 			
 		} else if (this == SPLIT_ARROW) {
 			
+			Projectile arrow = bp.launchProjectile(Arrow.class);
+			arrow.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
+			
 		} else if (this == LIGHTNING) {
+			
+			LightningStrike strike = bp.getWorld().strikeLightning(bp.getTargetBlock(null, 10).getLocation());
+			strike.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
 			
 		} else if (this == EXPLODE) {
 			
 		} else if (this == HURRICANE) {
 			
-		} else if (this == MASTERS_ATTACK) {
+		} else if (this == WITHER_HEADS) {
 			
 		}
 	}
