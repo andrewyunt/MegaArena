@@ -10,6 +10,8 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
+import com.andrewyunt.arenaplugin.exception.PlayerException;
+import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
 /**
  * 
@@ -50,31 +52,48 @@ public enum Ability {
 	
 	public void use(ArenaPlayer player) {
 		
+		if (player.getEnergy() < 100)
+			return;
+		
 		Player bp = player.getBukkitPlayer();
 		
 		if (this == HEAL) {
 			
-			double hearts = .5 + (.5 * getLevel(player));
+			double hearts = 4 + (1 * getLevel(player));
 			
-			for (Entity entity : bp.getNearbyEntities(5, 5, 5)) {
-				if (!(entity instanceof Player))
-					continue;
-				
-				Player ep = (Player) entity;
-				
-				((Damageable) ep).setHealth(((Damageable) ep).getHealth() + hearts);
-				
-				ep.sendMessage(String.format(ChatColor.GOLD + "You have been healed by %s.", player.getName()));
-			}
+			if (player.getGame().getArena().getType() != ArenaType.FFA || player.getGame().getArena().getType() != ArenaType.DUEL)
+				for (Entity entity : bp.getNearbyEntities(5, 5, 5)) {
+					if (!(entity instanceof Player))
+						continue;
+					
+					Player ep = (Player) entity;
+					
+					try {
+						if (!ArenaPlugin.getInstance().getPlayerManager().getPlayer(ep.getName()).isInGame())
+							return;
+					} catch (PlayerException e) {
+					}
+					
+					if (((Damageable) ep).getHealth() < 40)
+						((Damageable) ep).setHealth(((Damageable) ep).getHealth() + hearts);
+					
+					ep.sendMessage(String.format(ChatColor.GOLD + "You have been healed by %s.", player.getName()));
+				}
 			
-			bp.setHealth(((Damageable) bp).getHealth() + hearts);
+			if (((Damageable) bp).getHealth() < 40)
+				if (hearts > 40)
+					bp.setHealth(40D);
+				else
+					bp.setHealth(((Damageable) bp).getHealth() + hearts);
 			
-			bp.sendMessage(String.format(ChatColor.GOLD + "You have used the heal ability and have restored %s hearts.", hearts * 2));
+			bp.sendMessage(String.format(ChatColor.GOLD + "You have used the heal ability" + 
+			(((Damageable) bp).getHealth() < 40 ? String.format(" and have restored %s hearts.", hearts / 2) : ".")));
 			
 		} else if (this == SPLIT_ARROW) {
 			
 			Projectile arrow = bp.launchProjectile(Arrow.class);
 			arrow.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
+			arrow.setShooter(bp);
 			
 		} else if (this == LIGHTNING) {
 			
@@ -88,6 +107,8 @@ public enum Ability {
 		} else if (this == WITHER_HEADS) {
 			
 		}
+		
+		player.setEnergy(0);
 	}
 	
 	public int getLevel(ArenaPlayer player) {

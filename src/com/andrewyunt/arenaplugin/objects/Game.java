@@ -97,9 +97,12 @@ public class Game {
 			player.getBukkitPlayer().setHealth(ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName()).getPreviousHealth());
 		} catch (PlayerException e) {
 		}
+	
+		player.setEnergy(0);
 		
 		Player bp = player.getBukkitPlayer();
 		
+		bp.setMaxHealth(20D);
 		bp.setHealth(player.getPreviousHealth());
 		bp.setFoodLevel(player.getPreviousFoodLevel());
 		bp.setExp(player.getPreviousExp());

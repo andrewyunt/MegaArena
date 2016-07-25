@@ -224,7 +224,8 @@ public class ArenaPlayer {
 		Player player = getBukkitPlayer();
 		Location loc = spawn.getLocation();
 		
-		player.setHealth(20D);
+		player.setMaxHealth(40D);
+		player.setHealth(40D);
 		player.setFoodLevel(20);
 		setEnergy(0);
 		player.setGameMode(GameMode.SURVIVAL);

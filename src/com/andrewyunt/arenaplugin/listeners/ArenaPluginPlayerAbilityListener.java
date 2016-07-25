@@ -11,14 +11,17 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
+import com.andrewyunt.arenaplugin.managers.PlayerManager;
+import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 
 public class ArenaPluginPlayerAbilityListener implements Listener {
@@ -50,7 +53,7 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			if (ap.getClassType() == SKELETON)
 				return;
 			
-			if (type == Material.BOW)
+			if (type != Material.STONE_SWORD && type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
 				return;
 			
 			ap.getClassType().getAbility().use(ap);
@@ -103,5 +106,63 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 		
 	    if (event.getEntity() instanceof Player && event.getCause().equals(DamageCause.ENTITY_EXPLOSION))
 	        event.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+		
+		Entity damaged = event.getEntity();
+		Entity damager = event.getDamager();
+		
+		if (!(damaged instanceof Player) || !(damager instanceof Player || damager instanceof Projectile))
+			return;
+		
+		PlayerManager playerManager = ArenaPlugin.getInstance().getPlayerManager();
+		
+		Player damagedPlayer = (Player) damaged;
+		Player damagerPlayer = null;
+		
+		if (damager instanceof Player)
+			damagerPlayer = (Player) damager;
+		else
+			damagerPlayer = (Player) ((Projectile) damager).getShooter();
+		
+		ArenaPlayer damagedAP = null;
+		ArenaPlayer damagerAP = null;
+		
+		try {
+			damagedAP = playerManager.getPlayer(damagedPlayer.getName());
+			damagerAP = playerManager.getPlayer(damagerPlayer.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (damagedAP == damagerAP)
+			return;
+		
+		if (!damagerAP.isInGame() || !damagedAP.isInGame())
+			return;
+		
+		if ((damagerAP.getSide() == damagedAP.getSide()) && damagerAP.getGame().getArena().getType() == ArenaType.TDM)
+			return;
+		
+		if (damager instanceof Projectile) {
+			
+			if (damagerAP.getClassType() != SKELETON)
+				return;
+			
+			damagerAP.addEnergy(damagerAP.getClassType().getEnergyPerClick());
+			
+		} else {
+			
+			if (damagerAP.getClassType() == SKELETON)
+				return;
+			
+			Material type = damagerPlayer.getItemInHand().getType();
+			
+			if (type != Material.STONE_SWORD && type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
+				return;
+			
+			damagerAP.addEnergy(damagerAP.getClassType().getEnergyPerClick());
+		}
 	}
 }
