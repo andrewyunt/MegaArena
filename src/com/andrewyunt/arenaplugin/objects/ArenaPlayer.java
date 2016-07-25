@@ -253,7 +253,7 @@ public class ArenaPlayer {
 			this.energy = 100;
 		
 		getBukkitPlayer().setLevel(this.energy);
-		getBukkitPlayer().setExp(this.energy / 100);
+		getBukkitPlayer().setExp(this.energy / 100.0F);
 	}
 	
 	public int getEnergy() {
