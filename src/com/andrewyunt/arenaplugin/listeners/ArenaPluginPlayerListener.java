@@ -161,7 +161,7 @@ public class ArenaPluginPlayerListener implements Listener {
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
 		
-		if (!(damaged instanceof Player || !(damager instanceof Player)))
+		if (!(damaged instanceof Player) || !(damager instanceof Player))
 			return;
 	
 		PlayerManager playerManager = ArenaPlugin.getInstance().getPlayerManager();

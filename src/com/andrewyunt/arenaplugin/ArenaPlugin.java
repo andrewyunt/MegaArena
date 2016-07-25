@@ -22,6 +22,8 @@ import com.andrewyunt.arenaplugin.managers.GameManager;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
+import com.andrewyunt.arenaplugin.objects.Game;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -129,6 +131,9 @@ public class ArenaPlugin extends JavaPlugin {
 	public void onDisable() {
 		
 		logger.info("Disabling " + pdf.getName() + " v" + pdf.getVersion() + "... Please wait.");
+		
+		for (Game game : getGameManager().getGames())
+			game.end();
 	}
 	
 	public static ArenaPlugin getInstance() {
