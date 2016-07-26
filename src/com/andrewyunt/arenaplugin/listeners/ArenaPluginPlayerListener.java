@@ -276,6 +276,8 @@ public class ArenaPluginPlayerListener implements Listener {
 		}
 		
 		if (ap.isInGame()) {
+			event.setKeepInventory(true);
+			
 			Game game = ap.getGame();
 			
 			if (game.getArena().getType() == ArenaType.DUEL) {

@@ -1,5 +1,6 @@
 package com.andrewyunt.arenaplugin.menu;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,8 +10,6 @@ import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Class;
 import com.andrewyunt.arenaplugin.objects.IconMenu;
-
-import net.md_5.bungee.api.ChatColor;
 
 /**
  * 

@@ -1,6 +1,6 @@
 package com.andrewyunt.arenaplugin.listeners;
 
-import static com.andrewyunt.arenaplugin.objects.Class.*;
+import static com.andrewyunt.arenaplugin.objects.Class.SKELETON;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -9,12 +9,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,10 +25,11 @@ import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
+import com.andrewyunt.arenaplugin.utilities.Utils;
 
 public class ArenaPluginPlayerAbilityListener implements Listener {
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
 		ItemStack item = event.getItem();
@@ -35,10 +38,6 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			return;
 		
 		Material type = item.getType();
-		
-		if (!(type == Material.DIAMOND_SWORD || type == Material.IRON_SWORD || type == Material.BOW))
-			return;
-		
 		Action action = event.getAction();
 		Player player = event.getPlayer();
 		ArenaPlayer ap = null;
@@ -50,24 +49,41 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 		
 		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
 			
-			if (ap.getClassType() == SKELETON)
+			if (!ap.isInGame())
 				return;
 			
-			if (type != Material.STONE_SWORD && type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
+			if (ap.getClassType() == SKELETON)
 				return;
 			
 			ap.getClassType().getAbility().use(ap);
 			
 		} else if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
 			
-			if (ap.getClassType() != SKELETON)
+			if (!ap.isInGame())
 				return;
 			
-			if (type != Material.BOW)
-				return;
-			
-			ap.getClassType().getAbility().use(ap);
+			if (ap.getClassType() == SKELETON)
+				if (type == Material.BOW)
+					ap.getClassType().getAbility().use(ap);
 		}
+	}
+	
+	@EventHandler
+	public void onPlayerAnimation(PlayerAnimationEvent event) {
+		
+		Player player = event.getPlayer();
+		ArenaPlayer ap = null;
+		
+		try {
+			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (!ap.isInGame())
+			return;
+		
+		if (Utils.getTargetPlayer(player) != null)
+			ap.addEnergy(ap.getClassType().getEnergyPerClick());
 	}
 	
 	@EventHandler
@@ -108,13 +124,13 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 	        event.setCancelled(true);
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		
 		Entity damaged = event.getEntity();
 		Entity damager = event.getDamager();
 		
-		if (!(damaged instanceof Player) || !(damager instanceof Player || damager instanceof Projectile))
+		if (!(damaged instanceof Player) || !(damager instanceof Projectile))
 			return;
 		
 		PlayerManager playerManager = ArenaPlugin.getInstance().getPlayerManager();
