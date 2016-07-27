@@ -77,27 +77,25 @@ public class ClassSelectorMenu {
 				} catch (PlayerException e) {
 				}
             	
-            	if (name.equals("Zombie")) {
-            		player.setClassType(Class.ZOMBIE);
-            	} else if (name.equals("Skeleton")) {
-            		player.setClassType(Class.SKELETON);
-            	} else if (name.equals("Creeper")) {	
-            		player.setClassType(Class.CREEPER);
-            	} else if (name.equals("Herobrine")) {
-            		player.setClassType(Class.HEROBRINE);
-            	} else if (name.equals("Go Back")) {
-            		openMainMenu();
-            		event.setWillClose(false);
-            		return;
-            	} else {
-            		event.setWillClose(false);
-            		return;
-            	}
+				switch (name) {
+					case "Go Back":
+						openMainMenu();
+						event.setWillClose(false);
+						break;
+					case "":
+						event.setWillClose(false);
+						return;
+					case "Zombie":
+					case "Skeleton":
+					case "Creeper":
+					case "Herobrine":
+						player.setClassType(Class.valueOf(name.toUpperCase()));
+						player.getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You selected the %s class.", name));
+						event.setWillClose(true);
+						return;
+				}
             	
-            	event.setWillClose(true);
             	event.setWillDestroy(true);
-            	
-                player.getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You selected the %s class.", name));
             }
 		}, ArenaPlugin.getInstance());
 		

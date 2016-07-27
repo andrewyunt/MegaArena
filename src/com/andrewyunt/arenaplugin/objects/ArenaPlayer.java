@@ -11,6 +11,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
+import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.ArenaException;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
 
@@ -156,7 +157,7 @@ public class ArenaPlayer {
 		ItemMeta playTDMMeta = playTDM.getItemMeta();
 		
 		/* Set meta display names */
-		shopMeta.setDisplayName(ChatColor.GREEN + "Class Upgrades");
+		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
 		layoutEditorMeta.setDisplayName(ChatColor.YELLOW + "Layout Editor");
 		classSelectorMeta.setDisplayName(ChatColor.RED + "Class Selector");
 		playFFAMeta.setDisplayName("Play : Free-for-all");
@@ -299,5 +300,10 @@ public class ArenaPlayer {
 	public ItemStack[] getPreviousContents() {
 		
 		return previousContents;
+	}
+	
+	public double getCoins() {
+		
+		return ArenaPlugin.getInstance().getEconomy().getBalance(getBukkitPlayer());
 	}
 }

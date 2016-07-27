@@ -27,6 +27,7 @@ import com.andrewyunt.arenaplugin.exception.GameException;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.menu.ClassSelectorMenu;
+import com.andrewyunt.arenaplugin.menu.ShopMenu;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Game;
@@ -98,9 +99,9 @@ public class ArenaPluginPlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		if (name.equals(ChatColor.GREEN + "Class Upgrades")) {
+		if (name.equals(ChatColor.GREEN + "Shop")) {
 			
-			//new UpgradesMenu(player);
+			new ShopMenu(player);
 		
 		} else if (name.equals(ChatColor.YELLOW + "Layout Editor")) {
 			

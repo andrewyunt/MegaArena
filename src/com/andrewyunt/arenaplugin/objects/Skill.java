@@ -27,7 +27,7 @@ public enum Skill {
 			if (bp.hasPermission(String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), i)))
 				return i;
 		
-		return 1; 
+		return 1;
 	}
 	
 	public void setLevel(ArenaPlayer player, int level) {

@@ -1,6 +1,7 @@
 package com.andrewyunt.arenaplugin.objects;
 
 import static com.andrewyunt.arenaplugin.objects.Ability.*;
+import static com.andrewyunt.arenaplugin.objects.Skill.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,32 +25,36 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
  */
 public enum Class {
 	
-	ZOMBIE("Zombie", HEAL, 4) {
+	ZOMBIE("Zombie", HEAL, RESIST, SWIFTNESS, 4) {
 	},
 	
-	SKELETON("Skeleton", SPLIT_ARROW, 15) {
+	SKELETON("Skeleton", SPLIT_ARROW, BOOMERANG, MUTUAL_WEAKNESS, 15) {
 	},
 	
-	HEROBRINE("Herobrine", LIGHTNING, 10) {
+	HEROBRINE("Herobrine", LIGHTNING, RECHARGE, FLURRY, 10) {
 	},
 	
-	CREEPER("Creeper", EXPLODE, 10) {
+	CREEPER("Creeper", EXPLODE, POWERFUL_WEAKNESS, SUPPORT, 10) {
 	},
 	
-	SPIRIT_WARRIOR("Spirit Warrior", HURRICANE, 5) {
+	SPIRIT_WARRIOR("Spirit Warrior", HURRICANE, WEAKENING_SWING, SWIFT_BACKUP, 5) {
 	},
 	
-	WITHER_MINION("Wither Minion", WITHER_HEADS, 5) {
+	WITHER_MINION("Wither Minion", WITHER_HEADS, SOUL_SUCKER, UNDEAD, 5) {
 	};
 	
 	private String name;
 	private Ability ability;
+	private Skill skillOne;
+	private Skill skillTwo;
 	private int energyPerClick;
 	
-	Class(String name, Ability ability, int energyPerClick) {
+	Class(String name, Ability ability, Skill skillOne, Skill skillTwo, int energyPerClick) {
 		
 		this.name = name;
 		this.ability = ability;
+		this.skillOne = skillOne;
+		this.skillTwo = skillTwo;
 		this.energyPerClick = energyPerClick;
 	}
 	
@@ -61,6 +66,16 @@ public enum Class {
 	public Ability getAbility() {
 		
 		return ability;
+	}
+	
+	public Skill getSkillOne() {
+		
+		return skillOne;
+	}
+	
+	public Skill getSkillTwo() {
+		
+		return skillTwo;
 	}
 	
 	public int getEnergyPerClick() {

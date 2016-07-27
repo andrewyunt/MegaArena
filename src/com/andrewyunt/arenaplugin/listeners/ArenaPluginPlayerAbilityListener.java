@@ -68,7 +68,7 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void onPlayerAnimation(PlayerAnimationEvent event) {
 		
 		Player player = event.getPlayer();

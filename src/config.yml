@@ -1,3 +1,13 @@
+# Coins needed for each tier upgrade (Tier 1 is not included as it is default)
+tier-2-upgrade-cost: 50
+tier-3-upgrade-cost: 125
+tier-4-upgrade-cost: 300
+tier-5-upgrade-cost: 600
+tier-6-upgrade-cost: 3500
+tier-7-upgrade-cost: 6500
+tier-8-upgrade-cost: 8500
+tier-9-upgrade-cost: 14000
+
 classes:
   ZOMBIE:
     HEAL:
