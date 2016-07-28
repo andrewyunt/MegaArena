@@ -14,7 +14,6 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.GameException;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
-import com.andrewyunt.arenaplugin.utilities.Utils;
 
 /**
  * 
@@ -111,8 +110,6 @@ public class Game {
 		bp.setGameMode(player.getPreviousGameMode());
 		bp.getInventory().setContents(player.getPreviousContents());
 		bp.teleport(player.getPreviousLocation());
-		
-		Utils.updateEntities(Utils.getPlayersWithin(bp, ArenaPlugin.getInstance().getServer().getViewDistance()));
 	}
 	
 	public Set<ArenaPlayer> getPlayers() {

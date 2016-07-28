@@ -20,8 +20,7 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
 
 /**
  * 
- * @author Andrew Yunt
- * @author MaccariTA
+ * @author Andrew Yunt, MaccariTA
  *
  */
 public enum Class {
