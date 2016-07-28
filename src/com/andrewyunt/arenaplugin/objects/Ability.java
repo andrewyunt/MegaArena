@@ -61,7 +61,7 @@ public enum Ability {
 			
 			double hearts = 2.0 + 0.5 * (getLevel(player) -1);
 			
-			if (player.getGame().getArena().getType() != ArenaType.FFA || player.getGame().getArena().getType() != ArenaType.DUEL)
+			if (player.getGame().getArena().getType() != ArenaType.FFA && player.getGame().getArena().getType() != ArenaType.DUEL)
 				for (Entity entity : bp.getNearbyEntities(5, 5, 5)) {
 					if (!(entity instanceof Player))
 						continue;
@@ -74,17 +74,22 @@ public enum Ability {
 					} catch (PlayerException e) {
 					}
 					
-					if (((Damageable) ep).getHealth() < 40)
-						((Damageable) ep).setHealth(((Damageable) ep).getHealth() + hearts);
+					double newHealth = ((Damageable) ep).getHealth() + hearts;
+					
+					if (newHealth < 40)
+						((Damageable) ep).setHealth(newHealth);
+					else
+						((Damageable) ep).setHealth(40D);
 					
 					ep.sendMessage(String.format(ChatColor.GOLD + "You have been healed by %s.", player.getName()));
 				}
 			
-			if (((Damageable) bp).getHealth() < 40)
-				if (hearts > 40)
-					bp.setHealth(40D);
-				else
-					bp.setHealth(((Damageable) bp).getHealth() + hearts);
+			double newHealth = ((Damageable) bp).getHealth() + hearts;
+			
+			if (newHealth < 40)
+				((Damageable) bp).setHealth(newHealth);
+			else
+				((Damageable) bp).setHealth(40D);
 			
 			bp.sendMessage(String.format(ChatColor.GOLD + "You have used the heal ability" + 
 			(((Damageable) bp).getHealth() < 40 ? String.format(" and have restored %s hearts.", hearts / 2) : ".")));
