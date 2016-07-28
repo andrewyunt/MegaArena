@@ -14,6 +14,7 @@ import org.zencode.shortninja.staffplus.StaffPlus;
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.ArenaException;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
+import com.andrewyunt.arenaplugin.utilities.Utils;
 
 /**
  * 
@@ -236,6 +237,8 @@ public class ArenaPlayer {
 		
 		loc.setY(loc.getY() + 1);
 		player.teleport(loc);
+		
+		Utils.updateEntities(Utils.getPlayersWithin(player, ArenaPlugin.getInstance().getServer().getViewDistance()));
 		
 		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s.", 
 				String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
