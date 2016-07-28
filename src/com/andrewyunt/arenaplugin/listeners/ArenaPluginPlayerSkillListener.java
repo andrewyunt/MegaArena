@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
@@ -120,7 +121,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		shooter.addPotionEffect(regen, false);
 		damaged.addPotionEffect(slowness, false);
 		shooter.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.MUTUAL_WEAKNESS.toString()));
-		damaged.sendMessage(String.format(ChatColor.GOLD+"%s's arrow inflicted you with Slowness for %ss", shooter.getName(), duration+""));
+		damaged.sendMessage(String.format(ChatColor.GOLD+"%s's arrow inflicted you with Slowness for %ss", shooter.getName(), duration/20+""));
 	}
 	
 	@EventHandler
@@ -156,8 +157,9 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			skillLevel = apDamaged.getClassType().getSkillOne().getLevel(apDamaged);
 		}else if (apDamaged.getClassType().getSkillTwo().equals(Skill.RESIST))
 			skillLevel = apDamaged.getClassType().getSkillTwo().getLevel(apDamaged);
-		
 		int precentage = 11+3*(skillLevel-1);
+		Bukkit.getServer().broadcastMessage(random+"");
+		Bukkit.getServer().broadcastMessage(precentage+"");
 		if (random > precentage)
 			return;
 		PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 0, true);
