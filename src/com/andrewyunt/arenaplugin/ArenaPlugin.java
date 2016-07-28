@@ -17,6 +17,7 @@ import com.andrewyunt.arenaplugin.configuration.ArenaConfiguration;
 import com.andrewyunt.arenaplugin.exception.GameException;
 import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerAbilityListener;
 import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerListener;
+import com.andrewyunt.arenaplugin.listeners.ArenaPluginPlayerSkillListener;
 import com.andrewyunt.arenaplugin.managers.ArenaManager;
 import com.andrewyunt.arenaplugin.managers.GameManager;
 import com.andrewyunt.arenaplugin.managers.PlayerManager;
@@ -77,6 +78,7 @@ public class ArenaPlugin extends JavaPlugin {
 		/* Register events */
 		pm.registerEvents(new ArenaPluginPlayerListener(), this);
 		pm.registerEvents(new ArenaPluginPlayerAbilityListener(), this);
+		pm.registerEvents(new ArenaPluginPlayerSkillListener(), this);
 		
 		/* Load all arenas from arenas.yml */
 		arenaManager.loadArenas();

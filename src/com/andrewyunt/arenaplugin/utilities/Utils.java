@@ -44,15 +44,15 @@ public class Utils {
 
 		return map;
 	}
-
-	public static List<String> colorizeStringList(List<String> input) {
-
+	
+	public static String[] colorizeArray(String[] description, ChatColor color) {
+		
 		List<String> colorized = new ArrayList<String>();
 
-		for (String line : input)
-			colorized.add(ChatColor.translateAlternateColorCodes('&', line));
+		for (String line : description)
+			colorized.add(color + line);
 
-		return colorized;
+		return colorized.toArray(new String[0]);
 	}
 
 	/**

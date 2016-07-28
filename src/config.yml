@@ -97,31 +97,31 @@ classes:
     ZOMBIE:
       1:
          title: "Kit Items - Zombie I"
-         description: "Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
+         description: "Iron Armor \nIron Sword \n4 Steak \n32 Cobblestone"
       2:
          title: "Kit Items - Zombie II"
-         description: "Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
+         description: "Iron Armor \nIron Sword \n8 Steak \n48 Cobblestone"
       3:
          title: "Kit Items - Zombie III"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone"
       4:
          title: "Kit Items - Zombie IV"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764)"
       5:
          title: "Kit Items - Zombie V"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       6:
          title: "Kit Items - Zombie VI"
-         description: "Iron Chestplate (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Chestplate (Protection I) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       7:
          title: "Kit Items - Zombie VII"
-         description: "Iron Chestplate (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Chestplate (Protection I) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       8:
          title: "Kit Items - Zombie VIII"
-         description: "Iron Chestplate (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Chestplate (Protection II) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       9:
          title: "Kit Items - Zombie IX"
-         description: "Diamond Chestplate (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Diamond Chestplate (Protection II) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
   SKELETON:
     SPLIT_ARROW:
       1:
@@ -210,31 +210,31 @@ classes:
     SKELETON:
       1:
          title: "Kit Items - Skeleton I"
-         description: "Iron Armor \n Stone Sword \n 4 Steak \n 32 Cobblestone \n Bow \n 32 Arrows"
+         description: "Iron Armor \nStone Sword \n4 Steak \n32 Cobblestone \nBow \n32 Arrows"
       2:
          title: "Kit Items - Skeleton II"
-         description: "Iron Armor \n Stone Sword \n 8 Steak \n 48 Cobblestone \n Bow \n 48 Arrows"
+         description: "Iron Armor \nStone Sword \n8 Steak \n48 Cobblestone \nBow \n48 Arrows"
       3:
          title: "Kit Items - Skeleton III"
-         description: "Iron Armor \n Stone Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows"
+         description: "Iron Armor \nStone Sword \n16 Steak \n64 Cobblestone \nBow \n64 Arrows"
       4:
          title: "Kit Items - Skeleton IV"
-         description: "Iron Armor \n Stone Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows \n Potion Of Heal (8 \u2764)"
+         description: "Iron Armor \nStone Sword \n16 Steak \n64 Cobblestone \nBow \n64 Arrows \nPotion Of Heal (8 \u2764)"
       5:
          title: "Kit Items - Skeleton V"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow \n 64 Arrows \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nBow \n64 Arrows \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       6:
          title: "Kit Items - Skeleton VI"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nBow (Power I) \n64 Arrows \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       7:
          title: "Kit Items - Skeleton VII"
-         description: "Iron Helmet (Projectile Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Helmet (Projectile Protection II) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nBow (Power I) \n64 Arrows \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       8:
          title: "Kit Items - Skeleton VIII"
-         description: "Iron Helmet (Projectile Protection III) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power I) \n 64 Arrows \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Helmet (Projectile Protection III) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nBow (Power I) \n64 Arrows \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       9:
          title: "Kit Items - Skeleton IX"
-         description: "Diamond Helmet (Projectile Protection IV) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Bow (Power II) \n 64 Arrows \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Diamond Helmet (Projectile Protection IV) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nBow (Power II) \n64 Arrows \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
   HEROBRINE:
     LIGHTNING:
       1:
@@ -323,31 +323,31 @@ classes:
     HEROBRINE:
       1:
          title: "Kit Items - Herobrine I"
-         description: "Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
+         description: "Iron Armor \nIron Sword \n4 Steak \n32 Cobblestone"
       2:
          title: "Kit Items - Herobrine II"
-         description: "Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
+         description: "Iron Armor \nIron Sword \n8 Steak \n48 Cobblestone"
       3:
          title: "Kit Items - Herobrine III"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone"
       4:
          title: "Kit Items - Herobrine IV"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764)"
       5:
          title: "Kit Items - Herobrine V"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       6:
          title: "Kit Items - Herobrine VI"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \nPotion Of Speed II"
       7:
          title: "Kit Items - Herobrine VII"
-         description: "Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Armor \nDiamond Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \nPotion Of Speed II"
       8:
          title: "Kit Items - Herobrine VIII"
-         description: "Iron Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Helmet (Protection II) \nIron Armor \nDiamond Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       9:
          title: "Kit Items - Herobrine IX"
-         description: "Diamond Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Diamond Helmet (Protection II) \nIron Armor \nDiamond Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
   CREEPER:
     EXPLODE:
       1:
@@ -436,31 +436,31 @@ classes:
     CREEPER:
       1:
          title: "Kit Items - Creeper I"
-         description: "Iron Armor \n Iron Sword \n 4 Steak \ 32 Cobblestone"
+         description: "Iron Armor \nIron Sword \n4 Steak \ 32 Cobblestone"
       2:
          title: "Kit Items - Creeper II"
-         description: "Iron Armor \n Iron Sword \n 8 Steak \ 48 Cobblestone"
+         description: "Iron Armor \nIron Sword \n8 Steak \ 48 Cobblestone"
       3:
          title: "Kit Items - Creeper III"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone"
+         description: "Iron Armor \nIron Sword \n16 Steak \ 64 Cobblestone"
       4:
          title: "Kit Items - Creeper IV"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+         description: "Iron Armor \nIron Sword \n16 Steak \ 64 Cobblestone \nPotion Of Heal (8 \u2764)"
       5:
          title: "Kit Items - Creeper V"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Armor \nIron Sword \n16 Steak \ 64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       6:
          title: "Kit Items - Creeper VI"
-         description: "Iron Leggings (Blast Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Leggings (Blast Protection I) \nIron Armor \nIron Sword \n16 Steak \ 64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       7:
          title: "Kit Items - Creeper VII"
-         description: "Iron Leggings (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Leggings (Protection I) \nIron Armor \nIron Sword \n16 Steak \ 64 Cobblestone \n2 Potion Of Heal (8 \u2764) \nPotion Of Speed II"
       8:
          title: "Kit Items - Creeper VIII"
-         description: "Iron Leggings (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Leggings (Protection II) \nIron Armor \nIron Sword \n16 Steak \ 64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       9:
          title: "Kit Items - Creeper IX"
-         description: "Diamond Leggings (Blast Protection II, Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \ 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Diamond Leggings (Blast Protection II, Protection II) \nIron Armor \nIron Sword \n16 Steak \ 64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
   SPIRIT_WARRIOR:
     HURRICANE:
       1:
@@ -549,31 +549,31 @@ classes:
     SPIRIT_WARRIOR:
       1:
          title: "Kit Items - Spirit Warrior I"
-         description: "Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
+         description: "Iron Armor \nIron Sword \n4 Steak \n32 Cobblestone"
       2:
          title: "Kit Items - Spirit Warrior II"
-         description: "Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
+         description: "Iron Armor \nIron Sword \n8 Steak \n48 Cobblestone"
       3:
          title: "Kit Items - Spirit Warrior III"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone"
       4:
          title: "Kit Items - Spirit Warrior IV"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764)"
       5:
          title: "Kit Items - Spirit Warrior V"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       6:
          title: "Kit Items - Spirit Warrior VI"
-         description: "Iron Boots (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Boots (Protection I) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       7:
          title: "Kit Items - Spirit Warrior VII"
-         description: "Iron Boots (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Boots (Protection II) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       8:
          title: "Kit Items - Spirit Warrior VIII"
-         description: "Iron Boots (Protection II, Feather Falling I) \n Diamond Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Boots (Protection II, Feather Falling I) \nDiamond Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       9:
          title: "Kit Items - Spirit Warrior IX"
-         description: "Diamond Boots (Protection II, Feather Falling II) \n Diamond Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Diamond Boots (Protection II, Feather Falling II) \nDiamond Armor \nIron Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
   WITHER_MINION:
     WITHER_HEADS:
       1:
@@ -662,28 +662,28 @@ classes:
     WITHER_MINION:
       1:
          title: "Kit Items - Spirit Warrior I"
-         description: "Iron Armor \n Iron Sword \n 4 Steak \n 32 Cobblestone"
+         description: "Iron Armor \nIron Sword \n4 Steak \n32 Cobblestone"
       2:
          title: "Kit Items - Spirit Warrior II"
-         description: "Iron Armor \n Iron Sword \n 8 Steak \n 48 Cobblestone"
+         description: "Iron Armor \nIron Sword \n8 Steak \n48 Cobblestone"
       3:
          title: "Kit Items - Spirit Warrior III"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone"
       4:
          title: "Kit Items - Spirit Warrior IV"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764)"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764)"
       5:
          title: "Kit Items - Spirit Warrior V"
-         description: "Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       6:
          title: "Kit Items - Spirit Warrior VI"
-         description: "Iron Helmet (Protection I) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n Potion Of Speed II"
+         description: "Iron Helmet (Protection I) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       7:
          title: "Kit Items - Spirit Warrior VII"
-         description: "Iron Helmet (Protection II) \n Iron Armor \n Iron Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Helmet (Protection II) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       8:
          title: "Kit Items - Spirit Warrior VIII"
-         description: "Iron Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Iron Helmet (Protection II) \nIron Armor \nDiamond Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       9:
          title: "Kit Items - Spirit Warrior IX"
-         description: "Diamond Helmet (Protection II) \n Iron Armor \n Diamond Sword \n 16 Steak \n 64 Cobblestone \n 2 Potion Of Heal (8 \u2764) \n 2 Potion Of Speed II"
+         description: "Diamond Helmet (Protection II) \nIron Armor \nDiamond Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"

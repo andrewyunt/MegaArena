@@ -17,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -71,6 +72,9 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void onPlayerAnimation(PlayerAnimationEvent event) {
 		
+		if (event.getAnimationType() != PlayerAnimationType.ARM_SWING)
+			return;
+		
 		Player player = event.getPlayer();
 		ArenaPlayer ap = null;
 		
@@ -80,6 +84,9 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 		}
 		
 		if (!ap.isInGame())
+			return;
+		
+		if (ap.getClassType() == SKELETON)
 			return;
 		
 		if (Utils.getTargetPlayer(player) != null)

@@ -41,6 +41,11 @@ public class ClassSelectorMenu {
                 	openNormalClassSelector();
                 else if (name.equals("HERO CLASSES"))
                 	openHeroClassSelector();
+                else if (name.equals("Close")) {
+                	event.setWillClose(true);
+                	return;
+                }
+           
    
             	event.setWillClose(false);
             }
@@ -53,7 +58,12 @@ public class ClassSelectorMenu {
 		menu.setOption(13, glassPane, "", "");
 		menu.setOption(14, new ItemStack(Material.DIAMOND_SWORD), "HERO CLASSES", "");
 		
-		for (int i = 15; i < 27; i++)
+		for (int i = 15; i < 22; i++)
+			menu.setOption(i, glassPane, "", "");
+		
+		menu.setOption(22, new ItemStack(Material.ARROW), "Close", "");
+		
+		for (int i = 23; i < 27; i++)
 			menu.setOption(i, glassPane, "", "");
 		
 		menu.setSpecificTo(player);

@@ -59,7 +59,7 @@ public enum Ability {
 		
 		if (this == HEAL) {
 			
-			double hearts = 4 + (1 * getLevel(player));
+			double hearts = 2.0 + 0.5 * (getLevel(player) -1);
 			
 			if (player.getGame().getArena().getType() != ArenaType.FFA || player.getGame().getArena().getType() != ArenaType.DUEL)
 				for (Entity entity : bp.getNearbyEntities(5, 5, 5)) {
