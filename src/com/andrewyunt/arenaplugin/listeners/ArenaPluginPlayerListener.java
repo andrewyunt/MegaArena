@@ -236,7 +236,7 @@ public class ArenaPluginPlayerListener implements Listener {
 		if (!player.isInGame())
 			return;
 		
-		if (event.getBlock().getType() == Material.COBBLESTONE)
+		if (player.getGame().getPlacedBlocks().contains(event.getBlock()))
 			return;
 		
 		event.setCancelled(true);
