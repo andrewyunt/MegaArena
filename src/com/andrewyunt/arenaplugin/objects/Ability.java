@@ -3,21 +3,20 @@ package com.andrewyunt.arenaplugin.objects;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.util.Vector;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
+import com.andrewyunt.arenaplugin.utilities.Utils;
 
 import de.slikey.effectlib.effect.HeartEffect;
 import de.slikey.effectlib.effect.TornadoEffect;
@@ -70,7 +69,7 @@ public enum Ability {
 		
 		if (this == HEAL) {
 
-			double hearts = 2.0 + (0.5 * getLevel(player));
+			double hearts = 2.0 + 0.5*(getLevel(player)-1);
 			Set<Player> effectPlayers = new HashSet<Player>();
 			
 			effectPlayers.add(bp);
@@ -124,9 +123,31 @@ public enum Ability {
 			arrow.setShooter(bp);
 			
 		} else if (this == LIGHTNING) {
-			
-			LightningStrike strike = bp.getWorld().strikeLightning(bp.getTargetBlock(null, 10).getLocation());
-			strike.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
+			int count=0;
+			for (Entity e : player.getBukkitPlayer().getNearbyEntities(5, 3, 5)){
+				if (!(e instanceof Player))
+					continue;
+				try {
+					ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player)e).getName());
+				} catch (PlayerException e1) {
+					continue; // Player isn't playing
+				}
+				double dmg = 1.0 + 0.5*(getLevel(player)-1);
+				Player victim = (Player) e;
+				count++;
+				victim.getWorld().strikeLightningEffect(victim.getLocation());
+				Damageable dmgVictim = (Damageable) victim;
+				dmgVictim.damage(0.00001D, player.getBukkitPlayer()); // Just so an actual hit will register 
+				if (dmgVictim.getHealth() <= dmg)
+					dmgVictim.setHealth(0D);
+				else
+					dmgVictim.setHealth(dmgVictim.getHealth()-dmg);
+			}
+			if (count==0){
+			player.getBukkitPlayer().sendMessage(ChatColor.RED+"No targets within range found!");
+			return;
+			}
+			player.getBukkitPlayer().sendMessage(ChatColor.GOLD+"You have used your Lightning Strike ability.");
 			
 		} else if (this == EXPLODE) {
 			
@@ -139,35 +160,39 @@ public enum Ability {
 	        tornadoEffect.setDynamicOrigin(new DynamicLocation(bp.getLocation()));
 	        
 	        tornadoEffect.start();
-	        
 	        new BukkitRunnable() {
 	            public void run() {
 	            	
 	            	if (tornadoEffect.isDone())
 	                    this.cancel();
-	            	
-	            	for (Entity entity : tornadoEffect.getEntity().getNearbyEntities(5, 5, 5)) {
+	            	for (Entity entity : Utils.getNearbyEntities(tornadoEffect.getLocation(), 5)) {
 	            		if (!(entity instanceof Player))
 	            			continue;
 	            		
 	            		if (((Player) entity) == bp)
 	            			continue;
-	            		
+	            		((Damageable)entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill. and the red invisibility period 
 	            		double health = ((Damageable) entity).getHealth() - 3.0D;
 	            		
 	            		if (health > 0)
 	            			((Damageable) entity).setHealth(health);
 	            		else
-	            			entity.remove();
+	            			((Damageable) entity).setHealth(0D);
+	            		
+	            		player.addEnergy(Class.SPIRIT_WARRIOR.getEnergyPerClick());
+	            		Vector tornadoVector = tornadoEffect.getLocation().toVector();
+	            		Vector entityVector = entity.getLocation().add(0, 3, 0).toVector();
+	            		Vector answer = entityVector.subtract(tornadoVector);
+	            		entity.setVelocity(answer.multiply(0.12));
 	            	}
 	            }
-	        }.runTaskTimerAsynchronously(ArenaPlugin.getInstance(), 0L, 20L);
+	        }.runTaskTimer(ArenaPlugin.getInstance(), 0L, 20L);
 			
 		} else if (this == WITHER_HEADS) {
 			
 		}
+	player.setEnergy(0);
 		
-		player.setEnergy(0);
 	}
 	
 	public int getLevel(ArenaPlayer player) {
@@ -186,4 +211,5 @@ public enum Ability {
 		ArenaPlugin.getInstance().getPermissions().playerAdd(player.getBukkitPlayer(),
 				String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), level));
 	}
+	
 }

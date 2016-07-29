@@ -14,6 +14,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -36,6 +37,7 @@ import org.bukkit.util.permissions.BroadcastPermissions;
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
+import com.andrewyunt.arenaplugin.objects.Ability;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Class;
 import com.andrewyunt.arenaplugin.objects.Game.Side;
@@ -222,11 +224,11 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			return;
 		if (!(e.getEntity() instanceof Player))
 			return;
-		
 		/* Casting to players */
 		Player damager = (Player) e.getDamager();
 		Player damaged = (Player) e.getEntity();
 		
+		/*Fix Herobrine Ability not giving this skill*/
 		/* Checking if players are in the Arena */
 		ArenaPlayer apDamaged=null; 
 		ArenaPlayer apDamager=null;
@@ -236,14 +238,18 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		try {
 			apDamaged = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
-		
 		/* Checking that the damaged player is a Herobrine */
 		if (!(apDamager.getClassType() == Class.HEROBRINE))
 			return;
 		/* Checking if killed */
-		if (((Damageable)damaged).getHealth() - e.getFinalDamage() > 0)
+		boolean dead = false;
+		if (e.getDamage() < 0.0001D){
+			double dmg = 1.0 + 0.5*(apDamager.getClassType().getAbility().getLevel(apDamager)-1);
+			if (((Damageable)damaged).getHealth() - dmg < 0)
+				dead=true;
+		}
+		if (((Damageable)damaged).getHealth() - e.getFinalDamage() > 0 && !dead)
 			return;
-		
 		/* Randomization */
 		int skillLevel=0;
 		if (apDamager.getClassType().getSkillOne().equals(Skill.RECHARGE)){
@@ -266,7 +272,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			return;
 		if (!(e.getEntity() instanceof Player))
 			return;
-		
+		if (e.getDamage() < 0.001D)
+			return;
 		/* Casting to players */
 		Player damager = (Player) e.getDamager();
 		Player damaged = (Player) e.getEntity();
@@ -283,6 +290,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		/* Checking that the damaged player is a Herobrine */
 		if (!(apDamager.getClassType() == Class.HEROBRINE))
 			return;
+		
 		
 		/* Randomization */
 		Random r = new Random();

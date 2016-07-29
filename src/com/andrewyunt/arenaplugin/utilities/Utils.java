@@ -9,7 +9,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
 import com.andrewyunt.arenaplugin.objects.Vector3D;
 
 /**
@@ -65,10 +67,10 @@ public class Utils {
  
         for(Player p : player.getWorld().getPlayers()) {
             Vector3D targetPos = new Vector3D(p.getLocation());
-            Vector3D minimum = targetPos.add(-0.5, 0, -0.5);
-            Vector3D maximum = targetPos.add(0.5, 1.67, 0.5);
+            Vector3D minimum = targetPos.add(-0.3, 0, -0.3);
+            Vector3D maximum = targetPos.add(0.3, 1.8, 0.3);
        
-            if (p.getLocation().distanceSquared(player.getLocation()) > 11.56) // 11.56 is the range (squarred)
+            if (p.getLocation().distanceSquared(player.getLocation()) > 12.7449) 
             	continue;
             
             if(p != player && hasIntersection(playerStart, playerEnd, minimum, maximum))
@@ -112,5 +114,16 @@ public class Utils {
         	return false;
  
         return true;
+    }
+    
+    public static List<Entity> getNearbyEntities(Location l, int distance){
+    	List<Entity> entities = new ArrayList<Entity>();
+    	
+    	for (Entity e : l.getWorld().getEntities()){
+    		if (l.distanceSquared(e.getLocation()) <= distance*distance)
+    			entities.add(e);
+    	}
+    	
+    	return entities;
     }
 }

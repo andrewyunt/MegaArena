@@ -3,6 +3,7 @@ package com.andrewyunt.arenaplugin.listeners;
 import static com.andrewyunt.arenaplugin.objects.Class.SKELETON;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
@@ -49,7 +50,7 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR){
 			
 			if (!ap.isInGame())
 				return;
@@ -57,7 +58,7 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			if (ap.getClassType() == SKELETON)
 				return;
 			
-			if (type != Material.STONE_SWORD && type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
+			if (!type.toString().toLowerCase().contains("sword"))
 				return;
 			
 			ap.getClassType().getAbility().use(ap);
@@ -114,25 +115,33 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			shooter = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) entity).getShooter()).getName());
 		} catch (PlayerException e) {
 		}
-		
+		Player bukkitShooter = shooter.getBukkitPlayer();
 		for (Entity nearby : entity.getNearbyEntities(5D, 3D, 5D)) {
 			if (!(nearby instanceof Player))
 				continue;
-			
+			if (nearby == bukkitShooter)
+				continue;
 			Player nearbyPlayer = (Player) nearby;
 			
 			double dmg = 1.5 + (shooter.getClassType().getAbility().getLevel(shooter) * .5);
+			Damageable dmgPlayer = (Damageable) nearbyPlayer;
+			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as red damage invisiblity
+		    if (dmgPlayer.getHealth() < dmg) {
+		    	dmgPlayer.setHealth(0D);
+		    	return;
+		    }
+		    else
 			nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
+			 
 		}
 		
-		entity.getWorld().createExplosion(event.getEntity().getLocation(), 5F);
+		entity.getWorld().playEffect(event.getEntity().getLocation(), Effect.EXPLOSION, 0);
 	}
 	
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent event){
 		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT)){
 			event.setCancelled(true);
-			Bukkit.getServer().broadcastMessage("DAMAGE CANCELLED");
 		}
 		
 	}
