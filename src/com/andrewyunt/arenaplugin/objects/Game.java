@@ -114,6 +114,10 @@ public class Game {
 		bp.setExp(player.getPreviousExp());
 		bp.setLevel(player.getPreviousLevel());
 		bp.setGameMode(player.getPreviousGameMode());
+		bp.getInventory().getHelmet().setType(Material.AIR);
+		bp.getInventory().getChestplate().setType(Material.AIR);
+		bp.getInventory().getLeggings().setType(Material.AIR);
+		bp.getInventory().getBoots().setType(Material.AIR);
 		bp.getInventory().setContents(player.getPreviousContents());
 		bp.teleport(player.getPreviousLocation());
 	}

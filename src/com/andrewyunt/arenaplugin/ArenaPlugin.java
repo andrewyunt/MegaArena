@@ -25,6 +25,8 @@ import com.andrewyunt.arenaplugin.objects.Arena;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.Game;
 
+import de.slikey.effectlib.EffectLib;
+import de.slikey.effectlib.EffectManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -47,6 +49,7 @@ public class ArenaPlugin extends JavaPlugin {
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
+	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
 	
 	private static ArenaPlugin instance = null;
@@ -156,6 +159,11 @@ public class ArenaPlugin extends JavaPlugin {
 	public PlayerManager getPlayerManager() {
 		
 		return playerManager;
+	}
+	
+	public EffectManager getEffectManager() {
+		
+		return effectManager;
 	}
 	
 	public ArenaConfiguration getArenaConfig() {

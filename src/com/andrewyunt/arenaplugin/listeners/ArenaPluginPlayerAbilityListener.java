@@ -8,6 +8,7 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -130,7 +131,10 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event){
 		
-	    if (event.getEntity() instanceof Player && event.getCause().equals(DamageCause.ENTITY_EXPLOSION))
+		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && !(event.getEntity() instanceof TNTPrimed))
+			return;
+		
+	    if (event.getEntity() instanceof Player)
 	        event.setCancelled(true);
 	}
 	
