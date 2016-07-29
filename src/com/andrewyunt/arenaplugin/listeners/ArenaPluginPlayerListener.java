@@ -211,6 +211,8 @@ public class ArenaPluginPlayerListener implements Listener {
 			return;
 		}
 		
+		player.getGame().addPlacedBlock(block);
+		
         BukkitScheduler scheduler = ArenaPlugin.getInstance().getServer().getScheduler();
         scheduler.scheduleSyncDelayedTask(ArenaPlugin.getInstance(), new Runnable() {
             @Override

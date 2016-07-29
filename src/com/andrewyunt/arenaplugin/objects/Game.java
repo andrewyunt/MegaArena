@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
@@ -42,6 +44,7 @@ public class Game {
 	}
 	
 	private Set<ArenaPlayer> players = new HashSet<ArenaPlayer>();
+	private Set<Block> placedBlocks = new HashSet<Block>();
 	private Arena arena;
 
 	public Game(Arena arena) {
@@ -139,6 +142,9 @@ public class Game {
 			player.getBukkitPlayer().sendMessage(String.format(ChatColor.RED + "The game for the arena %s just ended.", arena.getName()));
 		}
 		
+		for (Block block : placedBlocks)
+			block.setType(Material.AIR);
+		
 		if (arena.getType() == ArenaType.DUEL)
 			for (Spawn spawn : arena.getSpawns())
 				spawn.setUsed(false);
@@ -171,5 +177,20 @@ public class Game {
 			Collections.shuffle(spawns);
 			player.spawn(spawns.get(0));
 		}
+	}
+	
+	public void addPlacedBlock(Block block) {
+		
+		placedBlocks.add(block);
+	}
+	
+	public void removePlacedBlock(Block block) {
+		
+		placedBlocks.remove(block);
+	}
+	
+	public Set<Block> getPlacedBlocks() {
+		
+		return placedBlocks;
 	}
 }
