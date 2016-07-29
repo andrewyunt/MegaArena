@@ -2,19 +2,19 @@ package com.andrewyunt.arenaplugin.listeners;
 
 import static com.andrewyunt.arenaplugin.objects.Class.SKELETON;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
@@ -129,13 +129,12 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onEntityDamage(EntityDamageEvent event){
+	public void onEntityDamage(EntityDamageByEntityEvent event){
+		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT)){
+			event.setCancelled(true);
+			Bukkit.getServer().broadcastMessage("DAMAGE CANCELLED");
+		}
 		
-		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && !(event.getEntity() instanceof TNTPrimed))
-			return;
-		
-	    if (event.getEntity() instanceof Player)
-	        event.setCancelled(true);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)

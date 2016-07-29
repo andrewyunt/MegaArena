@@ -67,7 +67,10 @@ public class Utils {
             Vector3D targetPos = new Vector3D(p.getLocation());
             Vector3D minimum = targetPos.add(-0.5, 0, -0.5);
             Vector3D maximum = targetPos.add(0.5, 1.67, 0.5);
- 
+       
+            if (p.getLocation().distanceSquared(player.getLocation()) > 11.56) // 11.56 is the range (squarred)
+            	continue;
+            
             if(p != player && hasIntersection(playerStart, playerEnd, minimum, maximum))
                 if(targetPlayer == null || targetPlayer.getLocation().distanceSquared(playerPos) > p.getLocation().distanceSquared(playerPos))
                     targetPlayer = p;

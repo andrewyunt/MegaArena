@@ -25,6 +25,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -67,11 +68,9 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		try {
 			ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
-		
-		if (apShooter.equals(null))
-			return;
+	
 		/* Checking that the shooter is a Skeleton */
-		if (!apShooter.getClassType().equals(Class.SKELETON))
+		if (!(apShooter.getClassType() == Class.SKELETON))
 			return;
 		
 		/* Randomization */
@@ -112,10 +111,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
 		
-		if (apShooter.equals(null))
-			return;
 		/* Checking that the shooter is a Skeleton */
-		if (!apShooter.getClassType().equals(Class.SKELETON))
+		if (!(apShooter.getClassType() == Class.SKELETON))
 			return;
 		
 		/* Apply Effects */
@@ -153,10 +150,9 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		try {
 			apDamaged = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
-		if (apDamaged.equals(null))
-			return;
+	
 		/* Checking that the damaged player is a Zombie */
-		if (!apDamaged.getClassType().equals(Class.ZOMBIE))
+		if (!(apDamaged.getClassType() == Class.ZOMBIE))
 			return;
 		/* Randomization */
 		Random r = new Random();
@@ -199,10 +195,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			apDamaged = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
 		
-		if (apDamaged.equals(null))
-			return;
 		/* Checking that the shooter is a ZOMBIE */
-		if (!apDamaged.getClassType().equals(Class.ZOMBIE))
+		if (!(apDamaged.getClassType() == Class.ZOMBIE))
 			return;
 		
 		/* Randomization */
@@ -244,7 +238,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
 		
 		/* Checking that the damaged player is a Herobrine */
-		if (!apDamager.getClassType().equals(Class.HEROBRINE))
+		if (!(apDamager.getClassType() == Class.HEROBRINE))
 			return;
 		/* Checking if killed */
 		if (((Damageable)damaged).getHealth() - e.getFinalDamage() > 0)
@@ -286,10 +280,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
 		
-		if (apDamager.equals(null))
-			return;
 		/* Checking that the damaged player is a Herobrine */
-		if (!apDamager.getClassType().equals(Class.HEROBRINE))
+		if (!(apDamager.getClassType() == Class.HEROBRINE))
 			return;
 		
 		/* Randomization */
@@ -323,10 +315,9 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		try {
 			apDamaged = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
-		if (apDamaged.equals(null))
-			return;
+		
 		/* Checking that the damaged player is a Creeper */
-		if (!apDamaged.getClassType().equals(Class.CREEPER))
+		if (!(apDamaged.getClassType() == Class.CREEPER))
 			return;
 		
 		if (gotSpeed.contains(damaged))
@@ -360,10 +351,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		try {
 			apPlayer = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e1) { return; 	/* player Player isn't in the Arena.*/}
-		if (apPlayer.equals(null))
-			return;
 		/* Checking that the player player is a Creeper */
-		if (!apPlayer.getClassType().equals(Class.CREEPER))
+		if (!(apPlayer.getClassType() == Class.CREEPER))
 			return;
 		if (!gotSpeed.contains(player))
 			return;
@@ -381,74 +370,75 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		gotSpeed.remove(player);
 		}
 	
-//	@EventHandler
-//	public void support(EntityDamageByEntityEvent e){ //Creeper - Support
-//		/* Checking if damager and damaged are players */
-//		if (!(e.getDamager() instanceof Player))
-//			return;
-//		if (!(e.getEntity() instanceof Player))
-//			return;
-//		
-//		/* Casting to players */
-//		Player damager = (Player) e.getDamager();
-//		Player damaged = (Player) e.getEntity();
-//		/* Checking if players are in the Arena */
-//		ArenaPlayer apDamaged=null;
-//		try {
-//			ArenaPlugin.getInstance().getPlayerManager().getPlayer(damager.getName());
-//		} catch (PlayerException e1) { return; 	/* Damager isn't in the Arena.*/}
-//		try {
-//			apDamaged = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
-//		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
-//		/* Checking that the damaged player is a CREEPER */
-//		if (!apDamaged.getClassType().equals(Class.CREEPER))
-//			return;
-//		/* Randomization */
-//		Random r = new Random();
-//		double random = (r.nextDouble()*99)+1;
-//		int skillLevel=0;
-//		if (apDamaged.getClassType().getSkillOne().equals(Skill.SUPPORT)){
-//			skillLevel = apDamaged.getClassType().getSkillOne().getLevel(apDamaged);
-//		}else if (apDamaged.getClassType().getSkillTwo().equals(Skill.SUPPORT))
-//			skillLevel = apDamaged.getClassType().getSkillTwo().getLevel(apDamaged);
-//		double precentage = 6 + 0.5*(skillLevel-1);
-//		if (random > precentage)
-//			return;
-//		TNTPrimed tnt = (TNTPrimed) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.PRIMED_TNT);
-//		tnt.setFuseTicks(60); // 3 Seconds to explode
-//		creeperTnt.put(tnt, damaged);
-//		damager.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.SUPPORT.toString()));
-//		}
+	@EventHandler
+	public void support(EntityDamageByEntityEvent e){ //Creeper - Support
+		/* Checking if damager and damaged are players */
+		if (!(e.getDamager() instanceof Player))
+			return;
+		if (!(e.getEntity() instanceof Player))
+			return;
+		
+		/* Casting to players */
+		Player damager = (Player) e.getDamager();
+		Player damaged = (Player) e.getEntity();
+		/* Checking if players are in the Arena */
+		ArenaPlayer apDamaged=null;
+		try {
+			ArenaPlugin.getInstance().getPlayerManager().getPlayer(damager.getName());
+		} catch (PlayerException e1) { return; 	/* Damager isn't in the Arena.*/}
+		try {
+			apDamaged = ArenaPlugin.getInstance().getPlayerManager().getPlayer(damaged.getName());
+		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
+
+		/* Checking that the damaged player is a CREEPER */
+		if (!(apDamaged.getClassType() == Class.CREEPER))
+			return;
+		/* Randomization */
+		Random r = new Random();
+		double random = (r.nextDouble()*99)+1;
+		int skillLevel=0;
+		if (apDamaged.getClassType().getSkillOne().equals(Skill.SUPPORT)){
+			skillLevel = apDamaged.getClassType().getSkillOne().getLevel(apDamaged);
+		}else if (apDamaged.getClassType().getSkillTwo().equals(Skill.SUPPORT))
+			skillLevel = apDamaged.getClassType().getSkillTwo().getLevel(apDamaged);
+		double precentage = 6 + 0.5*(skillLevel-1);
+		if (random > precentage)
+			return;
+		TNTPrimed tnt = (TNTPrimed) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.PRIMED_TNT);
+		tnt.setFuseTicks(60); // 3 Seconds to explode
+		creeperTnt.put(tnt, damaged);
+		damager.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.SUPPORT.toString()));
+		}
 	
-//	@EventHandler 
-//	public void disableTnt(EntityExplodeEvent e){ // Creeper Support // Disable TNT Damage
-//			if (!(e.getEntity() instanceof TNTPrimed))
-//				return;
-//			TNTPrimed tnt = (TNTPrimed) e.getEntity();
-//			if (!creeperTnt.containsKey(tnt))
-//				return;
-//			Player creeper = creeperTnt.remove(tnt);
-//			try {
-//				 ArenaPlugin.getInstance().getPlayerManager().getPlayer(creeper.getName());
-//			} catch (PlayerException e1) {
-//				return; //Player left the game.
-//			}
-//			for (Entity en : tnt.getNearbyEntities(5, 3, 5)){
-//				if (!(en instanceof Player))
-//					continue;
-//				Player damaged = (Player) en;
-//				if (damaged.equals(creeper)){
-//					continue;
-//				}
-//				Damageable dmgPlayer = (Damageable) damaged;
-//				if (dmgPlayer.getHealth() <= 3.0 )
-//					dmgPlayer.setHealth(0D);
-//				else
-//					dmgPlayer.setHealth(dmgPlayer.getHealth()-3.0);
-// 			}
-//			
-//	}
-	
+	@EventHandler 
+	public void disableTnt(EntityDamageByEntityEvent e){ // Creeper Support // Disable TNT Damage
+			if (!(e.getDamager() instanceof TNTPrimed))
+				return;
+			if (!(e.getEntity() instanceof Player))
+				return;
+			TNTPrimed tnt = (TNTPrimed) e.getDamager();
+			if (!creeperTnt.containsKey(tnt))
+				return;
+			e.setCancelled(true);
+			Player creeper = creeperTnt.remove(tnt);
+			try {
+				 ArenaPlugin.getInstance().getPlayerManager().getPlayer(creeper.getName());
+			} catch (PlayerException e1) {
+				return; //Player left the game.
+			}
+			Player damaged =  (Player) e.getEntity();
+			if (damaged == creeper)
+			{
+				creeper.setVelocity(new Vector(0F,0F,0F));
+				return;
+			}	
+				Damageable dmgPlayer = (Damageable) damaged;
+				if (dmgPlayer.getHealth() <= 3.0 )
+					dmgPlayer.setHealth(0D);
+				else
+					dmgPlayer.setHealth(dmgPlayer.getHealth()-3.0);
+ 		}
+			
 	@EventHandler
 	public void weakeningSwing(EntityDamageByEntityEvent e){ // Spirit Warrior - Weakening Swing -> Works
 		/* Checking if damager and damaged are players */
@@ -471,7 +461,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
 		
 		/* Checking that the damaged player is a SPIRIT WARRIOR */
-		if (!apDamager.getClassType().equals(Class.SPIRIT_WARRIOR))
+		if (!(apDamager.getClassType() == Class.SPIRIT_WARRIOR))
 			return;
 		
 		/* Randomization */
@@ -513,7 +503,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
 		
 		/* Checking that the damaged player is a SPIRIT WARRIOR */
-		if (!apDamaged.getClassType().equals(Class.SPIRIT_WARRIOR))
+		if (!(apDamaged.getClassType() == Class.SPIRIT_WARRIOR))
 			return;
 		
 		/* Randomization */
@@ -560,7 +550,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
 		
 		/* Checking that the damaged player is a WITHER MINION */
-		if (!apDamager.getClassType().equals(Class.WITHER_MINION))
+		if (!(apDamager.getClassType() == Class.WITHER_MINION))
 			return;
 		
 		/* Randomization */
@@ -604,7 +594,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		} catch (PlayerException e1) { return; 	/* Damaged Player isn't in the Arena.*/}
 		
 		/* Checking that the damaged player is a WITHER MINION */
-		if (!apDamaged.getClassType().equals(Class.WITHER_MINION))
+		if (!(apDamaged.getClassType() == Class.WITHER_MINION))
 			return;
 		
 		/* Randomization */
