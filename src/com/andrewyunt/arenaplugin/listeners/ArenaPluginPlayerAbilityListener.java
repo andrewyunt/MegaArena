@@ -56,6 +56,9 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			if (ap.getClassType() == SKELETON)
 				return;
 			
+			if (type != Material.STONE_SWORD && type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
+				return;
+			
 			ap.getClassType().getAbility().use(ap);
 			
 		} else if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {

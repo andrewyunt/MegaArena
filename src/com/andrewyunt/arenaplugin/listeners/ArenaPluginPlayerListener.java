@@ -20,8 +20,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
-
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.GameException;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
@@ -287,25 +285,5 @@ public class ArenaPluginPlayerListener implements Listener {
 								player.getName(), player.getKiller().getName()));
 			}
 		}
-	}
-	
-	@EventHandler
-	public void onAsyncPlayerReceiveNameTag(AsyncPlayerReceiveNameTagEvent event) {
-		
-		PlayerManager playerManager = ArenaPlugin.getInstance().getPlayerManager();
-		ArenaPlayer namedAP = null;
-		ArenaPlayer playerAP = null;
-		
-		try {
-			namedAP = playerManager.getPlayer(event.getNamedPlayer().getName());
-			playerAP = playerManager.getPlayer(event.getPlayer().getName());
-		} catch (PlayerException e) {
-		}
-		
-		if (namedAP.isInGame()) {
-			if (namedAP.getGame().getPlayers().contains(playerAP))
-				event.setTag(namedAP.getSide().getNameColor() + namedAP.getName());
-		} else
-			event.setTag(namedAP.getName());
 	}
 }

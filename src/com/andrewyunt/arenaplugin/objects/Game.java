@@ -79,10 +79,13 @@ public class Game {
 				side = Side.GREEN;
 		}
 		
-		spawnPlayer(player, side);
-		player.setSide(side);
 		players.add(player);
 		player.setGame(this);
+		player.setSide(side);
+		
+		bp.setCustomName(side.getNameColor() + bp.getName());
+		
+		spawnPlayer(player, side);
 	}
 	
 	public void removePlayer(ArenaPlayer player) {
