@@ -2,8 +2,6 @@ package com.andrewyunt.arenaplugin.listeners;
 
 import static com.andrewyunt.arenaplugin.objects.Class.SKELETON;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
@@ -17,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
@@ -29,6 +28,9 @@ import com.andrewyunt.arenaplugin.managers.PlayerManager;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.utilities.Utils;
+
+import de.slikey.effectlib.effect.ExplodeEffect;
+import de.slikey.effectlib.util.DynamicLocation;
 
 public class ArenaPluginPlayerAbilityListener implements Listener {
 	
@@ -81,69 +83,45 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			return;
 		
 		Player player = event.getPlayer();
-		ArenaPlayer ap = null;
+		ArenaPlayer playerAP = null;
 		
 		try {
-			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+			playerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
 		
-		if (!ap.isInGame())
+		if (!playerAP.isInGame())
 			return;
 		
-		if (ap.getClassType() == SKELETON)
+		if (playerAP.getClassType() == SKELETON)
 			return;
 		
-		if (Utils.getTargetPlayer(player) != null)
-			ap.addEnergy(ap.getClassType().getEnergyPerClick());
-	}
-	
-	@EventHandler
-	public void onProjectileHit(ProjectileHitEvent event) {
-	
-		Entity entity = event.getEntity();
+		Player targetPlayer = Utils.getTargetPlayer(player);
 		
-		if (!(entity instanceof Arrow))
+		if (targetPlayer == null)
 			return;
 		
-		if (!entity.hasMetadata("ArenaPlugin"))
-			return;
-		
-		ArenaPlayer shooter = null;
+		ArenaPlayer targetAP = null;
 		
 		try {
-			shooter = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) entity).getShooter()).getName());
+			targetAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(targetPlayer.getName());
 		} catch (PlayerException e) {
 		}
-		Player bukkitShooter = shooter.getBukkitPlayer();
-		for (Entity nearby : entity.getNearbyEntities(5D, 3D, 5D)) {
-			if (!(nearby instanceof Player))
-				continue;
-			if (nearby == bukkitShooter)
-				continue;
-			Player nearbyPlayer = (Player) nearby;
-			
-			double dmg = 1.5 + (shooter.getClassType().getAbility().getLevel(shooter) * .5);
-			Damageable dmgPlayer = (Damageable) nearbyPlayer;
-			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as red damage invisiblity
-		    if (dmgPlayer.getHealth() < dmg) {
-		    	dmgPlayer.setHealth(0D);
-		    	return;
-		    }
-		    else
-			nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
-			 
-		}
 		
-		entity.getWorld().playEffect(event.getEntity().getLocation(), Effect.EXPLOSION, 0);
+		if (!targetAP.isInGame())
+			return;
+		
+		if (targetAP.getGame().getArena().getType() == ArenaType.TDM && targetAP.getSide() == playerAP.getSide())
+			return;
+		
+		playerAP.addEnergy(playerAP.getClassType().getEnergyPerClick());
 	}
 	
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent event){
-		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT)){
-			event.setCancelled(true);
-		}
 		
+		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT))
+			event.setCancelled(true);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
@@ -201,6 +179,104 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 				return;
 			
 			damagerAP.addEnergy(damagerAP.getClassType().getEnergyPerClick());
+		}
+	}
+	
+	@EventHandler
+	public void onEntityExplode(EntityExplodeEvent event) {
+		
+		Entity entity = event.getEntity();
+		
+		if (!entity.hasMetadata("ArenaPlugin"))
+			return;
+
+		if (entity.getType() != EntityType.WITHER_SKULL)
+			return;
+		
+		event.setCancelled(true);
+		
+		ArenaPlayer shooter = null;
+		
+		try {
+			shooter = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) entity).getShooter()).getName());
+		} catch (PlayerException e) {
+		}
+		
+		Player bukkitShooter = shooter.getBukkitPlayer();
+		
+        ExplodeEffect explodeEffect = new ExplodeEffect(ArenaPlugin.getInstance().getEffectManager());
+        
+        explodeEffect.amount = 10;
+        explodeEffect.setDynamicOrigin(new DynamicLocation(entity.getLocation()));
+        
+        explodeEffect.start();
+		
+		for (Entity nearby : entity.getNearbyEntities(3D, 3D, 3D)) {
+			if (!(nearby instanceof Player))
+				continue;
+			
+			if (nearby == bukkitShooter)
+				continue;
+			
+			Player nearbyPlayer = (Player) nearby;
+			
+			double dmg = 1.5 + (shooter.getClassType().getAbility().getLevel(shooter) * 0.5);
+			Damageable dmgPlayer = (Damageable) nearbyPlayer;
+			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as red damage and invisibility
+		    
+			if (dmgPlayer.getHealth() < dmg) {
+		    	dmgPlayer.setHealth(0D);
+		    	return;
+		    } else
+		    	nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
+		}
+	}
+	
+	@EventHandler
+	public void onProjectileHit(ProjectileHitEvent event) {
+	
+		Entity entity = event.getEntity();
+		
+		if (!(entity instanceof Arrow))
+			return;
+		
+		if (!entity.hasMetadata("ArenaPlugin"))
+			return;
+		
+		ArenaPlayer shooter = null;
+		
+		try {
+			shooter = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) entity).getShooter()).getName());
+		} catch (PlayerException e) {
+		}
+		
+		Player bukkitShooter = shooter.getBukkitPlayer();
+		
+        ExplodeEffect explodeEffect = new ExplodeEffect(ArenaPlugin.getInstance().getEffectManager());
+        
+        explodeEffect.amount = 10;
+        explodeEffect.setDynamicOrigin(new DynamicLocation(entity.getLocation()));
+        
+        explodeEffect.start();
+		
+		for (Entity nearby : entity.getNearbyEntities(5D, 3D, 5D)) {
+			if (!(nearby instanceof Player))
+				continue;
+			
+			if (nearby == bukkitShooter)
+				continue;
+			
+			Player nearbyPlayer = (Player) nearby;
+			
+			double dmg = 1.5 + (shooter.getClassType().getAbility().getLevel(shooter) * 0.5);
+			Damageable dmgPlayer = (Damageable) nearbyPlayer;
+			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as red damage and invisibility
+		    
+			if (dmgPlayer.getHealth() < dmg) {
+		    	dmgPlayer.setHealth(0D);
+		    	return;
+		    } else
+		    	nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
 		}
 	}
 }

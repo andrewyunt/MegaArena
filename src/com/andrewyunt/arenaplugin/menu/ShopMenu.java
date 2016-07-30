@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -100,11 +101,14 @@ public class ShopMenu {
 			public void onOptionClick(IconMenu.OptionClickEvent event) {
 
 				String itemName = event.getName();
-				
-				
-				
 				int position = event.getPosition();
-
+				
+				Bukkit.getServer().broadcastMessage(event.getInventory().getName().split("[-\\s]")[1].toUpperCase().replace(' ', '_'));
+				
+				Class classType = Class.valueOf(event.getInventory().getName().split("[-\\s]")[1].toUpperCase().replace(' ', '_'));
+				
+				Bukkit.getServer().broadcastMessage(classType.toString());
+				
 				event.setWillDestroy(true);
 			}
 		}, ArenaPlugin.getInstance());
