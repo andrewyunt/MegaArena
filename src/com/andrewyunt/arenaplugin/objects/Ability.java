@@ -188,7 +188,7 @@ public enum Ability {
 	        
 	        tornadoEffect.tornadoParticle = ParticleEffect.SMOKE_LARGE;
 	        tornadoEffect.particleCount = 25;
-	        tornadoEffect.iterations = 1;
+	        tornadoEffect.iterations = 5;
 	        tornadoEffect.duration = 1500 + (500 * getLevel(player));
 	        tornadoEffect.setDynamicOrigin(new DynamicLocation(bp.getLocation()));
 	        
@@ -230,17 +230,14 @@ public enum Ability {
 			
             WitherSkull leftSkull = bp.launchProjectile(WitherSkull.class);
             leftSkull.setShooter(bp);
-            leftSkull.setVelocity(leftVector.multiply(Double.POSITIVE_INFINITY));
             leftSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
  
             WitherSkull middleSkull = bp.launchProjectile(WitherSkull.class);
             middleSkull.setShooter(bp);
-            middleSkull.setVelocity(middleVector.multiply(Double.POSITIVE_INFINITY));
             middleSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
      
             WitherSkull rightSkull = bp.launchProjectile(WitherSkull.class);
             rightSkull.setShooter(bp);
-            rightSkull.setVelocity(rightVector.multiply(Double.POSITIVE_INFINITY));
             rightSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
 		}
 		
