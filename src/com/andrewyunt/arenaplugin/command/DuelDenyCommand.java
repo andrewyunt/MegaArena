@@ -40,9 +40,11 @@ public class DuelDenyCommand implements CommandExecutor {
 		
 		ArenaPlayer requestingPlayer = player.getRequestingPlayer();
 		
-		player.getBukkitPlayer().sendMessage(ChatColor.GOLD + "You denied %s's request to a duel.");
+		player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format("You denied %s's request to a duel.",
+				ChatColor.AQUA + requestingPlayer.getName() + ChatColor.GREEN));
 		
-		requestingPlayer.getBukkitPlayer().sendMessage(ChatColor.GOLD + "%s denied your request to a duel.");
+		requestingPlayer.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s denied your request to a duel.",
+				player.getName() + ChatColor.GREEN));
 		
 		return true;
 	}

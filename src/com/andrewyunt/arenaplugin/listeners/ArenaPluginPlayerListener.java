@@ -260,7 +260,7 @@ public class ArenaPluginPlayerListener implements Listener {
         		if (ap.isInGame())
         			ap.getGame().removePlayer(ap);
         		
-        		player.sendMessage(ChatColor.GOLD + "You have died and have been returned to the lobby.");
+        		player.sendMessage(ChatColor.RED + "You have died and have been returned to the lobby.");
             }
         }, 1L);
 	}
@@ -283,8 +283,9 @@ public class ArenaPluginPlayerListener implements Listener {
 			
 			if (game.getArena().getType() == ArenaType.DUEL) {
 				ArenaPlugin.getInstance().getGameManager().deleteGame(game,
-						String.format(ChatColor.GOLD + "%s suffered a bitter defeat to %s.", 
-								player.getName(), player.getKiller().getName()));
+						String.format(ChatColor.AQUA + "%s suffered a bitter defeat to %s.", 
+								player.getName() + ChatColor.GREEN,
+								ChatColor.AQUA + player.getKiller().getName() + ChatColor.GREEN));
 			}
 		}
 	}

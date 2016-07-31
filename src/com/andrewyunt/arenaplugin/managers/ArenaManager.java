@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.ArenaException;
@@ -36,7 +37,9 @@ public class ArenaManager {
 		
 		arena.save();
 		
-		ArenaPlugin.getInstance().getLogger().info(String.format("Arena %s has been created and set to edit mode.", name)); 
+		ArenaPlugin.getInstance().getLogger().info(
+				ChatColor.GREEN + String.format("Arena %s has been created and set to edit mode.",
+				ChatColor.AQUA + name + ChatColor.GREEN)); 
 		
 		return arena;
 	}

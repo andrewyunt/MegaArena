@@ -87,7 +87,8 @@ public enum Ability {
 					
 					effectPlayers.add((Player) ep);
 					
-					ep.sendMessage(String.format(ChatColor.GOLD + "You have been healed by %s.", player.getName()));
+					ep.sendMessage(String.format(ChatColor.GREEN + "You have been healed by %s.",
+							ChatColor.AQUA + player.getName() + ChatColor.GREEN));
 				}
 			
 			double newHealth = ((Damageable) bp).getHealth() + hearts;
@@ -104,8 +105,10 @@ public enum Ability {
 		        heartEffect.start();
 			}
 			
-			bp.sendMessage(String.format(ChatColor.GOLD + "You have used the %s ability" + 
-			(((Damageable) bp).getHealth() < 40 ? String.format(" and have restored %s hearts.", hearts / 2) : "."), name));
+			bp.sendMessage(String.format(ChatColor.GREEN + "You have used the %s ability" + 
+			(((Damageable) bp).getHealth() < 40 ? String.format(" and have restored %s hearts.",
+					ChatColor.AQUA + String.valueOf(hearts / 2) + ChatColor.GREEN) : "."),
+			ChatColor.AQUA + name + ChatColor.GREEN));
 			
 		} else if (this == SPLIT_ARROW) {
 			
@@ -146,7 +149,8 @@ public enum Ability {
 				return;
 			}
 			
-			player.getBukkitPlayer().sendMessage(ChatColor.GOLD + String.format("You have used the %s ability.", name));
+			player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format("You have used the %s ability.",
+					ChatColor.AQUA + name + ChatColor.GREEN));
 			
 		} else if (this == EXPLODE) {
 			
@@ -224,21 +228,19 @@ public enum Ability {
 			Vector leftVector = new Vector(middleVector.getZ(), middleVector.getY(), -middleVector.getX());
 			Vector rightVector = new Vector(-middleVector.getZ(), middleVector.getY(), middleVector.getX());
 			
-			Vector multipliedVector = middleVector.multiply(Double.POSITIVE_INFINITY);
-			
             WitherSkull leftSkull = bp.launchProjectile(WitherSkull.class);
             leftSkull.setShooter(bp);
-            leftSkull.setVelocity(multipliedVector);
+            leftSkull.setVelocity(leftVector.multiply(Double.POSITIVE_INFINITY));
             leftSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
  
             WitherSkull middleSkull = bp.launchProjectile(WitherSkull.class);
             middleSkull.setShooter(bp);
-            middleSkull.setVelocity(multipliedVector);
+            middleSkull.setVelocity(middleVector.multiply(Double.POSITIVE_INFINITY));
             middleSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
      
             WitherSkull rightSkull = bp.launchProjectile(WitherSkull.class);
             rightSkull.setShooter(bp);
-            rightSkull.setVelocity(multipliedVector);
+            rightSkull.setVelocity(rightVector.multiply(Double.POSITIVE_INFINITY));
             rightSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(ArenaPlugin.getInstance(), true));
 		}
 		

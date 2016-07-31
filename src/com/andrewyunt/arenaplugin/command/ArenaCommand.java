@@ -110,10 +110,10 @@ public class ArenaCommand implements CommandExecutor {
 			
 			arena.setEdit(true);
 			
-			sender.sendMessage(String.format(ChatColor.GOLD + "You have"
+			sender.sendMessage(String.format(ChatColor.GREEN + "You have"
 					+ " created the arena %s, "
 					+ "selected the arena, and set it to edit mode.",
-					arena.getName()));
+					ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 			
 		} else if (args[0].equalsIgnoreCase("delete")) {
 
@@ -143,7 +143,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 			if (arena.isInUse()) {
 				ArenaPlugin.getInstance().getGameManager().deleteGame(arena.getGame(), 
-						ChatColor.GOLD + "The arena you were playing in has been deleted.");
+						ChatColor.RED + "The arena you were playing in has been deleted.");
 				
 				try {
 					ArenaPlugin.getInstance().getArenaManager().deleteArena(arena);
@@ -176,7 +176,8 @@ public class ArenaCommand implements CommandExecutor {
 			} catch (PlayerException e) {
 			}
 			
-			sender.sendMessage(String.format(ChatColor.GOLD + "You have selected the arena %s.", arena.getName()));
+			sender.sendMessage(String.format(ChatColor.GREEN + "You have selected the arena %s.",
+					ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 			
 		} else if (args[0].equalsIgnoreCase("addspawn")) {
 			
@@ -221,10 +222,14 @@ public class ArenaCommand implements CommandExecutor {
 			
 			Spawn spawn = arena.addSpawn(args[1], arena, loc, Side.valueOf(args[2]));
 			
-			sender.sendMessage(String.format(ChatColor.GOLD + "You have created the spawn %s in the arena %s at %s.", 
-					spawn.getName(),
-					arena.getName(),
-					String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
+			sender.sendMessage(String.format(ChatColor.GREEN + "You have created the spawn %s in the arena %s at %s.", 
+					ChatColor.AQUA + spawn.getName() + ChatColor.GREEN,
+					ChatColor.AQUA + arena.getName() + ChatColor.GREEN,
+					String.format("X:%s Y:%s Z:%s world: %s", 
+							ChatColor.AQUA + String.valueOf(loc.getX()) + ChatColor.GREEN,
+							ChatColor.AQUA + String.valueOf(loc.getY()) + ChatColor.GREEN,
+							ChatColor.AQUA + String.valueOf(loc.getZ()) + ChatColor.GREEN,
+							ChatColor.AQUA + loc.getWorld().getName())  + ChatColor.GREEN));
 			
 		} else if (args[0].equalsIgnoreCase("removespawn")) {
 			
@@ -281,12 +286,14 @@ public class ArenaCommand implements CommandExecutor {
 			
 			if (arena.isEdit()) {
 				arena.setEdit(false);
-				sender.sendMessage(String.format(ChatColor.GOLD + "You have disabled edit mode for the arena %s.", arena.getName()));
+				sender.sendMessage(String.format(ChatColor.GREEN + "You have disabled edit mode for the arena %s.",
+						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 			} else {
 				ArenaPlugin.getInstance().getGameManager().deleteGame(arena.getGame(),
 						ChatColor.RED + "The game you were in has ended due to admins setting the arena to edit mode.");
 				arena.setEdit(true);
-				sender.sendMessage(String.format(ChatColor.GOLD + "You have enabled edit mode for the arena %s.", arena.getName()));
+				sender.sendMessage(String.format(ChatColor.GREEN + "You have enabled edit mode for the arena %s.",
+						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 			}
 		
 		} else if (args[0].equalsIgnoreCase("list")) {
@@ -297,7 +304,7 @@ public class ArenaCommand implements CommandExecutor {
 			}
 			
 			for (Arena arena : ArenaPlugin.getInstance().getArenaManager().getArenas())
-				sender.sendMessage(ChatColor.GOLD + arena.getName());
+				sender.sendMessage(ChatColor.AQUA + arena.getName());
 		}
 		
 		return true;

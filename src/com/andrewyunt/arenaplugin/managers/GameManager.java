@@ -31,12 +31,12 @@ public class GameManager {
 		
 		if (arena.getType() == ArenaType.DUEL)
 			if (arena.getSpawns().size() < 2)
-				throw new GameException(String.format("The match for the arena %s was not able to start because the minimum number"
-						+ " of INDEPENDENT spawns were not defined.", arena.getName()));
+				throw new GameException(ChatColor.GREEN + String.format("The match for the arena %s was not able to start because the minimum number"
+						+ " of INDEPENDENT spawns were not defined.", ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 		else if (arena.getType() == ArenaType.TDM)
 			if (arena.getSpawns(Side.GREEN).size() < 1 || arena.getSpawns(Side.BLUE).size() < 1)
-				throw new GameException(String.format("The TDM match for the arena %s was not able to start because the"
-						+ " minimum number of spawns for each team were not defined.", arena.getName()));
+				throw new GameException(ChatColor.GREEN + String.format("The TDM match for the arena %s was not able to start because the"
+						+ " minimum number of spawns for each team were not defined.", ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 			
 		Game game = new Game(arena);
 		

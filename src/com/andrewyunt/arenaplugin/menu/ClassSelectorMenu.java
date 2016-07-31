@@ -100,7 +100,8 @@ public class ClassSelectorMenu {
 					case "Creeper":
 					case "Herobrine":
 						player.setClassType(Class.valueOf(name.toUpperCase()));
-						player.getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You selected the %s class.", name));
+						player.getBukkitPlayer().sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
+								ChatColor.AQUA + name + ChatColor.GREEN));
 						event.setWillClose(true);
 						return;
 				}
@@ -160,7 +161,8 @@ public class ClassSelectorMenu {
             		return;
             	}
             	
-            	player.getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You selected the %s class.", name));
+            	player.getBukkitPlayer().sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
+            			ChatColor.AQUA + name + ChatColor.GREEN));
             	
                 event.setWillClose(true);
                 event.setWillDestroy(true);

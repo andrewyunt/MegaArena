@@ -217,7 +217,8 @@ public class ArenaPlayer {
 		
 		this.side = side;
 		
-		getBukkitPlayer().sendMessage(String.format(ChatColor.GOLD + "You have joined the %s side.", side.toString()));
+		getBukkitPlayer().sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side.",
+				ChatColor.AQUA + side.getName() + ChatColor.GREEN));
 	}
 	
 	public void spawn(Spawn spawn) {
@@ -236,9 +237,6 @@ public class ArenaPlayer {
 		
 		loc.setY(loc.getY() + 1);
 		player.teleport(loc);
-		
-		player.sendMessage(String.format(ChatColor.GOLD + "You have spawned at %s.", 
-				String.format("X:%s Y:%s Z:%s world: %s", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld())));
 	}
 	
 	public void addEnergy(int energy) {

@@ -73,11 +73,13 @@ public class DuelCommand implements CommandExecutor {
 		
 		Player targetBukkitPlayer = targetPlayer.getBukkitPlayer();
 		
-		targetBukkitPlayer.sendMessage(String.format(ChatColor.GOLD + "%s is currently requesting you to a duel.", player.getName()));
-		targetBukkitPlayer.sendMessage(ChatColor.YELLOW + "/duelaccept");
-		targetBukkitPlayer.sendMessage(ChatColor.YELLOW + "/dueldeny");
+		targetBukkitPlayer.sendMessage(String.format(ChatColor.AQUA + "%s is currently requesting you to a duel.",
+				player.getName() + ChatColor.GREEN));
+		targetBukkitPlayer.sendMessage(ChatColor.AQUA + "/duelaccept");
+		targetBukkitPlayer.sendMessage(ChatColor.AQUA + "/dueldeny");
 		
-		sender.sendMessage(String.format(ChatColor.GOLD + "You have requested %s to a duel.", targetBukkitPlayer.getName()));
+		sender.sendMessage(String.format(ChatColor.GREEN + "You have requested %s to a duel.",
+				ChatColor.AQUA + targetBukkitPlayer.getName() + ChatColor.GREEN));
 		
 		return true;
 	}

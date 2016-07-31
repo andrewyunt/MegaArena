@@ -4,17 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -23,28 +18,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.bukkit.util.permissions.BroadcastPermissions;
-
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
-import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
-import com.andrewyunt.arenaplugin.objects.Ability;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Class;
-import com.andrewyunt.arenaplugin.objects.Game.Side;
 import com.andrewyunt.arenaplugin.objects.Skill;
 
-public class ArenaPluginPlayerSkillListener implements Listener{
-	public ArrayList<Player> gotSpeed = new ArrayList<Player>();
+public class ArenaPluginPlayerSkillListener implements Listener {
+	
+	public ArrayList<Player> hasSpeed = new ArrayList<Player>();
 	public HashMap<TNTPrimed, Player> creeperTnt = new HashMap<TNTPrimed, Player>();
 	
 	@EventHandler
@@ -79,14 +67,15 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		Random r = new Random();
 		int random = r.nextInt(100)+1;
 		int precentage = 0;
-		if (apShooter.getClassType().getSkillOne().equals(Skill.BOOMERANG)){
+		if (apShooter.getClassType().getSkillOne() == Skill.BOOMERANG){
 			precentage = 20*apShooter.getClassType().getSkillOne().getLevel(apShooter);
-		}else if (apShooter.getClassType().getSkillTwo().equals(Skill.BOOMERANG))
+		} else if (apShooter.getClassType().getSkillTwo() == Skill.BOOMERANG)
 			precentage = 20*apShooter.getClassType().getSkillTwo().getLevel(apShooter);
 		if (random > precentage)
 			return;
 		shooter.getInventory().addItem(new ItemStack(Material.ARROW));
-		shooter.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.BOOMERANG.toString()));
+		shooter.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.BOOMERANG.getName() + ChatColor.GREEN));
 	}
 	
 	@EventHandler
@@ -129,8 +118,9 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		shooter.addPotionEffect(slowness, true);
 		shooter.addPotionEffect(regen, true);
 		damaged.addPotionEffect(slowness, true);
-		shooter.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.MUTUAL_WEAKNESS.toString()));
-		damaged.sendMessage(String.format(ChatColor.GOLD+"%s's arrow inflicted you with Slowness for %ss", shooter.getName(), duration/20+""));
+		shooter.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.MUTUAL_WEAKNESS.getName() + ChatColor.GREEN));
+		damaged.sendMessage(String.format(ChatColor.RED + "%s's arrow inflicted you with Slowness for %s seconds.", shooter.getName(), duration/20+""));
 	}
 	
 	@EventHandler
@@ -170,7 +160,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			return;
 		PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 0, true);
 		damaged.addPotionEffect(resistance, true);
-		damaged.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.RESIST.toString()));
+		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.RESIST.getName() + ChatColor.GREEN));
 	}
 	
 	@EventHandler
@@ -214,7 +205,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			return;
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 60, 1, true);
 		damaged.addPotionEffect(speed, true);
-		damaged.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.SWIFTNESS.toString()));
+		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.SWIFTNESS.getName() + ChatColor.GREEN));
 	}
 	
 	@EventHandler
@@ -262,8 +254,9 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, (int)(seconds*20), 0, true);
 		damager.addPotionEffect(regen, true);
 		damager.addPotionEffect(resistance, true);
-		damager.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.RECHARGE.toString()));
-		}
+		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.RECHARGE.getName() + ChatColor.GREEN));
+	}
 	
 	@EventHandler
 	public void flurry(EntityDamageByEntityEvent e){ // Herobrine - Flurry -> Works
@@ -306,8 +299,9 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			return;
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
 		damager.addPotionEffect(speed, true);
-		damager.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.FLURRY.toString()));
-		}
+		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.FLURRY.getName() + ChatColor.GREEN));
+	}
 	
 	@EventHandler
 	public void powerfulWeakness(EntityDamageEvent e){ // Creeper - Powerful Weakness -> Works
@@ -328,7 +322,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		if (!(apDamaged.getClassType() == Class.CREEPER))
 			return;
 		
-		if (gotSpeed.contains(damaged))
+		if (hasSpeed.contains(damaged))
 			return;
 		
 		int skillLevel=0;
@@ -342,9 +336,10 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, true);
 		damaged.addPotionEffect(speed, false);
-		damaged.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.POWERFUL_WEAKNESS.toString()));
-		gotSpeed.add(damaged);
-	   }
+		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));
+		hasSpeed.add(damaged);
+	}
 	
 	@EventHandler
 	public void powerfulWeakness(EntityRegainHealthEvent e){ // Creeper - Powerful Weakness // Disable Speed
@@ -362,7 +357,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		/* Checking that the player player is a Creeper */
 		if (!(apPlayer.getClassType() == Class.CREEPER))
 			return;
-		if (!gotSpeed.contains(player))
+		if (!hasSpeed.contains(player))
 			return;
 		int skillLevel=0;
 		if (apPlayer.getClassType().getSkillOne().equals(Skill.POWERFUL_WEAKNESS)){
@@ -374,9 +369,10 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			return;
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 1, 0);
 		player.addPotionEffect(speed, true);
-		player.sendMessage(String.format(ChatColor.GOLD+"Your %s skill deactivated.", Skill.POWERFUL_WEAKNESS.toString()));
-		gotSpeed.remove(player);
-		}
+		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill deactivated.",
+				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));
+		hasSpeed.remove(player);
+	}
 	
 	@EventHandler
 	public void support(EntityDamageByEntityEvent e){ //Creeper - Support
@@ -415,8 +411,9 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		TNTPrimed tnt = (TNTPrimed) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.PRIMED_TNT);
 		tnt.setFuseTicks(60); // 3 Seconds to explode
 		creeperTnt.put(tnt, damaged);
-		damager.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.SUPPORT.toString()));
-		}
+		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill activated.",
+				ChatColor.AQUA + Skill.SUPPORT.getName() + ChatColor.GREEN));
+	}
 	
 	@EventHandler 
 	public void disableTnt(EntityDamageByEntityEvent e){ // Creeper Support // Disable TNT Damage
@@ -485,8 +482,10 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			return;
 		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, (int) (duration*20), 0, true);
 		damaged.addPotionEffect(weakness, false);
-		damager.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.WEAKENING_SWING.toString()));
-		damaged.sendMessage(String.format(ChatColor.GOLD+"%s's hit inflicted you with Weakness for %ss", damager.getName(), duration+""));
+		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.WEAKENING_SWING.getName() + ChatColor.GREEN));
+		damaged.sendMessage(String.format(ChatColor.RED + "%s's hit inflicted you with Weakness for %s seconds.",
+				damager.getName(), duration+""));
 	}
 	
 	@EventHandler
@@ -525,7 +524,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 		double duration = 4 + (skillLevel-1);
 		if (random > 10)
 			return;
-		damaged.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.SWIFT_BACKUP.toString()));
+		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.SWIFT_BACKUP.getName() + ChatColor.GREEN));
 		Wolf wolf = (Wolf) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.WOLF);
 		wolf.setOwner((AnimalTamer) damaged);
 		((LivingEntity)wolf).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1), true);
@@ -577,7 +577,8 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			((Damageable)damager).setHealth(40.0);
 		else
 			((Damageable)damager).setHealth(((Damageable)damager).getHealth()+2.0);
-		damager.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.SOUL_SUCKER.toString()));
+		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.SOUL_SUCKER.getName() + ChatColor.GREEN));
 	}
 
 	@EventHandler
@@ -621,7 +622,7 @@ public class ArenaPluginPlayerSkillListener implements Listener{
 			((Damageable)damaged).setHealth(40.0);
 		else
 			((Damageable)damaged).setHealth(((Damageable)damaged).getHealth()+2.0);
-		damaged.sendMessage(String.format(ChatColor.GOLD+"Your %s skill activated.", Skill.UNDEAD.toString()));
+		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
+				ChatColor.AQUA + Skill.UNDEAD.getName() + ChatColor.GREEN));
     }
 }
-

@@ -26,15 +26,22 @@ public class Game {
 	
 	public enum Side {
 		
-		BLUE(ChatColor.BLUE),
-		GREEN(ChatColor.DARK_GREEN),
-		INDEPENDENT(ChatColor.DARK_RED);
+		BLUE("Blue", ChatColor.BLUE),
+		GREEN("Green", ChatColor.DARK_GREEN),
+		INDEPENDENT("Independent", ChatColor.DARK_RED);
 		
+		private String name;
 		private ChatColor nameColor;
 		
-		Side(ChatColor nameColor) {
+		Side(String name, ChatColor nameColor) {
 			
+			this.name = name;
 			this.nameColor = nameColor;
+		}
+		
+		public String getName() {
+			
+			return name;
 		}
 		
 		public ChatColor getNameColor() {

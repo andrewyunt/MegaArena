@@ -139,7 +139,8 @@ public class ShopMenu {
 					Ability ability = classType.getAbility();
 					
 					ability.setLevel(ap, position);
-					ap.getBukkitPlayer().sendMessage(ChatColor.GOLD + String.format("%s upgrade purchased successfully.", ability.getName()));
+					ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+							ability.getName() + ChatColor.GREEN));
 				
 				} else if (9 <= position && position < 18) {
 					
@@ -147,7 +148,8 @@ public class ShopMenu {
 					Skill skillOne = classType.getSkillTwo();
 					
 					skillOne.setLevel(ap, position);
-					ap.getBukkitPlayer().sendMessage(ChatColor.GOLD + String.format("%s upgrade purchased successfully.", skillOne.getName()));
+					ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+							skillOne.getName() + ChatColor.GREEN));
 			
 				} else if (18 <= position && position < 27) {
 				
@@ -155,14 +157,16 @@ public class ShopMenu {
 					Skill skillTwo = classType.getSkillTwo();
 					
 					skillTwo.setLevel(ap, position);
-					ap.getBukkitPlayer().sendMessage(ChatColor.GOLD + String.format("%s upgrade purchased successfully.", skillTwo.getName()));
+					ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+							skillTwo.getName() + ChatColor.GREEN));
 			
 				} else if (27 <= position && position < 36) {
 				
 					position = position - 26;
 					
 					classType.setKitLevel(ap, position);
-					ap.getBukkitPlayer().sendMessage(ChatColor.GOLD + String.format("%s kit upgrade purchased successfully.", classType.getName()));
+					ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s kit upgrade purchased successfully.",
+							classType.getName() + ChatColor.GREEN));
 				}
 				
 				int cost = ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(position) + "-upgrade-cost");
