@@ -23,6 +23,7 @@ import com.andrewyunt.arenaplugin.objects.Game.Side;
 public class ArenaPlayer {
 	
 	private String name;
+	private Player player;
 	private Game game;
 	private ArenaPlayer requestingPlayer;
 	private Class classType;
@@ -41,6 +42,7 @@ public class ArenaPlayer {
 	public ArenaPlayer(String name) {
 		
 		this.name = name;
+		Bukkit.getServer().getPlayer(name);
 	}
 	
 	public String getName() {
@@ -50,7 +52,7 @@ public class ArenaPlayer {
 	
 	public Player getBukkitPlayer() {
 		
-		return Bukkit.getServer().getPlayer(name);
+		return player;
 	}
 	
 	public Game getGame() {
@@ -133,7 +135,6 @@ public class ArenaPlayer {
 	
 	public void updateHotBar() {
 		
-		Player player = getBukkitPlayer();
 		PlayerInventory inv = player.getInventory();
 		
 		inv.setHelmet(new ItemStack(Material.AIR));
@@ -217,13 +218,12 @@ public class ArenaPlayer {
 		
 		this.side = side;
 		
-		getBukkitPlayer().sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side.",
+		player.sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side.",
 				ChatColor.AQUA + side.getName() + ChatColor.GREEN));
 	}
 	
 	public void spawn(Spawn spawn) {
 		
-		Player player = getBukkitPlayer();
 		Location loc = spawn.getLocation();
 		
 		player.setMaxHealth(40D);
@@ -251,8 +251,11 @@ public class ArenaPlayer {
 		if (this.energy > 100)
 			this.energy = 100;
 		
-		getBukkitPlayer().setLevel(this.energy);
-		getBukkitPlayer().setExp(this.energy / 100.0F);
+		if (this.energy == 100)
+			player.sendMessage(ChatColor.AQUA + "Right click " + ChatColor.GREEN + "using your sword to activate your ability!");
+		
+		player.setLevel(this.energy);
+		player.setExp(this.energy / 100.0F);
 	}
 	
 	public int getEnergy() {
@@ -302,16 +305,16 @@ public class ArenaPlayer {
 	
 	public void addCoins(double coins) {
 		
-		ArenaPlugin.getInstance().getEconomy().depositPlayer(getBukkitPlayer(), coins);
+		ArenaPlugin.getInstance().getEconomy().depositPlayer(player, coins);
 	}
 	
 	public void removeCoins(double coins) {
 		
-		ArenaPlugin.getInstance().getEconomy().withdrawPlayer(getBukkitPlayer(), coins);
+		ArenaPlugin.getInstance().getEconomy().withdrawPlayer(player, coins);
 	}
 	
 	public double getCoins() {
 		
-		return ArenaPlugin.getInstance().getEconomy().getBalance(getBukkitPlayer());
+		return ArenaPlugin.getInstance().getEconomy().getBalance(player);
 	}
 }
