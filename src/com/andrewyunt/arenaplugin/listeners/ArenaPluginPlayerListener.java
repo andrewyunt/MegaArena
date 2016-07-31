@@ -113,10 +113,12 @@ public class ArenaPluginPlayerListener implements Listener {
 		
 		} else if (name.equals("Play : Team-deathmatch")) {
 			
-			try {
+			player.sendMessage(ChatColor.RED + "Team-deathmatch is coming soon!");
+			
+			/*try {
 				ArenaPlugin.getInstance().getGameManager().matchMake(ap, ArenaType.TDM);
 			} catch (GameException e) {
-			}
+			}*/
 			
 		} else if (name.equals("Play : Free-for-all")) {
 			
