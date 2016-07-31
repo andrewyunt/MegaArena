@@ -12,7 +12,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -288,5 +290,11 @@ public class ArenaPluginPlayerListener implements Listener {
 								ChatColor.AQUA + player.getKiller().getName() + ChatColor.GREEN));
 			}
 		}
+	}
+
+	@EventHandler
+	public void onPlayerDropItem(PlayerDropItemEvent event) {
+
+		event.setCancelled(true);
 	}
 }
