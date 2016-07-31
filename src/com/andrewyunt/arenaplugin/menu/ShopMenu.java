@@ -32,6 +32,7 @@ public class ShopMenu {
 	private IconMenu menu;
 	private Player player;
 	private ArenaPlayer ap;
+	private boolean clicked;
 
 	public ShopMenu(Player player) {
 
@@ -46,6 +47,8 @@ public class ShopMenu {
 	}
 	
 	private void openClassUpgradesMenu() {
+		
+		clicked = false;
 		
 		if (menu != null)
 			menu.destroy();
@@ -101,17 +104,23 @@ public class ShopMenu {
 
 	private void openClassUpgradeMenu(Class classType) {
 		
+		clicked = false;
+		
 		menu.destroy();
 
 		menu = new IconMenu("Class Upgrades - " + classType.getName(), 45, new IconMenu.OptionClickEventHandler() {
 			@Override
 			public void onOptionClick(IconMenu.OptionClickEvent event) {
 
+				if (clicked == true)
+					return;
+				
 				ItemStack item = event.getItem();
 				
 				if (item.getType() == Material.ARROW) {
 					openClassUpgradesMenu();
 					event.setWillClose(false);
+					openClassUpgradeMenu(classType);
 					return;
 				}
 
@@ -120,9 +129,12 @@ public class ShopMenu {
 				
 				if (item.getDurability() == 14) {
 					player.sendMessage(ChatColor.RED + "You must unlock the preceding upgrades or you cannot afford that upgrade.");
+					clicked = true;
 					return;
 				} else if (item.getDurability() == 5) {
 					player.sendMessage(ChatColor.RED + "You have already puchased that class upgrade.");
+					clicked = true;
+					openClassUpgradeMenu(classType);
 					return;
 				}
 				
@@ -171,6 +183,8 @@ public class ShopMenu {
 				
 				int cost = ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(position) + "-upgrade-cost");
 				ap.removeCoins(cost);
+				
+				clicked = true;
 				
 				event.setWillDestroy(true);
 			}

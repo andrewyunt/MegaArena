@@ -21,6 +21,7 @@ public class ClassSelectorMenu {
 	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
 	private Player player;
 	private IconMenu menu;
+	private boolean clicked = false;
 	
 	public ClassSelectorMenu(Player player) {
 		
@@ -78,6 +79,9 @@ public class ClassSelectorMenu {
             @Override
             public void onOptionClick(IconMenu.OptionClickEvent event) {
             	
+    			if (clicked == true)
+    				return;
+            	
             	String name = event.getName();
             	
             	ArenaPlayer player = null;
@@ -102,6 +106,7 @@ public class ClassSelectorMenu {
 						player.setClassType(Class.valueOf(name.toUpperCase()));
 						player.getBukkitPlayer().sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
 								ChatColor.AQUA + name + ChatColor.GREEN));
+						clicked = true;
 						event.setWillClose(true);
 						return;
 				}
@@ -139,6 +144,9 @@ public class ClassSelectorMenu {
             @Override
             public void onOptionClick(IconMenu.OptionClickEvent event) {
             	
+    			if (clicked == true)
+    				return;
+            	
             	String name = event.getName();
             	
             	ArenaPlayer player = null;
@@ -150,8 +158,10 @@ public class ClassSelectorMenu {
             	
             	if (name.equals("Wither Minion")) {
             		player.setClassType(Class.WITHER_MINION);
+            		clicked = true;
             	} else if (name.equals("Spirit Warrior")) {
             		player.setClassType(Class.SPIRIT_WARRIOR);
+            		clicked = true;
             	} else if (name.equals("Go Back")) {
             		openMainMenu();
             		event.setWillClose(false);
