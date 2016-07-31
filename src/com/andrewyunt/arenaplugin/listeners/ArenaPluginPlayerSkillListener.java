@@ -30,6 +30,11 @@ import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Class;
 import com.andrewyunt.arenaplugin.objects.Skill;
 
+/**
+ * 
+ * @author MaccariTA
+ *
+ */
 public class ArenaPluginPlayerSkillListener implements Listener {
 	
 	public ArrayList<Player> hasSpeed = new ArrayList<Player>();
@@ -369,7 +374,7 @@ public class ArenaPluginPlayerSkillListener implements Listener {
 			return;
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 1, 0);
 		player.addPotionEffect(speed, true);
-		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill deactivated.",
+		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been deactivated.",
 				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));
 		hasSpeed.remove(player);
 	}

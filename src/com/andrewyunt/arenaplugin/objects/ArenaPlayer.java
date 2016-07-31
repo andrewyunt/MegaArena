@@ -38,11 +38,12 @@ public class ArenaPlayer {
 	private Side side;
 	private int energy;
 	private Location location;
+	private boolean sentActivate = false;
 	
 	public ArenaPlayer(String name) {
 		
 		this.name = name;
-		Bukkit.getServer().getPlayer(name);
+		player = ArenaPlugin.getInstance().getServer().getPlayer(name);
 	}
 	
 	public String getName() {
@@ -244,15 +245,30 @@ public class ArenaPlayer {
 		setEnergy(this.energy + energy);
 	}
 	
+	public void removeEnergy(int energy) {
+		
+		setEnergy(this.energy - energy);
+	}
+	
 	public void setEnergy(int energy) {
 		
 		this.energy = energy;
 		
 		if (this.energy > 100)
 			this.energy = 100;
+		else
+			sentActivate = false;
 		
 		if (this.energy == 100)
-			player.sendMessage(ChatColor.AQUA + "Right click " + ChatColor.GREEN + "using your sword to activate your ability!");
+			if (!sentActivate) {
+				sentActivate = true;
+				if (classType == Class.SKELETON)
+					player.sendMessage(ChatColor.AQUA + "Left click " + ChatColor.GREEN +
+							"using your bow to activate your ability!");
+				else
+					player.sendMessage(ChatColor.AQUA + "Right click " + ChatColor.GREEN +
+						"using your sword to activate your ability!");
+			}
 		
 		player.setLevel(this.energy);
 		player.setExp(this.energy / 100.0F);
