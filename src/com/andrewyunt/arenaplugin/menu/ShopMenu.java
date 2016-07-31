@@ -111,6 +111,7 @@ public class ShopMenu {
 				
 				if (item.getType() == Material.ARROW) {
 					openClassUpgradesMenu();
+					event.setWillClose(false);
 					return;
 				}
 
@@ -280,6 +281,7 @@ public class ShopMenu {
 		for (int i = 41; i < 45; i++)
 			menu.setOption(i, glassPane, "", "");
 		
+		menu.setSpecificTo(player);
 		menu.open(player);
 	}
 
