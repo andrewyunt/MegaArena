@@ -302,6 +302,16 @@ public class ArenaPlayer {
 		return previousContents;
 	}
 	
+	public void addCoins(double coins) {
+		
+		ArenaPlugin.getInstance().getEconomy().depositPlayer(getBukkitPlayer(), coins);
+	}
+	
+	public void removeCoins(double coins) {
+		
+		ArenaPlugin.getInstance().getEconomy().withdrawPlayer(getBukkitPlayer(), coins);
+	}
+	
 	public double getCoins() {
 		
 		return ArenaPlugin.getInstance().getEconomy().getBalance(getBukkitPlayer());

@@ -6,18 +6,30 @@ import com.andrewyunt.arenaplugin.ArenaPlugin;
 
 public enum Skill {
 	
-	RESIST,
-	SWIFTNESS,
-	BOOMERANG,
-	MUTUAL_WEAKNESS,
-	RECHARGE,
-	FLURRY,
-	POWERFUL_WEAKNESS,
-	SUPPORT,
-	WEAKENING_SWING,
-	SWIFT_BACKUP,
-	SOUL_SUCKER,
-	UNDEAD;
+	RESIST("Resist"),
+	SWIFTNESS("Swiftness"),
+	BOOMERANG("Boomerang"),
+	MUTUAL_WEAKNESS("Mutual Weakness"),
+	RECHARGE("Recharge"),
+	FLURRY("Flurry"),
+	POWERFUL_WEAKNESS("Powerful Weakness"),
+	SUPPORT("Support"),
+	WEAKENING_SWING("Weakening Swing"),
+	SWIFT_BACKUP("Swift Backup"),
+	SOUL_SUCKER("Soul Sucker"),
+	UNDEAD("Undead");
+	
+	String name;
+	
+	Skill(String name) {
+		
+		this.name = name;
+	}
+	
+	public String getName() {
+		
+		return name;
+	}
 	
 	public int getLevel(ArenaPlayer player) {
 		
@@ -32,7 +44,7 @@ public enum Skill {
 	
 	public void setLevel(ArenaPlayer player, int level) {
 		
-		ArenaPlugin.getInstance().getPermissions().playerAdd(player.getBukkitPlayer(),
-				String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), level));
+		ArenaPlugin.getInstance().getServer().dispatchCommand(ArenaPlugin.getInstance().getServer().getConsoleSender(),
+				String.format("pex user %s add arenaplugin.%s.%s", player.getName(), this.toString().toLowerCase(), level));
 	}
 }

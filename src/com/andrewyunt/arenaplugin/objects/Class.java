@@ -96,8 +96,8 @@ public enum Class {
 	
 	public void setKitLevel(ArenaPlayer player, int level) {
 		
-		ArenaPlugin.getInstance().getPermissions().playerAdd(player.getBukkitPlayer(),
-				String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), level));
+		ArenaPlugin.getInstance().getServer().dispatchCommand(ArenaPlugin.getInstance().getServer().getConsoleSender(),
+				String.format("pex user %s add arenaplugin.%s.%s", player.getName(), this.toString().toLowerCase(), level));
 	}
 	
 	public ItemStack[] giveKitItems(ArenaPlayer ap) {
@@ -572,6 +572,7 @@ public enum Class {
 				break;
 			}
 		}
+		
 		return inv.getContents();
  	}
 }

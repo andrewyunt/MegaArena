@@ -32,23 +32,12 @@ import de.slikey.effectlib.util.ParticleEffect;
  */
 public enum Ability {
 	
-	HEAL("Heal") {
-	},
-	
-	SPLIT_ARROW("Split Arrow") {
-	},
-	
-	LIGHTNING("Lightning") {
-	},
-	
-	EXPLODE("Explode") {
-	},
-	
-	HURRICANE("Hurricane") {
-	},
-	
-	WITHER_HEADS("Master's Attack") {	
-	};
+	HEAL("Heal"),
+	SPLIT_ARROW("Split Arrow"),
+	LIGHTNING("Lightning"),
+	EXPLODE("Explode"),
+	HURRICANE("Hurricane"),
+	WITHER_HEADS("Master's Attack");
 	
 	private String name;
 	
@@ -269,7 +258,7 @@ public enum Ability {
 	
 	public void setLevel(ArenaPlayer player, int level) {
 		
-		ArenaPlugin.getInstance().getPermissions().playerAdd(player.getBukkitPlayer(),
-				String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), level));
+		ArenaPlugin.getInstance().getServer().dispatchCommand(ArenaPlugin.getInstance().getServer().getConsoleSender(),
+				String.format("pex user %s add arenaplugin.%s.%s", player.getName(), this.toString().toLowerCase(), level));
 	}
 }

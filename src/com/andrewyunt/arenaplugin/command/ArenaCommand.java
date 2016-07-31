@@ -299,6 +299,7 @@ public class ArenaCommand implements CommandExecutor {
 			for (Arena arena : ArenaPlugin.getInstance().getArenaManager().getArenas())
 				sender.sendMessage(ChatColor.GOLD + arena.getName());
 		}
+		
 		return true;
 	}
 }
