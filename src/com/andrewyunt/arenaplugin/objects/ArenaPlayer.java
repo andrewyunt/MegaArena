@@ -1,6 +1,5 @@
 package com.andrewyunt.arenaplugin.objects;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -27,18 +26,12 @@ public class ArenaPlayer {
 	private Game game;
 	private ArenaPlayer requestingPlayer;
 	private Class classType;
-	private boolean hasFallen;
+	private boolean hasFallen, sentActivate = false;
 	private Arena selectedArena;
-	private double previousHealth;
-	private float previousExp;
-	private int previousLevel;
-	private int previousFoodLevel;
+	private Location previousLocation;
 	private GameMode previousGameMode;
-	private ItemStack[] previousContents;
 	private Side side;
 	private int energy;
-	private Location location;
-	private boolean sentActivate = false;
 	
 	public ArenaPlayer(String name) {
 		
@@ -180,36 +173,6 @@ public class ArenaPlayer {
 		player.getInventory().setItem(8, playTDM);
 	}
 	
-	public double getPreviousHealth() {
-		
-		return previousHealth;
-	}
-	
-	public void setPreviousHealth(double previousHealth) {
-		
-		this.previousHealth = previousHealth;
-	}
-	
-	public float getPreviousExp() {
-		
-		return previousExp;
-	}
-	
-	public void setPreviousExp(float previousExp) {
-		
-		this.previousExp = previousExp;
-	}
-	
-	public int getPreviousLevel() {
-		
-		return previousLevel;
-	}
-	
-	public void setPreviousLevel(int previousLevel) {
-		
-		this.previousLevel = previousLevel;
-	}
-	
 	public Side getSide() {
 		
 		return side;
@@ -279,24 +242,14 @@ public class ArenaPlayer {
 		return this.energy;
 	}
 
-	public void setPreviousLocation(Location location) {
+	public void setPreviousLocation(Location previousLocation) {
 		
-		this.location = location;
+		this.previousLocation = previousLocation;
 	}
 	
 	public Location getPreviousLocation() {
 		
-		return location;
-	}
-	
-	public void setPreviousFoodLevel(int previousFoodLevel) {
-		
-		this.previousFoodLevel = previousFoodLevel;
-	}
-	
-	public int getPreviousFoodLevel() {
-		
-		return previousFoodLevel;
+		return previousLocation;
 	}
 	
 	public void setPreviousGameMode(GameMode previousGameMode) {
@@ -307,16 +260,6 @@ public class ArenaPlayer {
 	public GameMode getPreviousGameMode() {
 		
 		return previousGameMode;
-	}
-	
-	public void setPreviousContents(ItemStack[] previousContents) {
-		
-		this.previousContents = previousContents;
-	}
-	
-	public ItemStack[] getPreviousContents() {
-		
-		return previousContents;
 	}
 	
 	public void addCoins(double coins) {

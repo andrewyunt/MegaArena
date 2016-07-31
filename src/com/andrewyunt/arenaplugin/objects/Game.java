@@ -9,12 +9,10 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.GameException;
-import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
 /**
@@ -68,12 +66,7 @@ public class Game {
 		
 		Player bp = player.getBukkitPlayer();
 		
-		player.setPreviousHealth(((Damageable) bp).getHealth());
-		player.setPreviousFoodLevel(bp.getFoodLevel());
-		player.setPreviousExp(bp.getExp());
-		player.setPreviousLevel(bp.getLevel());
 		player.setPreviousGameMode(bp.getGameMode());
-		player.setPreviousContents(bp.getInventory().getContents());
 		player.setPreviousLocation(bp.getLocation());
 	
 		Side side = null;
@@ -100,32 +93,31 @@ public class Game {
 	
 	public void removePlayer(ArenaPlayer player) {
 		
+		/* Send victory message to opponent if player's game is a duel */
 		if (arena.getType() == ArenaType.DUEL)
 			ArenaPlugin.getInstance().getGameManager().deleteGame(this, String.format("%s left the game and has left you victorious!", player.getName()));
 		
+		/* Remove player from players set and set the player's game to null */
 		players.remove(player);
 		player.setGame(null);
-		
-		try {
-			player.getBukkitPlayer().setHealth(ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName()).getPreviousHealth());
-		} catch (PlayerException e) {
-		}
 	
+		/* Set player energy to 0 */
 		player.setEnergy(0);
 		
 		Player bp = player.getBukkitPlayer();
 		
-		bp.setMaxHealth(20D);
-		bp.setHealth(player.getPreviousHealth());
-		bp.setFoodLevel(player.getPreviousFoodLevel());
-		bp.setExp(player.getPreviousExp());
-		bp.setLevel(player.getPreviousLevel());
+		/* Set player lobby health, food, experience and game mode */
+		bp.setMaxHealth(20.0D);
+		bp.setHealth(20.0D);
+		bp.setFoodLevel(20);
+		bp.setExp(0.0F);
+		bp.setLevel(0);
 		bp.setGameMode(player.getPreviousGameMode());
-		bp.getInventory().getHelmet().setType(Material.AIR);
-		bp.getInventory().getChestplate().setType(Material.AIR);
-		bp.getInventory().getLeggings().setType(Material.AIR);
-		bp.getInventory().getBoots().setType(Material.AIR);
-		bp.getInventory().setContents(player.getPreviousContents());
+		
+		/* Set player lobby inventory */
+		player.updateHotBar();
+		
+		/* Teleport player to previous location */
 		bp.teleport(player.getPreviousLocation());
 	}
 	
