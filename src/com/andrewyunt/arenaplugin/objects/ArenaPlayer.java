@@ -1,5 +1,8 @@
 package com.andrewyunt.arenaplugin.objects;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -8,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
@@ -32,6 +36,7 @@ public class ArenaPlayer {
 	private GameMode previousGameMode;
 	private Side side;
 	private int energy;
+	private Set<ArenaPlayer> assistPlayers = new HashSet<ArenaPlayer>();
 	
 	public ArenaPlayer(String name) {
 		
@@ -275,5 +280,24 @@ public class ArenaPlayer {
 	public double getCoins() {
 		
 		return ArenaPlugin.getInstance().getEconomy().getBalance(player);
+	}
+	
+	public void addAssistPlayer(ArenaPlayer player) {
+		
+		assistPlayers.add(player);
+		
+        BukkitScheduler scheduler = ArenaPlugin.getInstance().getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(ArenaPlugin.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+            	
+            	assistPlayers.remove(player);
+            }
+        }, 400L);
+	}
+	
+	public Set<ArenaPlayer> getAssistPlayers() {
+		
+		return assistPlayers;
 	}
 }
