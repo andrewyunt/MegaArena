@@ -41,7 +41,12 @@ public class ShopMenu implements Listener {
 	public ShopMenu(Player player) {
 
 		this.player = player;
-
+		
+		ItemMeta glassPaneMeta = glassPane.getItemMeta();
+		glassPaneMeta.setDisplayName(" ");
+		glassPaneMeta.setLore(new ArrayList<String>());
+		glassPane.setItemMeta(glassPaneMeta);
+		
 		ArenaPlugin.getInstance().getServer().getPluginManager().registerEvents(this, ArenaPlugin.getInstance());
 		
 		try {
