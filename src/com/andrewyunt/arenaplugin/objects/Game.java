@@ -74,9 +74,23 @@ public class Game {
 		if (arena.getType() == ArenaType.DUEL || arena.getType() == ArenaType.FFA)
 			side = Side.INDEPENDENT;
 		else if (arena.getType() == ArenaType.TDM) {
-			double rand = Math.random();
+			int bluePlayers = 0;
+			int greenPlayers = 0;
 			
-			if (rand <= .5)
+			for (ArenaPlayer sidePlayer : getPlayers())
+				if (sidePlayer.getSide() == Side.BLUE)
+					bluePlayers++;
+				else
+					greenPlayers++;
+			
+			if (bluePlayers == greenPlayers) {
+				double rand = Math.random();
+				
+				if (rand <= .5)
+					side = Side.BLUE;
+				else
+					side = Side.GREEN;
+			} else if (bluePlayers < greenPlayers)
 				side = Side.BLUE;
 			else
 				side = Side.GREEN;
@@ -125,7 +139,6 @@ public class Game {
 		
 		return players;
 	}
-	
 	
 	public void start() throws GameException {
 		
