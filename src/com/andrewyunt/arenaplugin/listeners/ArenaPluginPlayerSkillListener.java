@@ -1,6 +1,5 @@
 package com.andrewyunt.arenaplugin.listeners;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -24,12 +23,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
+import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Class;
 import com.andrewyunt.arenaplugin.objects.Skill;
-import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
 
 /**
  * 
@@ -38,7 +38,6 @@ import com.andrewyunt.arenaplugin.objects.Arena.ArenaType;
  */
 public class ArenaPluginPlayerSkillListener implements Listener {
 
-	public ArrayList<Player> hasSpeed = new ArrayList<Player>();
 	public HashMap<TNTPrimed, Player> creeperTnt = new HashMap<TNTPrimed, Player>();
 
 	@EventHandler
@@ -433,7 +432,7 @@ public class ArenaPluginPlayerSkillListener implements Listener {
 		if (!(damagedAP.getClassType() == Class.CREEPER))
 			return;
 
-		if (hasSpeed.contains(damaged))
+		if (damagedAP.hasSpeed())
 			return;
 
 		int skillLevel = 0;
@@ -451,7 +450,7 @@ public class ArenaPluginPlayerSkillListener implements Listener {
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, true);
 
 		damaged.addPotionEffect(speed, false);
-		hasSpeed.add(damaged);
+		damagedAP.setHasSpeed(true);
 
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
 				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));
@@ -482,7 +481,7 @@ public class ArenaPluginPlayerSkillListener implements Listener {
 		if (!(playerAP.getClassType() == Class.CREEPER))
 			return;
 
-		if (!hasSpeed.contains(player))
+		if (!playerAP.hasSpeed())
 			return;
 
 		int skillLevel = 0;
@@ -500,7 +499,7 @@ public class ArenaPluginPlayerSkillListener implements Listener {
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 1, 0);
 
 		player.addPotionEffect(speed, true);
-		hasSpeed.remove(player);
+		playerAP.setHasSpeed(false);
 
 		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been deactivated.",
 				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));

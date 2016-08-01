@@ -37,6 +37,7 @@ public class ArenaPlayer {
 	private Side side;
 	private int energy;
 	private Set<ArenaPlayer> assistPlayers = new HashSet<ArenaPlayer>();
+	private boolean hasSpeed;
 	
 	public ArenaPlayer(String name) {
 		
@@ -299,5 +300,15 @@ public class ArenaPlayer {
 	public Set<ArenaPlayer> getAssistPlayers() {
 		
 		return assistPlayers;
+	}
+	
+	public void setHasSpeed(boolean hasSpeed) {
+		
+		this.hasSpeed = hasSpeed;
+	}
+	
+	public boolean hasSpeed() {
+		
+		return hasSpeed;
 	}
 }
