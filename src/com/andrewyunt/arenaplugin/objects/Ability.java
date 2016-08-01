@@ -81,6 +81,9 @@ public enum Ability {
 					if (!entityAP.isInGame())
 						continue;
 					
+					if (entityAP.getGame().getArena().getType() == ArenaType.TDM && entityAP.getSide() == player.getSide())
+						continue;
+					
 					double newHealth = ((Damageable) ep).getHealth() + hearts;
 					
 					if (newHealth < 40)
@@ -137,6 +140,9 @@ public enum Ability {
 				if (!entityAP.isInGame())
 					continue;
 				
+				if (entityAP.getGame().getArena().getType() == ArenaType.TDM && entityAP.getSide() == player.getSide())
+					continue;
+				
 				double dmg = 1.0 + 0.5 * (getLevel(player) - 1);
 				
 				entityPlayer.getWorld().strikeLightningEffect(entityPlayer.getLocation());
@@ -183,6 +189,9 @@ public enum Ability {
 				if (!entityAP.isInGame())
 					continue;
 				
+				if (entityAP.getGame().getArena().getType() == ArenaType.TDM && entityAP.getSide() == player.getSide())
+					continue;
+				
 				Damageable dmgVictim = (Damageable) entity;
 				double dmg = 3.0 + 0.5 * (getLevel(player) - 1);
 				
@@ -226,6 +235,9 @@ public enum Ability {
 	    				
 	    				if (!entityAP.isInGame())
 	    					continue;
+	    				
+						if (entityAP.getGame().getArena().getType() == ArenaType.TDM && entityAP.getSide() == player.getSide())
+							continue;
 	            		
 	            		if (((Player) entity) == bp)
 	            			continue;

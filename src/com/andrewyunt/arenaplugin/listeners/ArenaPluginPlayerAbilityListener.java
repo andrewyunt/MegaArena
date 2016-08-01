@@ -243,14 +243,13 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 		if (!entity.hasMetadata("ArenaPlugin"))
 			return;
 		
-		ArenaPlayer shooter = null;
+		Player shooter = (Player) ((Projectile) entity).getShooter();
+		ArenaPlayer shooterAP = null;
 		
 		try {
-			shooter = ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) ((Projectile) entity).getShooter()).getName());
+			shooterAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(shooter.getName());
 		} catch (PlayerException e) {
 		}
-		
-		Player bukkitShooter = shooter.getBukkitPlayer();
 		
         ExplodeEffect explodeEffect = new ExplodeEffect(ArenaPlugin.getInstance().getEffectManager());
         
@@ -263,7 +262,7 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			if (!(nearby instanceof Player))
 				continue;
 			
-			if (nearby == bukkitShooter)
+			if (nearby == shooter)
 				continue;
 			
 			Player nearbyPlayer = (Player) nearby;
@@ -278,9 +277,12 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			if (!nearbyAP.isInGame())
 				continue;
 			
-			double dmg = 1.5 + (shooter.getClassType().getAbility().getLevel(shooter) * 0.5);
+			if (nearbyAP.getGame().getArena().getType() == ArenaType.TDM && nearbyAP.getSide() == shooterAP.getSide())
+				continue;
+			
+			double dmg = 1.5 + (shooterAP.getClassType().getAbility().getLevel(shooterAP) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
-			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as red damage and invisibility
+			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill as well as red damage and invisibility
 		    
 			if (dmgPlayer.getHealth() < dmg) {
 		    	dmgPlayer.setHealth(0D);
