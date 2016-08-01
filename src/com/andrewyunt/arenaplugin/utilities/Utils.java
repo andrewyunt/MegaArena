@@ -1,6 +1,8 @@
 package com.andrewyunt.arenaplugin.utilities;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,11 +10,16 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.andrewyunt.arenaplugin.objects.Vector3D;
+
+import net.minecraft.server.v1_7_R4.AxisAlignedBB;
+import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntityPlayer;
 
 /**
  * 
@@ -40,14 +47,14 @@ public class Utils {
 		return map;
 	}
 	
-	public static List<String> colorizeList(List<String> description, ChatColor color) {
+	public static String[] colorizeArray(String[] description, ChatColor color) {
 		
 		List<String> colorized = new ArrayList<String>();
 
 		for (String line : description)
 			colorized.add(color + line);
 
-		return colorized;
+		return colorized.toArray(new String[0]);
 	}
 
 	/**
@@ -67,12 +74,16 @@ public class Utils {
  
         for(Player p : player.getWorld().getPlayers()) {
             Vector3D targetPos = new Vector3D(p.getLocation());
-            Vector3D minimum = targetPos.add(-0.3, 0, -0.3);
-            Vector3D maximum = targetPos.add(0.3, 1.8, 0.3);
-       
-            if (p.getLocation().distanceSquared(player.getLocation()) > 12.7449) 
+            Vector3D minimum = targetPos.add(-0.39, 0, -0.39);
+            Vector3D maximum = targetPos.add(0.39, 1.9, 0.39);
+            double range = 4.2;
+            if (p.getLocation().distanceSquared(player.getLocation()) > range*range)
             	continue;
-            
+            List<Block> blocks = p.getLastTwoTargetBlocks(null, (int) range);
+            for (Block b : blocks){
+            	if (b.getType().isOccluding())
+            		return targetPlayer;
+            }
             if(p != player && hasIntersection(playerStart, playerEnd, minimum, maximum))
                 if(targetPlayer == null || targetPlayer.getLocation().distanceSquared(playerPos) > p.getLocation().distanceSquared(playerPos))
                     targetPlayer = p;
@@ -116,14 +127,15 @@ public class Utils {
         return true;
     }
     
-    public static List<Entity> getNearbyEntities(Location l, int distance){
-    	List<Entity> entities = new ArrayList<Entity>();
-    	
-    	for (Entity e : l.getWorld().getEntities()){
+    public static List<org.bukkit.entity.Entity> getNearbyEntities(Location l, int distance){
+    	List<org.bukkit.entity.Entity> entities = new ArrayList<org.bukkit.entity.Entity>();
+    	for (org.bukkit.entity.Entity e : l.getWorld().getEntities()){
     		if (l.distanceSquared(e.getLocation()) <= distance*distance)
     			entities.add(e);
     	}
     	
     	return entities;
     }
+    
+    
 }

@@ -17,8 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerAnimationEvent;
-import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -76,10 +74,45 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 		}
 	}
 	
+ 	@EventHandler (priority = EventPriority.MONITOR)
+	    public void EPH(EntityDamageByEntityEvent e){
+	    	if (!(e.getDamager() instanceof Player))
+	    		return;
+	    	if (!(e.getEntity() instanceof Player))
+	    		return;
+	    	
+	    	Player player = (Player) e.getDamager();
+	    	Player target = (Player) e.getEntity();
+	    	ArenaPlayer targetAP = null;
+			ArenaPlayer playerAP = null;
+			
+			try {
+				playerAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+			} catch (PlayerException e1) {
+			}
+			try {
+				targetAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(target.getName());
+			} catch (PlayerException e1) {
+			}
+			
+			if (!playerAP.isInGame())
+				return;
+			if (playerAP.getClassType() == SKELETON)
+				return;
+			if (!targetAP.isInGame())
+				return;
+			if (targetAP.getGame().getArena().getType() == ArenaType.TDM && targetAP.getSide() == playerAP.getSide())
+				return;
+			if (Utils.getTargetPlayer(player) != null)
+				return;
+			
+	    	playerAP.addEnergy(playerAP.getClassType().getEnergyPerClick());
+	    }
+	
 	@EventHandler (priority = EventPriority.MONITOR)
-	public void onPlayerAnimation(PlayerAnimationEvent event) {
+	public void EPC(PlayerInteractEvent event) {
 		
-		if (event.getAnimationType() != PlayerAnimationType.ARM_SWING)
+		if (!(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK))
 			return;
 		
 		Player player = event.getPlayer();
@@ -95,25 +128,8 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 		
 		if (playerAP.getClassType() == SKELETON)
 			return;
-		
-		Player targetPlayer = Utils.getTargetPlayer(player);
-		
-		if (targetPlayer == null)
+		if (Utils.getTargetPlayer(player) == null)
 			return;
-		
-		ArenaPlayer targetAP = null;
-		
-		try {
-			targetAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(targetPlayer.getName());
-		} catch (PlayerException e) {
-		}
-		
-		if (!targetAP.isInGame())
-			return;
-		
-		if (targetAP.getGame().getArena().getType() == ArenaType.TDM && targetAP.getSide() == playerAP.getSide())
-			return;
-		
 		playerAP.addEnergy(playerAP.getClassType().getEnergyPerClick());
 	}
 	
