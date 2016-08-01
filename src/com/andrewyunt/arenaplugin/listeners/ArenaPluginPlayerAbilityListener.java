@@ -268,6 +268,16 @@ public class ArenaPluginPlayerAbilityListener implements Listener {
 			
 			Player nearbyPlayer = (Player) nearby;
 			
+			ArenaPlayer nearbyAP = null;
+			
+			try {
+				nearbyAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(nearbyPlayer.getName());
+			} catch (PlayerException e) {
+			}
+			
+			if (!nearbyAP.isInGame())
+				continue;
+			
 			double dmg = 1.5 + (shooter.getClassType().getAbility().getLevel(shooter) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as red damage and invisibility

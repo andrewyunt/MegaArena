@@ -71,12 +71,15 @@ public enum Ability {
 						continue;
 					
 					Player ep = (Player) entity;
+					ArenaPlayer entityAP = null;
 					
 					try {
-						if (!ArenaPlugin.getInstance().getPlayerManager().getPlayer(ep.getName()).isInGame())
-							return;
+						entityAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(ep.getName());
 					} catch (PlayerException e) {
 					}
+					
+					if (!entityAP.isInGame())
+						continue;
 					
 					double newHealth = ((Damageable) ep).getHealth() + hearts;
 					
@@ -123,17 +126,21 @@ public enum Ability {
 				if (!(entity instanceof Player))
 					continue;
 				
+				Player entityPlayer = (Player) entity;
+				ArenaPlayer entityAP = null;
+				
 				try {
-					ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) entity).getName());
+					entityAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
 				} catch (PlayerException e) {
-					continue; // Player isn't in game
 				}
+				
+				if (!entityAP.isInGame())
+					continue;
 				
 				double dmg = 1.0 + 0.5 * (getLevel(player) - 1);
 				
-				Player victim = (Player) entity;
-				victim.getWorld().strikeLightningEffect(victim.getLocation());
-				Damageable dmgVictim = (Damageable) victim;
+				entityPlayer.getWorld().strikeLightningEffect(entityPlayer.getLocation());
+				Damageable dmgVictim = (Damageable) entityPlayer;
 				dmgVictim.damage(0.00001D, bp); // Just so an actual hit will register 
 				
 				if (dmgVictim.getHealth() <= dmg)
@@ -165,11 +172,16 @@ public enum Ability {
 				if (!(entity instanceof Player))
 					continue;
 				
+				Player entityPlayer = (Player) entity;
+				ArenaPlayer entityAP = null;
+				
 				try {
-					ArenaPlugin.getInstance().getPlayerManager().getPlayer(((Player) entity).getName());
+					entityAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
 				} catch (PlayerException e) {
-					continue; // Player isn't in game
 				}
+				
+				if (!entityAP.isInGame())
+					continue;
 				
 				Damageable dmgVictim = (Damageable) entity;
 				double dmg = 3.0 + 0.5 * (getLevel(player) - 1);
@@ -199,9 +211,21 @@ public enum Ability {
 	            	
 	            	if (tornadoEffect.isDone())
 	                    this.cancel();
+	            	
 	            	for (Entity entity : Utils.getNearbyEntities(tornadoEffect.getLocation(), 5)) {
 	            		if (!(entity instanceof Player))
 	            			continue;
+	            		
+	            		Player entityPlayer = (Player) entity;
+	    				ArenaPlayer entityAP = null;
+	    				
+	    				try {
+	    					entityAP = ArenaPlugin.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
+	    				} catch (PlayerException e) {
+	    				}
+	    				
+	    				if (!entityAP.isInGame())
+	    					continue;
 	            		
 	            		if (((Player) entity) == bp)
 	            			continue;
@@ -213,11 +237,12 @@ public enum Ability {
 	            		else
 	            			((Damageable) entity).setHealth(0D);
 	            		
-	            		player.addEnergy(Class.SPIRIT_WARRIOR.getEnergyPerClick());
 	            		Vector tornadoVector = tornadoEffect.getLocation().toVector();
 	            		Vector entityVector = entity.getLocation().add(0, 3, 0).toVector();
 	            		Vector answer = entityVector.subtract(tornadoVector);
 	            		entity.setVelocity(answer.multiply(0.12));
+	            		
+	            		player.addEnergy(Class.SPIRIT_WARRIOR.getEnergyPerClick());
 	            	}
 	            }
 	        }.runTaskTimer(ArenaPlugin.getInstance(), 0L, 20L);
