@@ -6,12 +6,12 @@ package com.andrewyunt.arenaplugin.menu;
  *
  */
 public class LayoutEditorMenu {
-	
+
 	public LayoutEditorMenu() {
-		
+
 	}
-	
+
 	public void destroy() {
-		
+
 	}
 }

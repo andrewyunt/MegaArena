@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.Ability;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Class;
-import com.andrewyunt.arenaplugin.objects.IconMenu;
 import com.andrewyunt.arenaplugin.objects.Skill;
 import com.andrewyunt.arenaplugin.utilities.Utils;
 
@@ -26,18 +31,19 @@ import com.andrewyunt.arenaplugin.utilities.Utils;
  * @author Andrew Yunt
  *
  */
-public class ShopMenu {
+public class ShopMenu implements Listener {
 
-	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
-	private IconMenu menu;
 	private Player player;
 	private ArenaPlayer ap;
-	private boolean clicked;
+	private Inventory inv;
+	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
 
 	public ShopMenu(Player player) {
 
 		this.player = player;
 
+		ArenaPlugin.getInstance().getServer().getPluginManager().registerEvents(this, ArenaPlugin.getInstance());
+		
 		try {
 			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
@@ -48,147 +54,65 @@ public class ShopMenu {
 	
 	private void openClassUpgradesMenu() {
 		
-		clicked = false;
+		inv = Bukkit.createInventory(null, 27, "Class Upgrades");
+
+		ItemStack zombie = new ItemStack(Material.ROTTEN_FLESH);
+		ItemStack skeleton = new ItemStack(Material.BONE);
+		ItemStack creeper = new ItemStack(Material.TNT);
+		ItemStack herobrine = new ItemStack(Material.ENDER_PEARL);
+		ItemStack witherMinion = new ItemStack(Material.ENCHANTMENT_TABLE);
+		ItemStack spiritWarrior = new ItemStack(Material.SKULL_ITEM);
+		ItemStack close = new ItemStack(Material.ARROW);
 		
-		if (menu != null)
-			menu.destroy();
+		ItemMeta zombieMeta = zombie.getItemMeta();
+		ItemMeta skeletonMeta = skeleton.getItemMeta();
+		ItemMeta creeperMeta = creeper.getItemMeta();
+		ItemMeta herobrineMeta = herobrine.getItemMeta();
+		ItemMeta witherMinionMeta = witherMinion.getItemMeta();
+		ItemMeta spiritWarriorMeta = spiritWarrior.getItemMeta();
+		ItemMeta closeMeta = close.getItemMeta();
 		
-		menu = new IconMenu("Class Upgrades", 27, new IconMenu.OptionClickEventHandler() {
-			@Override
-			public void onOptionClick(IconMenu.OptionClickEvent event) {
-
-				String name = event.getName();
-
-				switch (name) {
-				case "Close":
-					event.setWillClose(true);
-					break;
-				case "":
-					event.setWillClose(false);
-					return;
-				case "Zombie":
-				case "Skeleton":
-				case "Creeper":
-				case "Herobrine":
-				case "Wither Minion":
-				case "Spirit Warrior":
-					openClassUpgradeMenu(Class.valueOf(name.toUpperCase().replace(' ', '_')));
-					event.setWillClose(false);
-					return;
-				}
-			}
-		}, ArenaPlugin.getInstance());
-
+		zombieMeta.setDisplayName("Zombie");
+		skeletonMeta.setDisplayName("Skeleton");
+		creeperMeta.setDisplayName("Creeper");
+		herobrineMeta.setDisplayName("Herobrine");
+		witherMinionMeta.setDisplayName("Wither Minion");
+		spiritWarriorMeta.setDisplayName("Spirit Warrior");
+		closeMeta.setDisplayName("Close");
+		
+		zombie.setItemMeta(zombieMeta);
+		skeleton.setItemMeta(skeletonMeta);
+		creeper.setItemMeta(creeperMeta);
+		herobrine.setItemMeta(herobrineMeta);
+		witherMinion.setItemMeta(witherMinionMeta);
+		spiritWarrior.setItemMeta(spiritWarriorMeta);
+		close.setItemMeta(closeMeta);
+		
 		for (int i = 0; i < 10; i++)
-			menu.setOption(i, glassPane, "", "");
+			inv.setItem(i, glassPane);
 
-		menu.setOption(10, new ItemStack(Material.ROTTEN_FLESH), "Zombie", "");
-		menu.setOption(11, new ItemStack(Material.BONE), "Skeleton", "");
-		menu.setOption(12, new ItemStack(Material.TNT), "Creeper", "");
-		menu.setOption(14, new ItemStack(Material.ENDER_PEARL), "Herobrine", "");
-		menu.setOption(13, glassPane, "", "");
-		menu.setOption(15, new ItemStack(Material.ENCHANTMENT_TABLE), "Wither Minion", "");
-		menu.setOption(16, new ItemStack(Material.SKULL_ITEM), "Spirit Warrior", "");
+		inv.setItem(10, zombie);
+		inv.setItem(11, skeleton);
+		inv.setItem(12, creeper);
+		inv.setItem(14, herobrine);
+		inv.setItem(13, glassPane);
+		inv.setItem(15, witherMinion);
+		inv.setItem(16, spiritWarrior);
 
 		for (int i = 17; i < 22; i++)
-			menu.setOption(i, glassPane, "", "");
+			inv.setItem(i, glassPane);
 
-		menu.setOption(22, new ItemStack(Material.ARROW), "Close", "");
+		inv.setItem(22, close);
 
 		for (int i = 23; i < 27; i++)
-			menu.setOption(i, glassPane, "", "");
+			inv.setItem(i, glassPane);
 
-		menu.setSpecificTo(player);
-		menu.open(player);
+		player.openInventory(inv);
 	}
 
 	private void openClassUpgradeMenu(Class classType) {
-		
-		clicked = false;
-		
-		menu.destroy();
 
-		menu = new IconMenu("Class Upgrades - " + classType.getName(), 45, new IconMenu.OptionClickEventHandler() {
-			@Override
-			public void onOptionClick(IconMenu.OptionClickEvent event) {
-
-				if (clicked == true)
-					return;
-				
-				ItemStack item = event.getItem();
-				
-				if (item.getType() == Material.ARROW) {
-					openClassUpgradesMenu();
-					event.setWillClose(false);
-					openClassUpgradeMenu(classType);
-					return;
-				}
-
-				if (item.getType() != Material.STAINED_CLAY)
-					return;
-				
-				if (item.getDurability() == 14) {
-					player.sendMessage(ChatColor.RED + "You must unlock the preceding upgrades or you cannot afford that upgrade.");
-					clicked = true;
-					return;
-				} else if (item.getDurability() == 5) {
-					player.sendMessage(ChatColor.RED + "You have already puchased that class upgrade.");
-					clicked = true;
-					openClassUpgradeMenu(classType);
-					return;
-				}
-				
-				Inventory inv = event.getInventory();
-				
-				Class classType = Class.valueOf(inv.getName()
-						.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
-				
-				int position = event.getPosition();
-				
-				if (position < 9) {
-					
-					position++;
-					Ability ability = classType.getAbility();
-					
-					ability.setLevel(ap, position);
-					ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
-							ability.getName() + ChatColor.GREEN));
-				
-				} else if (9 <= position && position < 18) {
-					
-					position = position - 8;
-					Skill skillOne = classType.getSkillTwo();
-					
-					skillOne.setLevel(ap, position);
-					ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
-							skillOne.getName() + ChatColor.GREEN));
-			
-				} else if (18 <= position && position < 27) {
-				
-					position = position - 17;		
-					Skill skillTwo = classType.getSkillTwo();
-					
-					skillTwo.setLevel(ap, position);
-					ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
-							skillTwo.getName() + ChatColor.GREEN));
-			
-				} else if (27 <= position && position < 36) {
-				
-					position = position - 26;
-					
-					classType.setKitLevel(ap, position);
-					ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s kit upgrade purchased successfully.",
-							classType.getName() + ChatColor.GREEN));
-				}
-				
-				int cost = ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(position) + "-upgrade-cost");
-				ap.removeCoins(cost);
-				
-				clicked = true;
-				
-				event.setWillDestroy(true);
-			}
-		}, ArenaPlugin.getInstance());
+		inv = Bukkit.createInventory(null, 45, "Class Upgrades - " + classType.getName());
 
 		Ability ability = classType.getAbility();
 		Skill skillOne = classType.getSkillOne();
@@ -244,14 +168,14 @@ public class ShopMenu {
 				+ "." + line + "." + String.valueOf(curLevel));
 				
 				String name = null;
-				List<String> description = null;
+				List<String> lore = null;
 				
 				if (section.contains("title") && section.contains("description")) {
 					name = section.getString("title");
-					description = new ArrayList<String>(Arrays.asList(section.getString("description").split("\\r?\\n")));
+					lore = new ArrayList<String>(Arrays.asList(section.getString("description").split("\\r?\\n")));
 				}
 				
-				description.add("");
+				lore.add("");
 
 				ChatColor color = null;
 				int cost = config.getInt("tier-" + String.valueOf(curLevel) + "-upgrade-cost");
@@ -263,9 +187,9 @@ public class ShopMenu {
 					if (level >= curLevel) {
 						is = new ItemStack(Material.STAINED_CLAY, 1, (short) 5);
 						color = ChatColor.GREEN;
-						description.add("Purchased");
+						lore.add("Purchased");
 					} else {
-						description.add("Cost: " + String.valueOf(cost));
+						lore.add("Cost: " + String.valueOf(cost));
 						
 						if (ap.getCoins() < cost) {
 							is = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
@@ -277,12 +201,14 @@ public class ShopMenu {
 						}
 					}
 				
-				name = color + name;
+				lore = Utils.colorizeList(lore, color);
+				ItemMeta meta = is.getItemMeta();
 				
-				String[] descriptionArray = description.toArray(new String[0]);
-				descriptionArray = Utils.colorizeArray(descriptionArray, color);
-
-				menu.setOption(i, is, name, descriptionArray);
+				meta.setDisplayName(color + name);
+				meta.setLore(lore);
+				is.setItemMeta(meta);
+				
+				inv.setItem(i, is);
 				
 				curLevel++;
 				i++;
@@ -291,20 +217,123 @@ public class ShopMenu {
 			pass++;
 		}
 		
-		for (int i = 36; i < 40; i++)
-			menu.setOption(i, glassPane, "", "");
+		ItemStack goBack = new ItemStack(Material.ARROW);
+		ItemMeta goBackMeta = goBack.getItemMeta();
 		
-		menu.setOption(40, new ItemStack(Material.ARROW), "Go Back", "");
+		goBackMeta.setDisplayName("Go Back");
+		goBack.setItemMeta(goBackMeta);
+		
+		for (int i = 36; i < 40; i++)
+			inv.setItem(i, glassPane);
+		
+		inv.setItem(40, goBack);
 		
 		for (int i = 41; i < 45; i++)
-			menu.setOption(i, glassPane, "", "");
+			inv.setItem(i, glassPane);
 		
-		menu.setSpecificTo(player);
-		menu.open(player);
+		player.openInventory(inv);
 	}
 
-	public void destroy() {
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
 
-		menu.destroy();
+		String title = inv.getTitle();
+		
+		if (!(title.startsWith("Class Upgrades")))
+			return;
+		
+		event.setCancelled(true);
+		
+		ItemStack is = event.getCurrentItem();
+		String name = is.getItemMeta().getDisplayName();
+
+		if (title.equals("Class Upgrades")) {
+			
+			switch (name) {
+				case "Close":
+					close();
+					break;
+				case "Zombie":
+				case "Skeleton":
+				case "Creeper":
+				case "Herobrine":
+				case "Wither Minion":
+				case "Spirit Warrior":
+					openClassUpgradeMenu(Class.valueOf(name.toUpperCase().replace(' ', '_')));
+					break;
+			}
+			
+		} else {
+			
+			Class classType = Class.valueOf(title.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
+			
+			if (is.getType() == Material.ARROW) {
+				openClassUpgradesMenu();
+				return;
+			}
+
+			if (is.getType() != Material.STAINED_CLAY)
+				return;
+			
+			if (is.getDurability() == 14) {
+				player.sendMessage(ChatColor.RED + "You must unlock the preceding upgrades or you cannot afford that upgrade.");
+				return;
+			} else if (is.getDurability() == 5) {
+				player.sendMessage(ChatColor.RED + "You have already puchased that class upgrade.");
+				return;
+			}
+			
+			Inventory inv = event.getInventory();
+			
+			int slot = event.getSlot();
+			
+			if (slot < 9) {
+				
+				slot++;
+				Ability ability = classType.getAbility();
+				
+				ability.setLevel(ap, slot);
+				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+						ability.getName() + ChatColor.GREEN));
+			
+			} else if (9 <= slot && slot < 18) {
+				
+				slot = slot - 8;
+				Skill skillOne = classType.getSkillTwo();
+				
+				skillOne.setLevel(ap, slot);
+				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+						skillOne.getName() + ChatColor.GREEN));
+		
+			} else if (18 <= slot && slot < 27) {
+			
+				slot = slot - 17;		
+				Skill skillTwo = classType.getSkillTwo();
+				
+				skillTwo.setLevel(ap, slot);
+				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+						skillTwo.getName() + ChatColor.GREEN));
+		
+			} else if (27 <= slot && slot < 36) {
+			
+				slot = slot - 26;
+				
+				classType.setKitLevel(ap, slot);
+				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s kit upgrade purchased successfully.",
+						classType.getName() + ChatColor.GREEN));
+			}
+			
+			int cost = ArenaPlugin.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
+			ap.removeCoins(cost);
+			
+			player.openInventory(inv);
+		}
+	}
+	
+	public void close() {
+		
+		HandlerList.unregisterAll(this);
+
+		player.closeInventory();
 	}
 }

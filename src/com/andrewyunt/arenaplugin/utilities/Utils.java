@@ -40,14 +40,14 @@ public class Utils {
 		return map;
 	}
 	
-	public static String[] colorizeArray(String[] description, ChatColor color) {
+	public static List<String> colorizeList(List<String> description, ChatColor color) {
 		
 		List<String> colorized = new ArrayList<String>();
 
 		for (String line : description)
 			colorized.add(color + line);
 
-		return colorized.toArray(new String[0]);
+		return colorized;
 	}
 
 	/**

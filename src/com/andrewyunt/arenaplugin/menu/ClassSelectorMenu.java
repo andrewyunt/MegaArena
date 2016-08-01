@@ -1,205 +1,235 @@
 package com.andrewyunt.arenaplugin.menu;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.andrewyunt.arenaplugin.ArenaPlugin;
 import com.andrewyunt.arenaplugin.exception.PlayerException;
 import com.andrewyunt.arenaplugin.objects.ArenaPlayer;
 import com.andrewyunt.arenaplugin.objects.Class;
-import com.andrewyunt.arenaplugin.objects.IconMenu;
 
 /**
  * 
  * @author Andrew Yunt
  *
  */
-public class ClassSelectorMenu {
-	
-	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+public class ClassSelectorMenu implements Listener {
+
 	private Player player;
-	private IconMenu menu;
-	private boolean clicked = false;
-	
+	private Inventory inv;
+	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+
 	public ClassSelectorMenu(Player player) {
-		
+
 		this.player = player;
-		
+
+		ArenaPlugin.getInstance().getServer().getPluginManager().registerEvents(this, ArenaPlugin.getInstance());
+
 		openMainMenu();
 	}
-	
+
 	private void openMainMenu() {
+
+		inv = Bukkit.createInventory(null, 27, "Class Selector");
+
+		ItemStack normalClasses = new ItemStack(Material.IRON_SWORD);
+		ItemStack heroClasses = new ItemStack(Material.DIAMOND_SWORD);
+		ItemStack close = new ItemStack(Material.ARROW);
 		
-		menu = new IconMenu("Class Selector", 27, new IconMenu.OptionClickEventHandler() {
-            @Override
-            public void onOptionClick(IconMenu.OptionClickEvent event) {
-            	
-            	String name = event.getName();
-            	
-                if (name.equals("NORMAL CLASSES"))
-                	openNormalClassSelector();
-                else if (name.equals("HERO CLASSES"))
-                	openHeroClassSelector();
-                else if (name.equals("Close")) {
-                	event.setWillClose(true);
-                	return;
-                }
-           
-   
-            	event.setWillClose(false);
-            }
-		}, ArenaPlugin.getInstance());
+		ItemMeta normalClassesMeta = normalClasses.getItemMeta();
+		ItemMeta heroClassesMeta = heroClasses.getItemMeta();
+		ItemMeta closeMeta = close.getItemMeta();
+		
+		normalClassesMeta.setDisplayName("NORMAL CLASSES");
+		heroClassesMeta.setDisplayName("HERO CLASSES");
+		closeMeta.setDisplayName("Close");
+		
+		normalClasses.setItemMeta(normalClassesMeta);
+		heroClasses.setItemMeta(heroClassesMeta);
+		close.setItemMeta(closeMeta);
 		
 		for (int i = 0; i < 12; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setOption(12, new ItemStack(Material.IRON_SWORD), "NORMAL CLASSES", "");
-		menu.setOption(13, glassPane, "", "");
-		menu.setOption(14, new ItemStack(Material.DIAMOND_SWORD), "HERO CLASSES", "");
-		
+			inv.setItem(i, glassPane);
+
+		inv.setItem(12, normalClasses);
+		inv.setItem(13, glassPane);
+		inv.setItem(14, heroClasses);
+
 		for (int i = 15; i < 22; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setOption(22, new ItemStack(Material.ARROW), "Close", "");
-		
+			inv.setItem(i, glassPane);
+
+		inv.setItem(22, close);
+
 		for (int i = 23; i < 27; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setSpecificTo(player);
-		menu.open(player);
+			inv.setItem(i, glassPane);
+
+		player.openInventory(inv);
 	}
-	
+
 	private void openNormalClassSelector() {
+
+		inv = Bukkit.createInventory(null, 27, "Normal Classes");
 		
-		menu.destroy();
+		ItemStack zombie = new ItemStack(Material.ROTTEN_FLESH);
+		ItemStack skeleton = new ItemStack(Material.BONE);
+		ItemStack creeper = new ItemStack(Material.TNT);
+		ItemStack herobrine = new ItemStack(Material.ENDER_PEARL);
+		ItemStack goBack = new ItemStack(Material.ARROW);
 		
-		menu = new IconMenu("Normal Classes", 27, new IconMenu.OptionClickEventHandler() {
-            @Override
-            public void onOptionClick(IconMenu.OptionClickEvent event) {
-            	
-    			if (clicked == true)
-    				return;
-            	
-            	String name = event.getName();
-            	
-            	ArenaPlayer player = null;
-            	
-				try {
-					player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
-				} catch (PlayerException e) {
-				}
-            	
-				switch (name) {
-					case "Go Back":
-						openMainMenu();
-						event.setWillClose(false);
-						break;
-					case "":
-						event.setWillClose(false);
-						return;
-					case "Zombie":
-					case "Skeleton":
-					case "Creeper":
-					case "Herobrine":
-						player.setClassType(Class.valueOf(name.toUpperCase()));
-						player.getBukkitPlayer().sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
-								ChatColor.AQUA + name + ChatColor.GREEN));
-						clicked = true;
-						event.setWillClose(true);
-						return;
-				}
-            	
-            	event.setWillDestroy(true);
-            }
-		}, ArenaPlugin.getInstance());
+		ItemMeta zombieMeta = zombie.getItemMeta();
+		ItemMeta skeletonMeta = skeleton.getItemMeta();
+		ItemMeta creeperMeta = creeper.getItemMeta();
+		ItemMeta herobrineMeta = herobrine.getItemMeta();
+		ItemMeta goBackMeta = goBack.getItemMeta();
+		
+		zombieMeta.setDisplayName("Zombie");
+		skeletonMeta.setDisplayName("Skeleton");
+		creeperMeta.setDisplayName("Creeper");
+		herobrineMeta.setDisplayName("Herobrine");
+		goBackMeta.setDisplayName("Go Back");
+		
+		zombie.setItemMeta(zombieMeta);
+		skeleton.setItemMeta(skeletonMeta);
+		creeper.setItemMeta(creeperMeta);
+		herobrine.setItemMeta(herobrineMeta);
+		goBack.setItemMeta(goBackMeta);
 		
 		for (int i = 0; i < 11; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setOption(11, new ItemStack(Material.ROTTEN_FLESH), "Zombie", "");
-		menu.setOption(12, new ItemStack(Material.BONE), "Skeleton", "");
-		menu.setOption(13, glassPane, "", "");
-		menu.setOption(14, new ItemStack(Material.TNT), "Creeper", "");
-		menu.setOption(15, new ItemStack(Material.ENDER_PEARL), "Herobrine", "");
-		
+			inv.setItem(i, glassPane);
+
+		inv.setItem(11, zombie);
+		inv.setItem(12, skeleton);
+		inv.setItem(13, glassPane);
+		inv.setItem(14, creeper);
+		inv.setItem(15, herobrine);
+
 		for (int i = 16; i < 22; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setOption(22, new ItemStack(Material.ARROW), "Go Back", "");
-		
+			inv.setItem(i, glassPane);
+
+		inv.setItem(22, goBack);
+
 		for (int i = 23; i < 27; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setSpecificTo(player);
-		menu.open(player);
+			inv.setItem(i, glassPane);
+
+		player.openInventory(inv);
 	}
-	
+
 	private void openHeroClassSelector() {
-		
-		menu.destroy();
-		
-		menu = new IconMenu("Hero Classes", 27, new IconMenu.OptionClickEventHandler() {
-            @Override
-            public void onOptionClick(IconMenu.OptionClickEvent event) {
-            	
-    			if (clicked == true)
-    				return;
-            	
-            	String name = event.getName();
-            	
-            	ArenaPlayer player = null;
-            	
-				try {
-					player = ArenaPlugin.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
-				} catch (PlayerException e) {
-				}
-            	
-            	if (name.equals("Wither Minion")) {
-            		player.setClassType(Class.WITHER_MINION);
-            		clicked = true;
-            	} else if (name.equals("Spirit Warrior")) {
-            		player.setClassType(Class.SPIRIT_WARRIOR);
-            		clicked = true;
-            	} else if (name.equals("Go Back")) {
-            		openMainMenu();
-            		event.setWillClose(false);
-            		return;
-            	} else {
-            		event.setWillClose(false);
-            		return;
-            	}
-            	
-            	player.getBukkitPlayer().sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
-            			ChatColor.AQUA + name + ChatColor.GREEN));
-            	
-                event.setWillClose(true);
-                event.setWillDestroy(true);
-            }
-		}, ArenaPlugin.getInstance());
-		
+
+		inv = Bukkit.createInventory(null, 27, "Hero Classes");
+
+		ItemStack goBack = new ItemStack(Material.ARROW);
+		ItemStack spiritWarrior = new ItemStack(Material.ENCHANTMENT_TABLE);
+		ItemStack witherMinion = new ItemStack(Material.SKULL_ITEM);
+
+		ItemMeta goBackMeta = goBack.getItemMeta();
+		ItemMeta spiritWarriorMeta = spiritWarrior.getItemMeta();
+		ItemMeta witherMinionMeta = witherMinion.getItemMeta();
+
+		goBackMeta.setDisplayName("Go Back");
+		spiritWarriorMeta.setDisplayName("Spirit Warrior");
+		witherMinionMeta.setDisplayName("Wither Minion");
+
+		goBack.setItemMeta(goBackMeta);
+		spiritWarrior.setItemMeta(spiritWarriorMeta);
+		witherMinion.setItemMeta(witherMinionMeta);
+
 		for (int i = 0; i < 12; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setOption(12, new ItemStack(Material.ENCHANTMENT_TABLE), "Spirit Warrior", "");
-		menu.setOption(13, glassPane, "", "");
-		menu.setOption(14, new ItemStack(Material.SKULL_ITEM, 1, (short) 1), "Wither Minion", "");
-		
+			inv.setItem(i, glassPane);
+
+		inv.setItem(12, spiritWarrior);
+		inv.setItem(13, glassPane);
+		inv.setItem(14, witherMinion);
+
 		for (int i = 15; i < 22; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setOption(22, new ItemStack(Material.ARROW), "Go Back", "");
-		
+			inv.setItem(i, glassPane);
+
+		inv.setItem(22, goBack);
+
 		for (int i = 23; i < 27; i++)
-			menu.setOption(i, glassPane, "", "");
-		
-		menu.setSpecificTo(player);
-		menu.open(player);
+			inv.setItem(i, glassPane);
+
+		player.openInventory(inv);
 	}
-	
-	public void destroy() {
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
 		
-		menu.destroy();
+		String title = inv.getTitle();
+		
+		if (!(title.equals("Hero Classes") || title.equals("Normal Classes") || title.equals("Class Selector")))
+			return;
+		
+		event.setCancelled(true);
+
+		ArenaPlayer ap = null;
+
+		try {
+			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+
+		String name = event.getCurrentItem().getItemMeta().getDisplayName();
+
+		if (title.equals("Hero Classes")) {
+			
+			if (name.equals("Wither Minion"))
+				ap.setClassType(Class.WITHER_MINION);
+			else if (name.equals("Spirit Warrior"))
+				ap.setClassType(Class.SPIRIT_WARRIOR);
+			else if (name.equals("Go Back")) {
+				openMainMenu();
+				return;
+			} else
+				return;
+
+			player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
+					ChatColor.AQUA + name + ChatColor.GREEN));
+
+			close();
+
+		} else if (title.equals("Normal Classes")) {
+
+			switch (name) {
+				case "Go Back":
+					openMainMenu();
+					break;
+				case "Zombie":
+				case "Skeleton":
+				case "Creeper":
+				case "Herobrine":
+					ap.setClassType(Class.valueOf(name.toUpperCase()));
+					player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
+							ChatColor.AQUA + name + ChatColor.GREEN));
+					close();
+					break;
+			}
+			
+		} else if (title.equals("Class Selector")) {
+			
+			if (name.equals("NORMAL CLASSES"))
+				openNormalClassSelector();
+			else if (name.equals("HERO CLASSES"))
+				openHeroClassSelector();
+			else if (name.equals("Close")) {
+				close();
+			}
+		}
+	}
+
+	public void close() {
+
+		HandlerList.unregisterAll(this);
+
+		player.closeInventory();
 	}
 }
