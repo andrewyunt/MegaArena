@@ -184,8 +184,13 @@ public class ClassSelectorMenu implements Listener {
 			ap = ArenaPlugin.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
+		
+		ItemStack is = event.getCurrentItem();
+		
+		if (!is.hasItemMeta())
+			return;
 
-		String name = event.getCurrentItem().getItemMeta().getDisplayName();
+		String name = is.getItemMeta().getDisplayName();
 
 		if (title.equals("Hero Classes")) {
 			

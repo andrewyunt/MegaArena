@@ -284,6 +284,10 @@ public class ArenaPluginPlayerListener implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent event) {
 
 		Player player = event.getEntity();
+		
+		if (player.getKiller() == null || !(player.getKiller() instanceof Player))
+			return;
+		
 		Player killer = player.getKiller();
 		ArenaPlayer playerAP = null;
 		ArenaPlayer killerAP = null;
