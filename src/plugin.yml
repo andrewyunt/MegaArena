@@ -1,5 +1,5 @@
-name: ArenaPlugin
-main: com.andrewyunt.arenaplugin.ArenaPlugin
+name: MegaArena
+main: com.andrewyunt.megaarena.MegaArena
 version: 1.0
 softdepend: [Vault,StaffPlus]
 
@@ -11,16 +11,16 @@ softdepend: [Vault,StaffPlus]
 commands:
   arena:
     description: Base command for managing arenas.
-    permission: arenaplugin.arena
+    permission: megaarena.arena
   duel:
     description: Request to duel a player.
-    permission: arenaplugin.duel
+    permission: megaarena.duel
   duelaccept:
     description: Accept a request to duel a player.
-    permission: arenaplugin.duelaccept
+    permission: megaarena.duelaccept
   dueldeny:
     description: Deny a request to duel a player.
-    permission: arenaplugin.dueldeny
+    permission: megaarena.dueldeny
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -28,54 +28,54 @@ commands:
 # +------------------------------------------------------+ #
 ############################################################
 permissions:
-   arenaplugin.*:
-     description: Gives access to all ArenaPlugin commands.
+   megaarena.*:
+     description: Gives access to all MegaArena commands.
      children:
-       arenaplugin.arena: true
-       arenaplugin.createarena: true
-       arenaplugin.deletearena: true
-       arenaplugin.addspawn: true
-       arenaplugin.removespawn: true
-       arenaplugin.duel: true
-       arenaplugin.duelaccept: true
-   arenaplugin.arena.*:
-     description: Gives access to all ArenaPlugin arena management commands.
+       megaarena.arena: true
+       megaarena.createarena: true
+       megaarena.deletearena: true
+       megaarena.addspawn: true
+       megaarena.removespawn: true
+       megaarena.duel: true
+       megaarena.duelaccept: true
+   megaarena.arena.*:
+     description: Gives access to all MegaArena arena management commands.
      children:
-       arenaplugin.arena: true
-       arenaplugin.arena.create: true
-       arenaplugin.arena.delete: true
-       arenaplugin.arena.addspawn: true
-       arenaplugin.arena.removespawn: true
-   arenaplugin.arena.help:
+       megaarena.arena: true
+       megaarena.arena.create: true
+       megaarena.arena.delete: true
+       megaarena.arena.addspawn: true
+       megaarena.arena.removespawn: true
+   megaarena.arena.help:
      description: Gives you access to the arena help menu.
      default: op
-   arenaplugin.arena.create:
+   megaarena.arena.create:
      description: Allows you to create an arena.
      default: op
-   arenaplugin.arena.delete:
+   megaarena.arena.delete:
      description: Allows you to delete an existing arena.
      default: op
-   arenaplugin.arena.select:
+   megaarena.arena.select:
      description: Allows you to select an existing arena.
      default: op
-   arenaplugin.arena.edit:
+   megaarena.arena.edit:
      description: Allows you to edit an existing arena.
      default: op
-   arenaplugin.arena.addspawn:
+   megaarena.arena.addspawn:
      description: Allows you to add a spawn to an existing arena.
      default: op
-   arenaplugin.arena.removespawn:
+   megaarena.arena.removespawn:
      description: Allows you to remove a spawn from an existing arena.
      default: op
-   arenaplugin.arena.list:
+   megaarena.arena.list:
      description: Allows you to list all arenas.
      default: op
-   arenaplugin.duel:
+   megaarena.duel:
      description: Allows you to request to duel a player.
      default: true
-   arenaplugin.duelaccept:
+   megaarena.duelaccept:
      description: Allows you to accept a duel from another player.
      default: true
-   arenaplugin.dueldeny:
+   megaarena.dueldeny:
      description: Allows you to deny a duel from another player.
      default: true
