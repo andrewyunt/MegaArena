@@ -1,8 +1,6 @@
 package com.andrewyunt.arenaplugin.utilities;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
-
 import com.andrewyunt.arenaplugin.objects.Vector3D;
-
-import net.minecraft.server.v1_7_R4.AxisAlignedBB;
-import net.minecraft.server.v1_7_R4.Entity;
-import net.minecraft.server.v1_7_R4.EntityPlayer;
 
 /**
  * 
@@ -47,14 +39,14 @@ public class Utils {
 		return map;
 	}
 	
-	public static String[] colorizeArray(String[] description, ChatColor color) {
+	public static List<String> colorizeList(List<String> list, ChatColor color) {
 		
 		List<String> colorized = new ArrayList<String>();
 
-		for (String line : description)
+		for (String line : list)
 			colorized.add(color + line);
 
-		return colorized.toArray(new String[0]);
+		return colorized;
 	}
 
 	/**
@@ -128,14 +120,12 @@ public class Utils {
     }
     
     public static List<org.bukkit.entity.Entity> getNearbyEntities(Location l, int distance){
+    	
     	List<org.bukkit.entity.Entity> entities = new ArrayList<org.bukkit.entity.Entity>();
-    	for (org.bukkit.entity.Entity e : l.getWorld().getEntities()){
+    	for (org.bukkit.entity.Entity e : l.getWorld().getEntities())
     		if (l.distanceSquared(e.getLocation()) <= distance*distance)
     			entities.add(e);
-    	}
     	
     	return entities;
     }
-    
-    
 }
