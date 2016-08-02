@@ -208,7 +208,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 		Entity entity = event.getEntity();
 
-		if (!entity.hasMetadata("ArenaPlugin"))
+		if (!entity.hasMetadata("MegaArena"))
 			return;
 
 		if (entity.getType() != EntityType.WITHER_SKULL)
@@ -265,7 +265,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		if (!(entity instanceof Arrow))
 			return;
 
-		if (!entity.hasMetadata("ArenaPlugin"))
+		if (!entity.hasMetadata("MegaArena"))
 			return;
 
 		Player shooter = (Player) ((Projectile) entity).getShooter();

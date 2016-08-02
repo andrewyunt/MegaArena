@@ -119,7 +119,7 @@ public enum Ability {
 		} else if (this == SPLIT_ARROW) {
 			
 			Projectile arrow = bp.launchProjectile(Arrow.class);
-			arrow.setMetadata("ArenaPlugin", new FixedMetadataValue(MegaArena.getInstance(), true));
+			arrow.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
 			arrow.setShooter(bp);
 			
 		} else if (this == LIGHTNING) {
@@ -267,15 +267,15 @@ public enum Ability {
 			
             WitherSkull leftSkull = bp.launchProjectile(WitherSkull.class);
             leftSkull.setShooter(bp);
-            leftSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(MegaArena.getInstance(), true));
+            leftSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
  
             WitherSkull middleSkull = bp.launchProjectile(WitherSkull.class);
             middleSkull.setShooter(bp);
-            middleSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(MegaArena.getInstance(), true));
+            middleSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
      
             WitherSkull rightSkull = bp.launchProjectile(WitherSkull.class);
             rightSkull.setShooter(bp);
-            rightSkull.setMetadata("ArenaPlugin", new FixedMetadataValue(MegaArena.getInstance(), true));
+            rightSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
 		}
 		
 		player.setEnergy(0);	

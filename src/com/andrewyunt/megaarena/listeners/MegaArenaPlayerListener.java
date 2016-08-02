@@ -117,7 +117,7 @@ public class MegaArenaPlayerListener implements Listener {
 			player.sendMessage(ChatColor.RED + "Team-deathmatch is coming soon!");
 
 			/*
-			 * try { ArenaPlugin.getInstance().getGameManager().matchMake(gp,
+			 * try {MegaArena.getInstance().getGameManager().matchMake(gp,
 			 * ArenaType.TDM); } catch (GameException e) { }
 			 */
 
