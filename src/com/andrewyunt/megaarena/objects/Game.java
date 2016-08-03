@@ -107,10 +107,6 @@ public class Game {
 	
 	public void removePlayer(GamePlayer player) {
 		
-		/* Send victory message to opponent if player's game is a duel */
-		if (arena.getType() == ArenaType.DUEL)
-			MegaArena.getInstance().getGameManager().deleteGame(this, String.format("%s left the game and has left you victorious!", player.getName()));
-		
 		/* Remove player from players set and set the player's game to null */
 		players.remove(player);
 		player.setGame(null);

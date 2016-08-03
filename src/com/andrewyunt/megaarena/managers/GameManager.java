@@ -53,6 +53,7 @@ public class GameManager {
 	public void deleteGame(Game game, String msg) {
 
 		games.remove(game);
+		game.end();
 
 		for (GamePlayer player : game.getPlayers())
 			player.getBukkitPlayer().sendMessage(msg);
