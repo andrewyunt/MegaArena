@@ -242,6 +242,9 @@ public class ShopMenu implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 
+		if (event.getWhoClicked() != player)
+			return;
+		
 		String title = inv.getTitle();
 		
 		if (!(title.startsWith("Class Upgrades")))
