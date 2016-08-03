@@ -46,7 +46,7 @@ public class ArenaCommand implements CommandExecutor {
 		
 		if (!(args.length > 0)) {
 			
-			if (!sender.hasPermission("arenaplugin.arena.help")) {
+			if (!sender.hasPermission("megaarena.arena.help")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
@@ -59,7 +59,7 @@ public class ArenaCommand implements CommandExecutor {
 		
 		if (args[0].equalsIgnoreCase("help")) {
 			
-			if (!sender.hasPermission("arenaplugin.arena.help")) {
+			if (!sender.hasPermission("megaarena.arena.help")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
@@ -71,7 +71,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("create")) {
 			
-			if (!sender.hasPermission("arenaplugin.arena.create")) {
+			if (!sender.hasPermission("megaarena.arena.create")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
@@ -117,7 +117,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("delete")) {
 
-			if (!sender.hasPermission("arenaplugin.arena.delete")) {
+			if (!sender.hasPermission("megaarena.arena.delete")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
@@ -153,7 +153,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("select")) {
 			
-			if (!sender.hasPermission("arenaplugin.arena.select")) {
+			if (!sender.hasPermission("megaarena.arena.select")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
@@ -181,7 +181,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("addspawn")) {
 			
-			if (!sender.hasPermission("arenaplugin.arena.addspawn")) {
+			if (!sender.hasPermission("megaarena.arena.addspawn")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
@@ -233,7 +233,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("removespawn")) {
 			
-			if (!sender.hasPermission("arenaplugin.arena.removespawn")) {
+			if (!sender.hasPermission("megaarena.arena.removespawn")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
@@ -270,7 +270,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("edit")) {
 			
-			if (!sender.hasPermission("arenaplugin.arena.edit")) {
+			if (!sender.hasPermission("megaarena.arena.edit")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
@@ -298,7 +298,7 @@ public class ArenaCommand implements CommandExecutor {
 		
 		} else if (args[0].equalsIgnoreCase("list")) {
 			
-			if (!sender.hasPermission("arenaplugin.arena.list")) {
+			if (!sender.hasPermission("megaarena.arena.list")) {
 				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
 				return false;
 			}
