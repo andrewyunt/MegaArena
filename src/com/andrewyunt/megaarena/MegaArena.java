@@ -132,7 +132,7 @@ public class MegaArena extends JavaPlugin {
 	public void onDisable() {
 		
 		for (Game game : getGameManager().getGames())
-			game.end();
+			gameManager.deleteGame(game, "Server shutting down.");
 	}
 	
 	public static MegaArena getInstance() {
