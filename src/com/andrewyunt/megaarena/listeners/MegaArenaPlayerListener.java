@@ -315,6 +315,8 @@ public class MegaArenaPlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 
+		event.setKeepInventory(true);
+		
 		Player player = event.getEntity();
 
 		if (player.getKiller() == null || !(player.getKiller() instanceof Player))
@@ -332,6 +334,15 @@ public class MegaArenaPlayerListener implements Listener {
 
 		if (!(playerAP.isInGame()))
 			return;
+		
+		Game game = playerAP.getGame();
+
+		if (game.getArena().getType() == ArenaType.DUEL) {
+			MegaArena.getInstance().getGameManager().deleteGame(game,
+					String.format(ChatColor.AQUA + "%s suffered a bitter defeat to %s.",
+							player.getName() + ChatColor.GREEN, ChatColor.AQUA + killer.getName() + ChatColor.GREEN));
+			return;
+		}
 
 		int killCoins = 50;
 
@@ -366,16 +377,6 @@ public class MegaArenaPlayerListener implements Listener {
 								ChatColor.AQUA + player.getName() + ChatColor.GREEN,
 								ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
 			}
-
-		event.setKeepInventory(true);
-
-		Game game = playerAP.getGame();
-
-		if (game.getArena().getType() == ArenaType.DUEL) {
-			MegaArena.getInstance().getGameManager().deleteGame(game,
-					String.format(ChatColor.AQUA + "%s suffered a bitter defeat to %s.",
-							player.getName() + ChatColor.GREEN, ChatColor.AQUA + killer.getName() + ChatColor.GREEN));
-		}
 	}
 
 	@EventHandler

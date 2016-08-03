@@ -3,7 +3,6 @@ package com.andrewyunt.megaarena;
 import java.util.logging.Logger;
 
 import org.bukkit.Server;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
@@ -22,8 +21,8 @@ import com.andrewyunt.megaarena.managers.ArenaManager;
 import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
-import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.Arena.ArenaType;
+import com.andrewyunt.megaarena.objects.Game;
 
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
@@ -39,7 +38,6 @@ public class MegaArena extends JavaPlugin {
 	
 	private Logger logger = getLogger();
 	
-	private PluginDescriptionFile pdf = getDescription();
 	private Server server = getServer();
 	private PluginManager pm = server.getPluginManager();
 	private ServicesManager sm = server.getServicesManager();
