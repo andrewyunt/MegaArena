@@ -185,11 +185,13 @@ public class Game {
 			
 		} else if (arena.getType() == ArenaType.FFA) {
 			
+			player.setHasFallen(false);
 			Collections.shuffle(spawns);
 			player.spawn(spawns.get(0));
 			
 		} else if (arena.getType() == ArenaType.TDM) {
 			
+			player.setHasFallen(false);
 			Collections.shuffle(spawns);
 			player.spawn(spawns.get(0));
 		}

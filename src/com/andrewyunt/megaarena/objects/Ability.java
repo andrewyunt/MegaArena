@@ -286,7 +286,7 @@ public enum Ability {
 		Player bp = player.getBukkitPlayer();
 		
 		for (int i = 9; i > 1; i--)
-			if (bp.hasPermission(String.format("arenaplugin.%s.%s", this.toString().toLowerCase(), i)))
+			if (bp.hasPermission(String.format("megaarena.%s.%s", this.toString().toLowerCase(), i)))
 				return i;
 		
 		return 1; 
@@ -295,6 +295,6 @@ public enum Ability {
 	public void setLevel(GamePlayer player, int level) {
 		
 		MegaArena.getInstance().getServer().dispatchCommand(MegaArena.getInstance().getServer().getConsoleSender(),
-				String.format("pex user %s add arenaplugin.%s.%s", player.getName(), this.toString().toLowerCase(), level));
+				String.format("pex user %s add megaarena.%s.%s", player.getName(), this.toString().toLowerCase(), level));
 	}
 }

@@ -12,6 +12,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -158,6 +160,35 @@ public class MegaArenaPlayerListener implements Listener {
 				event.setCancelled(true);
 			}
 		}
+	}
+	
+	@EventHandler
+	public void onEntityDamage(EntityDamageEvent event) {
+		
+		if (event.getCause() != DamageCause.FALL)
+			return;
+		
+		if (!(event.getEntity() instanceof Player))
+			return;
+		
+		GamePlayer gp = null;
+		
+		try {
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(((Player) event.getEntity()).getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (!gp.isInGame())
+			return;
+		
+		if (gp.getGame().getArena().getType() == ArenaType.DUEL)
+			return;
+		
+		if (gp.hasFallen())
+			return;
+		
+		gp.setHasFallen(true);
+		event.setCancelled(true);
 	}
 
 	@EventHandler
