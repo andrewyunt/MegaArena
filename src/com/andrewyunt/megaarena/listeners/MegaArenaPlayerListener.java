@@ -71,8 +71,19 @@ public class MegaArenaPlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		if (gp.isInGame())
-			gp.getGame().removePlayer(gp);
+		if (!(gp.isInGame()))
+			return;
+		
+		Game game = gp.getGame();
+		
+		if (game.getArena().getType() == ArenaType.DUEL) {
+			MegaArena.getInstance().getGameManager().deleteGame(game, 
+					String.format("%s has left the game and has left you victorious!",
+					ChatColor.AQUA + gp.getName() + ChatColor.GREEN));
+			return;
+		}
+		
+		game.removePlayer(gp);
 	}
 
 	@EventHandler
@@ -291,29 +302,12 @@ public class MegaArenaPlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
-
-		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				Player player = (Player) event.getPlayer();
-				GamePlayer gp = null;
-
-				try {
-					gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
-				} catch (PlayerException e) {
-				}
-
-				if (gp.isInGame())
-					gp.getGame().removePlayer(gp);
-
-				player.sendMessage(ChatColor.RED + "You have died and have been returned to the lobby.");
-			}
-		}, 1L);
+		
+		event.getPlayer().sendMessage(ChatColor.RED + "You have died and have been returned to the lobby.");
 	}
 
 	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent event) {
+	public void onPlayerKill(PlayerDeathEvent event) {
 
 		event.setKeepInventory(true);
 		
@@ -323,43 +317,39 @@ public class MegaArenaPlayerListener implements Listener {
 			return;
 
 		Player killer = player.getKiller();
-		GamePlayer playerAP = null;
-		GamePlayer killerAP = null;
+		GamePlayer playerGP = null;
+		GamePlayer killerGP = null;
 
 		try {
-			playerAP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
-			killerAP = MegaArena.getInstance().getPlayerManager().getPlayer(killer.getName());
+			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			killerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killer.getName());
 		} catch (PlayerException e) {
 		}
-
-		if (!(playerAP.isInGame()))
+		
+		if (!(playerGP.isInGame()))
 			return;
 		
-		Game game = playerAP.getGame();
-
-		if (game.getArena().getType() == ArenaType.DUEL) {
-			MegaArena.getInstance().getGameManager().deleteGame(game,
-					String.format(ChatColor.AQUA + "%s suffered a bitter defeat to %s.",
-							player.getName() + ChatColor.GREEN, ChatColor.AQUA + killer.getName() + ChatColor.GREEN));
+		Game game = playerGP.getGame();
+		
+		if (game.getArena().getType() == ArenaType.DUEL)
 			return;
-		}
 
-		int killCoins = 50;
+		if (killerGP.isInGame()) {
+			int killCoins = 50;
 
-		if (killer.hasPermission("megaarena.coins.double"))
-			killCoins = 100;
-		else if (killer.hasPermission("megaarena.coins.triple"))
-			killCoins = 150;
-
-		if (killerAP.isInGame()) {
-			killerAP.addCoins(killCoins);
+			if (killer.hasPermission("megaarena.coins.double"))
+				killCoins = 100;
+			else if (killer.hasPermission("megaarena.coins.triple"))
+				killCoins = 150;
+			
+			killerGP.addCoins(killCoins);
 			killer.sendMessage(ChatColor.GREEN + String.format("You killed %s and received %s coins.",
 					ChatColor.AQUA + player.getName() + ChatColor.GREEN,
 					ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
 		}
 
-		if (playerAP.getGame().getArena().getType() == ArenaType.TDM)
-			for (GamePlayer assistAP : playerAP.getAssistPlayers()) {
+		if (game.getArena().getType() == ArenaType.TDM)
+			for (GamePlayer assistAP : playerGP.getAssistPlayers()) {
 				if (!assistAP.isInGame())
 					continue;
 
@@ -374,9 +364,41 @@ public class MegaArenaPlayerListener implements Listener {
 				assistAP.addCoins(assistCoins);
 				assistPlayer.sendMessage(
 						ChatColor.GREEN + String.format("You earned %s coins for assisting the kill of %s.",
-								ChatColor.AQUA + player.getName() + ChatColor.GREEN,
-								ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
+								ChatColor.AQUA + String.valueOf(assistCoins) + ChatColor.GREEN,
+								ChatColor.AQUA + player.getName() + ChatColor.GREEN));
 			}
+	}
+	
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		
+		Player player = event.getEntity();
+		GamePlayer playerGP = null;
+
+		try {
+			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (!playerGP.isInGame())
+			return;
+		
+		Game game = playerGP.getGame();
+		
+		if (playerGP.getGame().getArena().getType() == ArenaType.DUEL) {
+			GamePlayer opponentGP = null;
+			
+			for (GamePlayer curGP : game.getPlayers())
+				if (curGP != playerGP)
+					opponentGP = curGP;
+			
+			MegaArena.getInstance().getGameManager().deleteGame(game,
+					String.format(ChatColor.AQUA + "%s suffered a bitter defeat to %s.",
+							player.getName() + ChatColor.GREEN, ChatColor.AQUA + opponentGP.getName() + ChatColor.GREEN));
+			return;
+		}
+		
+		playerGP.getGame().removePlayer(playerGP);
 	}
 
 	@EventHandler

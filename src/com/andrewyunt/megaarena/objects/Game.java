@@ -146,10 +146,8 @@ public class Game {
 		for (GamePlayer player : players)
 			toRemove.add(player);
 		
-		for (GamePlayer player : toRemove) {
+		for (GamePlayer player : toRemove)
 			removePlayer(player);
-			player.getBukkitPlayer().sendMessage(String.format(ChatColor.RED + "The game for the arena %s just ended.", arena.getName()));
-		}
 		
 		for (Block block : placedBlocks)
 			block.setType(Material.AIR);

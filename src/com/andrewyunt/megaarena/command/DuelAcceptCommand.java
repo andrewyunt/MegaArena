@@ -72,6 +72,7 @@ public class DuelAcceptCommand implements CommandExecutor {
 		for (Arena duelArena : MegaArena.getInstance().getArenaManager().getArenas(ArenaType.DUEL)) {
 			if (duelArena.isEdit())
 				continue;
+			
 			if (!duelArena.isInUse()) {
 				if (duelArena.getSpawns().size() < 2)
 					continue;
