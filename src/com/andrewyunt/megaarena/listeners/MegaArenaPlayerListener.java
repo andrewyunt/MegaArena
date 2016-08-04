@@ -301,15 +301,7 @@ public class MegaArenaPlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		
-		event.getPlayer().sendMessage(ChatColor.RED + "You have died and have been returned to the lobby.");
-	}
-
-	@EventHandler
 	public void onPlayerKill(PlayerDeathEvent event) {
-
-		event.setKeepInventory(true);
 		
 		Player player = event.getEntity();
 
@@ -371,6 +363,8 @@ public class MegaArenaPlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
+		
+		event.setKeepInventory(true);
 		
 		Player player = event.getEntity();
 		GamePlayer playerGP = null;
