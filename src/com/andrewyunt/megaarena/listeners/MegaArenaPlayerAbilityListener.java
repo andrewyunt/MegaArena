@@ -208,10 +208,10 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 		Entity entity = event.getEntity();
 
-		if (!entity.hasMetadata("MegaArena"))
-			return;
-
 		if (entity.getType() != EntityType.WITHER_SKULL)
+			return;
+		
+		if (!entity.hasMetadata("MegaArena"))
 			return;
 
 		event.setCancelled(true);

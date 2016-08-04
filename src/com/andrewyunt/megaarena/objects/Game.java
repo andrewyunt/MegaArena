@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.objects.Arena.ArenaType;
 
@@ -100,8 +99,6 @@ public class Game {
 		player.setGame(this);
 		player.setSide(side);
 		
-		bp.setCustomName(side.getNameColor() + bp.getName());
-		
 		spawnPlayer(player, side);
 	}
 	
@@ -176,6 +173,7 @@ public class Game {
 				
 				player.spawn(spawn);
 				spawn.setUsed(true);
+				
 				break;
 			}
 			

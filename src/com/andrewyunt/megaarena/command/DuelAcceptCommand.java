@@ -94,7 +94,7 @@ public class DuelAcceptCommand implements CommandExecutor {
 		
 		game.addPlayer(player);
 		game.addPlayer(requestingPlayer);
-		
+
 		return true;
 	}
 }
