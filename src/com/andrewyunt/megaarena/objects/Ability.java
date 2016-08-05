@@ -33,7 +33,7 @@ import de.slikey.effectlib.util.ParticleEffect;
 public enum Ability {
 	
 	HEAL("Heal"),
-	SPLIT_ARROW("Split Arrow"),
+	EXPLOSIVE_ARROW("Explosive Arrow"),
 	LIGHTNING("Lightning"),
 	EXPLODE("Explode"),
 	HURRICANE("Hurricane"),
@@ -116,7 +116,7 @@ public enum Ability {
 					ChatColor.AQUA + String.valueOf(hearts / 2) + ChatColor.GREEN) : "."),
 			ChatColor.AQUA + name + ChatColor.GREEN));
 			
-		} else if (this == SPLIT_ARROW) {
+		} else if (this == EXPLOSIVE_ARROW) {
 			
 			Projectile arrow = bp.launchProjectile(Arrow.class);
 			arrow.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
