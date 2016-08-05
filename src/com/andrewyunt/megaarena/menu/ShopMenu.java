@@ -116,7 +116,7 @@ public class ShopMenu implements Listener {
 	}
 
 	private void openClassUpgradeMenu(Class classType) {
-
+		
 		inv = Bukkit.createInventory(null, 45, "Class Upgrades - " + classType.getName());
 
 		Ability ability = classType.getAbility();
@@ -245,14 +245,18 @@ public class ShopMenu implements Listener {
 		if (event.getWhoClicked() != player)
 			return;
 		
-		String title = inv.getTitle();
+		String title = event.getClickedInventory().getTitle();
 		
 		if (!(title.startsWith("Class Upgrades")))
 			return;
 		
+		ItemStack is = event.getCurrentItem();
+		
+		if(is == null || is.getType() == Material.AIR)
+			return;
+		
 		event.setCancelled(true);
 		
-		ItemStack is = event.getCurrentItem();
 		String name = is.getItemMeta().getDisplayName();
 
 		if (title.equals("Class Upgrades")) {
@@ -267,6 +271,7 @@ public class ShopMenu implements Listener {
 				case "Herobrine":
 				case "Wither Minion":
 				case "Spirit Warrior":
+					player.closeInventory();
 					openClassUpgradeMenu(Class.valueOf(name.toUpperCase().replace(' ', '_')));
 					break;
 			}
@@ -291,8 +296,6 @@ public class ShopMenu implements Listener {
 				return;
 			}
 			
-			Inventory inv = event.getInventory();
-			
 			int slot = event.getSlot();
 			
 			if (slot < 9) {
@@ -307,7 +310,7 @@ public class ShopMenu implements Listener {
 			} else if (9 <= slot && slot < 18) {
 				
 				slot = slot - 8;
-				Skill skillOne = classType.getSkillTwo();
+				Skill skillOne = classType.getSkillOne();
 				
 				skillOne.setLevel(ap, slot);
 				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
@@ -334,7 +337,8 @@ public class ShopMenu implements Listener {
 			int cost = MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
 			ap.removeCoins(cost);
 			
-			player.openInventory(inv);
+			player.closeInventory();
+			openClassUpgradeMenu(classType);
 		}
 	}
 	
