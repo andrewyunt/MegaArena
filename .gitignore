@@ -46,8 +46,11 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Custom ignore files
+# Eclipse ignore files
 bin/
 .classpath
 .project
 .settings
+
+# Gource ignore files
+gource.ppm

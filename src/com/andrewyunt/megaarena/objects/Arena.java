@@ -11,7 +11,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.SpawnException;
-import com.andrewyunt.megaarena.objects.Game.Side;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
@@ -21,25 +20,25 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class Arena {
 
-	public enum ArenaType {
+	public enum Type {
 		DUEL,
 		FFA,
 		TDM
 	}
 	
 	private Map<String, Spawn> spawns = new HashMap<String, Spawn>();
-	private ArenaType type;
+	private Type type;
 	private String name;
 	private Game game;
 	private boolean isEdit;
 	
-	public Arena(String name, ArenaType type) {
+	public Arena(String name, Type type) {
 		
 		this.name = name;
 		this.type = type;
 	}
 	
-	public ArenaType getType() {
+	public Type getType() {
 		
 		return type;
 	}
@@ -69,9 +68,9 @@ public class Arena {
 		return game != null;
 	}
 	
-	public Spawn addSpawn(String name, Arena arena, Location loc, Side side) {
+	public Spawn addSpawn(String name, Arena arena, Location loc, GameSide.Type sideType) {
 		
-		Spawn spawn = new Spawn(name, arena, loc, side);
+		Spawn spawn = new Spawn(name, arena, loc, sideType);
 		
 		spawns.put(name, spawn);
 		
@@ -103,14 +102,14 @@ public class Arena {
 		return spawns.values();
 	}
 	
-	public Collection<Spawn> getSpawns(Side side) {
+	public Collection<Spawn> getSpawns(GameSide.Type sideType) {
 		
 		Collection<Spawn> spawns = new HashSet<Spawn>();
 		
 		for (Map.Entry<String, Spawn> entry : this.spawns.entrySet()) {
 			Spawn spawn = entry.getValue();
 			
-			if (spawn.getSide() == side)
+			if (spawn.getSide() == sideType)
 				spawns.add(spawn);
 		}
 		
@@ -151,14 +150,14 @@ public class Arena {
 	
 	public static Arena loadFromConfig(ConfigurationSection section) {
 		
-		Arena arena = new Arena(section.getName(), ArenaType.valueOf(section.getString("type")));
+		Arena arena = new Arena(section.getName(), Arena.Type.valueOf(section.getString("type")));
 		
 		ConfigurationSection spawnsSection = section.getConfigurationSection("spawns");
 		
 		for (String key : spawnsSection.getKeys(false)) {
 			Location loc = Utils.deserializeLocation(spawnsSection.getConfigurationSection(key).getConfigurationSection("location"));
 			
-			arena.addSpawn(new Spawn(key, arena, loc, Side.valueOf(spawnsSection.getConfigurationSection(key).getString("side"))));
+			arena.addSpawn(new Spawn(key, arena, loc, GameSide.Type.valueOf(spawnsSection.getConfigurationSection(key).getString("side"))));
 		}
 		
 		return arena;

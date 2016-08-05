@@ -14,9 +14,8 @@ import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.objects.GameSide;
 import com.andrewyunt.megaarena.objects.Game;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
-import com.andrewyunt.megaarena.objects.Game.Side;
 
 /**
  * 
@@ -29,14 +28,14 @@ public class GameManager {
 
 	public Game createGame(Arena arena) throws GameException {
 
-		if (arena.getType() == ArenaType.DUEL)
+		if (arena.getType() == Arena.Type.DUEL)
 			if (arena.getSpawns().size() < 2)
 				throw new GameException(ChatColor.GREEN + String.format(
 						"The match for the arena %s was not able to start because the minimum number"
 								+ " of INDEPENDENT spawns were not defined.",
 						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
-			else if (arena.getType() == ArenaType.TDM)
-				if (arena.getSpawns(Side.GREEN).size() < 1 || arena.getSpawns(Side.BLUE).size() < 1)
+			else if (arena.getType() == Arena.Type.TDM)
+				if (arena.getSpawns(GameSide.Type.GREEN).size() < 1 || arena.getSpawns(GameSide.Type.BLUE).size() < 1)
 					throw new GameException(ChatColor.GREEN + String.format(
 							"The TDM match for the arena %s was not able to start because the"
 									+ " minimum number of spawns for each team were not defined.",
@@ -64,7 +63,7 @@ public class GameManager {
 		return games;
 	}
 
-	public Set<Game> getGames(ArenaType type) {
+	public Set<Game> getGames(Arena.Type type) {
 
 		Set<Game> games = new HashSet<Game>();
 
@@ -75,9 +74,9 @@ public class GameManager {
 		return games;
 	}
 
-	public void matchMake(GamePlayer player, ArenaType type) throws GameException {
+	public void matchMake(GamePlayer player, Arena.Type type) throws GameException {
 
-		if (type == ArenaType.DUEL)
+		if (type == Arena.Type.DUEL)
 			throw new GameException("Matchmaking is not available for duels.");
 
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();

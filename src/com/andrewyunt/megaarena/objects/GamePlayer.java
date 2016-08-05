@@ -16,7 +16,6 @@ import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
-import com.andrewyunt.megaarena.objects.Game.Side;
 
 /**
  * 
@@ -34,7 +33,7 @@ public class GamePlayer {
 	private Arena selectedArena;
 	private Location previousLocation;
 	private GameMode previousGameMode;
-	private Side side;
+	private GameSide side;
 	private int energy;
 	private Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
 	private boolean hasSpeed;
@@ -179,17 +178,14 @@ public class GamePlayer {
 		player.getInventory().setItem(8, playTDM);
 	}
 	
-	public Side getSide() {
+	public GameSide getSide() {
 		
 		return side;
 	}
 	
-	public void setSide(Side side) {
+	public void setSide(GameSide side) {
 		
 		this.side = side;
-		
-		player.sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side.",
-				ChatColor.AQUA + side.getName() + ChatColor.GREEN));
 	}
 	
 	public void spawn(Spawn spawn) {

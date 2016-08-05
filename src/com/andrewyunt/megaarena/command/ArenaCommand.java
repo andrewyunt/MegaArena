@@ -16,8 +16,7 @@ import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SpawnException;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Spawn;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
-import com.andrewyunt.megaarena.objects.Game.Side;
+import com.andrewyunt.megaarena.objects.GameSide;
 
 /**
  * 
@@ -82,10 +81,10 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			ArenaType type = null;
+			Arena.Type type = null;
 			
 			try {
-				type = ArenaType.valueOf(args[2].toUpperCase());
+				type = Arena.Type.valueOf(args[2].toUpperCase());
 			} catch (IllegalArgumentException e) {
 				sender.sendMessage(ChatColor.RED + "Error: Invalid arena type specified.");
 				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
@@ -212,7 +211,7 @@ public class ArenaCommand implements CommandExecutor {
 					return false;
 				}
 			
-			if (arena.getType() == ArenaType.FFA || arena.getType() == ArenaType.DUEL)
+			if (arena.getType() == Arena.Type.FFA || arena.getType() == Arena.Type.DUEL)
 				if (!args[2].equalsIgnoreCase("INDEPENDENT")) {
 					sender.sendMessage(ChatColor.RED + "You can only add INDEPENDENT spawns to a DUEL or TDM arena.");
 					return false;
@@ -220,7 +219,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 			Location loc = ((Player) sender).getLocation();
 			
-			Spawn spawn = arena.addSpawn(args[1], arena, loc, Side.valueOf(args[2]));
+			Spawn spawn = arena.addSpawn(args[1], arena, loc, GameSide.Type.valueOf(args[2]));
 			
 			sender.sendMessage(String.format(ChatColor.GREEN + "You have created the spawn %s in the arena %s at %s.", 
 					ChatColor.AQUA + spawn.getName() + ChatColor.GREEN,

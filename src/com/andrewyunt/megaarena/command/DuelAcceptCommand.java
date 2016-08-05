@@ -10,7 +10,6 @@ import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Arena;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
@@ -69,7 +68,7 @@ public class DuelAcceptCommand implements CommandExecutor {
 		
 		Arena arena = null;
 		
-		for (Arena duelArena : MegaArena.getInstance().getArenaManager().getArenas(ArenaType.DUEL)) {
+		for (Arena duelArena : MegaArena.getInstance().getArenaManager().getArenas(Arena.Type.DUEL)) {
 			if (duelArena.isEdit())
 				continue;
 			

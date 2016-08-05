@@ -11,7 +11,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
 import com.andrewyunt.megaarena.objects.Arena;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
 
 /**
  * 
@@ -22,7 +21,7 @@ public class ArenaManager {
 
 	private Map<String, Arena> arenas = new HashMap<String, Arena>();
 
-	public Arena createArena(String name, ArenaType type) throws ArenaException {
+	public Arena createArena(String name, Arena.Type type) throws ArenaException {
 
 		if (name == null || type == null)
 			throw new ArenaException();
@@ -52,7 +51,7 @@ public class ArenaManager {
 		arenas.remove(arena);
 	}
 
-	public Collection<Arena> getArenas(ArenaType type) {
+	public Collection<Arena> getArenas(Arena.Type type) {
 
 		Collection<Arena> arenas = new HashSet<Arena>();
 

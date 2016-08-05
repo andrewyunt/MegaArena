@@ -16,7 +16,6 @@ import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 import de.slikey.effectlib.effect.ExplodeEffect;
@@ -65,7 +64,7 @@ public enum Ability {
 			
 			effectPlayers.add(bp);
 			
-			if (player.getGame().getArena().getType() != ArenaType.FFA && player.getGame().getArena().getType() != ArenaType.DUEL)
+			if (player.getGame().getArena().getType() != Arena.Type.FFA && player.getGame().getArena().getType() != Arena.Type.DUEL)
 				for (Entity entity : bp.getNearbyEntities(5, 5, 5)) {
 					if (!(entity instanceof Player))
 						continue;
@@ -81,7 +80,7 @@ public enum Ability {
 					if (!entityAP.isInGame())
 						continue;
 					
-					if (entityAP.getGame().getArena().getType() == ArenaType.TDM && entityAP.getSide() == player.getSide())
+					if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
 						continue;
 					
 					double newHealth = ((Damageable) ep).getHealth() + hearts;
@@ -140,7 +139,7 @@ public enum Ability {
 				if (!entityAP.isInGame())
 					continue;
 				
-				if (entityAP.getGame().getArena().getType() == ArenaType.TDM && entityAP.getSide() == player.getSide())
+				if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
 					continue;
 				
 				double dmg = 1.0 + 0.5 * (getLevel(player) - 1);
@@ -189,7 +188,7 @@ public enum Ability {
 				if (!entityAP.isInGame())
 					continue;
 				
-				if (entityAP.getGame().getArena().getType() == ArenaType.TDM && entityAP.getSide() == player.getSide())
+				if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
 					continue;
 				
 				Damageable dmgVictim = (Damageable) entity;
@@ -236,7 +235,7 @@ public enum Ability {
 	    				if (!entityAP.isInGame())
 	    					continue;
 	    				
-						if (entityAP.getGame().getArena().getType() == ArenaType.TDM && entityAP.getSide() == player.getSide())
+						if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
 							continue;
 	            		
 	            		if (((Player) entity) == bp)

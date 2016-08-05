@@ -2,8 +2,6 @@ package com.andrewyunt.megaarena.objects;
 
 import org.bukkit.Location;
 
-import com.andrewyunt.megaarena.objects.Game.Side;
-
 /**
  * 
  * @author Andrew Yunt
@@ -14,15 +12,15 @@ public class Spawn {
 	private boolean isUsed;
 	private Arena arena;
 	private Location location;
-	private Side side;
+	private GameSide.Type sideType;
 	private String name;
 	
-	public Spawn(String name, Arena arena, Location location, Side side) {
+	public Spawn(String name, Arena arena, Location location, GameSide.Type sideType) {
 		
 		this.name = name;
 		this.arena = arena;
 		this.location = location;
-		this.side = side;
+		this.sideType = sideType;
 	}
 	
 	public void setUsed(boolean isUsed) {
@@ -50,8 +48,8 @@ public class Spawn {
 		return location;
 	}
 
-	public Side getSide() {
+	public GameSide.Type getSide() {
 		
-		return side;
+		return sideType;
 	}
 }

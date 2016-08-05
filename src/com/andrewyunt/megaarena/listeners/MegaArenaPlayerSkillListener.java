@@ -27,9 +27,9 @@ import org.bukkit.util.Vector;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.Skill;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
 
 /**
  * 
@@ -73,7 +73,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (shooterGP.getGame().getArena().getType() == ArenaType.TDM && shooterGP.getSide() == damagedGP.getSide())
+		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Check if shooter isn't a Skeleton */
@@ -100,10 +100,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void mutualWeakness(EntityDamageByEntityEvent event) { // Skeleton ->
-																	// Mutual
-																	// Weakness
-																	// -> Works
+	public void mutualWeakness(EntityDamageByEntityEvent event) { // Skeleton -> Mutual Weakness -> Works
 
 		/* Checking for a bow hit from a player to a player */
 		if (!(event.getDamager() instanceof Arrow))
@@ -134,7 +131,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (shooterGP.getGame().getArena().getType() == ArenaType.TDM && shooterGP.getSide() == damagedGP.getSide())
+		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Check if shooter isn't a Skeleton */
@@ -191,7 +188,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (damagerGP.getGame().getArena().getType() == ArenaType.TDM && damagerGP.getSide() == damagedGP.getSide())
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a Zombie */
@@ -255,7 +252,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (shooterGP.getGame().getArena().getType() == ArenaType.TDM && shooterGP.getSide() == damagedGP.getSide())
+		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the shooter is a ZOMBIE */
@@ -315,7 +312,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (damagerGP.getGame().getArena().getType() == ArenaType.TDM && damagerGP.getSide() == damagedGP.getSide())
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a Herobrine */
@@ -385,7 +382,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (shooterGP.getGame().getArena().getType() == ArenaType.TDM && shooterGP.getSide() == damagedGP.getSide())
+		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a Herobrine */
@@ -547,7 +544,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (damagerGP.getGame().getArena().getType() == ArenaType.TDM && damagerGP.getSide() == damagedGP.getSide())
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a CREEPER */
@@ -613,7 +610,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!creeperAP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (creeperAP.getGame().getArena().getType() == ArenaType.TDM && creeperAP.getSide() == damagedGP.getSide())
+		if (creeperAP.getGame().getArena().getType() == Arena.Type.TDM && creeperAP.getSide() == damagedGP.getSide())
 			return;
 
 		if (damaged == creeper) {
@@ -660,7 +657,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (damagerGP.getGame().getArena().getType() == ArenaType.TDM && damagerGP.getSide() == damagedGP.getSide())
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a SPIRIT WARRIOR */
@@ -722,7 +719,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (damagerGP.getGame().getArena().getType() == ArenaType.TDM && damagerGP.getSide() == damagedGP.getSide())
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a SPIRIT WARRIOR */
@@ -790,7 +787,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (damagerGP.getGame().getArena().getType() == ArenaType.TDM && damagerGP.getSide() == damagedGP.getSide())
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a WITHER MINION */
@@ -849,7 +846,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (damagerGP.getGame().getArena().getType() == ArenaType.TDM && damagerGP.getSide() == damagedGP.getSide())
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a WITHER MINION */

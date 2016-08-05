@@ -23,8 +23,8 @@ import org.bukkit.inventory.ItemStack;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.managers.PlayerManager;
+import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 import de.slikey.effectlib.effect.ExplodeEffect;
@@ -103,7 +103,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		if (!targetAP.isInGame())
 			return;
 		
-		if (targetAP.getGame().getArena().getType() == ArenaType.TDM && targetAP.getSide() == playerGP.getSide())
+		if (targetAP.getGame().getArena().getType() == Arena.Type.TDM && targetAP.getSide() == playerGP.getSide())
 			return;
 		
 		if (Utils.getTargetPlayer(player) != null)
@@ -179,7 +179,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if ((damagerGP.getSide() == damagedGP.getSide()) && damagerGP.getGame().getArena().getType() == ArenaType.TDM)
+		if ((damagerGP.getSide() == damagedGP.getSide()) && damagerGP.getGame().getArena().getType() == Arena.Type.TDM)
 			return;
 
 		if (damager instanceof Projectile) {
@@ -244,11 +244,8 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 			double dmg = 1.5 + (shooter.getClassType().getAbility().getLevel(shooter) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
-			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get
-														// the kill as well as
-														// red damage and
-														// invisibility
-
+			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as
+													  // red damage and invisibility
 			if (dmgPlayer.getHealth() < dmg) {
 				dmgPlayer.setHealth(0D);
 				return;
@@ -302,7 +299,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			if (!nearbyAP.isInGame())
 				continue;
 
-			if (nearbyAP.getGame().getArena().getType() == ArenaType.TDM && nearbyAP.getSide() == shooterAP.getSide())
+			if (nearbyAP.getGame().getArena().getType() == Arena.Type.TDM && nearbyAP.getSide() == shooterAP.getSide())
 				continue;
 
 			double dmg = 1.5 + (shooterAP.getClassType().getAbility().getLevel(shooterAP) * 0.5);

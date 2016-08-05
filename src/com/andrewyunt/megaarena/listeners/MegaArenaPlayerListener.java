@@ -31,8 +31,8 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
 import com.andrewyunt.megaarena.menu.ShopMenu;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
 
 /**
  * 
@@ -75,7 +75,7 @@ public class MegaArenaPlayerListener implements Listener {
 		
 		Game game = gp.getGame();
 		
-		if (game.getArena().getType() == ArenaType.DUEL) {
+		if (game.getArena().getType() == Arena.Type.DUEL) {
 			MegaArena.getInstance().getGameManager().deleteGame(game, 
 					String.format("%s has left the game and has left you victorious!",
 					ChatColor.AQUA + gp.getName() + ChatColor.GREEN));
@@ -136,7 +136,7 @@ public class MegaArenaPlayerListener implements Listener {
 		} else if (name.equals("Play : Free-for-all")) {
 
 			try {
-				MegaArena.getInstance().getGameManager().matchMake(gp, ArenaType.FFA);
+				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.FFA);
 			} catch (GameException e) {
 			}
 		}
@@ -191,7 +191,7 @@ public class MegaArenaPlayerListener implements Listener {
 		if (!gp.isInGame())
 			return;
 		
-		if (gp.getGame().getArena().getType() == ArenaType.DUEL)
+		if (gp.getGame().getArena().getType() == Arena.Type.DUEL)
 			return;
 		
 		if (gp.hasFallen())
@@ -237,7 +237,7 @@ public class MegaArenaPlayerListener implements Listener {
 		if (damagedGP.getGame() != damagerGP.getGame())
 			return;
 
-		if (damagedGP.getGame().getArena().getType() != ArenaType.TDM)
+		if (damagedGP.getGame().getArena().getType() != Arena.Type.TDM)
 			return;
 
 		if (damagedGP.getSide() != damagerGP.getSide()) {
@@ -322,7 +322,7 @@ public class MegaArenaPlayerListener implements Listener {
 		
 		Game game = playerGP.getGame();
 		
-		if (game.getArena().getType() == ArenaType.DUEL)
+		if (game.getArena().getType() == Arena.Type.DUEL)
 			return;
 
 		if (killerGP.isInGame()) {
@@ -339,7 +339,7 @@ public class MegaArenaPlayerListener implements Listener {
 					ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
 		}
 
-		if (game.getArena().getType() == ArenaType.TDM)
+		if (game.getArena().getType() == Arena.Type.TDM)
 			for (GamePlayer assistAP : playerGP.getAssistPlayers()) {
 				if (!assistAP.isInGame())
 					continue;
@@ -378,7 +378,7 @@ public class MegaArenaPlayerListener implements Listener {
 		
 		Game game = playerGP.getGame();
 		
-		if (playerGP.getGame().getArena().getType() == ArenaType.DUEL) {
+		if (playerGP.getGame().getArena().getType() == Arena.Type.DUEL) {
 			GamePlayer opponentGP = null;
 			
 			for (GamePlayer curGP : game.getPlayers())

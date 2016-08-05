@@ -19,6 +19,11 @@ package com.andrewyunt.megaarena.objects;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
+/**
+ * 
+ * @author Comphenix
+ *
+ */
 public class Vector3D {
 	
 	/**

@@ -21,7 +21,6 @@ import com.andrewyunt.megaarena.managers.ArenaManager;
 import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
-import com.andrewyunt.megaarena.objects.Arena.ArenaType;
 import com.andrewyunt.megaarena.objects.Game;
 
 import de.slikey.effectlib.EffectLib;
@@ -83,14 +82,14 @@ public class MegaArena extends JavaPlugin {
 		arenaManager.loadArenas();
 		
 		/* Create games for FFA and TDM arenas */
-		for (Arena arena : arenaManager.getArenas(ArenaType.TDM))
+		for (Arena arena : arenaManager.getArenas(Arena.Type.TDM))
 			try {
 				arena.setGame(gameManager.createGame(arena));
 			} catch (GameException e) {
 				logger.warning(e.getMessage());
 			}
 		
-		for (Arena arena : arenaManager.getArenas(ArenaType.FFA))
+		for (Arena arena : arenaManager.getArenas(Arena.Type.FFA))
 			try {
 				arena.setGame(gameManager.createGame(arena));
 			} catch (GameException e) {
