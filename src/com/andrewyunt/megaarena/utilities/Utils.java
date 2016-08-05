@@ -17,6 +17,7 @@ import com.andrewyunt.megaarena.objects.Vector3D;
  * 
  * @author Andrew Yunt
  * @author Gavin Lutz
+ * @author md_5
  *
  */
 public class Utils {

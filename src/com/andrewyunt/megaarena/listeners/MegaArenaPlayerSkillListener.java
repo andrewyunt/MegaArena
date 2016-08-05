@@ -1,3 +1,18 @@
+/**
+ * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
+ *
+ * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
+ * herein are proprietary to Andrew Yunt and may be covered by U.S. and Foreign Patents, patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material is strictly forbidden unless prior written permission is obtained
+ * from Andrew Yunt. Access to the source code contained herein is hereby forbidden to anyone except current Andrew Yunt and those who have executed
+ * Confidentiality and Non-disclosure agreements explicitly covering such access.
+ *
+ * The copyright notice above does not evidence any actual or intended publication or disclosure of this source code, which includes
+ * information that is confidential and/or proprietary, and is a trade secret, of COMPANY. ANY REPRODUCTION, MODIFICATION, DISTRIBUTION, PUBLIC PERFORMANCE,
+ * OR PUBLIC DISPLAY OF OR THROUGH USE OF THIS SOURCE CODE WITHOUT THE EXPRESS WRITTEN CONSENT OF ANDREW YUNT IS STRICTLY PROHIBITED, AND IN VIOLATION OF
+ * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
+ * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
+ */
 package com.andrewyunt.megaarena.listeners;
 
 import java.util.HashMap;
@@ -41,9 +56,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	public HashMap<TNTPrimed, Player> creeperTnt = new HashMap<TNTPrimed, Player>();
 
 	@EventHandler
-	public void boomerangSkill(EntityDamageByEntityEvent event) { // Skeleton ->
-																	// Boomerang
-																	// -> Works
+	public void boomerangSkill(EntityDamageByEntityEvent event) { // Skeleton -> Boomerang -> Works
 
 		/* Checking for a bow hit from a player to a player */
 		if (!(event.getDamager() instanceof Arrow))
@@ -219,9 +232,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void swiftness(EntityDamageByEntityEvent event) { // Zombie -
-																// Swiftness ->
-																// Works
+	public void swiftness(EntityDamageByEntityEvent event) { // Zombie - Swiftness -> Works
 
 		/* Checking for a bow hit from a player to a player */
 		if (!(event.getDamager() instanceof Arrow))
@@ -283,8 +294,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void recharge(EntityDamageByEntityEvent event) { // Herobrine -
-															// Recharge -> Works
+	public void recharge(EntityDamageByEntityEvent event) { // Herobrine - Recharge -> Works
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -352,8 +362,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void flurry(EntityDamageByEntityEvent event) { // Herobrine - Flurry
-															// -> Works
+	public void flurry(EntityDamageByEntityEvent event) { // Herobrine - Flurry -> Works
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -413,9 +422,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void powerfulWeakness(EntityDamageEvent event) { // Creeper -
-															// Powerful Weakness
-															// -> Works
+	public void powerfulWeakness(EntityDamageEvent event) { // Creeper - Powerful Weakness -> Works
 
 		/* Check if the entity is player */
 		if (!(event.getEntity() instanceof Player))
@@ -464,12 +471,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void powerfulWeakness(EntityRegainHealthEvent event) { // Creeper -
-																	// Powerful
-																	// Weakness
-																	// //TODO:
-																	// Disable
-																	// Speed
+	public void powerfulWeakness(EntityRegainHealthEvent event) { // Creeper - Powerful Weakness TODO: Disable Speed
 
 		/* Check if the entity is player */
 		if (!(event.getEntity() instanceof Player))
@@ -576,10 +578,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void disableTnt(EntityDamageByEntityEvent event) { // Creeper Support
-																// //TODO:
-																// Disable TNT
-																// damage
+	public void disableTnt(EntityDamageByEntityEvent event) { // Creeper Support TODO: Disable TNT damage
 
 		if (!(event.getDamager() instanceof TNTPrimed))
 			return;
@@ -627,11 +626,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void weakeningSwing(EntityDamageByEntityEvent event) { // Spirit
-																	// Warrior -
-																	// Weakening
-																	// Swing ->
-																	// Works
+	public void weakeningSwing(EntityDamageByEntityEvent event) { // Spirit Warrior - Weakening Swing -> Works
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -690,10 +685,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void swiftBackup(EntityDamageByEntityEvent event) { // Spirit Warrior
-																// - Swift
-																// Backup ->
-																// Works
+	public void swiftBackup(EntityDamageByEntityEvent event) { // Spirit Warrior - Swift Backup -> Works
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -759,9 +751,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void soulSucker(EntityDamageByEntityEvent event) { // Wither Minion -
-																// Soul Sucker
-																// -> Works
+	public void soulSucker(EntityDamageByEntityEvent event) { // Wither Minion - Soul Sucker -> Works
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -819,8 +809,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void undead(EntityDamageByEntityEvent event) { // Wither Minion -
-															// Undead
+	public void undead(EntityDamageByEntityEvent event) { // Wither Minion - Undead
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))

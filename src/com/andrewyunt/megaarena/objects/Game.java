@@ -1,3 +1,18 @@
+/**
+ * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
+ *
+ * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
+ * herein are proprietary to Andrew Yunt and may be covered by U.S. and Foreign Patents, patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material is strictly forbidden unless prior written permission is obtained
+ * from Andrew Yunt. Access to the source code contained herein is hereby forbidden to anyone except current Andrew Yunt and those who have executed
+ * Confidentiality and Non-disclosure agreements explicitly covering such access.
+ *
+ * The copyright notice above does not evidence any actual or intended publication or disclosure of this source code, which includes
+ * information that is confidential and/or proprietary, and is a trade secret, of COMPANY. ANY REPRODUCTION, MODIFICATION, DISTRIBUTION, PUBLIC PERFORMANCE,
+ * OR PUBLIC DISPLAY OF OR THROUGH USE OF THIS SOURCE CODE WITHOUT THE EXPRESS WRITTEN CONSENT OF ANDREW YUNT IS STRICTLY PROHIBITED, AND IN VIOLATION OF
+ * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
+ * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
+ */
 package com.andrewyunt.megaarena.objects;
 
 import java.util.ArrayList;
@@ -6,10 +21,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.SideException;
 
@@ -24,6 +42,7 @@ public class Game {
 	private Set<GamePlayer> players = new HashSet<GamePlayer>();
 	private Set<Block> placedBlocks = new HashSet<Block>();
 	private Set<GameSide> sides = new HashSet<GameSide>();
+	private Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
 	public Game(Arena arena) {
 		
@@ -82,10 +101,15 @@ public class Game {
 		player.setGame(this);
 		player.setSide(side);
 		
-		bp.sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side.",
-				ChatColor.AQUA + side.getType().getName() + ChatColor.GREEN));
+		side.getTeam().addPlayer(bp);
+		bp.setScoreboard(scoreboard);
 		
-		spawnPlayer(player, side.getType());
+		GameSide.Type sideType = side.getSideType();
+		
+		bp.sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side.",
+				ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
+		
+		spawnPlayer(player, sideType);
 	}
 	
 	public void spawnPlayer(GamePlayer player, GameSide.Type sideType) {
@@ -120,15 +144,19 @@ public class Game {
 	
 	public void removePlayer(GamePlayer player) {
 		
+		Player bp = player.getBukkitPlayer();
+		
+		/* Remove player from team scoreboard and set scoreboard to null */
+		player.getSide().getTeam().removePlayer(bp);
+		bp.setScoreboard(null);
+		
 		/* Remove player from players set then set the player's game and side to null */
 		players.remove(player);
 		player.setGame(null);
 		player.setSide(null);
-	
+		
 		/* Set player energy to 0 */
 		player.setEnergy(0);
-		
-		Player bp = player.getBukkitPlayer();
 		
 		/* Set player lobby health, food, experience and game mode */
 		bp.setMaxHealth(20.0D);
@@ -194,9 +222,14 @@ public class Game {
 	public GameSide getSide(GameSide.Type sideType) throws SideException {
 		
 		for (GameSide side : sides)
-			if (side.getType() == sideType)
+			if (side.getSideType() == sideType)
 				return side;
 		
 		throw new SideException("The side of the specified type does not exist.");
+	}
+	
+	public Scoreboard getScoreboard() {
+		
+		return scoreboard;
 	}
 }
