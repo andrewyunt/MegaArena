@@ -13,67 +13,39 @@
  * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
  * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
  */
-package com.andrewyunt.megaarena.objects;
+package com.andrewyunt.megaarena.db;
 
-import org.bukkit.ChatColor;
-import org.bukkit.scoreboard.Team;
+import java.util.Date;
 
-public class GameSide {
+import com.andrewyunt.megaarena.objects.Arena;
+import com.andrewyunt.megaarena.objects.Class;
+import com.andrewyunt.megaarena.objects.GamePlayer;
+
+public abstract class MegaArenaDataSource {
 	
-	public enum Type {
-		
-		BLUE("Blue", ChatColor.BLUE),
-		GREEN("Green", ChatColor.DARK_GREEN),
-		INDEPENDENT("Independent", ChatColor.DARK_RED);
-		
-		private String name;
-		private ChatColor nameColor;
-		
-		Type(String name, ChatColor nameColor) {
-			
-			this.name = name;
-			this.nameColor = nameColor;
-		}
-		
-		public String getName() {
-			
-			return name;
-		}
-		
-		public ChatColor getNameColor() {
-			
-			return nameColor;
-		}
-	}
+	public abstract void savePlayers();
 	
-	private Game game;
-	private Type sideType;
-	private Team team;
+	public abstract void savePlayer(GamePlayer player);
 	
-	public GameSide(Game game, Type type) {
-		
-		this.game = game;
-		this.sideType = type;
-		
-		team = game.getScoreboard().registerNewTeam(type.getName());
-		team.setPrefix(sideType.getNameColor() + "");
-		
-		if (game.getArena().getType() == Arena.Type.TDM)
-			team.setAllowFriendlyFire(false);
-	}
+	public abstract void loadPlayers();
 	
-	public Game getGame() {
-		
-		return game;
-	}
+	public abstract void loadPlayer(GamePlayer player);
 	
-	public Type getSideType() {
-		
-		return sideType;
-	}
+	public abstract void saveLayouts(GamePlayer player);
 	
-	public Team getTeam() {
-		
-		return team;
-	}
+	public abstract void saveLayout(GamePlayer player, Class classType);
+	
+	public abstract void loadLayouts(GamePlayer player);
+	
+	public abstract void loadLayout(GamePlayer player, Class classType);
+	
+	public abstract void saveParties();
+	
+	public abstract void saveParty(/* Party party */);
+	
+	public abstract void loadParties();
+	
+	public abstract void loadParty(/* Party party */);
+	
+	public abstract void saveKill(GamePlayer killer, GamePlayer victim, Date date, Arena arena);
 }

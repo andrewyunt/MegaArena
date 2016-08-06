@@ -13,67 +13,21 @@
  * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
  * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
  */
-package com.andrewyunt.megaarena.objects;
+package com.andrewyunt.megaarena.db;
 
-import org.bukkit.ChatColor;
-import org.bukkit.scoreboard.Team;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 
-public class GameSide {
-	
-	public enum Type {
+public abstract class MegaArenaMySQLSource extends MegaArenaDataSource {
+
+	@Override
+	public void savePlayer(GamePlayer player) {
+		// TODO Auto-generated method stub
 		
-		BLUE("Blue", ChatColor.BLUE),
-		GREEN("Green", ChatColor.DARK_GREEN),
-		INDEPENDENT("Independent", ChatColor.DARK_RED);
-		
-		private String name;
-		private ChatColor nameColor;
-		
-		Type(String name, ChatColor nameColor) {
-			
-			this.name = name;
-			this.nameColor = nameColor;
-		}
-		
-		public String getName() {
-			
-			return name;
-		}
-		
-		public ChatColor getNameColor() {
-			
-			return nameColor;
-		}
 	}
-	
-	private Game game;
-	private Type sideType;
-	private Team team;
-	
-	public GameSide(Game game, Type type) {
+
+	@Override
+	public void loadPlayer(GamePlayer player) {
+		// TODO Auto-generated method stub
 		
-		this.game = game;
-		this.sideType = type;
-		
-		team = game.getScoreboard().registerNewTeam(type.getName());
-		team.setPrefix(sideType.getNameColor() + "");
-		
-		if (game.getArena().getType() == Arena.Type.TDM)
-			team.setAllowFriendlyFire(false);
-	}
-	
-	public Game getGame() {
-		
-		return game;
-	}
-	
-	public Type getSideType() {
-		
-		return sideType;
-	}
-	
-	public Team getTeam() {
-		
-		return team;
 	}
 }

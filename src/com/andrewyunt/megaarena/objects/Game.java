@@ -28,6 +28,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
+import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.SideException;
 
@@ -148,7 +149,7 @@ public class Game {
 		
 		/* Remove player from team scoreboard and set scoreboard to null */
 		player.getSide().getTeam().removePlayer(bp);
-		bp.setScoreboard(null);
+		bp.setScoreboard(MegaArena.getInstance().getDefaultScoreboard());
 		
 		/* Remove player from players set then set the player's game and side to null */
 		players.remove(player);

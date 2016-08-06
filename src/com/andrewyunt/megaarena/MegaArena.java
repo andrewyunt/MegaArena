@@ -17,11 +17,13 @@ package com.andrewyunt.megaarena;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
 
 import com.andrewyunt.megaarena.command.ArenaCommand;
 import com.andrewyunt.megaarena.command.DuelAcceptCommand;
@@ -63,6 +65,7 @@ public class MegaArena extends JavaPlugin {
 	private final PlayerManager playerManager = new PlayerManager();
 	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
+	private final Scoreboard defaultScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 	
 	private static MegaArena instance = null;
 	
@@ -177,5 +180,10 @@ public class MegaArena extends JavaPlugin {
 	public ArenaConfiguration getArenaConfig() {
 		
 		return arenaConfiguration;
+	}
+	
+	public Scoreboard getDefaultScoreboard() {
+		
+		return defaultScoreboard;
 	}
 }
