@@ -66,12 +66,16 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		if (!(arrow.getShooter() instanceof Player))
 			return;
+		
 		if (!(event.getEntity() instanceof Player))
 			return;
 
 		/* Casting to players */
 		Player shooter = (Player) arrow.getShooter();
 		Player damaged = (Player) event.getEntity();
+		
+		if (shooter == damaged)
+			return;
 
 		GamePlayer shooterGP = null;
 		GamePlayer damagedGP = null;
@@ -131,6 +135,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		Player shooter = (Player) arrow.getShooter();
 		Player damaged = (Player) event.getEntity();
 
+		if (shooter == damaged)
+			return;
+		
 		GamePlayer shooterGP = null;
 		GamePlayer damagedGP = null;
 
