@@ -402,6 +402,12 @@ public class MegaArenaPlayerListener implements Listener {
 		
 		playerGP.getGame().removePlayer(playerGP);
 	}
+	
+	@EventHandler
+	public void onDeathMessage(PlayerDeathEvent event) {
+		
+		event.setDeathMessage("");
+	}
 
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent event) {

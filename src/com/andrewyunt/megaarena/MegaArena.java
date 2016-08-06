@@ -59,13 +59,14 @@ public class MegaArena extends JavaPlugin {
 	private ServicesManager sm = server.getServicesManager();
     private Economy economy = null;
     private Permission permissions = null;
+    private Scoreboard defaultScoreboard = null;
+    
 	
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
 	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
-	private final Scoreboard defaultScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 	
 	private static MegaArena instance = null;
 	
@@ -73,7 +74,7 @@ public class MegaArena extends JavaPlugin {
 	public void onEnable() {
 		
 		/* Check for dependencies */
-		if (pm.getPlugin("StaffPlus") == null || !(setupEconomy() || !(setupPermissions()))) {
+		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("EffectLib") == null || !(setupEconomy() || !(setupPermissions()))) {
 			logger.severe("MegaArena is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
@@ -113,6 +114,9 @@ public class MegaArena extends JavaPlugin {
 			} catch (GameException e) {
 				logger.warning(e.getMessage());
 			}
+		
+		/* Create default scoreboard */
+		defaultScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 	}
 
     private boolean setupEconomy() {
