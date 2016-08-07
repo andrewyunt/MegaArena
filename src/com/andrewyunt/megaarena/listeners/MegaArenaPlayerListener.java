@@ -15,10 +15,15 @@
  */
 package com.andrewyunt.megaarena.listeners;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -406,7 +411,62 @@ public class MegaArenaPlayerListener implements Listener {
 	@EventHandler
 	public void onDeathMessage(PlayerDeathEvent event) {
 		
+		Player killed = event.getEntity();
+		Player killer = null;
+		GamePlayer killedGP = null;
+		
+		try {
+			killedGP = MegaArena.getInstance().getPlayerManager().getPlayer(killed.getName());
+		} catch (PlayerException e) {
+		}
+		
+		EntityDamageEvent entityDamageEvent = killed.getLastDamageCause();
+		ConfigurationSection deathMessagesSection = MegaArena.getInstance().getConfig()
+				.getConfigurationSection("death-messages");
+		List<String> msgList = null;
+		String msg = null;
+		ChatColor killedColor = ChatColor.GRAY;
+		ChatColor killerColor = ChatColor.GRAY;
+		
+		if (killedGP.isInGame())
+			killedColor = killedGP.getSide().getSideType().getNameColor();
+		
+		if (entityDamageEvent.getEntityType() == EntityType.PLAYER) {
+			killer = event.getEntity().getKiller();
+			GamePlayer killerGP = null;
+			
+			try {
+				killerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killed.getName());
+			} catch (PlayerException e) {
+			}
+			
+			if (killerGP.isInGame())
+				killerColor = killerGP.getSide().getSideType().getNameColor();
+			
+			Material tool = killer.getItemInHand().getType();
+			
+			if (tool == Material.IRON_SWORD || tool == Material.DIAMOND_SWORD ||
+					tool == Material.STONE_SWORD || tool == Material.BOW) {
+				msgList = deathMessagesSection.getStringList(tool.toString().toLowerCase());
+				Collections.shuffle(msgList);
+				msg = msgList.get(0);
+			} else {
+				msgList = deathMessagesSection.getStringList("melee");
+				Collections.shuffle(msgList);
+				msg = msgList.get(0);
+			}
+		} else {	
+			killed.sendMessage(ChatColor.GRAY + event.getDeathMessage());
+			return;
+		}
+		
 		event.setDeathMessage("");
+		
+		msg = ChatColor.translateAlternateColorCodes('&', msg);
+		msg = String.format(msg, killerColor + killer.getName(), killedColor + killed.getName());
+		
+		killer.sendMessage(msg);
+		killed.sendMessage(msg);
 	}
 
 	@EventHandler

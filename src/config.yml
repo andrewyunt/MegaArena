@@ -687,3 +687,29 @@ classes:
       9:
          title: "Kit Items - Spirit Warrior IX"
          description: "Diamond Helmet (Protection II) \nIron Armor \nDiamond Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
+         
+death-messages:
+  melee:
+    - "%s&7 is victorious over %s&7!"
+    - "%s&7 has overpowered %s&7 in combat!"
+    - "%s&7 evicerated %s&7!"
+    - "%s&7 had fun slicing and dicing %s&7!"
+    - "%s&7 sent %s&7 to pay Charon!"
+    - "%s&7 destroyed %s&7!"
+    - "%s&7 gutted the unfortunate %s&7!"
+    - "%s&7 has sent %s&7 to the heavenly realm!"
+    - "%s&7 showed %s&7 the meaning of pain!"
+    - "%s&7 split %s&7 in twain!"
+    - "%s&7 overcame %s&7 in battle!"
+    - "%s&7 defeated %s&7 in mighty struggle!"
+    - "%s&7 ended all dreams for %s&7!"
+  bow:
+    - "%s&7 feathered %s&7 with arrows!"
+    - "%s&7 pierced %s&7 using their arrow!"
+  diamond_sword:
+    - "%s&7 sliced through %s&7 with a diamond sword!"
+    - "%s&7 split %s in two using a diamond sword!"
+  iron_sword:
+    - "%s&7 slayed %s&7 with an iron sword!"
+  stone_sword:
+    - "%s&7 violently bashed the face of %s in with a stone sword!"

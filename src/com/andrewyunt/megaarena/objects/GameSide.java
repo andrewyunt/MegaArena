@@ -23,8 +23,8 @@ public class GameSide {
 	public enum Type {
 		
 		BLUE("Blue", ChatColor.BLUE),
-		GREEN("Green", ChatColor.DARK_GREEN),
-		INDEPENDENT("Independent", ChatColor.DARK_RED);
+		GREEN("Green", ChatColor.GREEN),
+		INDEPENDENT("Independent", ChatColor.RED);
 		
 		private String name;
 		private ChatColor nameColor;
