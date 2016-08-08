@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -66,7 +67,10 @@ public class Game {
 		Player bp = player.getBukkitPlayer();
 		
 		player.setPreviousGameMode(bp.getGameMode());
-		player.setPreviousLocation(bp.getLocation());
+		
+		Location prevLoc = bp.getLocation();
+		prevLoc.setY(prevLoc.getY() + 1);
+		player.setPreviousLocation(prevLoc);
 	
 		GameSide side = null;
 		
