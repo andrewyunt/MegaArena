@@ -103,6 +103,7 @@ public class MegaArenaPlayerListener implements Listener {
 		}
 		
 		game.removePlayer(gp);
+		gp.setGame(null);
 	}
 
 	@EventHandler
