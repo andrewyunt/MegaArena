@@ -39,13 +39,5 @@ public abstract class MegaArenaDataSource {
 	
 	public abstract void loadLayout(GamePlayer player, Class classType);
 	
-	public abstract void saveParties();
-	
-	public abstract void saveParty(/* Party party */);
-	
-	public abstract void loadParties();
-	
-	public abstract void loadParty(/* Party party */);
-	
 	public abstract void saveKill(GamePlayer killer, GamePlayer victim, Date date, Arena arena);
 }

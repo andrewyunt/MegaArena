@@ -172,7 +172,7 @@ public class MegaArenaPlayerListener implements Listener {
 
 		String message = event.getMessage();
 
-		if (message.startsWith("/tp")) {
+		if (message.startsWith("/tp") && !(message.equalsIgnoreCase("/tps"))) {
 
 			if (!(player.isStaffMode())) {
 				player.getBukkitPlayer()

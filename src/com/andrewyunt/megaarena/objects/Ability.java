@@ -275,21 +275,21 @@ public enum Ability {
 			
 		} else if (this == WITHER_HEADS) {
 			
-			Vector middleVector = bp.getEyeLocation().getDirection();
-			Vector leftVector = new Vector(middleVector.getZ(), middleVector.getY(), -middleVector.getX());
-			Vector rightVector = new Vector(-middleVector.getZ(), middleVector.getY(), middleVector.getX());
-			
-            WitherSkull leftSkull = bp.launchProjectile(WitherSkull.class);
-            leftSkull.setShooter(bp);
-            leftSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
- 
-            WitherSkull middleSkull = bp.launchProjectile(WitherSkull.class);
-            middleSkull.setShooter(bp);
-            middleSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
-     
+			Vector originalVector = bp.getEyeLocation().getDirection();
+            Vector rightVector = Utils.rotateYAxis(originalVector, 25);
+            Vector leftVector = Utils.rotateYAxis(originalVector, -25);
+            
+            WitherSkull originalSkull = bp.launchProjectile(WitherSkull.class);
+            originalSkull.setShooter(bp);
+            originalSkull.setVelocity(originalVector.multiply(1));
+            
             WitherSkull rightSkull = bp.launchProjectile(WitherSkull.class);
             rightSkull.setShooter(bp);
-            rightSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
+            rightSkull.setVelocity(rightVector.multiply(1));
+    
+            WitherSkull leftSkull = bp.launchProjectile(WitherSkull.class);
+            leftSkull.setShooter(bp);
+            leftSkull.setVelocity(leftVector.multiply(1));
 		}
 		
 		player.setEnergy(0);	

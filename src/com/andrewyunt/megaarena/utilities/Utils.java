@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.objects.Vector3D;
 
@@ -18,6 +19,7 @@ import com.andrewyunt.megaarena.objects.Vector3D;
  * @author Andrew Yunt
  * @author Gavin Lutz
  * @author md_5
+ * @author blablubbabc
  *
  */
 public class Utils {
@@ -128,5 +130,34 @@ public class Utils {
     			entities.add(e);
     	
     	return entities;
+    }
+    
+    /**
+     * Rotates the given vector around the y axis.
+     * This modifies the given vector.
+     *
+     * @author blablubbabc
+     * @param vector
+     *            the vector to rotate
+     * @param angleD
+     *            the angle of the rotation in degrees
+     * @return the given vector rotated
+     */
+    public static Vector rotateYAxis(Vector vector, double angleD) {
+    	
+        // Validate.notNull(vector);
+        if (angleD == 0.0D)
+        	return vector;
+ 
+        double angleR = Math.toRadians(angleD);
+        double x = vector.getX();
+        double z = vector.getZ();
+        double cos = Math.cos(angleR);
+        double sin = Math.sin(angleR);
+ 
+        vector.setX(x * cos + z * (-sin));
+        vector.setZ(x * sin + z * cos);
+ 
+        return vector;
     }
 }
