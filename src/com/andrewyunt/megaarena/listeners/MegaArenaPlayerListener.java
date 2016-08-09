@@ -50,9 +50,9 @@ import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
 import com.andrewyunt.megaarena.menu.ShopMenu;
-import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 
 /**
  * 
@@ -90,7 +90,7 @@ public class MegaArenaPlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		if (!(gp.isInGame()))
+		if (!gp.isInGame())
 			return;
 		
 		Game game = gp.getGame();
@@ -103,6 +103,11 @@ public class MegaArenaPlayerListener implements Listener {
 		}
 		
 		game.removePlayer(gp);
+		
+		try {
+			MegaArena.getInstance().getPlayerManager().deletePlayer(gp);
+		} catch (PlayerException e) {
+		}
 	}
 
 	@EventHandler

@@ -15,6 +15,8 @@
  */
 package com.andrewyunt.megaarena;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -152,8 +154,13 @@ public class MegaArena extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		
-		for (Game game : getGameManager().getGames())
-			gameManager.deleteGame(game, "Server shutting down.");
+		Set<Game> toRemove = new HashSet<Game>();
+		
+		for (Game game : gameManager.getGames())
+			toRemove.add(game);
+		
+		for (Game game : toRemove)
+			gameManager.deleteGame(game, "Server is shutting down...");
 	}
 	
 	public static MegaArena getInstance() {

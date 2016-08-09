@@ -42,6 +42,14 @@ public class PlayerManager {
 
 		return player;
 	}
+	
+	public void deletePlayer(GamePlayer player) throws PlayerException {
+		
+		if (!players.containsKey(player.getName()))
+			throw new PlayerException("The player specified is not in the plugin's records.");
+		
+		players.remove(player.getName());
+	}
 
 	public Collection<GamePlayer> getPlayers() {
 
