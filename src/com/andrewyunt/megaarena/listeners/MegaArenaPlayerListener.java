@@ -103,7 +103,6 @@ public class MegaArenaPlayerListener implements Listener {
 		}
 		
 		game.removePlayer(gp);
-		gp.setGame(null);
 	}
 
 	@EventHandler
@@ -421,16 +420,20 @@ public class MegaArenaPlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
+		ChatColor killedColor = ChatColor.GRAY;
+		
+		if (!killedGP.isInGame()) {
+			event.setDeathMessage("");
+			return;
+		} else
+			killedColor = killedGP.getSide().getSideType().getNameColor();
+		
 		EntityDamageEvent entityDamageEvent = killed.getLastDamageCause();
 		ConfigurationSection deathMessagesSection = MegaArena.getInstance().getConfig()
 				.getConfigurationSection("death-messages");
 		List<String> msgList = null;
 		String msg = null;
-		ChatColor killedColor = ChatColor.GRAY;
 		ChatColor killerColor = ChatColor.GRAY;
-		
-		if (killedGP.isInGame())
-			killedColor = killedGP.getSide().getSideType().getNameColor();
 		
 		if (entityDamageEvent.getEntityType() == EntityType.PLAYER) {
 			killer = event.getEntity().getKiller();
