@@ -80,8 +80,8 @@ public class ShopMenu implements Listener {
 		ItemStack skeleton = new ItemStack(Material.BONE);
 		ItemStack creeper = new ItemStack(Material.TNT);
 		ItemStack herobrine = new ItemStack(Material.ENDER_PEARL);
-		ItemStack witherMinion = new ItemStack(Material.ENCHANTMENT_TABLE);
-		ItemStack spiritWarrior = new ItemStack(Material.SKULL_ITEM);
+		ItemStack witherMinion = new ItemStack(Material.SKULL_ITEM);
+		ItemStack spiritWarrior = new ItemStack(Material.ENCHANTMENT_TABLE);
 		ItemStack close = new ItemStack(Material.ARROW);
 		
 		ItemMeta zombieMeta = zombie.getItemMeta();
