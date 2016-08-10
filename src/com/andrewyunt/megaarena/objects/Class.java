@@ -35,7 +35,8 @@ import com.andrewyunt.megaarena.MegaArena;
 
 /**
  * 
- * @author Andrew Yunt, MaccariTA
+ * @author Andrew Yunt
+ * @author MaccariTA
  *
  */
 public enum Class {

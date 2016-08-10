@@ -41,13 +41,14 @@ import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Class;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Skill;
 
 /**
  * 
+ * @author Andrew Yunt
  * @author MaccariTA
  *
  */
@@ -94,7 +95,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Check if shooter isn't a Skeleton */
-		if (!(shooterGP.getClassType() == Class.SKELETON))
+		if (shooterGP.getClassType() != Class.SKELETON)
 			return;
 
 		/* Randomization */
@@ -155,7 +156,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Check if shooter isn't a Skeleton */
-		if (!(shooterGP.getClassType() == Class.SKELETON))
+		if (shooterGP.getClassType() != Class.SKELETON)
 			return;
 
 		/* Apply Effects */
@@ -212,7 +213,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the damaged player is a Zombie */
-		if (!(damagedGP.getClassType() == Class.ZOMBIE))
+		if (damagedGP.getClassType() != Class.ZOMBIE)
 			return;
 
 		/* Randomization */
@@ -274,7 +275,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the shooter is a ZOMBIE */
-		if (!(damagedGP.getClassType() == Class.ZOMBIE))
+		if (damagedGP.getClassType() != Class.ZOMBIE)
 			return;
 
 		/* Randomization */
@@ -333,7 +334,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the damaged player is a Herobrine */
-		if (!(damagedGP.getClassType() == Class.HEROBRINE))
+		if (damagedGP.getClassType() != Class.HEROBRINE)
 			return;
 
 		/* Checking if killed */
@@ -385,24 +386,24 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
-		GamePlayer shooterGP = null;
+		GamePlayer damagerGP = null;
 		GamePlayer damagedGP = null;
 
 		try {
-			shooterGP = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
+			damagerGP = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
 		}
 
 		/* Check if players are in-game */
-		if (!shooterGP.isInGame() || !damagedGP.isInGame())
+		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 
-		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
 		/* Checking that the damaged player is a Herobrine */
-		if (!(damagedGP.getClassType() == Class.HEROBRINE))
+		if (damagedGP.getClassType() != Class.HEROBRINE)
 			return;
 
 		/* Randomization */
@@ -415,9 +416,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.FLURRY)
 			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
 
-		int precentage = 10 + 5 * (skillLevel - 1);
+		int percentage = 10 + 5 * (skillLevel - 1);
 
-		if (random > precentage)
+		if (random > percentage)
 			return;
 
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
@@ -450,7 +451,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the damaged player is a Creeper */
-		if (!(damagedGP.getClassType() == Class.CREEPER))
+		if (damagedGP.getClassType() != Class.CREEPER)
 			return;
 
 		if (damagedGP.hasSpeed())
@@ -499,7 +500,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the player player is a Creeper */
-		if (!(playerAP.getClassType() == Class.CREEPER))
+		if (playerAP.getClassType() != Class.CREEPER)
 			return;
 
 		if (!playerAP.hasSpeed())
@@ -557,7 +558,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the damaged player is a CREEPER */
-		if (!(damagedGP.getClassType() == Class.CREEPER))
+		if (damagedGP.getClassType() != Class.CREEPER)
 			return;
 
 		/* Randomization */
@@ -663,7 +664,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the damaged player is a SPIRIT WARRIOR */
-		if (!(damagerGP.getClassType() == Class.SPIRIT_WARRIOR))
+		if (damagerGP.getClassType() != Class.SPIRIT_WARRIOR)
 			return;
 
 		/* Randomization */
@@ -697,7 +698,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
 			return;
-
+		
 		if (!(event.getEntity() instanceof Player))
 			return;
 
@@ -717,34 +718,31 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
-
+		
 		/* Checking that the damaged player is a SPIRIT WARRIOR */
-		if (!(damagedGP.getClassType() == Class.SPIRIT_WARRIOR))
+		if (damagedGP.getClassType() != Class.SPIRIT_WARRIOR)
 			return;
-
-		/* Randomization */
-		Random r = new Random();
-		int random = r.nextInt(100) + 1;
+		
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFT_BACKUP)
 			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFT_BACKUP)
 			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
-
+		
 		double duration = 4 + (skillLevel - 1);
-
-		if (random > 10)
+		double rand = Math.random();
+		
+		if (rand > 0.1D)
 			return;
-
+		
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
 				ChatColor.AQUA + Skill.SWIFT_BACKUP.getName() + ChatColor.GREEN));
 
 		Wolf wolf = (Wolf) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.WOLF);
-
 		wolf.setOwner((AnimalTamer) damaged);
 		((LivingEntity) wolf).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1), true);
 
@@ -788,7 +786,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the damaged player is a WITHER MINION */
-		if (!(damagerGP.getClassType() == Class.WITHER_MINION))
+		if (damagerGP.getClassType() != Class.WITHER_MINION)
 			return;
 
 		/* Randomization */
@@ -846,7 +844,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		/* Checking that the damaged player is a WITHER MINION */
-		if (!(damagedGP.getClassType() == Class.WITHER_MINION))
+		if (damagedGP.getClassType() != Class.WITHER_MINION)
 			return;
 
 		/* Randomization */
