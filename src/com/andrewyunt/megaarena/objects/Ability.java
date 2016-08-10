@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -38,6 +40,7 @@ import de.slikey.effectlib.effect.HeartEffect;
 import de.slikey.effectlib.effect.TornadoEffect;
 import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.ParticleEffect;
+import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
 /**
  * 
@@ -219,23 +222,34 @@ public enum Ability {
 			
 		} else if (this == HURRICANE) {
 			
-	        TornadoEffect tornadoEffect = new TornadoEffect(MegaArena.getInstance().getEffectManager());
-	        
-	        tornadoEffect.tornadoParticle = ParticleEffect.SMOKE_LARGE;
-	        tornadoEffect.particleCount = 25;
-	        tornadoEffect.iterations = 5;
-	        tornadoEffect.duration = 1500 + (500 * getLevel(player));
-	        tornadoEffect.setDynamicOrigin(new DynamicLocation(bp.getLocation()));
-	        
-	        tornadoEffect.start();
+			Location location = bp.getLocation();
+			
+			double radius = 2;
+			double maxHeight = 5;
+			
+			for (double y = 0; y < maxHeight; y+= 0.05) {
+				double x = Math.sin(y * radius);
+				double z = Math.cos(y * radius);
+				
+				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
+						"flame",
+						((float) (location.getX() + x)),
+						((float) (location.getY() + y)),
+						((float) (location.getZ() + z)),
+						0, 0, 0, 1, 0);
+				
+				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
+			}
 	        
 	        new BukkitRunnable() {
-	            public void run() {
+	        	double elapsedTime = 0;
+	        	
+	        	public void run() {
 	            	
-	            	if (tornadoEffect.isDone())
-	                    this.cancel();
+	            	if (elapsedTime >= 1.5 + (0.5 * getLevel(player)))
+	            		return;
 	            	
-	            	for (Entity entity : Utils.getNearbyEntities(tornadoEffect.getLocation(), 5)) {
+	            	for (Entity entity : Utils.getNearbyEntities(location, 5)) {	
 	            		if (!(entity instanceof Player))
 	            			continue;
 	            		
@@ -255,23 +269,26 @@ public enum Ability {
 	            		
 	            		if (((Player) entity) == bp)
 	            			continue;
-	            		((Damageable)entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill. and the red invisibility period 
-	            		double health = ((Damageable) entity).getHealth() - 3.0D;
+	            		
+	            		((Damageable)entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill and the red invisibility period 
+	            		double health = ((Damageable) entity).getHealth() - 1.5D;
 	            		
 	            		if (health > 0)
 	            			((Damageable) entity).setHealth(health);
 	            		else
 	            			((Damageable) entity).setHealth(0D);
 	            		
-	            		Vector tornadoVector = tornadoEffect.getLocation().toVector();
+	            		Vector tornadoVector = location.toVector();
 	            		Vector entityVector = entity.getLocation().add(0, 3, 0).toVector();
 	            		Vector answer = entityVector.subtract(tornadoVector);
 	            		entity.setVelocity(answer.multiply(0.12));
 	            		
 	            		player.addEnergy(Class.SPIRIT_WARRIOR.getEnergyPerClick());
 	            	}
+	            	
+	            	elapsedTime =+ .5;
 	            }
-	        }.runTaskTimer(MegaArena.getInstance(), 0L, 20L);
+	        }.runTaskTimer(MegaArena.getInstance(), 0L, 10L);
 			
 		} else if (this == WITHER_HEADS) {
 			
