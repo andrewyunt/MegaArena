@@ -1,0 +1,1 @@
+*MegaArena* is a game developed for Amosita.net with skills and abilities which players can select, upgrade and use in-game. There are three game modes (TDM, FFA and Duels) which can be played as arenas which are created easily using admin commands. This plugin is currently not open to the public and is run exclusively on Amosita.net.
