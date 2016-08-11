@@ -414,7 +414,6 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		double percentage = 0.1 + 0.05 * (skillLevel - 1);
 
-		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + String.valueOf(percentage));
 		if (Math.random() > percentage)
 			return;
 		
