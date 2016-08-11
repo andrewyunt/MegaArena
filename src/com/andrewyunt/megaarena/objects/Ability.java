@@ -277,11 +277,6 @@ public enum Ability {
 	            		else
 	            			((Damageable) entity).setHealth(0D);
 	            		
-	            		Vector tornadoVector = location.toVector();
-	            		Vector entityVector = entity.getLocation().add(0, 3, 0).toVector();
-	            		Vector answer = entityVector.subtract(tornadoVector);
-	            		entity.setVelocity(answer.multiply(0.12));
-	            		
 	            		player.addEnergy(Class.SPIRIT_WARRIOR.getEnergyPerClick());
 	            	}
 	            	
