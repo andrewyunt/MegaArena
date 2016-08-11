@@ -18,6 +18,7 @@ package com.andrewyunt.megaarena.listeners;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
@@ -371,17 +372,17 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 	@EventHandler
 	public void flurry(EntityDamageByEntityEvent event) { // Herobrine - Flurry -> Works
-
+		
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
 			return;
-
+		
 		if (!(event.getEntity() instanceof Player))
 			return;
-
+		
 		if (event.getDamage() < 0.001D)
 			return;
-
+		
 		/* Casting to players */
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
@@ -398,31 +399,26 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
-		/* Checking that the damaged player is a Herobrine */
-		if (damagedGP.getClassType() != Class.HEROBRINE)
-			return;
-
-		/* Randomization */
-		Random r = new Random();
-		int random = r.nextInt(100) + 1;
 		int skillLevel = 0;
 
-		if (damagedGP.getClassType().getSkillOne() == Skill.FLURRY)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.FLURRY)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
-
-		int percentage = 10 + 5 * (skillLevel - 1);
-
-		if (random > percentage)
+		if (damagerGP.getClassType().getSkillOne() == Skill.FLURRY)
+			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagerGP);
+		else if (damagerGP.getClassType().getSkillTwo() == Skill.FLURRY)
+			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagerGP);
+		else
 			return;
 
-		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
+		double percentage = 0.1 + 0.05 * (skillLevel - 1);
 
+		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + String.valueOf(percentage));
+		if (Math.random() > percentage)
+			return;
+		
+		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
 		damager.addPotionEffect(speed, true);
 
 		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
