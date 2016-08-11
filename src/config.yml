@@ -123,7 +123,7 @@ classes:
          title: "Kit Items - Zombie IX"
          description: "Diamond Chestplate (Protection II) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
   SKELETON:
-    SPLIT_ARROW:
+    EXPLOSIVE_ARROW:
       1:
          title: "Ability - Explosive Arrow I"
          description: "Fire an explosive arrow that deals 2.0 damage to nearby enemies with 100% armor penetration"
