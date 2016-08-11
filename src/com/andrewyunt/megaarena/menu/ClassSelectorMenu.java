@@ -151,7 +151,7 @@ public class ClassSelectorMenu implements Listener {
 
 		ItemStack goBack = new ItemStack(Material.ARROW);
 		ItemStack spiritWarrior = new ItemStack(Material.ENCHANTMENT_TABLE);
-		ItemStack witherMinion = new ItemStack(Material.SKULL_ITEM);
+		ItemStack witherMinion = new ItemStack(Material.SKULL_ITEM, 1, (short) 1);
 
 		ItemMeta goBackMeta = goBack.getItemMeta();
 		ItemMeta spiritWarriorMeta = spiritWarrior.getItemMeta();
