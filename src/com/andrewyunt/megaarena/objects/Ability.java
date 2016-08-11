@@ -293,14 +293,17 @@ public enum Ability {
             WitherSkull originalSkull = bp.launchProjectile(WitherSkull.class);
             originalSkull.setShooter(bp);
             originalSkull.setVelocity(originalVector.multiply(1));
+            originalSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
             
             WitherSkull rightSkull = bp.launchProjectile(WitherSkull.class);
             rightSkull.setShooter(bp);
             rightSkull.setVelocity(rightVector.multiply(1));
-    
+            rightSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
+            
             WitherSkull leftSkull = bp.launchProjectile(WitherSkull.class);
             leftSkull.setShooter(bp);
             leftSkull.setVelocity(leftVector.multiply(1));
+            leftSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
 		}
 		
 		player.setEnergy(0);	
