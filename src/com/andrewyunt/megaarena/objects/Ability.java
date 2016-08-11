@@ -16,6 +16,7 @@
 package com.andrewyunt.megaarena.objects;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -223,6 +224,7 @@ public enum Ability {
 			
 			Location location = bp.getLocation();
 			
+			float duration = (float) (1.5 + (0.5 * getLevel(player)));
 			double radius = 2;
 			double maxHeight = 5;
 			
@@ -231,21 +233,35 @@ public enum Ability {
 				double z = Math.cos(y * radius);
 				
 				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-						"flame",
+						"snowshovel",
 						((float) (location.getX() + x)),
 						((float) (location.getY() + y)),
 						((float) (location.getZ() + z)),
-						0, 0, 0, 1, 0);
+						0, 0, 0, duration, 0);
+				
+				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
+			}
+			
+			for (int i = 0; i < 5; i++) {
+				float xRand = new Random().nextInt(2) - 1;
+				float zRand = new Random().nextInt(2) - 1;
+				
+				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
+						"largesmoke",
+						((float) (location.getX() + xRand)),
+						((float) location.getY()),
+						((float) (location.getZ() + zRand)),
+						0, 0, 0, duration, 0);
 				
 				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
 			}
 	        
 	        new BukkitRunnable() {
-	        	double elapsedTime = 0;
+	        	float elapsedTime = 0;
 	        	
 	        	public void run() {
 	            	
-	            	if (elapsedTime >= 1.5 + (0.5 * getLevel(player)))
+	            	if (elapsedTime >= duration)
 	            		return;
 	            	
 	            	for (Entity entity : Utils.getNearbyEntities(location, 5)) {	
@@ -280,7 +296,7 @@ public enum Ability {
 	            		player.addEnergy(Class.SPIRIT_WARRIOR.getEnergyPerClick());
 	            	}
 	            	
-	            	elapsedTime =+ .5;
+	            	elapsedTime = elapsedTime + 0.5F;
 	            }
 	        }.runTaskTimer(MegaArena.getInstance(), 0L, 10L);
 			
