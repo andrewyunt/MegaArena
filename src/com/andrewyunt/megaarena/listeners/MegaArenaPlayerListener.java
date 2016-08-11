@@ -43,6 +43,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.GameException;
@@ -198,8 +199,7 @@ public class MegaArenaPlayerListener implements Listener {
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
 		
-		if (event.getCause() != DamageCause.FALL)
-			return;
+		Entity entity = event.getEntity();
 		
 		if (!(event.getEntity() instanceof Player))
 			return;
@@ -215,6 +215,9 @@ public class MegaArenaPlayerListener implements Listener {
 			return;
 		
 		if (gp.getGame().getArena().getType() == Arena.Type.DUEL)
+			return;
+		
+		if (event.getCause() != DamageCause.FALL)
 			return;
 		
 		if (gp.hasFallen())
