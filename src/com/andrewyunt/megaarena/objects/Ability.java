@@ -30,6 +30,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.MegaArena;
@@ -184,41 +185,48 @@ public enum Ability {
 			
 		} else if (this == EXPLODE) {
 			
-	        ExplodeEffect explodeEffect = new ExplodeEffect(MegaArena.getInstance().getEffectManager());
-	        
-	        explodeEffect.amount = 10;
-	        explodeEffect.setDynamicOrigin(new DynamicLocation(bp.getLocation()));
-	        
-	        explodeEffect.start();
-			
-			for (Entity entity : bp.getNearbyEntities(5, 3, 5)) {
-				if (!(entity instanceof Player))
-					continue;
-				
-				Player entityPlayer = (Player) entity;
-				GamePlayer entityAP = null;
-				
-				try {
-					entityAP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
-				} catch (PlayerException e) {
-				}
-				
-				if (!entityAP.isInGame())
-					continue;
-				
-				if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
-					continue;
-				
-				Damageable dmgVictim = (Damageable) entity;
-				double dmg = 3.0 + 0.5 * (getLevel(player) - 1);
-				
-				((Damageable) entity).damage(0.00001D, bp);
-				
-				if (dmgVictim.getHealth() <= dmg)
-					dmgVictim.setHealth(0D);
-				else
-					dmgVictim.setHealth(dmgVictim.getHealth() - dmg);
-			}
+			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					
+					ExplodeEffect explodeEffect = new ExplodeEffect(MegaArena.getInstance().getEffectManager());
+	    	        
+	    	        explodeEffect.amount = 10;
+	    	        explodeEffect.setDynamicOrigin(new DynamicLocation(bp.getLocation()));
+	    	        
+	    	        explodeEffect.start();
+	    			
+	    			for (Entity entity : bp.getNearbyEntities(5, 3, 5)) {
+	    				if (!(entity instanceof Player))
+	    					continue;
+	    				
+	    				Player entityPlayer = (Player) entity;
+	    				GamePlayer entityAP = null;
+	    				
+	    				try {
+	    					entityAP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
+	    				} catch (PlayerException e) {
+	    				}
+	    				
+	    				if (!entityAP.isInGame())
+	    					continue;
+	    				
+	    				if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
+	    					continue;
+	    				
+	    				Damageable dmgVictim = (Damageable) entity;
+	    				double dmg = 3.0 + 0.5 * (getLevel(player) - 1);
+	    				
+	    				((Damageable) entity).damage(0.00001D, bp);
+	    				
+	    				if (dmgVictim.getHealth() <= dmg)
+	    					dmgVictim.setHealth(0D);
+	    				else
+	    					dmgVictim.setHealth(dmgVictim.getHealth() - dmg);
+	    			}
+	    		}
+			}, 60L);
 			
 		} else if (this == TORNADO) {
 			
