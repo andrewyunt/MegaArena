@@ -133,24 +133,42 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		if (!(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK))
 			return;
 
-		Player player = event.getPlayer();
-		GamePlayer playerGP = null;
+		Player clickerPlayer = event.getPlayer();
+		GamePlayer clickerGP = null;
 
 		try {
-			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			clickerGP = MegaArena.getInstance().getPlayerManager().getPlayer(clickerPlayer.getName());
 		} catch (PlayerException e) {
 		}
 
-		if (!playerGP.isInGame())
+		if (!clickerGP.isInGame())
 			return;
 
-		if (playerGP.getClassType() == SKELETON)
+		if (clickerGP.getClassType() == SKELETON)
 			return;
 		
-		if (Utils.getTargetPlayer(player) == null)
+		Player clickedPlayer = Utils.getTargetPlayer(clickerPlayer);
+		
+		if (clickedPlayer == null)
 			return;
 		
-		playerGP.addEnergy(playerGP.getClassType().getEnergyPerClick());
+		GamePlayer clickedGP = null;
+		
+		try {
+			clickedGP = MegaArena.getInstance().getPlayerManager().getPlayer(clickedPlayer.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (!clickedGP.isInGame())
+			return;
+		
+		if (clickedGP.getGame() != clickerGP.getGame())
+			return;
+		
+		if (clickedGP.getGame().getArena().getType() == Arena.Type.TDM && clickedGP.getSide() == clickerGP.getSide())
+			return;
+		
+		clickerGP.addEnergy(clickerGP.getClassType().getEnergyPerClick());
 	}
 
 	@EventHandler

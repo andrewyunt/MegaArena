@@ -98,7 +98,7 @@ public enum Ability {
 					if (!entityAP.isInGame())
 						continue;
 					
-					if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
+					if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() != player.getSide())
 						continue;
 					
 					double newHealth = ((Damageable) ep).getHealth() + hearts;
