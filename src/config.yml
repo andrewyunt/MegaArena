@@ -462,34 +462,34 @@ classes:
          title: "Kit Items - Creeper IX"
          description: "Diamond Leggings (Blast Protection II, Protection II) \nIron Armor \nIron Sword \n16 Steak \ 64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
   SPIRIT_WARRIOR:
-    HURRICANE:
+    TORNADO:
       1:
-         title: "Ability - Hurricane I"
-         description: "Summon a hurricane for 2.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado I"
+         description: "Summon a tornado for 2.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
       2:
-         title: "Ability - Hurricane II"
-         description: "Summon a hurricane for 2.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado II"
+         description: "Summon a tornado for 2.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
       3:
-         title: "Ability - Hurricane III"
-         description: "Summon a hurricane for 3.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado III"
+         description: "Summon a tornado for 3.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
       4:
-         title: "Ability - Hurricane IV"
-         description: "Summon a hurricane for 3.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado IV"
+         description: "Summon a tornado for 3.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
       5:
-         title: "Ability - Hurricane V"
-         description: "Summon a hurricane for 4.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado V"
+         description: "Summon a tornado for 4.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
       6:
-         title: "Ability - Hurricane VI"
-         description: "Summon a hurricane for 4.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado VI"
+         description: "Summon a tornado for 4.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
       7:
-         title: "Ability - Hurricane VII"
-         description: "Summon a hurricane for 5.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado VII"
+         description: "Summon a tornado for 5.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
       8:
-         title: "Ability - Hurricane VIII"
-         description: "Summon a hurricane for 5.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado VIII"
+         description: "Summon a tornado for 5.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
       9:
-         title: "Ability - Hurricane IX"
-         description: "Summon a hurricane for 6.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         title: "Ability - Tornado IX"
+         description: "Summon a tornado for 6.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
     WEAKENING_SWING:
       1:
          title: "Skill 1 - Weakening Swing I"

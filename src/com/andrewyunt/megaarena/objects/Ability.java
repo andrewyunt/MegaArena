@@ -37,7 +37,6 @@ import com.andrewyunt.megaarena.utilities.Utils;
 
 import de.slikey.effectlib.effect.ExplodeEffect;
 import de.slikey.effectlib.effect.HeartEffect;
-import de.slikey.effectlib.effect.TornadoEffect;
 import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.ParticleEffect;
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
@@ -53,7 +52,7 @@ public enum Ability {
 	EXPLOSIVE_ARROW("Explosive Arrow"),
 	LIGHTNING("Lightning"),
 	EXPLODE("Explode"),
-	HURRICANE("Hurricane"),
+	TORNADO("Tornado"),
 	WITHER_HEADS("Master's Attack");
 	
 	private String name;
@@ -220,7 +219,7 @@ public enum Ability {
 					dmgVictim.setHealth(dmgVictim.getHealth() - dmg);
 			}
 			
-		} else if (this == HURRICANE) {
+		} else if (this == TORNADO) {
 			
 			Location location = bp.getLocation();
 			
