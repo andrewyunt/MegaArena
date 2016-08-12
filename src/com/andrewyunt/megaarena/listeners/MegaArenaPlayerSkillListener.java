@@ -16,8 +16,6 @@
 package com.andrewyunt.megaarena.listeners;
 
 import java.util.HashMap;
-import java.util.Random;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
@@ -94,21 +92,16 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
 
-		/* Check if shooter isn't a Skeleton */
-		if (shooterGP.getClassType() != Class.SKELETON)
-			return;
-
-		/* Randomization */
-		Random r = new Random();
-		int random = r.nextInt(100) + 1;
-		int precentage = 0;
+		double percentage = 0;
 
 		if (shooterGP.getClassType().getSkillOne() == Skill.BOOMERANG)
-			precentage = 20 * shooterGP.getClassType().getSkillOne().getLevel(shooterGP);
+			percentage = 0.2 * shooterGP.getClassType().getSkillOne().getLevel(shooterGP);
 		else if (shooterGP.getClassType().getSkillTwo() == Skill.BOOMERANG)
-			precentage = 20 * shooterGP.getClassType().getSkillTwo().getLevel(shooterGP);
+			percentage = 0.2 * shooterGP.getClassType().getSkillTwo().getLevel(shooterGP);
+		else
+			return;
 
-		if (random > precentage)
+		if (Math.random() > percentage)
 			return;
 
 		shooter.getInventory().addItem(new ItemStack(Material.ARROW));
@@ -155,18 +148,16 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
 
-		/* Check if shooter isn't a Skeleton */
-		if (shooterGP.getClassType() != Class.SKELETON)
-			return;
-
-		/* Apply Effects */
 		int skillLevel = 0;
 
 		if (shooterGP.getClassType().getSkillOne().equals(Skill.MUTUAL_WEAKNESS))
 			skillLevel = shooterGP.getClassType().getSkillOne().getLevel(shooterGP);
 		else if (shooterGP.getClassType().getSkillTwo().equals(Skill.MUTUAL_WEAKNESS))
 			skillLevel = shooterGP.getClassType().getSkillTwo().getLevel(shooterGP);
-
+		else
+			return;
+		
+		/* Apply Effects */
 		int duration = (int) ((2 + 0.5 * (skillLevel - 1))) * 20;
 		PotionEffect slowness = new PotionEffect(PotionEffectType.SLOW, duration, 0, true);
 		PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, duration, 0, true);
@@ -212,23 +203,18 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
-		/* Checking that the damaged player is a Zombie */
-		if (damagedGP.getClassType() != Class.ZOMBIE)
-			return;
-
-		/* Randomization */
-		Random r = new Random();
-		int random = r.nextInt(100) + 1;
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.RESIST)
 			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.RESIST)
 			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+		else
+			return;
 
-		int precentage = 11 + 3 * (skillLevel - 1);
+		double percentage = 0.11 + 0.03 * (skillLevel - 1);
 
-		if (random > precentage)
+		if (Math.random() > percentage)
 			return;
 
 		PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 0, true);
@@ -278,19 +264,18 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (damagedGP.getClassType() != Class.ZOMBIE)
 			return;
 
-		/* Randomization */
-		Random r = new Random();
-		int random = r.nextInt(100) + 1;
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFTNESS)
 			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFTNESS)
 			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+		else
+			return;
 
-		int precentage = 10 + 5 * (skillLevel - 1);
+		double percentage = 0.10 + 0.05 * (skillLevel - 1);
 
-		if (random > precentage)
+		if (Math.random() > percentage)
 			return;
 
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 60, 1, true);
@@ -332,9 +317,14 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
+		
+		int skillLevel = 0;
 
-		/* Checking that the damaged player is a Herobrine */
-		if (damagedGP.getClassType() != Class.HEROBRINE)
+		if (damagedGP.getClassType().getSkillOne() == Skill.RECHARGE)
+			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
+		else if (damagedGP.getClassType().getSkillTwo() == Skill.RECHARGE)
+			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+		else
 			return;
 
 		/* Checking if killed */
@@ -349,14 +339,6 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		if (((Damageable) damaged).getHealth() - event.getFinalDamage() > 0 && !dead)
 			return;
-
-		/* Randomization */
-		int skillLevel = 0;
-
-		if (damagedGP.getClassType().getSkillOne() == Skill.RECHARGE)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.RECHARGE)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
 
 		double seconds = 2 + 0.5 * (skillLevel - 1);
 		PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, (int) (seconds * 20), 0, true);
@@ -551,23 +533,18 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
-		/* Checking that the damaged player is a CREEPER */
-		if (damagedGP.getClassType() != Class.CREEPER)
-			return;
-
-		/* Randomization */
-		Random r = new Random();
-		double random = (r.nextDouble() * 99) + 1;
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.SUPPORT)
 			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.SUPPORT)
 			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+		else
+			return;
 
-		double precentage = 6 + 0.5 * (skillLevel - 1);
+		double percentage = 0.06 + 0.005 * (skillLevel - 1);
 
-		if (random > precentage)
+		if (Math.random() > percentage)
 			return;
 
 		TNTPrimed tnt = (TNTPrimed) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.PRIMED_TNT);
@@ -657,23 +634,18 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
-		/* Checking that the damaged player is a SPIRIT WARRIOR */
-		if (damagerGP.getClassType() != Class.SPIRIT_WARRIOR)
-			return;
-
-		/* Randomization */
-		Random r = new Random();
-		int random = r.nextInt(100) + 1;
 		int skillLevel = 0;
 
 		if (damagerGP.getClassType().getSkillOne() == Skill.WEAKENING_SWING)
 			skillLevel = damagerGP.getClassType().getSkillOne().getLevel(damagerGP);
 		else if (damagerGP.getClassType().getSkillTwo() == Skill.WEAKENING_SWING)
 			skillLevel = damagerGP.getClassType().getSkillTwo().getLevel(damagerGP);
+		else
+			return;
 
 		double duration = 2 + 0.5 * (skillLevel - 1);
 
-		if (random > 20)
+		if (Math.random() > 0.2)
 			return;
 
 		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, (int) (duration * 20), 0, true);
@@ -716,21 +688,18 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 		
-		/* Checking that the damaged player is a SPIRIT WARRIOR */
-		if (damagedGP.getClassType() != Class.SPIRIT_WARRIOR)
-			return;
-		
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFT_BACKUP)
 			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFT_BACKUP)
 			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+		else
+			return;
 		
 		double duration = 4 + (skillLevel - 1);
-		double rand = Math.random();
 		
-		if (rand > 0.1D)
+		if (Math.random() > 0.1D)
 			return;
 		
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
@@ -778,24 +747,19 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
-
-		/* Checking that the damaged player is a WITHER MINION */
-		if (damagerGP.getClassType() != Class.WITHER_MINION)
-			return;
-
-		/* Randomization */
-		Random r = new Random();
-		int random = r.nextInt(100) + 1;
+		
 		int skillLevel = 0;
 
 		if (damagerGP.getClassType().getSkillOne() == Skill.SOUL_SUCKER)
 			skillLevel = damagerGP.getClassType().getSkillOne().getLevel(damagerGP);
 		else if (damagerGP.getClassType().getSkillTwo() == Skill.SOUL_SUCKER)
 			skillLevel = damagerGP.getClassType().getSkillTwo().getLevel(damagerGP);
+		else
+			return;
 
 		int precentage = 12 + (skillLevel - 1);
 
-		if (random > precentage)
+		if (Math.random() > precentage)
 			return;
 
 		if (((Damageable) damager).getHealth() > ((Damageable) damager).getMaxHealth() - 2.0)
@@ -841,19 +805,18 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (damagedGP.getClassType() != Class.WITHER_MINION)
 			return;
 
-		/* Randomization */
-		Random r = new Random();
-		int random = r.nextInt(100) + 1;
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.UNDEAD)
 			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.UNDEAD)
 			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+		else
+			return;
 
 		int precentage = 7 + (skillLevel - 1);
 
-		if (random > precentage)
+		if (Math.random() > precentage)
 			return;
 
 		if (((Damageable) damaged).getHealth() > ((Damageable) damaged).getMaxHealth() - 2.0)

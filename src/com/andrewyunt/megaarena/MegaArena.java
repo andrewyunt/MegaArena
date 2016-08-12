@@ -62,7 +62,6 @@ public class MegaArena extends JavaPlugin {
     private Economy economy = null;
     private Permission permissions = null;
     private Scoreboard defaultScoreboard = null;
-    
 	
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
