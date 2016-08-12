@@ -198,6 +198,6 @@ public class DirectionUtils {
         else if (dir == CardinalDirection.WEST)
         	newLoc.setX(loc.getX() - dist);
         
-       return newLoc;
+		return newLoc;
 	}
 }
