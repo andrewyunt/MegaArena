@@ -28,14 +28,27 @@ import com.andrewyunt.megaarena.exception.ArenaException;
 import com.andrewyunt.megaarena.objects.Arena;
 
 /**
+ * The class used to cache arenas, load arenas, and perform operations on them.
  * 
  * @author Andrew Yunt
- *
  */
 public class ArenaManager {
 
 	private Map<String, Arena> arenas = new HashMap<String, Arena>();
 
+	/**
+	 * Creates an arena with the specified name and arena type.
+	 * 
+	 * @param name
+	 * 		The name of the arena to be created.
+	 * @param type
+	 * 		The type of the arena to be created from the Arena.Type enumeration.
+	 * 		(TDM, FFA, DUEL)
+	 * @return
+	 * 		The arena that was created and added to the arenas list.
+	 * @throws ArenaException
+	 * 		If the arena already exists, ArenaException is thrown.
+	 */
 	public Arena createArena(String name, Arena.Type type) throws ArenaException {
 
 		if (name == null || type == null)
@@ -58,6 +71,14 @@ public class ArenaManager {
 		return arena;
 	}
 
+	/**
+	 * Removes the specified arena from the arenas list.
+	 * 
+	 * @param arena
+	 * 		The arena to be deleted from the plugin's records.
+	 * @throws ArenaException
+	 * 		If the specified arena is null, ArenaException is thrown.
+	 */
 	public void deleteArena(Arena arena) throws ArenaException {
 
 		if (arena == null)
@@ -66,6 +87,14 @@ public class ArenaManager {
 		arenas.remove(arena);
 	}
 
+	/**
+	 * Gets all registered arenas of the specified arena type.
+	 * 
+	 * @param type
+	 * 		The arena type the arenas must have to be listed.
+	 * @return
+	 * 		A collection of registered arenas of the specified arena type.
+	 */
 	public Collection<Arena> getArenas(Arena.Type type) {
 
 		Collection<Arena> arenas = new HashSet<Arena>();
@@ -80,6 +109,12 @@ public class ArenaManager {
 		return arenas;
 	}
 
+	/**
+	 * Gets all registered arenas on the server.
+	 * 
+	 * @return
+	 * 		A collection of all registered arenas on the server.
+	 */
 	public Collection<Arena> getArenas() {
 
 		Collection<Arena> arenas = new HashSet<Arena>();
@@ -90,6 +125,16 @@ public class ArenaManager {
 		return arenas;
 	}
 
+	/**
+	 * Gets a registered arena of the specified name.
+	 * 
+	 * @param name
+	 * 		The name of the specified arena.
+	 * @return
+	 * 		The arena fetched of the specified name.
+	 * @throws ArenaException
+	 * 		If an arena with the specified name does not exist.
+	 */
 	public Arena getArena(String name) throws ArenaException {
 
 		if (!arenas.containsKey(name))
@@ -98,11 +143,44 @@ public class ArenaManager {
 		return arenas.get(name);
 	}
 
+	/**
+	 * Checks if an arena exists with the specified name.
+	 * 
+	 * @param name
+	 * 		The specified name of the arena to check for existence.
+	 * @return
+	 * 		A boolean value of the arena with the specified name exists.
+	 */
 	public boolean arenaExists(String name) {
 
 		return arenas.containsKey(name);
 	}
+	
+	/**
+	 * Iterates through all arenas in the arenas.yml file and loads them.
+	 */
+	public void loadArenas() {
 
+		arenas.clear(); // Clear the current arenas list
+
+		if (!MegaArena.getInstance().getArenaConfig().getConfig().contains("arenas"))
+			return;
+
+		ConfigurationSection arenas = MegaArena.getInstance().getArenaConfig().getConfig()
+				.getConfigurationSection("arenas");
+
+		for (String name : arenas.getValues(false).keySet())
+			loadArena(arenas.getConfigurationSection(name));
+	}
+
+	/**
+	 * Loads the arena from the specified configuration section.
+	 * 
+	 * @param section
+	 * 		The configuration section for the arena to be loaded.
+	 * @return
+	 * 		The loaded arena from the specified configuration section.
+	 */
 	public Arena loadArena(ConfigurationSection section) {
 
 		Arena arena = Arena.loadFromConfig(section);
@@ -113,19 +191,5 @@ public class ArenaManager {
 		arenas.put(arena.getName(), arena);
 
 		return arena;
-	}
-
-	public void loadArenas() {
-
-		arenas.clear(); // Clear current arenas list
-
-		if (!MegaArena.getInstance().getArenaConfig().getConfig().contains("arenas"))
-			return;
-
-		ConfigurationSection arenas = MegaArena.getInstance().getArenaConfig().getConfig()
-				.getConfigurationSection("arenas");
-
-		for (String name : arenas.getValues(false).keySet())
-			loadArena(arenas.getConfigurationSection(name));
 	}
 }
