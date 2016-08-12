@@ -92,8 +92,19 @@ public class DirectionUtils {
 			
 			double newDegrees = this.degrees + degrees;
 			
-			if (newDegrees > 360)
-				newDegrees = newDegrees % 360;
+			while (true) {
+				if (newDegrees > 360) {
+					newDegrees = newDegrees % 360;
+					continue;
+				}
+				
+				if (newDegrees < 0) {
+					newDegrees = 360 - newDegrees;
+					continue;
+				}
+				
+				break;
+			}
 			
 			return getCardinalDirection(newDegrees);
 		}
@@ -191,12 +202,12 @@ public class DirectionUtils {
 			newLoc.setZ(loc.getZ() - dist);
 		} else if (dir == CardinalDirection.NORTH)
 			newLoc.setZ(loc.getZ() - dist);
-        else if (dir == CardinalDirection.SOUTH)
-        	newLoc.setZ(loc.getZ() + dist);
-        else if (dir == CardinalDirection.EAST)
-        	newLoc.setX(loc.getX() +  dist);
-        else if (dir == CardinalDirection.WEST)
-        	newLoc.setX(loc.getX() - dist);
+		else if (dir == CardinalDirection.SOUTH)
+			newLoc.setZ(loc.getZ() + dist);
+		else if (dir == CardinalDirection.EAST)
+			newLoc.setX(loc.getX() +  dist);
+		else if (dir == CardinalDirection.WEST)
+			newLoc.setX(loc.getX() - dist);
         
 		return newLoc;
 	}
