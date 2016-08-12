@@ -18,33 +18,84 @@ package com.andrewyunt.megaarena.utilities;
 import org.bukkit.Location;
 
 /**
+ * The utilities class used to perform operations on directions
+ * and the data related to directions.
  * 
  * @author Andrew Yunt
- *
  */
 public class DirectionUtils {
 
-	public enum Direction {
+	/**
+	 * The enumeration for cardinal directions, their names, and their degrees.
+	 * 
+	 * @author Andrew Yunt
+	 */
+	public enum CardinalDirection {
 
-		NORTH("North"),
-		NORTHEAST("North East"),
-		EAST("North West"),
-		SOUTHEAST("South West"),
-		SOUTH("South"),
-		SOUTHWEST("South West"),
-		WEST("West"),
-		NORTHWEST("North West");
+		NORTH("North", 0),
+		NORTH_NORTH_EAST("North North East", 22.5),
+		NORTH_EAST("North East", 45),
+		EAST_NORTH_EAST("East North East", 67.5),
+		EAST("East", 90),
+		EAST_SOUTH_EAST("East South East", 112.5),
+		SOUTH_EAST("South East", 135),
+		SOUTH_SOUTH_EAST("South South East", 157.5),
+		SOUTH("South", 180),
+		SOUTH_SOUTH_WEST("South South West", 202.5),
+		SOUTH_WEST("South West", 225),
+		WEST_SOUTH_WEST("West South West", 247.5),
+		WEST("West", 270),
+		WEST_NORTH_WEST("West North West", 292.5),
+		NORTH_WEST("North West", 315),
+		NORTH_NORTH_WEST("North North West", 337.5);
 
 		private String name;
+		private double degrees;
 
-		Direction(String name) {
+		CardinalDirection(String name, double degrees) {
 
 			this.name = name;
+			this.degrees = degrees;
 		}
 
+		/**
+		 * Gets the name of the cardinal direction.
+		 * 
+		 * @return
+		 * 		The name of the cardinal direction.
+		 */
 		public String getName() {
 
 			return name;
+		}
+		
+		/**
+		 * Gets the degrees in which the cardinal direction is facing.
+		 * 
+		 * @return
+		 * 		The degrees the cardinal direction is facing.
+		 */
+		public double getDegrees() {
+			
+			return degrees;
+		}
+		
+		/**
+		 * Gets the cardinal direction rotated by the specified number of degrees.
+		 * 
+		 * @param degrees
+		 * 		The number of degrees to rotate the cardinal direction.
+		 * @return
+		 * 		The cardinal direction for the rotated number of degrees.
+		 */
+		public CardinalDirection rotate(double degrees) {
+			
+			double newDegrees = this.degrees + degrees;
+			
+			if (newDegrees > 360)
+				newDegrees = newDegrees % 360;
+			
+			return getCardinalDirection(newDegrees);
 		}
 	}
 
@@ -52,39 +103,52 @@ public class DirectionUtils {
 	 * Gets the cardinal direction the specified location is facing.
 	 * (Can be used to get the way a player is facing by getting their eye location)
 	 * 
-	 * Credit to sk89q for the degrees of rotation and their corresponding cardinal
-	 * directions.
-	 * 
 	 * @param location
 	 * 		The location which you want to get the direction it is facing.
 	 * @return
 	 * 		The Direction enumeration for the direction the input location is facing.
 	 */
-	public static Direction getDirection(Location loc) {
+	public static CardinalDirection getCardinalDirection(Location loc) {
 
-		double rotation = (loc.getYaw() - 90) % 360;
+		double degrees = (loc.getYaw() - 90) % 360;
 
-		if (rotation < 0)
-			rotation += 360.0;
+		return getCardinalDirection(degrees);
+	}
+	
+	/**
+	 * Gets a cardinal direction from the specified number of degrees.
+	 * 
+	 * Credit to sk89q for the degrees of degrees and their corresponding cardinal
+	 * directions.
+	 * 
+	 * @param degrees
+	 * 		The number of degrees the direction is facing.
+	 * @return
+	 * 		The cardinal direction converted from the specified number of degrees.
+	 */
+	public static CardinalDirection getCardinalDirection(double degrees) {
+		
+		if (degrees < 0)
+			degrees += 360.0;
 
-		if (0 <= rotation && rotation < 22.5)
-			return Direction.NORTH;
-		else if (22.5 <= rotation && rotation < 67.5)
-			return Direction.NORTHEAST;
-		else if (67.5 <= rotation && rotation < 112.5)
-			return Direction.EAST;
-		else if (112.5 <= rotation && rotation < 157.5)
-			return Direction.SOUTHEAST;
-		else if (157.5 <= rotation && rotation < 202.5)
-			return Direction.SOUTH;
-		else if (202.5 <= rotation && rotation < 247.5)
-			return Direction.SOUTHWEST;
-		else if (247.5 <= rotation && rotation < 292.5)
-			return Direction.WEST;
-		else if (292.5 <= rotation && rotation < 337.5)
-			return Direction.NORTHWEST;
-		else if (337.5 <= rotation && rotation < 360.0)
-			return Direction.NORTH;
+		if (0 <= degrees && degrees < 22.5)
+			return CardinalDirection.NORTH;
+		else if (22.5 <= degrees && degrees < 67.5)
+			return CardinalDirection.NORTH_EAST;
+		else if (67.5 <= degrees && degrees < 112.5)
+			return CardinalDirection.EAST;
+		else if (112.5 <= degrees && degrees < 157.5)
+			return CardinalDirection.SOUTH_EAST;
+		else if (157.5 <= degrees && degrees < 202.5)
+			return CardinalDirection.SOUTH;
+		else if (202.5 <= degrees && degrees < 247.5)
+			return CardinalDirection.SOUTH_WEST;
+		else if (247.5 <= degrees && degrees < 292.5)
+			return CardinalDirection.WEST;
+		else if (292.5 <= degrees && degrees < 337.5)
+			return CardinalDirection.NORTH_WEST;
+		else if (337.5 <= degrees && degrees < 360.0)
+			return CardinalDirection.NORTH;
 		else
 			return null;
 	}
@@ -105,7 +169,7 @@ public class DirectionUtils {
 	 * @return
 	 * 		The location next to the specified location in the specified direction.
 	 */
-	public static Location getRelativeLocation(Location loc, Direction dir, int dist) {
+	public static Location getRelativeLocation(Location loc, CardinalDirection dir, int dist) {
 	
 		Location newLoc = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ());
 		
@@ -113,25 +177,25 @@ public class DirectionUtils {
 		newLoc.setYaw(loc.getYaw());
 		newLoc.setDirection(loc.getDirection());
 		
-		if (dir == Direction.NORTHEAST) {
+		if (dir == CardinalDirection.NORTH_EAST) {
 			newLoc.setX(loc.getX() +  dist);
 			newLoc.setZ(loc.getZ() - dist);
-		} else if (dir == Direction.SOUTHEAST) {
+		} else if (dir == CardinalDirection.SOUTH_EAST) {
 			newLoc.setX(loc.getX() +  dist);
 			newLoc.setZ(loc.getZ() + dist);
-		} else if (dir == Direction.NORTHWEST) {
+		} else if (dir == CardinalDirection.SOUTH_WEST) {
+			newLoc.setX(loc.getX() - dist);
+			newLoc.setZ(loc.getZ() + dist);
+		} else if (dir == CardinalDirection.NORTH_WEST) {
 			newLoc.setX(loc.getX() - dist);
 			newLoc.setZ(loc.getZ() - dist);
-		} else if (dir == Direction.NORTHEAST) {
-			newLoc.setX(loc.getX() +  dist);
+		} else if (dir == CardinalDirection.NORTH)
 			newLoc.setZ(loc.getZ() - dist);
-		} else if (dir == Direction.NORTH)
-			newLoc.setZ(loc.getZ() - dist);
-        else if (dir == Direction.SOUTH)
+        else if (dir == CardinalDirection.SOUTH)
         	newLoc.setZ(loc.getZ() + dist);
-        else if (dir == Direction.EAST)
+        else if (dir == CardinalDirection.EAST)
         	newLoc.setX(loc.getX() +  dist);
-        else if (dir == Direction.WEST)
+        else if (dir == CardinalDirection.WEST)
         	newLoc.setX(loc.getX() - dist);
         
        return newLoc;
