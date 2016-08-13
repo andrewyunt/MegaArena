@@ -132,11 +132,6 @@ public class DirectionUtils {
 	/**
 	 * Gets a cardinal direction from the specified number of degrees.
 	 * 
-	 * <p>
-	 * Credit to sk89q for the degrees of degrees and their corresponding cardinal
-	 * directions.
-	 * </p>
-	 * 
 	 * @param degrees
 	 * 		The number of degrees the direction is facing.
 	 * @return
@@ -147,24 +142,38 @@ public class DirectionUtils {
 		if (degrees < 0)
 			degrees += 360.0;
 
-		if (0 <= degrees && degrees < 22.5)
+		if (348.75 <= degrees || degrees < 11.25)
 			return CardinalDirection.NORTH;
-		else if (22.5 <= degrees && degrees < 67.5)
+		else if (degrees >= 11.25 && degrees <= 33.75)
+			return CardinalDirection.NORTH_NORTH_EAST;
+		else if (degrees >= 33.75 && degrees <= 56.25)
 			return CardinalDirection.NORTH_EAST;
-		else if (67.5 <= degrees && degrees < 112.5)
+		else if (degrees >= 56.25 && degrees <= 78.75)
+			return CardinalDirection.EAST_NORTH_EAST;
+		else if (degrees >= 78.75 && degrees <= 101.25)
 			return CardinalDirection.EAST;
-		else if (112.5 <= degrees && degrees < 157.5)
+		else if (degrees >= 101.25 && degrees <= 123.75)
+			return CardinalDirection.EAST_SOUTH_EAST;
+		else if (degrees >= 123.75 && degrees <= 146.25)
 			return CardinalDirection.SOUTH_EAST;
-		else if (157.5 <= degrees && degrees < 202.5)
+		else if (degrees >= 146.25 && degrees <= 168.75)
+			return CardinalDirection.SOUTH_SOUTH_EAST;
+		else if (degrees >= 168.75 && degrees <= 191.25)
 			return CardinalDirection.SOUTH;
-		else if (202.5 <= degrees && degrees < 247.5)
+		else if (degrees >= 191.25 && degrees <= 213.75)
+			return CardinalDirection.SOUTH_SOUTH_WEST;
+		else if (degrees >= 213.75 && degrees <= 236.25)
 			return CardinalDirection.SOUTH_WEST;
-		else if (247.5 <= degrees && degrees < 292.5)
+		else if (degrees >= 236.25 && degrees <= 258.75)
+			return CardinalDirection.WEST_SOUTH_WEST;
+		else if (degrees >= 258.75 && degrees <= 281.25)
 			return CardinalDirection.WEST;
-		else if (292.5 <= degrees && degrees < 337.5)
+		else if (degrees >= 281.25 && degrees <= 303.75)
+			return CardinalDirection.WEST_NORTH_WEST;
+		else if (degrees >= 303.75 && degrees <= 326.25)
 			return CardinalDirection.NORTH_WEST;
-		else if (337.5 <= degrees && degrees < 360.0)
-			return CardinalDirection.NORTH;
+		else if (degrees >= 326.25 && degrees <= 348.75)
+			return CardinalDirection.NORTH_NORTH_WEST;
 		else
 			return null;
 	}
@@ -193,16 +202,20 @@ public class DirectionUtils {
 		newLoc.setYaw(loc.getYaw());
 		newLoc.setDirection(loc.getDirection());
 		
-		if (dir == CardinalDirection.NORTH_EAST) {
+		if (dir == CardinalDirection.NORTH_EAST || dir == CardinalDirection.NORTH_NORTH_EAST
+				|| dir == CardinalDirection.EAST_NORTH_EAST) {
 			newLoc.setX(loc.getX() +  dist);
 			newLoc.setZ(loc.getZ() - dist);
-		} else if (dir == CardinalDirection.SOUTH_EAST) {
+		} else if (dir == CardinalDirection.SOUTH_EAST || dir == CardinalDirection.SOUTH_SOUTH_EAST
+				|| dir == CardinalDirection.EAST_SOUTH_EAST) {
 			newLoc.setX(loc.getX() +  dist);
 			newLoc.setZ(loc.getZ() + dist);
-		} else if (dir == CardinalDirection.SOUTH_WEST) {
+		} else if (dir == CardinalDirection.SOUTH_WEST || dir == CardinalDirection.SOUTH_SOUTH_WEST
+				|| dir == CardinalDirection.WEST_SOUTH_WEST) {
 			newLoc.setX(loc.getX() - dist);
 			newLoc.setZ(loc.getZ() + dist);
-		} else if (dir == CardinalDirection.NORTH_WEST) {
+		} else if (dir == CardinalDirection.NORTH_WEST || dir == CardinalDirection.NORTH_NORTH_WEST
+				|| dir == CardinalDirection.WEST_SOUTH_WEST) {
 			newLoc.setX(loc.getX() - dist);
 			newLoc.setZ(loc.getZ() - dist);
 		} else if (dir == CardinalDirection.NORTH)
