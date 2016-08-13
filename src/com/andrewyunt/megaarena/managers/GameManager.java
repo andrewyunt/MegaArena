@@ -33,15 +33,28 @@ import com.andrewyunt.megaarena.objects.GameSide;
 import com.andrewyunt.megaarena.objects.Game;
 
 /**
+ * The class used to cache games, create games, and perform operations on them.
  * 
  * @author Andrew Yunt
- *
  */
 public class GameManager {
 
 	public Set<Game> games = new HashSet<Game>();
 
+	/**
+	 * Creates an empty game in the specified arena and adds it to the games set.
+	 * 
+	 * @param arena
+	 * 		The arena for the game to be created in.
+	 * @return
+	 * 		The game which was created in the specified arena.
+	 * @throws GameException
+	 * 		If the arena does not have enough spawns, GameException is thrown.
+	 */
 	public Game createGame(Arena arena) throws GameException {
+		
+		if (arena == null)
+			throw new GameException("The specified arena cannot be null.");
 
 		if (arena.getType() == Arena.Type.DUEL)
 			if (arena.getSpawns().size() < 2)
@@ -64,6 +77,15 @@ public class GameManager {
 		return game;
 	}
 
+	/**
+	 * Deletes a specified game from the games set and sends
+	 * the players the specified message.
+	 * 
+	 * @param game
+	 * 		The specified game to be deleted.
+	 * @param msg
+	 * 		The specified message to be sent to players in the game on deletion.
+	 */
 	public void deleteGame(Game game, String msg) {
 
 		for (GamePlayer player : game.getPlayers())
@@ -73,11 +95,25 @@ public class GameManager {
 		game.end();
 	}
 
+	/**
+	 * Gets all registered games currently running.
+	 * 
+	 * @return
+	 * 		All registered games currently running in arenas.
+	 */
 	public Set<Game> getGames() {
 
 		return games;
 	}
 
+	/**
+	 * Gets all registered games currently running in the specified arena type.
+	 * 
+	 * @param type
+	 * 		The type of the arena the games are currently running in.
+	 * @return
+	 * 		All registered games currently running of the specified arena type.
+	 */
 	public Set<Game> getGames(Arena.Type type) {
 
 		Set<Game> games = new HashSet<Game>();
@@ -89,6 +125,18 @@ public class GameManager {
 		return games;
 	}
 
+	/**
+	 * Creates a match for the specified player in an arena of the specified type.
+	 * 
+	 * @param player
+	 * 		The specified player who you want to add to a game in an arena
+	 * 		of the specified type.
+	 * @param type
+	 * 		The type of the arena you want the game to be running in which the
+	 * 		player is added to.
+	 * @throws GameException
+	 * 		If the specified arena type is a DUEL, GameException is thrown.
+	 */
 	public void matchMake(GamePlayer player, Arena.Type type) throws GameException {
 
 		if (type == Arena.Type.DUEL)
