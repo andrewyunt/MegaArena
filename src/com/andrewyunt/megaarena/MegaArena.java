@@ -75,6 +75,15 @@ public class MegaArena extends JavaPlugin {
 	
 	private static MegaArena instance = null;
 	
+	/**
+	 * Method is executed while the plugin is being enabled.
+	 * 
+	 * <p>
+	 * Checks for dependencies, sets the static instance of the class, saves default
+	 * configuration files, sets command executors, registers events, loads arenas from
+	 * arenas.yml, creates FFA and TDM games, and creates default scoreboard.
+	 * </p>
+	 */
 	@Override
 	public void onEnable() {
 		
@@ -124,6 +133,9 @@ public class MegaArena extends JavaPlugin {
 		defaultScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 	}
 
+	/**
+	 * Sets up the Vault economy.
+	 */
     private boolean setupEconomy() {
     	
         RegisteredServiceProvider<Economy> economyProvider = sm.getRegistration(Economy.class);
@@ -134,6 +146,9 @@ public class MegaArena extends JavaPlugin {
         return (economy != null);
     }
     
+	/**
+	 * Sets up the Vault permissions.
+	 */
     private boolean setupPermissions() {
     	
         RegisteredServiceProvider<Permission> permissionProvider = sm.getRegistration(Permission.class);
@@ -144,16 +159,36 @@ public class MegaArena extends JavaPlugin {
         return (permissions != null);
     }
     
+    /**
+     * Gets the Vault economy.
+     * 
+     * @return
+     * 		Instance of the Vault Economy class.
+     */
     public Economy getEconomy() {
     	
     	return economy;
     }
     
+    /**
+     * Gets the Vault permissions.
+     * 
+     * @return
+     * 		Instance of the Vault Permission class.
+     */
     public Permission getPermissions() {
     	
     	return permissions;
     }
 	
+	/**
+	 * Method is executed while the plugin is being disabled.
+	 * 
+	 * <p>
+	 * Removes all active games and sends the shutdown message to all players
+	 * kicked from the games.
+	 * <p>
+	 */
 	@Override
 	public void onDisable() {
 		
@@ -166,36 +201,78 @@ public class MegaArena extends JavaPlugin {
 			gameManager.deleteGame(game, "Server is shutting down...");
 	}
 	
+	/**
+	 * Gets the instance of the MegaArena class.
+	 * 
+	 * @return
+	 * 		Instance of the MegaArena class.
+	 */
 	public static MegaArena getInstance() {
 		
 		return instance;
 	}
 	
+	/**
+	 * Gets the instance of the ArenaManager class.
+	 * 
+	 * @return
+	 * 		Instance of the ArenaManager class.
+	 */
 	public ArenaManager getArenaManager() {
 		
 		return arenaManager;
 	}
 	
+	/**
+	 * Gets the instance of the GameManager class.
+	 * 
+	 * @return
+	 * 		Instance of the GameManager class.
+	 */
 	public GameManager getGameManager() {
 		
 		return gameManager;
 	}
 	
+	/**
+	 * Gets the instance of the PlayerManager class.
+	 * 
+	 * @return
+	 * 		Instance of the PlayerManager class.
+	 */
 	public PlayerManager getPlayerManager() {
 		
 		return playerManager;
 	}
 	
+	/**
+	 * Gets the instance of the EffectManager class.
+	 * 
+	 * @return
+	 * 		Instance of the EffectManager class.
+	 */
 	public EffectManager getEffectManager() {
 		
 		return effectManager;
 	}
 	
+	/**
+	 * Gets the instance of the ArenaConfiguration class.
+	 * 
+	 * @return
+	 * 		Instance of the ArenaConfiguration class.
+	 */
 	public ArenaConfiguration getArenaConfig() {
 		
 		return arenaConfiguration;
 	}
 	
+	/**
+	 * Gets the default scoreboard.
+	 * 
+	 * @return
+	 * 		Instance of the Scoreboard class.
+	 */
 	public Scoreboard getDefaultScoreboard() {
 		
 		return defaultScoreboard;
