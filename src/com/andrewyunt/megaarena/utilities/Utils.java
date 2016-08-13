@@ -15,12 +15,13 @@ import org.bukkit.util.Vector;
 import com.andrewyunt.megaarena.objects.Vector3D;
 
 /**
+ * The general utilities class for methods without a category / methods yet
+ * to be categorized into another class.
  * 
  * @author Andrew Yunt
  * @author Gavin Lutz
  * @author md_5
  * @author blablubbabc
- *
  */
 public class Utils {
 

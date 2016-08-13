@@ -35,9 +35,9 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Class;
 
 /**
+ * The class used to create instances of the class selector menu.
  * 
  * @author Andrew Yunt
- *
  */
 public class ClassSelectorMenu implements Listener {
 

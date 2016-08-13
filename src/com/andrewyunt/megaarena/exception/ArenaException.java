@@ -16,9 +16,9 @@
 package com.andrewyunt.megaarena.exception;
 
 /**
+ * The exception which is used when an error occurs with the Arena object.
  * 
  * @author Andrew Yunt
- *
  */
 public class ArenaException extends Exception {
 

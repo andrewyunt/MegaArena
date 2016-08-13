@@ -19,6 +19,11 @@ import org.bukkit.entity.Player;
 
 import com.andrewyunt.megaarena.MegaArena;
 
+/**
+ * The enumeration for abilities, their names, and the method to use them.
+ * 
+ * @author Andrew Yunt
+ */
 public enum Skill {
 	
 	RESIST("Resist"),
@@ -46,6 +51,14 @@ public enum Skill {
 		return name;
 	}
 	
+	/**
+	 * Gets the skill level for the specified player.
+	 * 
+	 * @param player
+	 * 		The specified player to get the skill level of.
+	 * @return
+	 * 		The skill level (1-9) of the specified player.
+	 */
 	public int getLevel(GamePlayer player) {
 		
 		Player bp = player.getBukkitPlayer();
@@ -57,6 +70,18 @@ public enum Skill {
 		return 1;
 	}
 	
+	/**
+	 * Sets the skill level for the specified player to the specified level.
+	 * 
+	 * <p>
+	 * The level integer must be from 1-9 inclusive.
+	 * </p>
+	 * 
+	 * @param player
+	 * 		The player to set the skill level of.
+	 * @param level
+	 * 		The level to set the player's ability to.
+	 */
 	public void setLevel(GamePlayer player, int level) {
 		
 		MegaArena.getInstance().getServer().dispatchCommand(MegaArena.getInstance().getServer().getConsoleSender(),

@@ -55,9 +55,10 @@ import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
 /**
+ * The listener class used for general event handling within the plugin
+ * which holds methods to listen on events.
  * 
  * @author Andrew Yunt
- *
  */
 public class MegaArenaPlayerListener implements Listener {
 

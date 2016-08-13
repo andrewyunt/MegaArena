@@ -34,30 +34,19 @@ import org.bukkit.potion.PotionEffectType;
 import com.andrewyunt.megaarena.MegaArena;
 
 /**
+ * The enumeration used for player's selected class types.
  * 
  * @author Andrew Yunt
  * @author MaccariTA
- *
  */
 public enum Class {
 	
-	ZOMBIE("Zombie", HEAL, RESIST, SWIFTNESS, 4) {
-	},
-	
-	SKELETON("Skeleton", EXPLOSIVE_ARROW, MUTUAL_WEAKNESS, BOOMERANG, 15) {
-	},
-	
-	HEROBRINE("Herobrine", LIGHTNING, RECHARGE, FLURRY, 10) {
-	},
-	
-	CREEPER("Creeper", EXPLODE, POWERFUL_WEAKNESS, SUPPORT, 10) {
-	},
-	
-	SPIRIT_WARRIOR("Spirit Warrior", TORNADO, WEAKENING_SWING, SWIFT_BACKUP, 5) {
-	},
-	
-	WITHER_MINION("Wither Minion", WITHER_HEADS, SOUL_SUCKER, UNDEAD, 5) {
-	};
+	ZOMBIE("Zombie", HEAL, RESIST, SWIFTNESS, 4),
+	SKELETON("Skeleton", EXPLOSIVE_ARROW, MUTUAL_WEAKNESS, BOOMERANG, 15),
+	HEROBRINE("Herobrine", LIGHTNING, RECHARGE, FLURRY, 10),
+	CREEPER("Creeper", EXPLODE, POWERFUL_WEAKNESS, SUPPORT, 10),
+	SPIRIT_WARRIOR("Spirit Warrior", TORNADO, WEAKENING_SWING, SWIFT_BACKUP, 5),
+	WITHER_MINION("Wither Minion", WITHER_HEADS, SOUL_SUCKER, UNDEAD, 5);
 	
 	private String name;
 	private Ability ability;

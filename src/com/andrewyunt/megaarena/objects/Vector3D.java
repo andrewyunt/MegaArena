@@ -21,9 +21,9 @@ import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 /**
+ * The class used for Euchlidean vectors.
  * 
  * @author Comphenix
- *
  */
 public class Vector3D {
 	

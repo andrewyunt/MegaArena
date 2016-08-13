@@ -29,8 +29,9 @@ import com.andrewyunt.megaarena.MegaArena;
 
 /**
  * 
+ * The class used for the arenas.yml configuration file.
+ * 
  * @author Andrew Yunt
- *
  */
 public class ArenaConfiguration {
 	

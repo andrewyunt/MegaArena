@@ -29,9 +29,9 @@ import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
 /**
+ * The duelaccept command class which is used as a Bukkit CommandExecutor.
  * 
  * @author Andrew Yunt
- *
  */
 public class DuelAcceptCommand implements CommandExecutor {
 

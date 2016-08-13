@@ -16,9 +16,9 @@
 package com.andrewyunt.megaarena.exception;
 
 /**
+ * The exception which is used when an error occurs with the Spawn object.
  * 
  * @author Andrew Yunt
- *
  */
 public class SpawnException extends Exception {
 

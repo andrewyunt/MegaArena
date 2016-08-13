@@ -35,9 +35,9 @@ import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SideException;
 
 /**
+ * The class used to store game attributes, placed blocks, and players.
  * 
  * @author Andrew Yunt
- *
  */
 public class Game {
 	

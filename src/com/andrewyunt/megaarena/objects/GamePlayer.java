@@ -33,9 +33,9 @@ import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
 
 /**
+ * The class used to store player's information.
  * 
  * @author Andrew Yunt
- *
  */
 public class GamePlayer {
 	

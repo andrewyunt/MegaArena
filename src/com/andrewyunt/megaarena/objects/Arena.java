@@ -29,12 +29,16 @@ import com.andrewyunt.megaarena.exception.SpawnException;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
+ * The class used to store arena information.
  * 
  * @author Andrew Yunt
- *
  */
 public class Arena {
 
+	/**
+	 * 
+	 * @author Andrew Yunt
+	 */
 	public enum Type {
 		DUEL,
 		FFA,

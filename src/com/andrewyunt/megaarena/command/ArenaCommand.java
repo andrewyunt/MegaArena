@@ -34,9 +34,9 @@ import com.andrewyunt.megaarena.objects.Spawn;
 import com.andrewyunt.megaarena.objects.GameSide;
 
 /**
+ * The arena command class which is used as a Bukkit CommandExecutor.
  * 
  * @author Andrew Yunt
- *
  */
 public class ArenaCommand implements CommandExecutor {
 	

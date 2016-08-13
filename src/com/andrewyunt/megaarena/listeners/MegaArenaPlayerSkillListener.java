@@ -45,10 +45,10 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Skill;
 
 /**
+ * The listener class used for skills which holds methods to listen on events.
  * 
  * @author Andrew Yunt
  * @author MaccariTA
- *
  */
 public class MegaArenaPlayerSkillListener implements Listener {
 

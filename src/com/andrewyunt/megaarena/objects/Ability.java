@@ -44,9 +44,9 @@ import de.slikey.effectlib.util.ParticleEffect;
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
 /**
+ * The enumeration for abilities, their names, and the method to use them.
  * 
  * @author Andrew Yunt
- *
  */
 public enum Ability {
 	
@@ -69,6 +69,12 @@ public enum Ability {
 		return name;
 	}
 	
+	/**
+	 * Uses the specified ability for the given player.
+	 * 
+	 * @param player
+	 * 		The player to use the specified ability for.
+	 */
 	public void use(GamePlayer player) {
 		
 		if (player.getEnergy() < 100)
@@ -333,6 +339,14 @@ public enum Ability {
 		player.setEnergy(0);	
 	}
 	
+	/**
+	 * Gets the ability level for the specified player.
+	 * 
+	 * @param player
+	 * 		The specified player to get the ability level of.
+	 * @return
+	 * 		The ability level (1-9) of the specified player.
+	 */
 	public int getLevel(GamePlayer player) {
 		
 		Player bp = player.getBukkitPlayer();
@@ -344,6 +358,18 @@ public enum Ability {
 		return 1; 
 	}
 	
+	/**
+	 * Sets the ability level for the specified player to the specified level.
+	 * 
+	 * <p>
+	 * The level integer must be from 1-9 inclusive.
+	 * </p>
+	 * 
+	 * @param player
+	 * 		The player to set the ability level of.
+	 * @param level
+	 * 		The level to set the player's ability to.
+	 */
 	public void setLevel(GamePlayer player, int level) {
 		
 		MegaArena.getInstance().getServer().dispatchCommand(MegaArena.getInstance().getServer().getConsoleSender(),

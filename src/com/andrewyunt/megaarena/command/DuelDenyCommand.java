@@ -27,9 +27,9 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 
 /**
+ * The dueldeny command class which is used as a Bukkit CommandExecutor.
  * 
  * @author Andrew Yunt
- *
  */
 public class DuelDenyCommand implements CommandExecutor {
 

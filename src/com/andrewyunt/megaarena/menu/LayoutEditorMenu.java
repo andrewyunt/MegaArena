@@ -16,9 +16,9 @@
 package com.andrewyunt.megaarena.menu;
 
 /**
+ * The class used to create instances of the layout editor menu.
  * 
  * @author Andrew Yunt
- *
  */
 public class LayoutEditorMenu {
 

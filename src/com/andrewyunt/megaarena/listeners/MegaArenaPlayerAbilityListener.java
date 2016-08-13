@@ -45,6 +45,11 @@ import com.andrewyunt.megaarena.utilities.Utils;
 import de.slikey.effectlib.effect.ExplodeEffect;
 import de.slikey.effectlib.util.DynamicLocation;
 
+/**
+ * The listener class used for abilities which holds methods to listen on events.
+ * 
+ * @author Andrew Yunt
+ */
 public class MegaArenaPlayerAbilityListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)

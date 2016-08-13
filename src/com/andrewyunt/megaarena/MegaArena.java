@@ -48,9 +48,13 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 /**
+ * The main class in the MegaArena plugin.
+ * 
+ * <p>
+ * You can get the instance of this class using the static getInstance() method.
+ * </p>
  * 
  * @author Andrew Yunt
- *
  */
 public class MegaArena extends JavaPlugin {
 	

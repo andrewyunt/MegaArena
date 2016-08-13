@@ -112,7 +112,10 @@ public class DirectionUtils {
 
 	/**
 	 * Gets the cardinal direction the specified location is facing.
+	 * 
+	 * <p>
 	 * (Can be used to get the way a player is facing by getting their eye location)
+	 * </p>
 	 * 
 	 * @param location
 	 * 		The location which you want to get the direction it is facing.
@@ -129,8 +132,10 @@ public class DirectionUtils {
 	/**
 	 * Gets a cardinal direction from the specified number of degrees.
 	 * 
+	 * <p>
 	 * Credit to sk89q for the degrees of degrees and their corresponding cardinal
 	 * directions.
+	 * </p>
 	 * 
 	 * @param degrees
 	 * 		The number of degrees the direction is facing.

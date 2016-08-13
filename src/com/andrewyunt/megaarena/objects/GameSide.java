@@ -18,8 +18,22 @@ package com.andrewyunt.megaarena.objects;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Team;
 
+/**
+ * The class used to store side information.
+ * 
+ * @author Andrew Yunt
+ */
 public class GameSide {
 	
+	/**
+	 * The enumeration for the type a GameSide is.
+	 * 
+	 * <p>
+	 * The preferred way to use this enum is GameSide.Type.member
+	 * </p>
+	 * 
+	 * @author Andrew Yunt
+	 */
 	public enum Type {
 		
 		BLUE("Blue", ChatColor.BLUE),

@@ -18,9 +18,9 @@ package com.andrewyunt.megaarena.objects;
 import org.bukkit.Location;
 
 /**
+ * The class used to store spawn information.
  * 
  * @author Andrew Yunt
- *
  */
 public class Spawn {
 	

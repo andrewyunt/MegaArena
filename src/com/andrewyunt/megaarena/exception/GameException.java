@@ -16,9 +16,9 @@
 package com.andrewyunt.megaarena.exception;
 
 /**
+ * The exception which is used when an error occuts with the game object.
  * 
  * @author Andrew Yunt
- *
  */
 public class GameException extends Exception {
 

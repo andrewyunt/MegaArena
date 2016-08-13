@@ -42,9 +42,9 @@ import com.andrewyunt.megaarena.objects.Skill;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
+ * The class used to create instances of the shop menu.
  * 
  * @author Andrew Yunt
- *
  */
 public class ShopMenu implements Listener {
 
