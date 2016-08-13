@@ -300,8 +300,6 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
-		// TODO: Fix Herobrine Ability not giving this skill
-
 		GamePlayer damagerGP = null;
 		GamePlayer damagedGP = null;
 
@@ -320,10 +318,10 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		
 		int skillLevel = 0;
 
-		if (damagedGP.getClassType().getSkillOne() == Skill.RECHARGE)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.RECHARGE)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+		if (damagerGP.getClassType().getSkillOne() == Skill.RECHARGE)
+			skillLevel = damagerGP.getClassType().getSkillOne().getLevel(damagerGP);
+		else if (damagerGP.getClassType().getSkillTwo() == Skill.RECHARGE)
+			skillLevel = damagerGP.getClassType().getSkillTwo().getLevel(damagerGP);
 		else
 			return;
 
@@ -331,7 +329,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		boolean dead = false;
 
 		if (event.getDamage() < 0.0001D) {
-			double dmg = 1.0 + 0.5 * (damagedGP.getClassType().getAbility().getLevel(damagedGP) - 1);
+			double dmg = 1.0 + 0.5 * (skillLevel - 1);
 
 			if (((Damageable) damaged).getHealth() - dmg < 0)
 				dead = true;
