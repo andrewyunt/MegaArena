@@ -16,6 +16,7 @@
 package com.andrewyunt.megaarena.objects;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.GameException;
+import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SideException;
 
 /**
@@ -57,11 +58,23 @@ public class Game {
 			sides.add(new GameSide(this, GameSide.Type.INDEPENDENT));
 	}
 	
+	/**
+	 * Gets the arena the game is running in.
+	 * 
+	 * @return
+	 * 		The arena which the game is running in.
+	 */
 	public Arena getArena() {
 		
 		return arena;
 	}
 	
+	/**
+	 * Adds a player to the game and sets their attributes.
+	 * 
+	 * @param player
+	 * 		The player to be added to the game.
+	 */
 	public void addPlayer(GamePlayer player) {
 		
 		Player bp = player.getBukkitPlayer();
@@ -117,6 +130,15 @@ public class Game {
 		spawnPlayer(player, sideType);
 	}
 	
+	/**
+	 * Gets a random spawn of the specified side and checks if it is used if
+	 * the arena is a duel, then spawns them.
+	 * 
+	 * @param player
+	 * 		The specified player to be added to the game.
+	 * @param sideType
+	 * 		The specified side to spawn the player in.
+	 */
 	public void spawnPlayer(GamePlayer player, GameSide.Type sideType) {
 		
 		List<Spawn> spawns = new ArrayList<Spawn>(arena.getSpawns(sideType));
@@ -147,7 +169,18 @@ public class Game {
 		}
 	}
 	
-	public void removePlayer(GamePlayer player) {
+	/**
+	 * Removes a specified player from the game.
+	 * 
+	 * @param player
+	 * 		The specified player to be removed from the game.
+	 * @throws PlayerException
+	 * 		If the player is not in the game, PlayerException is thrown.
+	 */
+	public void removePlayer(GamePlayer player) throws PlayerException {
+		
+		if (!players.contains(player))
+			throw new PlayerException("The specified player is not in the game.");
 		
 		Player bp = player.getBukkitPlayer();
 		
@@ -178,17 +211,20 @@ public class Game {
 		bp.teleport(player.getPreviousLocation());
 	}
 	
-	public Set<GamePlayer> getPlayers() {
+	/**
+	 * Gets all players currently in the game.
+	 * 
+	 * @return
+	 * 		A collection of players currently in the game.
+	 */
+	public Collection<GamePlayer> getPlayers() {
 		
 		return players;
 	}
 	
-	public void start() throws GameException {
-		
-		if (arena.getType() == Arena.Type.FFA || arena.getType() == Arena.Type.TDM)
-			throw new GameException("You cannot start an FFA or TDM game.");
-	}
-	
+	/**
+	 * Removes all players / placed blocks, and sets the arena game to null.
+	 */
 	public void end() {
 		
 		Set<GamePlayer> toRemove = new HashSet<GamePlayer>();
@@ -197,7 +233,10 @@ public class Game {
 			toRemove.add(player);
 		
 		for (GamePlayer player : toRemove)
-			removePlayer(player);
+			try {
+				removePlayer(player);
+			} catch (PlayerException e) {
+			}
 		
 		for (Block block : placedBlocks)
 			block.setType(Material.AIR);
@@ -209,21 +248,50 @@ public class Game {
 		arena.setGame(null);
 	}
 	
+	/**
+	 * Adds a block to the placed blocks set.
+	 * 
+	 * @param block
+	 * 		The block to be added to the placed blocks set.
+	 */
 	public void addPlacedBlock(Block block) {
 		
 		placedBlocks.add(block);
 	}
 	
+	/**
+	 * Removes a block from the placed blocks set.
+	 * 
+	 * @param block
+	 * 		The block to be removed from the placed blocks set. 
+	 */
 	public void removePlacedBlock(Block block) {
 		
 		placedBlocks.remove(block);
 	}
 	
-	public Set<Block> getPlacedBlocks() {
+	/**
+	 * Gets a Collection of placed blocks.
+	 * 
+	 * @return
+	 * 		A collection of placed blocks.
+	 */
+	public Collection<Block> getPlacedBlocks() {
 		
 		return placedBlocks;
 	}
 	
+	/**
+	 * Gets the side instance for the side type in the game.
+	 * 
+	 * @param sideType
+	 * 		The type of the side instance that you want to fetch.
+	 * @return
+	 * 		The instance of the side for the specified side type.
+	 * @throws SideException
+	 * 		If there is no side in the game with the specified type,
+	 * 		throw SideException.
+	 */
 	public GameSide getSide(GameSide.Type sideType) throws SideException {
 		
 		for (GameSide side : sides)
@@ -233,6 +301,12 @@ public class Game {
 		throw new SideException("The side of the specified type does not exist.");
 	}
 	
+	/**
+	 * Gets the scoreboard for the game.
+	 * 
+	 * @return
+	 * 		The game's scoreboard object.
+	 */
 	public Scoreboard getScoreboard() {
 		
 		return scoreboard;
