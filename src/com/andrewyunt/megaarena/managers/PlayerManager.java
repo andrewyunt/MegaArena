@@ -23,14 +23,24 @@ import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
 /**
+ * The class used to cache players, create players, and perform operations on them.
  * 
  * @author Andrew Yunt
- *
  */
 public class PlayerManager {
 
 	private Map<String, GamePlayer> players = new HashMap<String, GamePlayer>();
 
+	/**
+	 * Creates a GamePlayer with the specified name and adds it to the players map.
+	 * 
+	 * @param name
+	 * 		The name of the player to be create.
+	 * @return
+	 * 		The player created with the specified name.
+	 * @throws PlayerException
+	 * 		If a player with the specified name already exists, throw PlayerException.
+	 */
 	public GamePlayer createPlayer(String name) throws PlayerException {
 
 		if (players.containsKey(name))
@@ -43,6 +53,14 @@ public class PlayerManager {
 		return player;
 	}
 	
+	/**
+	 * Deletes a specified player by removing it from the players map.
+	 * 
+	 * @param player
+	 * 		The player to be deleted from the plugin's records.
+	 * @throws PlayerException
+	 * 		If the players map does not contain the specified player, throw PlayerException.
+	 */
 	public void deletePlayer(GamePlayer player) throws PlayerException {
 		
 		if (!players.containsKey(player.getName()))
@@ -50,12 +68,29 @@ public class PlayerManager {
 		
 		players.remove(player.getName());
 	}
-
+	
+	/**
+	 * Gets a collection of all registered players from the players map.
+	 * 
+	 * @return
+	 * 		A collection of players fetched from the players map.
+	 */
 	public Collection<GamePlayer> getPlayers() {
 
 		return players.values();
 	}
 
+	/**
+	 * Gets a player with the specified name from the players map.
+	 * 
+	 * @param name
+	 * 		The name of the player to be fetched from the players map.
+	 * @return
+	 * 		The player instance fetched from the players map.
+	 * @throws PlayerException
+	 * 		If the players map does not contain a player with the specified 
+	 * 		name, throw PlayerException.
+	 */
 	public GamePlayer getPlayer(String name) throws PlayerException {
 
 		if (!players.containsKey(name))
