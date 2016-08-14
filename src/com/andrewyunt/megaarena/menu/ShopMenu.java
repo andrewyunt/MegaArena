@@ -39,6 +39,7 @@ import com.andrewyunt.megaarena.objects.Ability;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.Skill;
+import com.andrewyunt.megaarena.objects.Upgradable;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
@@ -138,10 +139,10 @@ public class ShopMenu implements Listener {
 		Skill skillOne = classType.getSkillOne();
 		Skill skillTwo = classType.getSkillTwo();
 
-		int abilityLevel = ability.getLevel(ap);
-		int skillOneLevel = skillOne.getLevel(ap);
-		int skillTwoLevel = skillTwo.getLevel(ap);
-		int kitLevel = classType.getKitLevel(ap);
+		int abilityLevel = ap.getLevel(ability);
+		int skillOneLevel = ap.getLevel(skillOne);
+		int skillTwoLevel = ap.getLevel(skillTwo);
+		int kitLevel = ap.getLevel(classType);
 		
 		FileConfiguration config = MegaArena.getInstance().getConfig();
 
@@ -311,46 +312,30 @@ public class ShopMenu implements Listener {
 				return;
 			}
 			
+			Upgradable upgradable = null;
 			int slot = event.getSlot();
 			
 			if (slot < 9) {
-				
 				slot++;
-				Ability ability = classType.getAbility();
-				
-				ability.setLevel(ap, slot);
-				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
-						ability.getName() + ChatColor.GREEN));
-			
+				upgradable = classType.getAbility();
 			} else if (9 <= slot && slot < 18) {
-				
 				slot = slot - 8;
-				Skill skillOne = classType.getSkillOne();
-				
-				skillOne.setLevel(ap, slot);
-				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
-						skillOne.getName() + ChatColor.GREEN));
-		
+				upgradable = classType.getSkillOne();
 			} else if (18 <= slot && slot < 27) {
-			
 				slot = slot - 17;		
-				Skill skillTwo = classType.getSkillTwo();
-				
-				skillTwo.setLevel(ap, slot);
-				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
-						skillTwo.getName() + ChatColor.GREEN));
-		
+				upgradable = classType.getSkillTwo();
 			} else if (27 <= slot && slot < 36) {
-			
 				slot = slot - 26;
-				
-				classType.setKitLevel(ap, slot);
-				ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s kit upgrade purchased successfully.",
-						classType.getName() + ChatColor.GREEN));
+				upgradable = classType;
 			}
 			
 			int cost = MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
 			ap.removeCoins(cost);
+			
+			ap.setLevel(upgradable, slot);
+			
+			ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+					upgradable.getName() + ChatColor.GREEN));
 			
 			player.closeInventory();
 			openClassUpgradeMenu(classType);

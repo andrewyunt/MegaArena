@@ -16,35 +16,19 @@
 package com.andrewyunt.megaarena.objects;
 
 /**
- * The enumeration for abilities, their names, and the method to use them.
+ * The Upgradable interface is used to guarantee that the classes / enums
+ * implementing it will have the same methods and will be able to be used
+ * for the GamePlayer methods which use Upgradable as a parameter.
  * 
  * @author Andrew Yunt
  */
-public enum Skill implements Upgradable {
+public interface Upgradable {
 	
-	RESIST("Resist"),
-	SWIFTNESS("Swiftness"),
-	BOOMERANG("Boomerang"),
-	MUTUAL_WEAKNESS("Mutual Weakness"),
-	RECHARGE("Recharge"),
-	FLURRY("Flurry"),
-	POWERFUL_WEAKNESS("Powerful Weakness"),
-	SUPPORT("Support"),
-	WEAKENING_SWING("Weakening Swing"),
-	SWIFT_BACKUP("Swift Backup"),
-	SOUL_SUCKER("Soul Sucker"),
-	UNDEAD("Undead");
-	
-	String name;
-	
-	Skill(String name) {
-		
-		this.name = name;
-	}
-	
-	@Override
-	public String getName() {
-		
-		return name;
-	}
+	/**
+	 * Gets the name of the Upgradable.
+	 * 
+	 * @return
+	 * 		The display name for the Upgradable.
+	 */
+	public String getName();
 }

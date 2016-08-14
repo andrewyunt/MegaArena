@@ -48,7 +48,7 @@ import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
  * 
  * @author Andrew Yunt
  */
-public enum Ability {
+public enum Ability implements Upgradable {
 	
 	HEAL("Heal"),
 	EXPLOSIVE_ARROW("Explosive Arrow"),
@@ -64,6 +64,7 @@ public enum Ability {
 		this.name = name;
 	}
 	
+	@Override
 	public String getName() {
 		
 		return name;
@@ -84,7 +85,7 @@ public enum Ability {
 		
 		if (this == HEAL) {
 
-			double hearts = 2.0 + 0.5*(getLevel(player)-1);
+			double hearts = 2.0 + 0.5 * (player.getLevel(this) - 1);
 			Set<Player> effectPlayers = new HashSet<Player>();
 			
 			effectPlayers.add(bp);
@@ -119,7 +120,7 @@ public enum Ability {
 					
 					ep.sendMessage(String.format(ChatColor.GREEN + "You have been healed by %s.",
 							ChatColor.AQUA + player.getName() + ChatColor.GREEN));
-				}
+			}
 			
 			double newHealth = ((Damageable) bp).getHealth() + hearts;
 			
@@ -167,7 +168,7 @@ public enum Ability {
 				if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
 					continue;
 				
-				double dmg = 1.0 + 0.5 * (getLevel(player) - 1);
+				double dmg = 1.0 + 0.5 * (player.getLevel(this) - 1);
 				
 				entityPlayer.getWorld().strikeLightningEffect(entityPlayer.getLocation());
 				Damageable dmgVictim = (Damageable) entityPlayer;
@@ -222,7 +223,7 @@ public enum Ability {
 	    					continue;
 	    				
 	    				Damageable dmgVictim = (Damageable) entity;
-	    				double dmg = 3.0 + 0.5 * (getLevel(player) - 1);
+	    				double dmg = 3.0 + 0.5 * (player.getLevel(Ability.EXPLODE) - 1);
 	    				
 	    				((Damageable) entity).damage(0.00001D, bp);
 	    				
@@ -238,7 +239,7 @@ public enum Ability {
 			
 			Location location = bp.getLocation();
 			
-			float duration = (float) (1.5 + (0.5 * getLevel(player)));
+			float duration = (float) (1.5 + (0.5 * player.getLevel(this)));
 			double radius = 2;
 			double maxHeight = 5;
 			
@@ -337,42 +338,5 @@ public enum Ability {
 		}
 		
 		player.setEnergy(0);	
-	}
-	
-	/**
-	 * Gets the ability level for the specified player.
-	 * 
-	 * @param player
-	 * 		The specified player to get the ability level of.
-	 * @return
-	 * 		The ability level (1-9) of the specified player.
-	 */
-	public int getLevel(GamePlayer player) {
-		
-		Player bp = player.getBukkitPlayer();
-		
-		for (int i = 9; i > 1; i--)
-			if (bp.hasPermission(String.format("megaarena.%s.%s", this.toString().toLowerCase(), i)))
-				return i;
-		
-		return 1; 
-	}
-	
-	/**
-	 * Sets the ability level for the specified player to the specified level.
-	 * 
-	 * <p>
-	 * The level integer must be from 1-9 inclusive.
-	 * </p>
-	 * 
-	 * @param player
-	 * 		The player to set the ability level of.
-	 * @param level
-	 * 		The level to set the player's ability to.
-	 */
-	public void setLevel(GamePlayer player, int level) {
-		
-		MegaArena.getInstance().getServer().dispatchCommand(MegaArena.getInstance().getServer().getConsoleSender(),
-				String.format("pex user %s add megaarena.%s.%s", player.getName(), this.toString().toLowerCase(), level));
 	}
 }

@@ -103,7 +103,10 @@ public class MegaArenaPlayerListener implements Listener {
 			return;
 		}
 		
-		game.removePlayer(gp);
+		try {
+			game.removePlayer(gp);
+		} catch (PlayerException e) {
+		}
 		
 		try {
 			MegaArena.getInstance().getPlayerManager().deletePlayer(gp);
@@ -413,7 +416,10 @@ public class MegaArenaPlayerListener implements Listener {
 			return;
 		}
 		
-		playerGP.getGame().removePlayer(playerGP);
+		try {
+			playerGP.getGame().removePlayer(playerGP);
+		} catch (PlayerException e) {
+		}
 	}
 	
 	@EventHandler

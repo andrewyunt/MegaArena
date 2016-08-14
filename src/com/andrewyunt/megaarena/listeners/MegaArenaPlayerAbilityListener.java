@@ -280,7 +280,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 			Player nearbyPlayer = (Player) nearby;
 
-			double dmg = 1.5 + (shooter.getClassType().getAbility().getLevel(shooter) * 0.5);
+			double dmg = 1.5 + (shooter.getLevel(shooter.getClassType().getAbility()) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as
 													  // red damage and invisibility
@@ -340,11 +340,10 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			if (nearbyAP.getGame().getArena().getType() == Arena.Type.TDM && nearbyAP.getSide() == shooterAP.getSide())
 				continue;
 
-			double dmg = 1.5 + (shooterAP.getClassType().getAbility().getLevel(shooterAP) * 0.5);
+			double dmg = 1.5 + (shooterAP.getLevel(shooterAP.getClassType().getAbility()) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
-			dmgPlayer.damage(0.00001D, shooter);// So the player will get the
-												// kill as well as red damage
-												// and invisibility
+			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill
+												// as well as red damage and invisibility
 
 			if (dmgPlayer.getHealth() < dmg) {
 				dmgPlayer.setHealth(0D);

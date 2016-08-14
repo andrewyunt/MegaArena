@@ -24,14 +24,11 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import com.andrewyunt.megaarena.MegaArena;
 
 /**
  * The enumeration used for player's selected class types.
@@ -39,7 +36,7 @@ import com.andrewyunt.megaarena.MegaArena;
  * @author Andrew Yunt
  * @author MaccariTA
  */
-public enum Class {
+public enum Class implements Upgradable {
 	
 	ZOMBIE("Zombie", HEAL, RESIST, SWIFTNESS, 4),
 	SKELETON("Skeleton", EXPLOSIVE_ARROW, MUTUAL_WEAKNESS, BOOMERANG, 15),
@@ -63,6 +60,7 @@ public enum Class {
 		this.energyPerClick = energyPerClick;
 	}
 	
+	@Override
 	public String getName() {
 		
 		return name;
@@ -88,27 +86,10 @@ public enum Class {
 		return energyPerClick;
 	}
 	
-	public int getKitLevel(GamePlayer player) {
-		
-		Player bp = player.getBukkitPlayer();
-		
-		for (int i = 9; i > 1; i--)
-			if (bp.hasPermission(String.format("megaarena.%s.%s", this.toString().toLowerCase(), i)))
-				return i;
-		
-		return 1; 
-	}
-	
-	public void setKitLevel(GamePlayer player, int level) {
-		
-		MegaArena.getInstance().getServer().dispatchCommand(MegaArena.getInstance().getServer().getConsoleSender(),
-				String.format("pex user %s add megaarena.%s.%s", player.getName(), this.toString().toLowerCase(), level));
-	}
-	
 	public ItemStack[] giveKitItems(GamePlayer ap) {
 		
 		PlayerInventory inv = ap.getBukkitPlayer().getInventory();
-		int kitLevel = getKitLevel(ap);
+		int kitLevel = ap.getLevel(this);
 		
 		/* Health potion */
 		ItemStack potH = new ItemStack(Material.POTION, 1);

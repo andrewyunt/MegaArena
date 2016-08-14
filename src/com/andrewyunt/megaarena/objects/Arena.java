@@ -36,7 +36,6 @@ import com.andrewyunt.megaarena.utilities.Utils;
 public class Arena {
 
 	/**
-	 * 
 	 * @author Andrew Yunt
 	 */
 	public enum Type {

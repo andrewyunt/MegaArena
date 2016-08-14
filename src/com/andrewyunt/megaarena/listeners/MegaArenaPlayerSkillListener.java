@@ -95,9 +95,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		double percentage = 0;
 
 		if (shooterGP.getClassType().getSkillOne() == Skill.BOOMERANG)
-			percentage = 0.2 * shooterGP.getClassType().getSkillOne().getLevel(shooterGP);
+			percentage = 0.2 * shooterGP.getLevel(shooterGP.getClassType().getSkillOne());
 		else if (shooterGP.getClassType().getSkillTwo() == Skill.BOOMERANG)
-			percentage = 0.2 * shooterGP.getClassType().getSkillTwo().getLevel(shooterGP);
+			percentage = 0.2 * shooterGP.getLevel(shooterGP.getClassType().getSkillTwo());
 		else
 			return;
 
@@ -151,9 +151,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (shooterGP.getClassType().getSkillOne().equals(Skill.MUTUAL_WEAKNESS))
-			skillLevel = shooterGP.getClassType().getSkillOne().getLevel(shooterGP);
+			skillLevel = shooterGP.getLevel(shooterGP.getClassType().getSkillOne());
 		else if (shooterGP.getClassType().getSkillTwo().equals(Skill.MUTUAL_WEAKNESS))
-			skillLevel = shooterGP.getClassType().getSkillTwo().getLevel(shooterGP);
+			skillLevel = shooterGP.getLevel(shooterGP.getClassType().getSkillTwo());
 		else
 			return;
 		
@@ -206,9 +206,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.RESIST)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.RESIST)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 		else
 			return;
 
@@ -260,16 +260,12 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
 
-		/* Checking that the shooter is a ZOMBIE */
-		if (damagedGP.getClassType() != Class.ZOMBIE)
-			return;
-
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFTNESS)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFTNESS)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 		else
 			return;
 
@@ -319,9 +315,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagerGP.getClassType().getSkillOne() == Skill.RECHARGE)
-			skillLevel = damagerGP.getClassType().getSkillOne().getLevel(damagerGP);
+			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
 		else if (damagerGP.getClassType().getSkillTwo() == Skill.RECHARGE)
-			skillLevel = damagerGP.getClassType().getSkillTwo().getLevel(damagerGP);
+			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
 		else
 			return;
 
@@ -385,9 +381,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagerGP.getClassType().getSkillOne() == Skill.FLURRY)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagerGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
 		else if (damagerGP.getClassType().getSkillTwo() == Skill.FLURRY)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagerGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 		else
 			return;
 
@@ -434,9 +430,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.POWERFUL_WEAKNESS)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.POWERFUL_WEAKNESS)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 
 		int health = 16 + (skillLevel - 1);
 
@@ -462,30 +458,28 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		/* Casting to players */
 		Player player = (Player) event.getEntity();
 
-		GamePlayer playerAP = null;
+		GamePlayer playerGP = null;
 
 		try {
-			playerAP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
 
 		/* Check if players are in-game */
-		if (!playerAP.isInGame())
+		if (!playerGP.isInGame())
 			return;
 
-		/* Checking that the player player is a Creeper */
-		if (playerAP.getClassType() != Class.CREEPER)
-			return;
-
-		if (!playerAP.hasSpeed())
+		if (!playerGP.hasSpeed())
 			return;
 
 		int skillLevel = 0;
 
-		if (playerAP.getClassType().getSkillOne() == Skill.POWERFUL_WEAKNESS)
-			skillLevel = playerAP.getClassType().getSkillOne().getLevel(playerAP);
-		else if (playerAP.getClassType().getSkillTwo() == Skill.POWERFUL_WEAKNESS)
-			skillLevel = playerAP.getClassType().getSkillTwo().getLevel(playerAP);
+		if (playerGP.getClassType().getSkillOne() == Skill.POWERFUL_WEAKNESS)
+			skillLevel = playerGP.getLevel(playerGP.getClassType().getSkillOne());
+		else if (playerGP.getClassType().getSkillTwo() == Skill.POWERFUL_WEAKNESS)
+			skillLevel = playerGP.getLevel(playerGP.getClassType().getSkillTwo());
+		else
+			return;
 
 		int health = 16 + (skillLevel - 1);
 
@@ -495,7 +489,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 1, 0);
 
 		player.addPotionEffect(speed, true);
-		playerAP.setHasSpeed(false);
+		playerGP.setHasSpeed(false);
 
 		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been deactivated.",
 				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));
@@ -534,9 +528,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.SUPPORT)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.SUPPORT)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 		else
 			return;
 
@@ -635,9 +629,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagerGP.getClassType().getSkillOne() == Skill.WEAKENING_SWING)
-			skillLevel = damagerGP.getClassType().getSkillOne().getLevel(damagerGP);
+			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
 		else if (damagerGP.getClassType().getSkillTwo() == Skill.WEAKENING_SWING)
-			skillLevel = damagerGP.getClassType().getSkillTwo().getLevel(damagerGP);
+			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
 		else
 			return;
 
@@ -689,9 +683,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFT_BACKUP)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFT_BACKUP)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 		else
 			return;
 		
@@ -749,9 +743,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagerGP.getClassType().getSkillOne() == Skill.SOUL_SUCKER)
-			skillLevel = damagerGP.getClassType().getSkillOne().getLevel(damagerGP);
+			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
 		else if (damagerGP.getClassType().getSkillTwo() == Skill.SOUL_SUCKER)
-			skillLevel = damagerGP.getClassType().getSkillTwo().getLevel(damagerGP);
+			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
 		else
 			return;
 
@@ -806,9 +800,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.UNDEAD)
-			skillLevel = damagedGP.getClassType().getSkillOne().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.UNDEAD)
-			skillLevel = damagedGP.getClassType().getSkillTwo().getLevel(damagedGP);
+			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 		else
 			return;
 
