@@ -243,33 +243,47 @@ public enum Ability implements Upgradable {
 			double radius = 2;
 			double maxHeight = 5;
 			
-			for (double y = 0; y < maxHeight; y+= 0.05) {
-				double x = Math.sin(y * radius);
-				double z = Math.cos(y * radius);
-				
-				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-						"snowshovel",
-						((float) (location.getX() + x)),
-						((float) (location.getY() + y)),
-						((float) (location.getZ() + z)),
-						0, 0, 0, duration, 0);
-				
-				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
-			}
-			
-			for (int i = 0; i < 5; i++) {
-				float xRand = new Random().nextInt(2) - 1;
-				float zRand = new Random().nextInt(2) - 1;
-				
-				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-						"largesmoke",
-						((float) (location.getX() + xRand)),
-						((float) location.getY()),
-						((float) (location.getZ() + zRand)),
-						0, 0, 0, duration, 0);
-				
-				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
-			}
+	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+	        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+	            int i = 0;
+	        	
+	        	@Override
+	            public void run() {
+	            	
+	            	if (i > duration)
+	            		return;
+	            	
+	    			for (double y = 0; y < maxHeight; y+= 0.05) {
+	    				double x = Math.sin(y * radius);
+	    				double z = Math.cos(y * radius);
+	    				
+	    				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
+	    						"snowshovel",
+	    						((float) (location.getX() + x)),
+	    						((float) (location.getY() + y)),
+	    						((float) (location.getZ() + z)),
+	    						0, 0, 0, 1, 0);
+	    				
+	    				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
+	    			}
+	    			
+	    			for (int i = 0; i < 5; i++) {
+	    				float xRand = new Random().nextInt(2) - 1;
+	    				float zRand = new Random().nextInt(2) - 1;
+	    				
+	    				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
+	    						"largesmoke",
+	    						((float) (location.getX() + xRand)),
+	    						((float) location.getY()),
+	    						((float) (location.getZ() + zRand)),
+	    						0, 0, 0, 1, 0);
+	    				
+	    				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
+	    			}
+	    			
+	    			i++;
+	            }
+	        }, 0L, (long) (duration * 20L));
 	        
 	        new BukkitRunnable() {
 	        	float elapsedTime = 0;
