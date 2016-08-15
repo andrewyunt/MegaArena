@@ -749,9 +749,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		else
 			return;
 
-		int precentage = 12 + (skillLevel - 1);
+		double percentage = 0.12 + (skillLevel - 1) / 100;
 
-		if (Math.random() > precentage)
+		if (Math.random() > percentage)
 			return;
 
 		if (((Damageable) damager).getHealth() > ((Damageable) damager).getMaxHealth() - 2.0)
@@ -806,9 +806,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		else
 			return;
 
-		int precentage = 7 + (skillLevel - 1);
+		double percentage = 0.07 + (skillLevel - 1) / 100;
 
-		if (Math.random() > precentage)
+		if (Math.random() > percentage)
 			return;
 
 		if (((Damageable) damaged).getHealth() > ((Damageable) damaged).getMaxHealth() - 2.0)
