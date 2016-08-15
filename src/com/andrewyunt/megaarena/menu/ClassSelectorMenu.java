@@ -212,6 +212,11 @@ public class ClassSelectorMenu implements Listener {
 
 		if (title.equals("Hero Classes")) {
 			
+			if (!player.hasPermission("megaarena.class." + name.toLowerCase()))  {
+				player.sendMessage(ChatColor.RED + "You do not have permission to select that class.");
+				return;
+			}
+			
 			if (name.equals("Wither Minion"))
 				ap.setClassType(Class.WITHER_MINION);
 			else if (name.equals("Spirit Warrior"))
@@ -228,6 +233,11 @@ public class ClassSelectorMenu implements Listener {
 			close();
 
 		} else if (title.equals("Normal Classes")) {
+			
+			if (!player.hasPermission("megaarena.class." + name.toLowerCase()))  {
+				player.sendMessage(ChatColor.RED + "You do not have permission to select that class.");
+				return;
+			}
 
 			switch (name) {
 				case "Go Back":
