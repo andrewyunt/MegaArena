@@ -248,12 +248,12 @@ public enum Ability implements Upgradable {
 			
 	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 	        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
-	            int i = 0;
+	            int elapsedTime = 0;
 	        	
 	        	@Override
 	            public void run() {
 	            	
-	            	if (i > duration)
+	            	if (elapsedTime > duration)
 	            		return;
 	            	
 	    			for (double y = 0; y < maxHeight; y+= 0.05) {
@@ -267,7 +267,12 @@ public enum Ability implements Upgradable {
 	    						((float) (location.getZ() + z)),
 	    						0, 0, 0, 1, 0);
 	    				
-	    				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
+	    				for (Entity entity : Utils.getNearbyEntities(bp.getLocation(), 50)) {
+	    					if (!(entity instanceof Player))
+	    						return;
+	    					
+	    					((CraftPlayer) entity).getHandle().playerConnection.sendPacket(packet);
+	    				}
 	    			}
 	    			
 	    			for (int i = 0; i < 5; i++) {
@@ -281,10 +286,15 @@ public enum Ability implements Upgradable {
 	    						((float) (location.getZ() + zRand)),
 	    						0, 0, 0, 1, 0);
 	    				
-	    				((CraftPlayer) bp).getHandle().playerConnection.sendPacket(packet);
+	    				for (Entity entity : Utils.getNearbyEntities(bp.getLocation(), 50)) {
+	    					if (!(entity instanceof Player))
+	    						return;
+	    					
+	    					((CraftPlayer) entity).getHandle().playerConnection.sendPacket(packet);
+	    				}
 	    			}
 	    			
-	    			i++;
+	    			elapsedTime++;
 	            }
 	        }, 0L, (long) (duration * 20L));
 	        
