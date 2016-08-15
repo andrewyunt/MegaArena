@@ -16,12 +16,14 @@
 package com.andrewyunt.megaarena.db;
 
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.mongodb.BasicDBObject;
@@ -30,7 +32,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public abstract class MongoDBSource extends DataSource {
+public class MongoDBSource extends DatabaseHandler {
 	
 	private MongoClient client;
 	private DB db;
@@ -129,6 +131,30 @@ public abstract class MongoDBSource extends DataSource {
 		DBObject playerObj = players.get(player.getBukkitPlayer().getUniqueId().toString());
 		
 		return (Integer) playerObj.get("coins");
+	}
+
+	@Override
+	public void saveLayouts(GamePlayer player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void saveLayout(GamePlayer player, Class classType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loadLayout(GamePlayer player, Class classType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void saveKill(GamePlayer killer, GamePlayer victim, Date date, Arena arena) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	//TODO: Add loadLayout method

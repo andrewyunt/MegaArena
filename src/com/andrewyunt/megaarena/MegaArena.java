@@ -62,7 +62,6 @@ import net.milkbowl.vault.permission.Permission;
 public class MegaArena extends JavaPlugin {
 	
 	private Logger logger = getLogger();
-	
 	private Server server = getServer();
 	private PluginManager pm = server.getPluginManager();
 	private ServicesManager sm = server.getServicesManager();
@@ -75,7 +74,7 @@ public class MegaArena extends JavaPlugin {
 	private final PlayerManager playerManager = new PlayerManager();
 	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
-	private DataSource[] dataSource = new MongoDBSource[0];
+	private final DataSource dataSource = new MongoDBSource();
 	
 	private static MegaArena instance = null;
 	
@@ -102,7 +101,7 @@ public class MegaArena extends JavaPlugin {
 		instance = this;
 		
 		/* Connect to the database */
-		if (!dataSource[0].connect()) {
+		if (!dataSource.connect()) {
 			logger.severe("Could not connect to the database, shutting down...");
 			pm.disablePlugin(this);
 			return;
@@ -288,5 +287,16 @@ public class MegaArena extends JavaPlugin {
 	public Scoreboard getDefaultScoreboard() {
 		
 		return defaultScoreboard;
+	}
+	
+	/**
+	 * Gets the plugin's data source.
+	 * 
+	 * @return
+	 * 		An instance that extends the DataSource class.
+	 */
+	public DataSource getDataSource() {
+		
+		return dataSource;
 	}
 }
