@@ -287,7 +287,7 @@ public class ShopMenu implements Listener {
 				case "Herobrine":
 				case "Wither Minion":
 				case "Spirit Warrior":
-					player.closeInventory();
+					close();
 					openClassUpgradeMenu(Class.valueOf(name.toUpperCase().replace(' ', '_')));
 					break;
 			}
@@ -337,7 +337,7 @@ public class ShopMenu implements Listener {
 			ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
 					upgradable.getName() + ChatColor.GREEN));
 			
-			player.closeInventory();
+			close();
 			openClassUpgradeMenu(classType);
 		}
 	}
