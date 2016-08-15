@@ -32,6 +32,9 @@ import com.andrewyunt.megaarena.command.DuelAcceptCommand;
 import com.andrewyunt.megaarena.command.DuelCommand;
 import com.andrewyunt.megaarena.command.DuelDenyCommand;
 import com.andrewyunt.megaarena.configuration.ArenaConfiguration;
+import com.andrewyunt.megaarena.db.DataSource;
+import com.andrewyunt.megaarena.db.DatabaseHandler;
+import com.andrewyunt.megaarena.db.MongoDBSource;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.listeners.MegaArenaPlayerAbilityListener;
 import com.andrewyunt.megaarena.listeners.MegaArenaPlayerListener;
@@ -72,6 +75,7 @@ public class MegaArena extends JavaPlugin {
 	private final PlayerManager playerManager = new PlayerManager();
 	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
+	private DataSource[] dataSource = new MongoDBSource[0];
 	
 	private static MegaArena instance = null;
 	
@@ -93,8 +97,16 @@ public class MegaArena extends JavaPlugin {
 			pm.disablePlugin(this);
 			return;
 		}
+		
 		/* Set static instance to this */
 		instance = this;
+		
+		/* Connect to the database */
+		if (!dataSource[0].connect()) {
+			logger.severe("Could not connect to the database, shutting down...");
+			pm.disablePlugin(this);
+			return;
+		}
 		
 		/* Save default configs to plugin folder */
 		saveDefaultConfig();

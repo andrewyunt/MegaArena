@@ -15,6 +15,15 @@
  */
 package com.andrewyunt.megaarena.db;
 
-public class MySQLSchema {
+import com.andrewyunt.megaarena.objects.GamePlayer;
 
+public abstract class DatabaseHandler extends DataSource {
+	
+	@Override
+	public void savePlayer(GamePlayer player) {
+		
+		saveClassType(player);
+		saveCoins(player);
+		saveLayout(player, player.getClassType());
+	}
 }

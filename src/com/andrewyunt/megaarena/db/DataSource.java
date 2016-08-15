@@ -21,21 +21,25 @@ import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
-public abstract class MegaArenaDataSource {
+public abstract class DataSource {
 	
-	public abstract void savePlayers();
+	public abstract boolean connect();
+	
+	public abstract void loadPlayer(GamePlayer player);
 	
 	public abstract void savePlayer(GamePlayer player);
 	
-	public abstract void loadPlayers();
+	public abstract void saveClassType(GamePlayer player);
 	
-	public abstract void loadPlayer(GamePlayer player);
+	public abstract Class loadClassType(GamePlayer player);
+	
+	public abstract void saveCoins(GamePlayer player);
+	
+	public abstract int loadCoins(GamePlayer player);
 	
 	public abstract void saveLayouts(GamePlayer player);
 	
 	public abstract void saveLayout(GamePlayer player, Class classType);
-	
-	public abstract void loadLayouts(GamePlayer player);
 	
 	public abstract void loadLayout(GamePlayer player, Class classType);
 	
