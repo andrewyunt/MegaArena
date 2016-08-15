@@ -25,6 +25,7 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.WitherSkull;
@@ -35,6 +36,8 @@ import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.utilities.DirectionUtils;
+import com.andrewyunt.megaarena.utilities.DirectionUtils.CardinalDirection;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 import de.slikey.effectlib.effect.ExplodeEffect;
@@ -331,6 +334,9 @@ public enum Ability implements Upgradable {
 			
 		} else if (this == WITHER_HEADS) {
 			
+			Location eyeLocation = bp.getEyeLocation();
+			CardinalDirection playerDir = DirectionUtils.getCardinalDirection(eyeLocation);
+			
 			Vector originalVector = bp.getEyeLocation().getDirection();
             Vector rightVector = Utils.rotateYAxis(originalVector, 25);
             Vector leftVector = Utils.rotateYAxis(originalVector, -25);
@@ -340,12 +346,16 @@ public enum Ability implements Upgradable {
             originalSkull.setVelocity(originalVector.multiply(1));
             originalSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
             
-            WitherSkull rightSkull = bp.launchProjectile(WitherSkull.class);
+            WitherSkull rightSkull = (WitherSkull) bp.getWorld().spawnEntity(
+            		DirectionUtils.getRelativeLocation(eyeLocation, playerDir.rotate(90), 1),
+            		EntityType.WITHER_SKULL);
             rightSkull.setShooter(bp);
             rightSkull.setVelocity(rightVector.multiply(1));
             rightSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
             
-            WitherSkull leftSkull = bp.launchProjectile(WitherSkull.class);
+            WitherSkull leftSkull = (WitherSkull) bp.getWorld().spawnEntity(
+            		DirectionUtils.getRelativeLocation(eyeLocation, playerDir.rotate(-90), 1),
+            		EntityType.WITHER_SKULL);
             leftSkull.setShooter(bp);
             leftSkull.setVelocity(leftVector.multiply(1));
             leftSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
