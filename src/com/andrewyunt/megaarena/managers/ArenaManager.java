@@ -22,8 +22,10 @@ import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.configuration.ArenaConfiguration;
 import com.andrewyunt.megaarena.exception.ArenaException;
 import com.andrewyunt.megaarena.objects.Arena;
 
@@ -85,6 +87,11 @@ public class ArenaManager {
 			throw new ArenaException();
 
 		arenas.remove(arena);
+		
+		ArenaConfiguration arenaConfig = MegaArena.getInstance().getArenaConfig();
+		
+		arenaConfig.getConfig().set("arenas." + arena.getName(), null);
+		arenaConfig.saveConfig();
 	}
 
 	/**
