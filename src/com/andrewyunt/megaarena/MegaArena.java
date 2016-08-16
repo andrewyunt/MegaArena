@@ -100,16 +100,16 @@ public class MegaArena extends JavaPlugin {
 		/* Set static instance to this */
 		instance = this;
 		
+		/* Save default configs to plugin folder */
+		saveDefaultConfig();
+		arenaConfiguration.saveDefaultConfig();
+		
 		/* Connect to the database */
 		if (!dataSource.connect()) {
 			logger.severe("Could not connect to the database, shutting down...");
 			pm.disablePlugin(this);
 			return;
 		}
-		
-		/* Save default configs to plugin folder */
-		saveDefaultConfig();
-		arenaConfiguration.saveDefaultConfig();
 		
 		/* Set command executors */
 		getCommand("arena").setExecutor(new ArenaCommand());
