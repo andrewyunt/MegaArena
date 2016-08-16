@@ -277,20 +277,21 @@ public class ShopMenu implements Listener {
 
 		if (title.equals("Class Upgrades")) {
 			
-			switch (name) {
-				case "Close":
-					close();
-					break;
-				case "Zombie":
-				case "Skeleton":
-				case "Creeper":
-				case "Herobrine":
-				case "Wither Minion":
-				case "Spirit Warrior":
-					close();
-					openClassUpgradeMenu(Class.valueOf(name.toUpperCase().replace(' ', '_')));
-					break;
+			if (name == null || name == "")
+				return;
+
+			if (name.equals("Close")) {
+				close();
+				return;
 			}
+			
+			if (!player.hasPermission("megaarena.class." + name.toLowerCase()))  {
+				player.sendMessage(ChatColor.RED + "You do not own that class.");
+				return;
+			}
+			
+			close();
+			openClassUpgradeMenu(Class.valueOf(name.toUpperCase().replace(' ', '_')));
 			
 		} else {
 			
