@@ -33,7 +33,6 @@ import com.andrewyunt.megaarena.command.DuelCommand;
 import com.andrewyunt.megaarena.command.DuelDenyCommand;
 import com.andrewyunt.megaarena.configuration.ArenaConfiguration;
 import com.andrewyunt.megaarena.db.DataSource;
-import com.andrewyunt.megaarena.db.DatabaseHandler;
 import com.andrewyunt.megaarena.db.MongoDBSource;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.listeners.MegaArenaPlayerAbilityListener;
