@@ -210,49 +210,27 @@ public class ClassSelectorMenu implements Listener {
 
 		String name = is.getItemMeta().getDisplayName();
 
-		if (title.equals("Hero Classes")) {
+		if (title.equals("Normal Classes") || title.equals("Hero Classes")) {
 			
-			if (!player.hasPermission("megaarena.class." + name.toLowerCase()))  {
-				player.sendMessage(ChatColor.RED + "You do not have permission to select that class.");
+			if (name == null || name == "")
 				return;
-			}
-			
-			if (name.equals("Wither Minion"))
-				ap.setClassType(Class.WITHER_MINION);
-			else if (name.equals("Spirit Warrior"))
-				ap.setClassType(Class.SPIRIT_WARRIOR);
-			else if (name.equals("Go Back")) {
+
+			if (name.equals("Go Back")) {
+				close();
 				openMainMenu();
 				return;
-			} else
-				return;
-
-			player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
-					ChatColor.AQUA + name + ChatColor.GREEN));
-
-			close();
-
-		} else if (title.equals("Normal Classes")) {
+			}
 			
 			if (!player.hasPermission("megaarena.class." + name.toLowerCase()))  {
 				player.sendMessage(ChatColor.RED + "You do not have permission to select that class.");
 				return;
 			}
-
-			switch (name) {
-				case "Go Back":
-					openMainMenu();
-					break;
-				case "Zombie":
-				case "Skeleton":
-				case "Creeper":
-				case "Herobrine":
-					ap.setClassType(Class.valueOf(name.toUpperCase()));
-					player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
-							ChatColor.AQUA + name + ChatColor.GREEN));
-					close();
-					break;
-			}
+			
+			ap.setClassType(Class.valueOf(name.toUpperCase()));
+			player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
+					ChatColor.AQUA + name + ChatColor.GREEN));
+		
+			close();
 			
 		} else if (title.equals("Class Selector")) {
 			
