@@ -75,6 +75,8 @@ public class MegaArenaPlayerListener implements Listener {
 			} catch (PlayerException e1) {
 			}
 		}
+		
+		MegaArena.getInstance().getDataSource().loadPlayer(player);
 
 		player.updateHotBar();
 	}

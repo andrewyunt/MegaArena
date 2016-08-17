@@ -102,6 +102,8 @@ public class GamePlayer {
 	public void setClassType(Class classType) {
 		
 		this.classType = classType;
+		
+		MegaArena.getInstance().getDataSource().saveClassType(this);
 	}
 	
 	public Class getClassType() {

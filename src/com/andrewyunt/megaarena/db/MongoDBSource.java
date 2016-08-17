@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.andrewyunt.megaarena.MegaArena;
@@ -67,6 +68,7 @@ public class MongoDBSource extends DatabaseHandler {
 		String uuid = player.getBukkitPlayer().getUniqueId().toString();
 		
 		DBObject playerObj = players.get(uuid);
+		
 		DBObject replacementObj = new BasicDBObject("uuid", uuid);
 		
 		replacementObj.put("classtype", player.getClassType().toString());
@@ -97,10 +99,6 @@ public class MongoDBSource extends DatabaseHandler {
 		
 		if (playerObj == null) {
 			playerObj = new BasicDBObject("uuid", uuid);
-			
-			playerObj.put("classtype", player.getClassType().toString());
-			playerObj.put("coins", player.getCoins());
-			
 			playersCollection.insert(playerObj);
 			created = true;
 			return;
@@ -112,7 +110,11 @@ public class MongoDBSource extends DatabaseHandler {
 		if (created == true)
 			return;
 		
-		loadClassType(player);
+		Class classType = loadClassType(player);
+		
+		if (classType != null)
+			player.setClassType(classType);
+		
 		loadCoins(player);
 		loadLayout(player, player.getClassType());
 	}
@@ -130,7 +132,10 @@ public class MongoDBSource extends DatabaseHandler {
 		
 		DBObject playerObj = players.get(player.getBukkitPlayer().getUniqueId().toString());
 		
-		return (Integer) playerObj.get("coins");
+		if (playerObj.get("coins") != null)
+			return (Integer) playerObj.get("coins");
+		
+		return 0;
 	}
 
 	@Override
