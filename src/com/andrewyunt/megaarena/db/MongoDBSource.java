@@ -110,32 +110,29 @@ public class MongoDBSource extends DatabaseHandler {
 		if (created == true)
 			return;
 		
-		Class classType = loadClassType(player);
-		
-		if (classType != null)
-			player.setClassType(classType);
-		
+		loadClassType(player);
 		loadCoins(player);
 		loadLayout(player, player.getClassType());
 	}
 	
 	@Override
-	public Class loadClassType(GamePlayer player) {
+	public void loadClassType(GamePlayer player) {
 		
 		DBObject playerObj = players.get(player.getBukkitPlayer().getUniqueId().toString());
 		
-		return Class.valueOf((String) playerObj.get("classtype"));
+		Class classType = Class.valueOf((String) playerObj.get("classtype"));
+		
+		if (classType != null)
+			player.setClassType(classType);
 	}
 	
 	@Override
-	public int loadCoins(GamePlayer player) {
+	public void loadCoins(GamePlayer player) {
 		
 		DBObject playerObj = players.get(player.getBukkitPlayer().getUniqueId().toString());
 		
 		if (playerObj.get("coins") != null)
-			return (Integer) playerObj.get("coins");
-		
-		return 0;
+			player.setCoins((Integer) playerObj.get("coins"));
 	}
 
 	@Override

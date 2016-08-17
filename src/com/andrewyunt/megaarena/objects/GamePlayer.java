@@ -52,6 +52,7 @@ public class GamePlayer {
 	private int energy;
 	private Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
 	private boolean hasSpeed;
+	private int coins = 0;
 	
 	public GamePlayer(String name) {
 		
@@ -281,14 +282,21 @@ public class GamePlayer {
 		return previousGameMode;
 	}
 	
-	public void addCoins(double coins) {
+	public void addCoins(int coins) {
 		
-		MegaArena.getInstance().getEconomy().depositPlayer(player, coins);
+		setCoins(this.coins + coins);
 	}
 	
-	public void removeCoins(double coins) {
+	public void removeCoins(int coins) {
 		
-		MegaArena.getInstance().getEconomy().withdrawPlayer(player, coins);
+		setCoins(this.coins - coins);
+	}
+	
+	public void setCoins(int coins) {
+		
+		this.coins = coins;
+		
+		MegaArena.getInstance().getDataSource().saveCoins(this);
 	}
 	
 	public double getCoins() {
