@@ -18,7 +18,6 @@ package com.andrewyunt.megaarena.listeners;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -346,13 +345,9 @@ public class MegaArenaPlayerListener implements Listener {
 			killerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killer.getName());
 		} catch (PlayerException e) {
 		}
-		
-		Bukkit.getServer().broadcastMessage("nigger");
-		
+			
 		if (!(killerGP.isInGame()))
 			return;
-		
-		Bukkit.getServer().broadcastMessage("fucker");
 		
 		Game game = killerGP.getGame();
 		

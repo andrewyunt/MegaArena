@@ -65,10 +65,12 @@ public class MongoDBSource extends DatabaseHandler {
 		DBObject playerObj = playersCollection.findOne(field);
 		DBObject replacementObj = new BasicDBObject("uuid", uuid);
 		
-		if (player.getClassType().toString() != null)
-			replacementObj.put("classtype", player.getClassType().toString());
+		Class classType = player.getClassType();
 		
-		replacementObj.put("coins", player.getCoins());
+		if (player.getClassType() != null)
+			replacementObj.put("classtype", classType.toString());
+		
+		replacementObj.put("coins", (double) player.getCoins());
 		
 		playersCollection.update(playerObj, replacementObj);
 	}
@@ -119,7 +121,7 @@ public class MongoDBSource extends DatabaseHandler {
 		DBObject playerObj = playersCollection.findOne(field);
 		
 		if (playerObj.containsField("coins"))
-			player.setCoins((Double) playerObj.get("coins"));
+			player.setCoins((double) playerObj.get("coins"));
 	}
 
 	@Override

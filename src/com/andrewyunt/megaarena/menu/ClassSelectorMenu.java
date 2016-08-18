@@ -190,10 +190,16 @@ public class ClassSelectorMenu implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		
+		if (event.getClickedInventory() == null)
+			return;
+		
 		if (event.getWhoClicked() != player)
 			return;
 		
-		String title = inv.getTitle();
+		String title = event.getClickedInventory().getTitle();
+		
+		if (title == null)
+			return;
 		
 		if (!(title.equals("Hero Classes") || title.equals("Normal Classes") || title.equals("Class Selector")))
 			return;
