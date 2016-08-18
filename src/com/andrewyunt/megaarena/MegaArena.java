@@ -43,6 +43,7 @@ import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
@@ -202,6 +203,7 @@ public class MegaArena extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		
+		/* Remove active games */
 		Set<Game> toRemove = new HashSet<Game>();
 		
 		for (Game game : gameManager.getGames())
@@ -209,6 +211,15 @@ public class MegaArena extends JavaPlugin {
 		
 		for (Game game : toRemove)
 			gameManager.deleteGame(game, "Server is shutting down...");
+		
+		/* Save players to the database */
+		Set<GamePlayer> toSave = new HashSet<GamePlayer>();
+		
+		for (GamePlayer gp : playerManager.getPlayers())
+			toSave.add(gp);
+		
+		for (GamePlayer gp : toSave)
+			MegaArena.getInstance().getDataSource().savePlayer(gp);
 	}
 	
 	/**

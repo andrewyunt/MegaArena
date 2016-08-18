@@ -17,9 +17,8 @@ package com.andrewyunt.megaarena.db;
 
 import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.andrewyunt.megaarena.MegaArena;
@@ -32,12 +31,13 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class MongoDBSource extends DatabaseHandler {
 	
 	private MongoClient client;
 	private DB db;
 	private DBCollection playersCollection;
-	private Map<String, DBObject> players = new HashMap<String, DBObject>();
 	
 	@Override
 	public boolean connect() {
@@ -59,30 +59,20 @@ public class MongoDBSource extends DatabaseHandler {
         return true;
 	}
 	
-	// savePlayer method can be found in the DatabaseHandler class
-	
 	@Override
-	public void saveClassType(GamePlayer player) {
-		
+	public void savePlayer(GamePlayer player) {
+
 		String uuid = player.getBukkitPlayer().getUniqueId().toString();
 		
-		DBObject playerObj = players.get(uuid);
-		
+		DBObject field = new BasicDBObject("uuid", uuid);
+		DBObject playerObj = playersCollection.findOne(field);
 		DBObject replacementObj = new BasicDBObject("uuid", uuid);
 		
-		replacementObj.put("classtype", player.getClassType().toString());
-		playersCollection.update(playerObj, replacementObj);
-	}
-	
-	@Override
-	public void saveCoins(GamePlayer player) {
-		
-		String uuid = player.getBukkitPlayer().getUniqueId().toString();
-		
-		DBObject playerObj = players.get(uuid);
-		DBObject replacementObj = new BasicDBObject("uuid", uuid);
+		if (player.getClassType().toString() != null)
+			replacementObj.put("classtype", player.getClassType().toString());
 		
 		replacementObj.put("coins", player.getCoins());
+		
 		playersCollection.update(playerObj, replacementObj);
 	}
 	
@@ -94,20 +84,13 @@ public class MongoDBSource extends DatabaseHandler {
 		DBObject field = new BasicDBObject("uuid", uuid);
 		DBObject playerObj = playersCollection.findOne(field);
 		
-		boolean created = false;
-		
 		if (playerObj == null) {
 			playerObj = new BasicDBObject("uuid", uuid);
+			playerObj.put("classtype", null);
+			playerObj.put("coins", 0);
 			playersCollection.insert(playerObj);
-			created = true;
 			return;
 		}
-		
-		if (!players.containsKey(uuid))
-			players.put(uuid, playerObj);
-		
-		if (created == true)
-			return;
 		
 		loadClassType(player);
 		loadCoins(player);
@@ -117,27 +100,30 @@ public class MongoDBSource extends DatabaseHandler {
 	@Override
 	public void loadClassType(GamePlayer player) {
 		
-		DBObject playerObj = players.get(player.getBukkitPlayer().getUniqueId().toString());
+		String uuid = player.getBukkitPlayer().getUniqueId().toString();
 		
-		Class classType = Class.valueOf((String) playerObj.get("classtype"));
+		DBObject field = new BasicDBObject("uuid", uuid);
+		DBObject playerObj = playersCollection.findOne(field);
 		
-		if (classType != null)
-			player.setClassType(classType);
+		if (playerObj.containsField("classtype")) {
+			String classTypeStr = (String) playerObj.get("classtype");
+			
+			if (classTypeStr != null)
+				player.setClassType(Class.valueOf(classTypeStr));
+		}
 	}
 	
 	@Override
 	public void loadCoins(GamePlayer player) {
 		
-		DBObject playerObj = players.get(player.getBukkitPlayer().getUniqueId().toString());
+		String uuid = player.getBukkitPlayer().getUniqueId().toString();
 		
-		if (playerObj.get("coins") != null)
-			player.setCoins((Integer) playerObj.get("coins"));
-	}
-
-	@Override
-	public void saveLayouts(GamePlayer player) {
-		// TODO Auto-generated method stub
+		DBObject field = new BasicDBObject("uuid", uuid);
+		DBObject playerObj = playersCollection.findOne(field);
 		
+		if (playerObj.containsField("coins")) {
+			player.setCoins((Double) playerObj.get("coins"));
+		}
 	}
 
 	@Override

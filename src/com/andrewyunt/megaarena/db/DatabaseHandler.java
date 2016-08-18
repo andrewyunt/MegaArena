@@ -20,10 +20,8 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
 public abstract class DatabaseHandler extends DataSource {
 	
 	@Override
-	public void savePlayer(GamePlayer player) {
+	public void saveLayouts(GamePlayer player) {
 		
-		saveClassType(player);
-		saveCoins(player);
-		saveLayout(player, player.getClassType());
+		//TODO: Auto-generated method stub
 	}
 }

@@ -52,7 +52,7 @@ public class GamePlayer {
 	private int energy;
 	private Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
 	private boolean hasSpeed;
-	private int coins = 0;
+	private double coins = 0;
 	
 	public GamePlayer(String name) {
 		
@@ -103,8 +103,6 @@ public class GamePlayer {
 	public void setClassType(Class classType) {
 		
 		this.classType = classType;
-		
-		MegaArena.getInstance().getDataSource().saveClassType(this);
 	}
 	
 	public Class getClassType() {
@@ -292,11 +290,9 @@ public class GamePlayer {
 		setCoins(this.coins - coins);
 	}
 	
-	public void setCoins(int coins) {
+	public void setCoins(double coins) {
 		
 		this.coins = coins;
-		
-		MegaArena.getInstance().getDataSource().saveCoins(this);
 	}
 	
 	public double getCoins() {

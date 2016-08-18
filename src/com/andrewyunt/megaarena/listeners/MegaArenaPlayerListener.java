@@ -18,6 +18,7 @@ package com.andrewyunt.megaarena.listeners;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -92,6 +93,8 @@ public class MegaArenaPlayerListener implements Listener {
 			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
+		
+		MegaArena.getInstance().getDataSource().savePlayer(gp);
 
 		if (!gp.isInGame())
 			return;
@@ -344,27 +347,29 @@ public class MegaArenaPlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		if (!(playerGP.isInGame()))
+		Bukkit.getServer().broadcastMessage("nigger");
+		
+		if (!(killerGP.isInGame()))
 			return;
 		
-		Game game = playerGP.getGame();
+		Bukkit.getServer().broadcastMessage("fucker");
+		
+		Game game = killerGP.getGame();
 		
 		if (game.getArena().getType() == Arena.Type.DUEL)
 			return;
+		
+		int killCoins = 50;
 
-		if (killerGP.isInGame()) {
-			int killCoins = 50;
-
-			if (killer.hasPermission("megaarena.coins.double"))
-				killCoins = 100;
-			else if (killer.hasPermission("megaarena.coins.triple"))
-				killCoins = 150;
+		if (killer.hasPermission("megaarena.coins.double"))
+			killCoins = 100;
+		else if (killer.hasPermission("megaarena.coins.triple"))
+			killCoins = 150;
 			
-			killerGP.addCoins(killCoins);
-			killer.sendMessage(ChatColor.GREEN + String.format("You killed %s and received %s coins.",
-					ChatColor.AQUA + player.getName() + ChatColor.GREEN,
-					ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
-		}
+		killerGP.addCoins(killCoins);
+		killer.sendMessage(ChatColor.GREEN + String.format("You killed %s and received %s coins.",
+				ChatColor.AQUA + player.getName() + ChatColor.GREEN,
+				ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
 
 		if (game.getArena().getType() == Arena.Type.TDM)
 			for (GamePlayer assistAP : playerGP.getAssistPlayers()) {

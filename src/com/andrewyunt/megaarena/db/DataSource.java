@@ -29,11 +29,7 @@ public abstract class DataSource {
 	
 	public abstract void savePlayer(GamePlayer player);
 	
-	public abstract void saveClassType(GamePlayer player);
-	
 	public abstract void loadClassType(GamePlayer player);
-	
-	public abstract void saveCoins(GamePlayer player);
 	
 	public abstract void loadCoins(GamePlayer player);
 	
