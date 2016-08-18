@@ -301,7 +301,7 @@ public class GamePlayer {
 	
 	public double getCoins() {
 		
-		return MegaArena.getInstance().getEconomy().getBalance(player);
+		return coins;
 	}
 	
 	public void addAssistPlayer(GamePlayer player) {
