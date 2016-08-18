@@ -18,7 +18,6 @@ package com.andrewyunt.megaarena.db;
 import java.net.UnknownHostException;
 import java.util.Date;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.andrewyunt.megaarena.MegaArena;
@@ -30,8 +29,6 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class MongoDBSource extends DatabaseHandler {
 	
@@ -121,9 +118,8 @@ public class MongoDBSource extends DatabaseHandler {
 		DBObject field = new BasicDBObject("uuid", uuid);
 		DBObject playerObj = playersCollection.findOne(field);
 		
-		if (playerObj.containsField("coins")) {
+		if (playerObj.containsField("coins"))
 			player.setCoins((Double) playerObj.get("coins"));
-		}
 	}
 
 	@Override
