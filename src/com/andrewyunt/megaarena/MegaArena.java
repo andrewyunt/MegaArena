@@ -47,7 +47,6 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
 
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 /**
@@ -65,7 +64,6 @@ public class MegaArena extends JavaPlugin {
 	private Server server = getServer();
 	private PluginManager pm = server.getPluginManager();
 	private ServicesManager sm = server.getServicesManager();
-    private Economy economy = null;
     private Permission permissions = null;
     private Scoreboard defaultScoreboard = null;
 	
@@ -91,7 +89,7 @@ public class MegaArena extends JavaPlugin {
 	public void onEnable() {
 		
 		/* Check for dependencies */
-		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("EffectLib") == null || !(setupEconomy() || !(setupPermissions()))) {
+		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("EffectLib") == null || !(setupPermissions())) {
 			logger.severe("MegaArena is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
@@ -143,19 +141,6 @@ public class MegaArena extends JavaPlugin {
 		/* Create default scoreboard */
 		defaultScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 	}
-
-	/**
-	 * Sets up the Vault economy.
-	 */
-    private boolean setupEconomy() {
-    	
-        RegisteredServiceProvider<Economy> economyProvider = sm.getRegistration(Economy.class);
-        
-        if (economyProvider != null)
-            economy = economyProvider.getProvider();
-
-        return (economy != null);
-    }
     
 	/**
 	 * Sets up the Vault permissions.
@@ -168,17 +153,6 @@ public class MegaArena extends JavaPlugin {
             permissions = permissionProvider.getProvider();
             
         return (permissions != null);
-    }
-    
-    /**
-     * Gets the Vault economy.
-     * 
-     * @return
-     * 		Instance of the Vault Economy class.
-     */
-    public Economy getEconomy() {
-    	
-    	return economy;
     }
     
     /**
