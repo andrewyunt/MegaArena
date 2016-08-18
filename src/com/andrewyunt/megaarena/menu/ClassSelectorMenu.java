@@ -234,12 +234,15 @@ public class ClassSelectorMenu implements Listener {
 				return;
 			}
 			
-			if (!player.hasPermission("megaarena.class." + name.toLowerCase()))  {
+			String classStr = name.replace(" ", "_").toUpperCase();
+
+			if (!player.hasPermission("megaarena.class." + classStr.toLowerCase()))  {
 				player.sendMessage(ChatColor.RED + "You do not have permission to select that class.");
 				return;
 			}
 			
-			ap.setClassType(Class.valueOf(name.toUpperCase()));
+			ap.setClassType(Class.valueOf(classStr.toUpperCase()));
+			
 			player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
 					ChatColor.AQUA + name + ChatColor.GREEN));
 		
