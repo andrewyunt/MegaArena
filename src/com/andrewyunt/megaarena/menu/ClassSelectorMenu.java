@@ -22,6 +22,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -53,13 +54,13 @@ public class ClassSelectorMenu implements Listener {
 		glassPaneMeta.setDisplayName(" ");
 		glassPaneMeta.setLore(new ArrayList<String>());
 		glassPane.setItemMeta(glassPaneMeta);
-
-		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
-
+		
 		openMainMenu();
 	}
 
 	private void openMainMenu() {
+		
+		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
 
 		inv = Bukkit.createInventory(null, 27, "Class Selector");
 
@@ -98,6 +99,8 @@ public class ClassSelectorMenu implements Listener {
 	}
 
 	private void openNormalClassSelector() {
+		
+		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
 
 		inv = Bukkit.createInventory(null, 27, "Normal Classes");
 		
@@ -146,6 +149,8 @@ public class ClassSelectorMenu implements Listener {
 	}
 
 	private void openHeroClassSelector() {
+		
+		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
 
 		inv = Bukkit.createInventory(null, 27, "Hero Classes");
 
@@ -205,6 +210,9 @@ public class ClassSelectorMenu implements Listener {
 		
 		ItemStack is = event.getCurrentItem();
 		
+		if(is == null || is.getType() == Material.AIR)
+			return;
+		
 		if (!is.hasItemMeta())
 			return;
 
@@ -212,7 +220,7 @@ public class ClassSelectorMenu implements Listener {
 
 		if (title.equals("Normal Classes") || title.equals("Hero Classes")) {
 			
-			if (name == null || name == "")
+			if (name == null || name == " ")
 				return;
 
 			if (name.equals("Go Back")) {
@@ -234,13 +242,12 @@ public class ClassSelectorMenu implements Listener {
 			
 		} else if (title.equals("Class Selector")) {
 			
+			close();
+			
 			if (name.equals("NORMAL CLASSES"))
 				openNormalClassSelector();
 			else if (name.equals("HERO CLASSES"))
 				openHeroClassSelector();
-			else if (name.equals("Close")) {
-				close();
-			}
 		}
 	}
 

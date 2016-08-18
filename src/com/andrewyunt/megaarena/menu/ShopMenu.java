@@ -63,8 +63,6 @@ public class ShopMenu implements Listener {
 		glassPaneMeta.setLore(new ArrayList<String>());
 		glassPane.setItemMeta(glassPaneMeta);
 		
-		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
-		
 		try {
 			ap = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
@@ -74,6 +72,8 @@ public class ShopMenu implements Listener {
 	}
 	
 	private void openClassUpgradesMenu() {
+		
+		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
 		
 		inv = Bukkit.createInventory(null, 27, "Class Upgrades");
 
@@ -132,6 +132,8 @@ public class ShopMenu implements Listener {
 	}
 
 	private void openClassUpgradeMenu(Class classType) {
+		
+		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
 		
 		inv = Bukkit.createInventory(null, 45, "Class Upgrades - " + classType.getName());
 
@@ -271,13 +273,16 @@ public class ShopMenu implements Listener {
 		if(is == null || is.getType() == Material.AIR)
 			return;
 		
+		if (!is.hasItemMeta())
+			return;
+		
 		event.setCancelled(true);
 		
 		String name = is.getItemMeta().getDisplayName();
 
 		if (title.equals("Class Upgrades")) {
 			
-			if (name == null || name == "")
+			if (name == null || name == " ")
 				return;
 
 			if (name.equals("Close")) {
