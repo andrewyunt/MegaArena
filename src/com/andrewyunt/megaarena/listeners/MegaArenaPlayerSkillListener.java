@@ -423,6 +423,11 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		/* Checking that the damaged player is a Creeper */
 		if (damagedGP.getClassType() != Class.CREEPER)
 			return;
+		
+		Arena.Type arenaType = damagedGP.getGame().getArena().getType();
+		
+		if (!damagedGP.hasFallen() && (arenaType == Arena.Type.FFA || arenaType == Arena.Type.TDM))
+			return;
 
 		if (damagedGP.hasSpeed())
 			return;
