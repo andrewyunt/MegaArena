@@ -65,19 +65,26 @@ public class MegaArenaPlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 
+		Player bp = event.getPlayer();
 		GamePlayer player = null;
 
+		/* Get the player's GamePlayer object and if it doesn't exist, add it */
 		try {
-			player = MegaArena.getInstance().getPlayerManager().createPlayer(event.getPlayer().getName());
+			player = MegaArena.getInstance().getPlayerManager().createPlayer(bp.getName());
 		} catch (PlayerException e) {
 			try {
-				player = MegaArena.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+				player = MegaArena.getInstance().getPlayerManager().getPlayer(bp.getName());
 			} catch (PlayerException e1) {
 			}
 		}
 		
 		MegaArena.getInstance().getDataSource().loadPlayer(player);
+		
+		/* Set player's scoreboard to default scoreboard */
+		player.updateDefaultScoreboard();
+		bp.setScoreboard(player.getDefaultScoreboard());
 
+		/* Update player hotbar */
 		player.updateHotBar();
 	}
 
@@ -205,8 +212,6 @@ public class MegaArenaPlayerListener implements Listener {
 	
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
-		
-		Entity entity = event.getEntity();
 		
 		if (!(event.getEntity() instanceof Player))
 			return;
@@ -348,6 +353,8 @@ public class MegaArenaPlayerListener implements Listener {
 			
 		if (!(killerGP.isInGame()))
 			return;
+		
+		killerGP.addKill();
 		
 		Game game = killerGP.getGame();
 		

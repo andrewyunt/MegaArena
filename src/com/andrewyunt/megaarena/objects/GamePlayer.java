@@ -18,6 +18,7 @@ package com.andrewyunt.megaarena.objects;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -27,6 +28,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.megaarena.MegaArena;
@@ -52,12 +58,23 @@ public class GamePlayer {
 	private int energy;
 	private Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
 	private boolean hasSpeed;
-	private double coins = 0;
+	private int coins = 0;
+	private int kills = 0;
+	private Scoreboard defaultScoreboard;
+	private Objective defaultObjective;
 	
 	public GamePlayer(String name) {
 		
+		/* Set variables */
 		this.name = name;
 		player = MegaArena.getInstance().getServer().getPlayer(name);
+		
+		/* Set the scoreboard variable and its attributes */
+		ScoreboardManager manager = Bukkit.getScoreboardManager();
+		defaultScoreboard = manager.getNewScoreboard();
+		
+		/* Register the default scoreboard objective */
+		registerDefaultObjective();
 	}
 	
 	public String getName() {
@@ -292,10 +309,12 @@ public class GamePlayer {
 	
 	public void setCoins(double coins) {
 		
-		this.coins = coins;
+		this.coins = ((Double) coins).intValue();
+		
+		updateDefaultScoreboard();
 	}
 	
-	public double getCoins() {
+	public int getCoins() {
 		
 		return coins;
 	}
@@ -360,5 +379,62 @@ public class GamePlayer {
 		
 		MegaArena.getInstance().getServer().dispatchCommand(MegaArena.getInstance().getServer().getConsoleSender(),
 				String.format("pex user %s add megaarena.%s.%s", player.getName(), upgradable.toString().toLowerCase(), level));
+	}
+	
+	public void addKill() {
+		
+		setKills(kills + 1);
+	}
+	
+	public void setKills(double kills) {
+		
+		this.kills = ((Double) kills).intValue();
+		
+		updateDefaultScoreboard();
+	}
+	
+	public int getKills() {
+		
+		return kills;
+	}
+	
+	public void registerDefaultObjective() {
+		
+		/* Define the default objective variable */
+		defaultObjective =  defaultScoreboard.registerNewObjective("default", "dummy");
+		
+		/* Set the objective's display slot and name */
+		defaultObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+		defaultObjective.setDisplayName(ChatColor.AQUA + "AMOSITA.NET" + ChatColor.DARK_GRAY +
+				" - " + ChatColor.GREEN + "MegaArena");
+	}
+	
+	public void updateDefaultScoreboard() {
+		
+		defaultObjective.unregister();
+		registerDefaultObjective();
+		
+		/* Add space to scoreboard */
+		Score space = defaultObjective.getScore("");
+		space.setScore(5);
+		
+		/* Set player's kills */
+		Score killsTitle = defaultObjective.getScore(ChatColor.GREEN + "Kills:");
+		killsTitle.setScore(4);
+		
+		Score killsValue = defaultObjective.getScore(String.valueOf(kills));
+		killsValue.setScore(3);
+		
+		/* Set player's coins */
+		Score coinsTitle = defaultObjective.getScore(ChatColor.GREEN + "Coins:");
+		coinsTitle.setScore(2);
+		
+		Score coinsValue = defaultObjective.getScore(String.valueOf(coins));
+		coinsValue.setScore(1);
+	}
+	
+	public Scoreboard getDefaultScoreboard() {
+		
+		return defaultScoreboard;
 	}
 }

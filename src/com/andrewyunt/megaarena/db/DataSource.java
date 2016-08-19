@@ -33,6 +33,8 @@ public abstract class DataSource {
 	
 	public abstract void loadCoins(GamePlayer player);
 	
+	public abstract void loadKills(GamePlayer player);
+	
 	public abstract void saveLayouts(GamePlayer player);
 	
 	public abstract void saveLayout(GamePlayer player, Class classType);

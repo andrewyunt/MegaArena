@@ -19,14 +19,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Scoreboard;
-
 import com.andrewyunt.megaarena.command.ArenaCommand;
 import com.andrewyunt.megaarena.command.DuelAcceptCommand;
 import com.andrewyunt.megaarena.command.DuelCommand;
@@ -65,7 +62,6 @@ public class MegaArena extends JavaPlugin {
 	private PluginManager pm = server.getPluginManager();
 	private ServicesManager sm = server.getServicesManager();
     private Permission permissions = null;
-    private Scoreboard defaultScoreboard = null;
 	
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
@@ -137,9 +133,6 @@ public class MegaArena extends JavaPlugin {
 			} catch (GameException e) {
 				logger.warning(e.getMessage());
 			}
-		
-		/* Create default scoreboard */
-		defaultScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 	}
     
 	/**
@@ -260,17 +253,6 @@ public class MegaArena extends JavaPlugin {
 	public ArenaConfiguration getArenaConfig() {
 		
 		return arenaConfiguration;
-	}
-	
-	/**
-	 * Gets the default scoreboard.
-	 * 
-	 * @return
-	 * 		Instance of the Scoreboard class.
-	 */
-	public Scoreboard getDefaultScoreboard() {
-		
-		return defaultScoreboard;
 	}
 	
 	/**
