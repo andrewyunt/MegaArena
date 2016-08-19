@@ -32,12 +32,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Ability;
-import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Class;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Skill;
 import com.andrewyunt.megaarena.objects.Upgradable;
 import com.andrewyunt.megaarena.utilities.Utils;
@@ -53,6 +54,7 @@ public class ShopMenu implements Listener {
 	private GamePlayer ap;
 	private Inventory inv;
 	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+	private boolean hasClicked = false;
 
 	public ShopMenu(Player player) {
 
@@ -263,7 +265,7 @@ public class ShopMenu implements Listener {
 		if (event.getClickedInventory() == null)
 			return;
 		
-		if (event.getWhoClicked() != player)
+		if (!event.getWhoClicked().getName().equals(player.getName()))
 			return;
 		
 		String title = event.getClickedInventory().getTitle();
@@ -271,7 +273,7 @@ public class ShopMenu implements Listener {
 		if (title == null)
 			return;
 		
-		if (!(title.startsWith("Class Upgrades")))
+		if (!title.startsWith("Class Upgrades"))
 			return;
 		
 		ItemStack is = event.getCurrentItem();
@@ -306,7 +308,21 @@ public class ShopMenu implements Listener {
 			
 		} else {
 			
-			Class classType = Class.valueOf(title.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
+			if (hasClicked == true) {
+				player.sendMessage(ChatColor.RED + "You are clicking too fast! Please slow down.");
+				return;
+			}
+			
+			hasClicked = true;
+			
+	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+	            @Override
+	            public void run() {
+	            	
+	            	hasClicked = false;
+	            }
+	        }, 30L);
 			
 			if (is.getType() == Material.ARROW) {
 				openClassUpgradesMenu();
@@ -315,6 +331,8 @@ public class ShopMenu implements Listener {
 
 			if (is.getType() != Material.STAINED_CLAY)
 				return;
+
+			Class classType = Class.valueOf(title.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
 			
 			if (is.getDurability() == 14) {
 				player.sendMessage(ChatColor.RED + "You must unlock the preceding upgrades or you cannot afford that upgrade.");

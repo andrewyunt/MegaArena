@@ -28,6 +28,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -44,7 +45,8 @@ public class ClassSelectorMenu implements Listener {
 	private Player player;
 	private Inventory inv;
 	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
-
+	private boolean hasClicked = false;
+	
 	public ClassSelectorMenu(Player player) {
 
 		this.player = player;
@@ -190,13 +192,15 @@ public class ClassSelectorMenu implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		
-		if (event.getClickedInventory() == null)
+		Inventory inv = event.getClickedInventory();
+		
+		if (inv == null)
 			return;
 		
-		if (event.getWhoClicked() != player)
+		if (!event.getWhoClicked().getName().equals(player.getName()))
 			return;
 		
-		String title = event.getClickedInventory().getTitle();
+		String title = inv.getTitle();
 		
 		if (title == null)
 			return;
@@ -224,6 +228,22 @@ public class ClassSelectorMenu implements Listener {
 		String name = is.getItemMeta().getDisplayName();
 
 		if (title.equals("Normal Classes") || title.equals("Hero Classes")) {
+			
+			if (hasClicked == true) {
+				player.sendMessage(ChatColor.RED + "You are clicking too fast! Please slow down.");
+				return;
+			}
+			
+			hasClicked = true;
+			
+	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+	            @Override
+	            public void run() {
+	            	
+	            	hasClicked = false;
+	            }
+	        }, 30L);
 			
 			if (name == null || name == " ")
 				return;
