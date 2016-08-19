@@ -16,6 +16,7 @@
 package com.andrewyunt.megaarena.listeners;
 
 import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
@@ -35,8 +36,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Arena;
@@ -52,10 +51,10 @@ import com.andrewyunt.megaarena.objects.Skill;
  */
 public class MegaArenaPlayerSkillListener implements Listener {
 
-	public HashMap<TNTPrimed, Player> creeperTnt = new HashMap<TNTPrimed, Player>();
+	public HashMap<TNTPrimed, Player> creeperTNT = new HashMap<TNTPrimed, Player>();
 
 	@EventHandler
-	public void boomerangSkill(EntityDamageByEntityEvent event) { // Skeleton -> Boomerang -> Works
+	public void boomerangSkill(EntityDamageByEntityEvent event) {
 
 		/* Checking for a bow hit from a player to a player */
 		if (!(event.getDamager() instanceof Arrow))
@@ -173,8 +172,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void resist(EntityDamageByEntityEvent event) { // Zombie - Resist ->
-															// Works
+	public void resist(EntityDamageByEntityEvent event) {
 
 		/* Check if damager and damaged entities are players */
 		if (!(event.getDamager() instanceof Player))
@@ -226,7 +224,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void swiftness(EntityDamageByEntityEvent event) { // Zombie - Swiftness -> Works
+	public void swiftness(EntityDamageByEntityEvent event) {
 
 		/* Checking for a bow hit from a player to a player */
 		if (!(event.getDamager() instanceof Arrow))
@@ -283,7 +281,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void recharge(EntityDamageByEntityEvent event) { // Herobrine - Recharge -> Works
+	public void recharge(EntityDamageByEntityEvent event) {
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -346,7 +344,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void flurry(EntityDamageByEntityEvent event) { // Herobrine - Flurry -> Works
+	public void flurry(EntityDamageByEntityEvent event) {
 		
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -400,7 +398,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void powerfulWeakness(EntityDamageEvent event) { // Creeper - Powerful Weakness -> Works
+	public void powerfulWeakness(EntityDamageEvent event) {
 
 		/* Check if the entity is player */
 		if (!(event.getEntity() instanceof Player))
@@ -454,7 +452,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void powerfulWeakness(EntityRegainHealthEvent event) { // Creeper - Powerful Weakness TODO: Disable Speed
+	public void powerfulWeakness(EntityRegainHealthEvent event) {
 
 		/* Check if the entity is player */
 		if (!(event.getEntity() instanceof Player))
@@ -485,6 +483,11 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			skillLevel = playerGP.getLevel(playerGP.getClassType().getSkillTwo());
 		else
 			return;
+		
+		Arena.Type arenaType = playerGP.getGame().getArena().getType();
+		
+		if (!playerGP.hasFallen() && (arenaType == Arena.Type.FFA || arenaType == Arena.Type.TDM))
+			return;
 
 		int health = 16 + (skillLevel - 1);
 
@@ -501,7 +504,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void support(EntityDamageByEntityEvent event) { // Creeper - Support
+	public void support(EntityDamageByEntityEvent event) {
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -544,18 +547,18 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (Math.random() > percentage)
 			return;
 
-		TNTPrimed tnt = (TNTPrimed) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.PRIMED_TNT);
+		TNTPrimed tnt = (TNTPrimed) damaged.getWorld().spawnEntity(damaged.getEyeLocation(), EntityType.PRIMED_TNT);
 
 		tnt.setFuseTicks(60); // 3 second delay before explosion
-		creeperTnt.put(tnt, damaged);
+		creeperTNT.put(tnt, damaged);
 
-		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill activated.",
+		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill activated.",
 				ChatColor.AQUA + Skill.SUPPORT.getName() + ChatColor.GREEN));
 	}
 
 	@EventHandler
-	public void disableTnt(EntityDamageByEntityEvent event) { // Creeper Support TODO: Disable TNT damage
-
+	public void disableTNT(EntityDamageByEntityEvent event) {
+		
 		if (!(event.getDamager() instanceof TNTPrimed))
 			return;
 
@@ -564,12 +567,12 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		TNTPrimed tnt = (TNTPrimed) event.getDamager();
 
-		if (!creeperTnt.containsKey(tnt))
+		event.setCancelled(true);
+		
+		if (!creeperTNT.containsKey(tnt))
 			return;
 
-		event.setCancelled(true);
-
-		Player creeper = creeperTnt.remove(tnt);
+		Player creeper = creeperTNT.get(tnt);
 		Player damaged = (Player) event.getEntity();
 
 		GamePlayer creeperAP = null;
@@ -588,21 +591,16 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (creeperAP.getGame().getArena().getType() == Arena.Type.TDM && creeperAP.getSide() == damagedGP.getSide())
 			return;
 
-		if (damaged == creeper) {
-			creeper.setVelocity(new Vector(0F, 0F, 0F));
-			return;
-		}
-
 		Damageable dmgPlayer = (Damageable) damaged;
 
 		if (dmgPlayer.getHealth() <= 3.0)
 			dmgPlayer.setHealth(0.0D);
 		else
-			dmgPlayer.setHealth(dmgPlayer.getHealth() - 3.0);
+			dmgPlayer.setHealth(dmgPlayer.getHealth() - 3.0D);
 	}
 
 	@EventHandler
-	public void weakeningSwing(EntityDamageByEntityEvent event) { // Spirit Warrior - Weakening Swing -> Works
+	public void weakeningSwing(EntityDamageByEntityEvent event) {
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -656,7 +654,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void swiftBackup(EntityDamageByEntityEvent event) { // Spirit Warrior - Swift Backup -> Works
+	public void swiftBackup(EntityDamageByEntityEvent event) {
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -716,7 +714,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void soulSucker(EntityDamageByEntityEvent event) { // Wither Minion - Soul Sucker -> Works
+	public void soulSucker(EntityDamageByEntityEvent event) {
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
@@ -769,7 +767,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void undead(EntityDamageByEntityEvent event) { // Wither Minion - Undead
+	public void undead(EntityDamageByEntityEvent event) {
 
 		/* Checking if damager and damaged are players */
 		if (!(event.getDamager() instanceof Player))
