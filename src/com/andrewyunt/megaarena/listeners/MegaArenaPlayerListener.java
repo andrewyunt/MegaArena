@@ -462,6 +462,9 @@ public class MegaArenaPlayerListener implements Listener {
 			killer = event.getEntity().getKiller();
 			GamePlayer killerGP = null;
 			
+			if (!(killer instanceof Player))
+				return;
+			
 			try {
 				killerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killer.getName());
 			} catch (PlayerException e) {
