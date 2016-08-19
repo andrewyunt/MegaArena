@@ -574,6 +574,9 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		Player creeper = creeperTNT.get(tnt);
 		Player damaged = (Player) event.getEntity();
+		
+		if (creeper.getName().equals(damaged.getName()))
+			return;
 
 		GamePlayer creeperAP = null;
 		GamePlayer damagedGP = null;
