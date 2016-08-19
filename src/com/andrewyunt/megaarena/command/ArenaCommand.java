@@ -18,6 +18,7 @@ package com.andrewyunt.megaarena.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -30,6 +31,7 @@ import com.andrewyunt.megaarena.exception.ArenaException;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SpawnException;
 import com.andrewyunt.megaarena.objects.Arena;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Spawn;
 import com.andrewyunt.megaarena.objects.GameSide;
 
@@ -53,11 +55,6 @@ public class ArenaCommand implements CommandExecutor {
 		if (!cmd.getName().equalsIgnoreCase("arena"))
 			return false;
 		
-		if (!(sender instanceof Player)) {
-			System.out.println("You may not execute that command from the console.");
-			return false;
-		}
-		
 		if (!(args.length > 0)) {
 			
 			if (!sender.hasPermission("megaarena.arena.help")) {
@@ -68,6 +65,48 @@ public class ArenaCommand implements CommandExecutor {
 			for (String line : help)
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
 			
+			return false;
+		}
+	
+		if (args[0].equalsIgnoreCase("addcoins")) {
+			
+			if (sender instanceof Player) {
+				System.out.println("You may only execute that command from the console.");
+				return false;
+			}
+			
+			if (!(args.length >= 3)) {
+				sender.sendMessage(ChatColor.RED + "Usage: /arena addcoins [player] [amount]");
+				return false;
+			}
+			
+			Player coinsPlayer = Bukkit.getServer().getPlayer(args[1]);
+			GamePlayer coinsGP = null;
+			
+			try {
+				coinsGP = MegaArena.getInstance().getPlayerManager().getPlayer(coinsPlayer.getName());
+			} catch (PlayerException e) {
+			}
+			
+			int coins = 0;
+			
+			try {
+				coins = Integer.valueOf(args[2]);
+			} catch (NumberFormatException e) {
+				sender.sendMessage(ChatColor.RED + "Usage: /arena addcoins [player] [amount]");
+				return false;
+			}
+			
+			coinsGP.addCoins(coins);
+			coinsGP.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format("You received %s coins from %s.", 
+					ChatColor.AQUA + String.valueOf(coins) + ChatColor.GREEN ,
+					ChatColor.AQUA + sender.getName() + ChatColor.GREEN));
+			
+			return true;
+		}
+		
+		if (!(sender instanceof Player)) {
+			System.out.println("You may not execute that command from the console.");
 			return false;
 		}
 		
