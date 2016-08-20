@@ -23,7 +23,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -38,9 +37,6 @@ import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
-import com.andrewyunt.megaarena.utilities.Utils;
-
-import net.minecraft.util.com.google.common.util.concurrent.AbstractScheduledService.Scheduler;
 
 /**
  * The class used to store player's information.
@@ -238,7 +234,8 @@ public class GamePlayer {
 		player.getInventory().clear();
 		classType.giveKitItems(this);
 		
-		teleport(loc);
+		loc.setY(loc.getY() + 1);
+		player.teleport(loc);
 	}
 	
 	public void addEnergy(int energy) {
@@ -439,11 +436,5 @@ public class GamePlayer {
 	public Scoreboard getDefaultScoreboard() {
 		
 		return defaultScoreboard;
-	}
-	
-	public void teleport(Location loc) {
-		
-		loc.setY(loc.getY() + 1);
-		player.teleport(loc);
 	}
 }

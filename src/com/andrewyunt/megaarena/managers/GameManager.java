@@ -146,6 +146,7 @@ public class GameManager {
 		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
 			@Override
 			public void run() {
+				
 				Player bp = player.getBukkitPlayer();
 
 				if (player.isInGame()) {

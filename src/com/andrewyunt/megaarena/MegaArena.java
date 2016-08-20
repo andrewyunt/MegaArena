@@ -272,11 +272,23 @@ public class MegaArena extends JavaPlugin {
 		return dataSource;
 	}
 	
+	/**
+	 * Gets the stored instance of the class selector menu.
+	 * 
+	 * @return
+	 * 		The instance of the class selector menu.
+	 */
 	public ClassSelectorMenu getClassSelectorMenu() {
 		
 		return classSelectorMenu;
 	}
 	
+	/**
+	 * Gets the stored instance of the shop menu.
+	 * 
+	 * @return
+	 * 		The instance of the shop menu.
+	 */
 	public ShopMenu getShopMenu() {
 		
 		return shopMenu;

@@ -206,8 +206,11 @@ public class Game {
 		/* Set player lobby inventory */
 		player.updateHotBar();
 		
+		Location loc = player.getPreviousLocation();
+		
 		/* Teleport player to previous location */
-		player.teleport(player.getPreviousLocation());
+		loc.setY(loc.getY() + 1);
+		bp.teleport(loc);
 	}
 	
 	/**
