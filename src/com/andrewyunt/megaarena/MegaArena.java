@@ -38,6 +38,8 @@ import com.andrewyunt.megaarena.listeners.MegaArenaPlayerSkillListener;
 import com.andrewyunt.megaarena.managers.ArenaManager;
 import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
+import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
+import com.andrewyunt.megaarena.menu.ShopMenu;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
@@ -62,6 +64,8 @@ public class MegaArena extends JavaPlugin {
 	private PluginManager pm = server.getPluginManager();
 	private ServicesManager sm = server.getServicesManager();
     private Permission permissions = null;
+    private ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
+    private ShopMenu shopMenu = new ShopMenu();
 	
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
@@ -115,6 +119,8 @@ public class MegaArena extends JavaPlugin {
 		pm.registerEvents(new MegaArenaPlayerListener(), this);
 		pm.registerEvents(new MegaArenaPlayerAbilityListener(), this);
 		pm.registerEvents(new MegaArenaPlayerSkillListener(), this);
+		pm.registerEvents(classSelectorMenu, this);
+		pm.registerEvents(shopMenu, this);
 		
 		/* Load all arenas from arenas.yml */
 		arenaManager.loadArenas();
@@ -264,5 +270,15 @@ public class MegaArena extends JavaPlugin {
 	public DataSource getDataSource() {
 		
 		return dataSource;
+	}
+	
+	public ClassSelectorMenu getClassSelectorMenu() {
+		
+		return classSelectorMenu;
+	}
+	
+	public ShopMenu getShopMenu() {
+		
+		return shopMenu;
 	}
 }

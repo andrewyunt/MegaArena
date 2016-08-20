@@ -22,14 +22,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitScheduler;
-
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
@@ -42,26 +39,18 @@ import com.andrewyunt.megaarena.objects.Class;
  */
 public class ClassSelectorMenu implements Listener {
 
-	private Player player;
 	private Inventory inv;
 	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
-	private boolean hasClicked = false;
 	
-	public ClassSelectorMenu(Player player) {
-
-		this.player = player;
+	public ClassSelectorMenu() {
 		
 		ItemMeta glassPaneMeta = glassPane.getItemMeta();
 		glassPaneMeta.setDisplayName(" ");
 		glassPaneMeta.setLore(new ArrayList<String>());
 		glassPane.setItemMeta(glassPaneMeta);
-		
-		openMainMenu();
 	}
 
-	private void openMainMenu() {
-		
-		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
+	public void openMainMenu(GamePlayer player) {
 
 		inv = Bukkit.createInventory(null, 27, "Class Selector");
 
@@ -96,12 +85,10 @@ public class ClassSelectorMenu implements Listener {
 		for (int i = 23; i < 27; i++)
 			inv.setItem(i, glassPane);
 
-		player.openInventory(inv);
+		player.getBukkitPlayer().openInventory(inv);
 	}
 
-	private void openNormalClassSelector() {
-		
-		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
+	private void openNormalClassSelector(GamePlayer player) {
 
 		inv = Bukkit.createInventory(null, 27, "Normal Classes");
 		
@@ -146,12 +133,10 @@ public class ClassSelectorMenu implements Listener {
 		for (int i = 23; i < 27; i++)
 			inv.setItem(i, glassPane);
 
-		player.openInventory(inv);
+		player.getBukkitPlayer().openInventory(inv);
 	}
 
-	private void openHeroClassSelector() {
-		
-		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
+	private void openHeroClassSelector(GamePlayer player) {
 
 		inv = Bukkit.createInventory(null, 27, "Hero Classes");
 
@@ -186,7 +171,7 @@ public class ClassSelectorMenu implements Listener {
 		for (int i = 23; i < 27; i++)
 			inv.setItem(i, glassPane);
 
-		player.openInventory(inv);
+		player.getBukkitPlayer().openInventory(inv);
 	}
 
 	@EventHandler
@@ -195,9 +180,6 @@ public class ClassSelectorMenu implements Listener {
 		Inventory inv = event.getClickedInventory();
 		
 		if (inv == null)
-			return;
-		
-		if (!event.getWhoClicked().getName().equals(player.getName()))
 			return;
 		
 		String title = inv.getTitle();
@@ -210,10 +192,11 @@ public class ClassSelectorMenu implements Listener {
 		
 		event.setCancelled(true);
 
-		GamePlayer ap = null;
+		Player player = (Player) event.getWhoClicked();
+		GamePlayer gp = null;
 
 		try {
-			ap = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
 		
@@ -229,28 +212,11 @@ public class ClassSelectorMenu implements Listener {
 
 		if (title.equals("Normal Classes") || title.equals("Hero Classes")) {
 			
-			if (hasClicked == true) {
-				player.sendMessage(ChatColor.RED + "You are clicking too fast! Please slow down.");
-				return;
-			}
-			
-			hasClicked = true;
-			
-	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-	            @Override
-	            public void run() {
-	            	
-	            	hasClicked = false;
-	            }
-	        }, 30L);
-			
 			if (name == null || name == " ")
 				return;
 
 			if (name.equals("Go Back")) {
-				close();
-				openMainMenu();
+				openMainMenu(gp);
 				return;
 			}
 			
@@ -261,28 +227,19 @@ public class ClassSelectorMenu implements Listener {
 				return;
 			}
 			
-			ap.setClassType(Class.valueOf(classStr.toUpperCase()));
+			gp.setClassType(Class.valueOf(classStr.toUpperCase()));
 			
 			player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
 					ChatColor.AQUA + name + ChatColor.GREEN));
-		
-			close();
+			
+			player.closeInventory();
 			
 		} else if (title.equals("Class Selector")) {
 			
-			close();
-			
 			if (name.equals("NORMAL CLASSES"))
-				openNormalClassSelector();
+				openNormalClassSelector(gp);
 			else if (name.equals("HERO CLASSES"))
-				openHeroClassSelector();
+				openHeroClassSelector(gp);
 		}
-	}
-
-	public void close() {
-
-		HandlerList.unregisterAll(this);
-
-		player.closeInventory();
 	}
 }

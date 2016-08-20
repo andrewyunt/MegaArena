@@ -48,8 +48,6 @@ import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.managers.PlayerManager;
-import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
-import com.andrewyunt.megaarena.menu.ShopMenu;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
@@ -154,7 +152,7 @@ public class MegaArenaPlayerListener implements Listener {
 
 		if (name.equals(ChatColor.GREEN + "Shop")) {
 
-			new ShopMenu(player);
+			MegaArena.getInstance().getShopMenu().openClassUpgradesMenu(gp);
 
 		} else if (name.equals(ChatColor.YELLOW + "Layout Editor")) {
 
@@ -162,7 +160,7 @@ public class MegaArenaPlayerListener implements Listener {
 
 		} else if (name.equals(ChatColor.RED + "Class Selector")) {
 
-			new ClassSelectorMenu(player);
+			MegaArena.getInstance().getClassSelectorMenu().openMainMenu(gp);
 
 		} else if (name.equals("Play : Team-deathmatch")) {
 
@@ -365,7 +363,8 @@ public class MegaArenaPlayerListener implements Listener {
 
 		if (killer.hasPermission("megaarena.coins.double"))
 			killCoins = 100;
-		else if (killer.hasPermission("megaarena.coins.triple"))
+		
+		if (killer.hasPermission("megaarena.coins.triple"))
 			killCoins = 150;
 			
 		killerGP.addCoins(killCoins);

@@ -26,14 +26,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitScheduler;
-
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Ability;
@@ -50,32 +47,18 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class ShopMenu implements Listener {
 
-	private Player player;
-	private GamePlayer ap;
 	private Inventory inv;
 	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
-	private boolean hasClicked = false;
 
-	public ShopMenu(Player player) {
-
-		this.player = player;
+	public ShopMenu() {
 		
 		ItemMeta glassPaneMeta = glassPane.getItemMeta();
 		glassPaneMeta.setDisplayName(" ");
 		glassPaneMeta.setLore(new ArrayList<String>());
 		glassPane.setItemMeta(glassPaneMeta);
-		
-		try {
-			ap = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
-		} catch (PlayerException e) {
-		}
-
-		openClassUpgradesMenu();
 	}
 	
-	private void openClassUpgradesMenu() {
-		
-		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
+	public void openClassUpgradesMenu(GamePlayer player) {
 		
 		inv = Bukkit.createInventory(null, 27, "Class Upgrades");
 
@@ -130,12 +113,10 @@ public class ShopMenu implements Listener {
 		for (int i = 23; i < 27; i++)
 			inv.setItem(i, glassPane);
 
-		player.openInventory(inv);
+		player.getBukkitPlayer().openInventory(inv);
 	}
 
-	private void openClassUpgradeMenu(Class classType) {
-		
-		MegaArena.getInstance().getServer().getPluginManager().registerEvents(this, MegaArena.getInstance());
+	private void openClassUpgradeMenu(GamePlayer player, Class classType) {
 		
 		inv = Bukkit.createInventory(null, 45, "Class Upgrades - " + classType.getName());
 
@@ -143,10 +124,10 @@ public class ShopMenu implements Listener {
 		Skill skillOne = classType.getSkillOne();
 		Skill skillTwo = classType.getSkillTwo();
 
-		int abilityLevel = ap.getLevel(ability);
-		int skillOneLevel = ap.getLevel(skillOne);
-		int skillTwoLevel = ap.getLevel(skillTwo);
-		int kitLevel = ap.getLevel(classType);
+		int abilityLevel = player.getLevel(ability);
+		int skillOneLevel = player.getLevel(skillOne);
+		int skillTwoLevel = player.getLevel(skillTwo);
+		int kitLevel = player.getLevel(classType);
 		
 		FileConfiguration config = MegaArena.getInstance().getConfig();
 
@@ -216,7 +197,7 @@ public class ShopMenu implements Listener {
 					} else {
 						lore.add("Cost: " + String.valueOf(cost));
 						
-						if (ap.getCoins() < cost) {
+						if (player.getCoins() < cost) {
 							is = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 							color = ChatColor.RED;
 						} else {
@@ -256,16 +237,13 @@ public class ShopMenu implements Listener {
 		for (int i = 41; i < 45; i++)
 			inv.setItem(i, glassPane);
 		
-		player.openInventory(inv);
+		player.getBukkitPlayer().openInventory(inv);
 	}
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 
 		if (event.getClickedInventory() == null)
-			return;
-		
-		if (!event.getWhoClicked().getName().equals(player.getName()))
 			return;
 		
 		String title = event.getClickedInventory().getTitle();
@@ -287,6 +265,14 @@ public class ShopMenu implements Listener {
 		event.setCancelled(true);
 		
 		String name = is.getItemMeta().getDisplayName();
+		
+		Player player = (Player) event.getWhoClicked();
+		GamePlayer gp = null;
+
+		try {
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
 
 		if (title.equals("Class Upgrades")) {
 			
@@ -294,38 +280,23 @@ public class ShopMenu implements Listener {
 				return;
 
 			if (name.equals("Close")) {
-				close();
+				player.closeInventory();
 				return;
 			}
 			
-			if (!player.hasPermission("megaarena.class." + name.toLowerCase()))  {
+			String classStr = name.replace(" ", "_").toUpperCase();
+			
+			if (!player.hasPermission("megaarena.class." + classStr.toLowerCase()))  {
 				player.sendMessage(ChatColor.RED + "You do not own that class.");
 				return;
 			}
 			
-			close();
-			openClassUpgradeMenu(Class.valueOf(name.toUpperCase().replace(' ', '_')));
+			openClassUpgradeMenu(gp, Class.valueOf(name.toUpperCase().replace(' ', '_')));
 			
 		} else {
 			
-			if (hasClicked == true) {
-				player.sendMessage(ChatColor.RED + "You are clicking too fast! Please slow down.");
-				return;
-			}
-			
-			hasClicked = true;
-			
-	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-	            @Override
-	            public void run() {
-	            	
-	            	hasClicked = false;
-	            }
-	        }, 30L);
-			
 			if (is.getType() == Material.ARROW) {
-				openClassUpgradesMenu();
+				openClassUpgradesMenu(gp);
 				return;
 			}
 
@@ -360,22 +331,14 @@ public class ShopMenu implements Listener {
 			}
 			
 			int cost = MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
-			ap.removeCoins(cost);
+			gp.removeCoins(cost);
 			
-			ap.setLevel(upgradable, slot);
+			gp.setLevel(upgradable, slot);
 			
-			ap.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+			gp.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
 					upgradable.getName() + ChatColor.GREEN));
 			
-			close();
-			openClassUpgradeMenu(classType);
+			openClassUpgradeMenu(gp, classType);
 		}
-	}
-	
-	public void close() {
-		
-		HandlerList.unregisterAll(this);
-
-		player.closeInventory();
 	}
 }
