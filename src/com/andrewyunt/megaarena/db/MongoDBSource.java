@@ -71,6 +71,7 @@ public class MongoDBSource extends DatabaseHandler {
 			replacementObj.put("classtype", classType.toString());
 		
 		replacementObj.put("coins", (double) player.getCoins());
+		replacementObj.put("earnedCoins", (double) player.getEarnedCoins());
 		replacementObj.put("kills", (double) player.getKills());
 		
 		playersCollection.update(playerObj, replacementObj);
@@ -88,6 +89,7 @@ public class MongoDBSource extends DatabaseHandler {
 			playerObj = new BasicDBObject("uuid", uuid);
 			playerObj.put("classtype", null);
 			playerObj.put("coins", 0);
+			playerObj.put("earnedCoins", 0);
 			playerObj.put("kills", 0);
 			playersCollection.insert(playerObj);
 			return;
@@ -95,6 +97,7 @@ public class MongoDBSource extends DatabaseHandler {
 		
 		loadClassType(player);
 		loadCoins(player);
+		loadEarnedCoins(player);
 		loadKills(player);
 		loadLayout(player, player.getClassType());
 	}
@@ -125,6 +128,18 @@ public class MongoDBSource extends DatabaseHandler {
 		
 		if (playerObj.containsField("coins"))
 			player.setCoins((double) playerObj.get("coins"));
+	}
+	
+	@Override
+	public void loadEarnedCoins(GamePlayer player) {
+		
+		String uuid = player.getBukkitPlayer().getUniqueId().toString();
+		
+		DBObject field = new BasicDBObject("uuid", uuid);
+		DBObject playerObj = playersCollection.findOne(field);
+		
+		if (playerObj.containsField("earnedCoins"))
+			player.setEarnedCoins((double) playerObj.get("earnedCoins"));
 	}
 	
 	@Override

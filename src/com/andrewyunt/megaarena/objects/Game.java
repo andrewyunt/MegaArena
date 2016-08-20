@@ -24,10 +24,12 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -209,8 +211,14 @@ public class Game {
 		Location loc = player.getPreviousLocation();
 		
 		/* Teleport player to previous location */
+		Chunk chunk = loc.getChunk();
+		
+		if (!chunk.isLoaded())
+			chunk.load();
+		
 		loc.setY(loc.getY() + 1);
-		bp.teleport(loc);
+		
+		bp.teleport(loc, TeleportCause.COMMAND);
 	}
 	
 	/**

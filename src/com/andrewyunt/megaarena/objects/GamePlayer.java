@@ -20,10 +20,12 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -59,6 +61,7 @@ public class GamePlayer {
 	private Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
 	private boolean hasSpeed;
 	private int coins = 0;
+	private int earnedCoins = 0;
 	private int kills = 0;
 	private Scoreboard defaultScoreboard;
 	private Objective defaultObjective;
@@ -234,8 +237,14 @@ public class GamePlayer {
 		player.getInventory().clear();
 		classType.giveKitItems(this);
 		
+		Chunk chunk = loc.getChunk();
+		
+		if (!chunk.isLoaded())
+			chunk.load();
+		
 		loc.setY(loc.getY() + 1);
-		player.teleport(loc);
+		
+		player.teleport(loc, TeleportCause.COMMAND);
 	}
 	
 	public void addEnergy(int energy) {
@@ -300,6 +309,8 @@ public class GamePlayer {
 	public void addCoins(int coins) {
 		
 		setCoins(this.coins + coins);
+		
+		setEarnedCoins(this.earnedCoins + coins);
 	}
 	
 	public void removeCoins(int coins) {
@@ -317,6 +328,18 @@ public class GamePlayer {
 	public int getCoins() {
 		
 		return coins;
+	}
+	
+	public void setEarnedCoins(double earnedCoins) {
+		
+		this.earnedCoins = ((Double) earnedCoins).intValue();
+		
+		MegaArena.getInstance().getDataSource().savePlayer(this);
+	}
+	
+	public int getEarnedCoins() {
+		
+		return earnedCoins;
 	}
 	
 	public void addAssistPlayer(GamePlayer player) {
