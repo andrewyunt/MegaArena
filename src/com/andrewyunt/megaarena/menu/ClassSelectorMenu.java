@@ -240,6 +240,8 @@ public class ClassSelectorMenu implements Listener {
 				openNormalClassSelector(gp);
 			else if (name.equals("HERO CLASSES"))
 				openHeroClassSelector(gp);
+			else if (name.equals("Close"))
+				player.closeInventory();
 		}
 	}
 }
