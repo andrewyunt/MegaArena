@@ -207,7 +207,7 @@ public class Game {
 		player.updateHotBar();
 		
 		/* Teleport player to previous location */
-		bp.teleport(player.getPreviousLocation());
+		player.teleport(player.getPreviousLocation());
 	}
 	
 	/**

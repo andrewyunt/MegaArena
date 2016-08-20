@@ -382,7 +382,8 @@ public class MegaArenaPlayerListener implements Listener {
 
 				if (assistPlayer.hasPermission("megaarena.coins.double"))
 					assistCoins = 30;
-				else if (assistPlayer.hasPermission("megaarena.coins.triple"))
+				
+				if (assistPlayer.hasPermission("megaarena.coins.triple"))
 					assistCoins = 45;
 
 				assistAP.addCoins(assistCoins);
