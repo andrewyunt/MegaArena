@@ -105,11 +105,11 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 		Player player = (Player) event.getDamager();
 		Player target = (Player) event.getEntity();
-		GamePlayer targetAP = null;
+		GamePlayer targetGP = null;
 		GamePlayer playerGP = null;
 
 		try {
-			targetAP = MegaArena.getInstance().getPlayerManager().getPlayer(target.getName());
+			targetGP = MegaArena.getInstance().getPlayerManager().getPlayer(target.getName());
 			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
@@ -120,16 +120,17 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		if (playerGP.getClassType() == SKELETON)
 			return;
 		
-		if (!targetAP.isInGame())
+		if (!targetGP.isInGame())
 			return;
 		
-		if (targetAP.getGame().getArena().getType() == Arena.Type.TDM && targetAP.getSide() == playerGP.getSide())
+		if (targetGP.getGame().getArena().getType() == Arena.Type.TDM && targetGP.getSide() == playerGP.getSide())
 			return;
 		
 		if (Utils.getTargetPlayer(player) != null)
 			return;
 
-		playerGP.addEnergy(playerGP.getClassType().getEnergyPerClick());
+		if (targetGP.getLastDamageCause() != DamageCause.CUSTOM)
+			playerGP.addEnergy(playerGP.getClassType().getEnergyPerClick());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

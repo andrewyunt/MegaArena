@@ -643,7 +643,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		double duration = 2 + 0.5 * (skillLevel - 1);
 
-		if (Math.random() > 0.2)
+		if (Math.random() > 0.1D)
 			return;
 
 		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, (int) (duration * 20), 0, true);
@@ -697,7 +697,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		
 		double duration = 4 + (skillLevel - 1);
 		
-		if (Math.random() > 0.1D)
+		if (Math.random() > 0.05D)
 			return;
 		
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",

@@ -29,6 +29,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.WitherSkull;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -153,7 +154,8 @@ public enum Ability implements Upgradable {
 		} else if (this == LIGHTNING) {
 			
 			int count = 0;
-			for (Entity entity : player.getBukkitPlayer().getNearbyEntities(5, 3, 5)){
+			
+			for (Entity entity : player.getBukkitPlayer().getNearbyEntities(3, 3, 3)){
 				if (!(entity instanceof Player))
 					continue;
 				
@@ -311,31 +313,32 @@ public enum Ability implements Upgradable {
 	            			continue;
 	            		
 	            		Player entityPlayer = (Player) entity;
-	    				GamePlayer entityAP = null;
+	    				GamePlayer entityGP = null;
 	    				
 	    				try {
-	    					entityAP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
+	    					entityGP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
 	    				} catch (PlayerException e) {
 	    				}
 	    				
-	    				if (!entityAP.isInGame())
+	    				if (!entityGP.isInGame())
 	    					continue;
 	    				
-						if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
+						if (entityGP.getGame().getArena().getType() == Arena.Type.TDM && entityGP.getSide() == player.getSide())
 							continue;
 	            		
 	            		if (((Player) entity) == bp)
 	            			continue;
+
+	            		entityGP.setLastDamageCause(DamageCause.CUSTOM);
+	            		((Damageable) entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill and the red invisibility period 
+	            		entityGP.setLastDamageCause(DamageCause.CONTACT);
 	            		
-	            		((Damageable)entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill and the red invisibility period 
-	            		double health = ((Damageable) entity).getHealth() - 1.5D;
+	            		double health = ((Damageable) entity).getHealth() - 1.0D;
 	            		
 	            		if (health > 0)
 	            			((Damageable) entity).setHealth(health);
 	            		else
 	            			((Damageable) entity).setHealth(0D);
-	            		
-	            		player.addEnergy(Class.SPIRIT_WARRIOR.getEnergyPerClick());
 	            	}
 	            	
 	            	elapsedTime = elapsedTime + 0.5F;

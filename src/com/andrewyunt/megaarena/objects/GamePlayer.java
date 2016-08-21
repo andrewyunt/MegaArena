@@ -25,6 +25,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -66,6 +67,7 @@ public class GamePlayer {
 	private int kills = 0;
 	private Scoreboard defaultScoreboard;
 	private Objective defaultObjective;
+	private DamageCause lastDamageCause;
 	
 	public GamePlayer(String name) {
 		
@@ -354,7 +356,7 @@ public class GamePlayer {
             	
             	assistPlayers.remove(player);
             }
-        }, 400L);
+        }, 200L);
 	}
 	
 	public Set<GamePlayer> getAssistPlayers() {
@@ -460,5 +462,15 @@ public class GamePlayer {
 	public Scoreboard getDefaultScoreboard() {
 		
 		return defaultScoreboard;
+	}
+	
+	public void setLastDamageCause(DamageCause lastDamageCause) {
+		
+		this.lastDamageCause = lastDamageCause;
+	}
+	
+	public DamageCause getLastDamageCause() {
+		
+		return lastDamageCause;
 	}
 }

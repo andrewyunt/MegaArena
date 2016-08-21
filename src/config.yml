@@ -498,59 +498,59 @@ classes:
     WEAKENING_SWING:
       1:
          title: "Skill 1 - Weakening Swing I"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 2.0 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 2.0 seconds"
       2:
          title: "Skill 1 - Weakening Swing II"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 2.5 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 2.5 seconds"
       3:
          title: "Skill 1 - Weakening Swing III"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 3.0 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 3.0 seconds"
       4:
          title: "Skill 1 - Weakening Swing IV"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 3.5 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 3.5 seconds"
       5:
          title: "Skill 1 - Weakening Swing V"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 4.0 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 4.0 seconds"
       6:
          title: "Skill 1 - Weakening Swing VI"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 4.5 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 4.5 seconds"
       7:
          title: "Skill 1 - Weakening Swing VII"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 5.0 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 5.0 seconds"
       8:
          title: "Skill 1 - Weakening Swing VIII"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 5.5 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 5.5 seconds"
       9:
          title: "Skill 1 - Weakening Swing IX"
-         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 6.0 seconds"
+         description: "Upon hitting an enemy player, 10% chance \nto inflict Weakness I for 6.0 seconds"
     SWIFT_BACKUP:
       1:
          title: "Skill 2 - Swift Backup I"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 4.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 4.0 seconds. Wolf has permanent Speed II"
       2:
          title: "Skill 2 - Swift Backup II"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 5.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 5.0 seconds. Wolf has permanent Speed II"
       3:
          title: "Skill 2 - Swift Backup III"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 6.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 6.0 seconds. Wolf has permanent Speed II"
       4:
          title: "Skill 2 - Swift Backup IV"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 7.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 7.0 seconds. Wolf has permanent Speed II"
       5:
          title: "Skill 2 - Swift Backup V"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 8.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 8.0 seconds. Wolf has permanent Speed II"
       6:
          title: "Skill 2 - Swift Backup VI"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 9.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 9.0 seconds. Wolf has permanent Speed II"
       7:
          title: "Skill 2 - Swift Backup VII"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 10.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 10.0 seconds. Wolf has permanent Speed II"
       8:
          title: "Skill 2 - Swift Backup VIII"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 11.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 11.0 seconds. Wolf has permanent Speed II"
       9:
          title: "Skill 2 - Swift Backup IX"
-         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 12.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 5% chance to spawn a wolf that \nprotects you for 12.0 seconds. Wolf has permanent Speed II"
     SPIRIT_WARRIOR:
       1:
          title: "Kit Items - Spirit Warrior I"

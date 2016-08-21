@@ -32,6 +32,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -274,7 +275,10 @@ public class MegaArenaPlayerListener implements Listener {
 
 		if (damagedGP.getGame() != damagerGP.getGame())
 			return;
-
+		
+		if (damagedGP.getLastDamageCause() != DamageCause.CUSTOM)
+			damagedGP.setLastDamageCause(event.getCause());
+		
 		if (damagedGP.getGame().getArena().getType() != Arena.Type.TDM)
 			return;
 
@@ -383,13 +387,13 @@ public class MegaArenaPlayerListener implements Listener {
 					continue;
 
 				Player assistPlayer = assistGP.getBukkitPlayer();
-				int assistCoins = 15;
+				int assistCoins = 5;
 
 				if (assistPlayer.hasPermission("megaarena.coins.double"))
-					assistCoins = 30;
+					assistCoins = 10;
 				
 				if (assistPlayer.hasPermission("megaarena.coins.triple"))
-					assistCoins = 45;
+					assistCoins = 15;
 
 				assistGP.addCoins(assistCoins);
 				assistPlayer.sendMessage(
@@ -490,7 +494,7 @@ public class MegaArenaPlayerListener implements Listener {
 				Collections.shuffle(msgList);
 				msg = msgList.get(0);
 			}
-		} else {	
+		} else {
 			killed.sendMessage(ChatColor.GRAY + event.getDeathMessage());
 			return;
 		}
@@ -508,5 +512,12 @@ public class MegaArenaPlayerListener implements Listener {
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
 
 		event.setCancelled(true);
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
+		
+		if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM)
+			event.getEntity().remove();
 	}
 }
