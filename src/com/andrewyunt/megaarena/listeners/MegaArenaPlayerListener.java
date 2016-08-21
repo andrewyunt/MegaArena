@@ -373,11 +373,14 @@ public class MegaArenaPlayerListener implements Listener {
 				ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
 
 		if (game.getArena().getType() == Arena.Type.TDM)
-			for (GamePlayer assistAP : playerGP.getAssistPlayers()) {
-				if (!assistAP.isInGame())
+			for (GamePlayer assistGP : playerGP.getAssistPlayers()) {
+				if (assistGP.getName().equals(killerGP.getName()))
+					continue;
+				
+				if (!assistGP.isInGame())
 					continue;
 
-				Player assistPlayer = assistAP.getBukkitPlayer();
+				Player assistPlayer = assistGP.getBukkitPlayer();
 				int assistCoins = 15;
 
 				if (assistPlayer.hasPermission("megaarena.coins.double"))
@@ -386,7 +389,7 @@ public class MegaArenaPlayerListener implements Listener {
 				if (assistPlayer.hasPermission("megaarena.coins.triple"))
 					assistCoins = 45;
 
-				assistAP.addCoins(assistCoins);
+				assistGP.addCoins(assistCoins);
 				assistPlayer.sendMessage(
 						ChatColor.GREEN + String.format("You earned %s coins for assisting the kill of %s.",
 								ChatColor.AQUA + String.valueOf(assistCoins) + ChatColor.GREEN,
