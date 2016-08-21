@@ -226,7 +226,7 @@ public class GamePlayer {
 	
 	public void spawn(Spawn spawn) {
 		
-		Location loc = spawn.getLocation();
+		Location loc = spawn.getLocation().clone();
 		
 		player.setMaxHealth(40D);
 		player.setHealth(40D);

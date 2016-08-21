@@ -73,13 +73,22 @@ public class Utils {
             Vector3D minimum = targetPos.add(-0.39, 0, -0.39);
             Vector3D maximum = targetPos.add(0.39, 1.9, 0.39);
             double range = 4.2;
+            
             if (p.getLocation().distanceSquared(player.getLocation()) > range*range)
             	continue;
-            List<Block> blocks = p.getLastTwoTargetBlocks(null, (int) range);
-            for (Block b : blocks){
+            
+            List<Block> blocks = null;
+            
+            try {
+            	blocks = p.getLastTwoTargetBlocks(null, (int) range);
+            } catch (IllegalStateException e) {
+            	return null;
+            }
+            
+            for (Block b : blocks)
             	if (b.getType().isOccluding())
             		return targetPlayer;
-            }
+            	
             if(p != player && hasIntersection(playerStart, playerEnd, minimum, maximum))
                 if(targetPlayer == null || targetPlayer.getLocation().distanceSquared(playerPos) > p.getLocation().distanceSquared(playerPos))
                     targetPlayer = p;
