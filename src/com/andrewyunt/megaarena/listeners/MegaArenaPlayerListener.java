@@ -27,6 +27,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -123,9 +124,9 @@ public class MegaArenaPlayerListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-
+		
 		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
 
@@ -144,15 +145,16 @@ public class MegaArenaPlayerListener implements Listener {
 		String name = meta.getDisplayName();
 		Player player = event.getPlayer();
 		GamePlayer gp = null;
+		MegaArena plugin = MegaArena.getInstance();
 
 		try {
-			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			gp = plugin.getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
 
 		if (name.equals(ChatColor.GREEN + "Shop")) {
 
-			MegaArena.getInstance().getShopMenu().openClassUpgradesMenu(gp);
+			plugin.getShopMenu().openClassUpgradesMenu(gp);
 
 		} else if (name.equals(ChatColor.YELLOW + "Layout Editor")) {
 
@@ -160,19 +162,19 @@ public class MegaArenaPlayerListener implements Listener {
 
 		} else if (name.equals(ChatColor.RED + "Class Selector")) {
 
-			MegaArena.getInstance().getClassSelectorMenu().openMainMenu(gp);
+			plugin.getClassSelectorMenu().openMainMenu(gp);
 
 		} else if (name.equals("Play : Team-deathmatch")) {
-
+			
 			try {
-				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.TDM);
+				plugin.getGameManager().matchMake(gp, Arena.Type.TDM);
 			} catch (GameException e) {
 			}
-
+			
 		} else if (name.equals("Play : Free-for-all")) {
 
 			try {
-				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.FFA);
+				plugin.getGameManager().matchMake(gp, Arena.Type.FFA);
 			} catch (GameException e) {
 			}
 		}

@@ -35,10 +35,11 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
-import org.zencode.shortninja.staffplus.StaffPlus;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
+
+import net.shortninja.staffplus.StaffPlus;
 
 /**
  * The class used to store player's information.
@@ -165,7 +166,7 @@ public class GamePlayer {
 	
 	public boolean isStaffMode() {
 		
-		return StaffPlus.get().mode.isActive(name);
+		return StaffPlus.get().modeCoordinator.isInMode(player.getUniqueId());
 	}
 	
 	public void updateHotBar() {
