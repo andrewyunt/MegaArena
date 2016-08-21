@@ -18,87 +18,87 @@ classes:
     HEAL:
       1:
          title: "Ability - Heal I"
-         description: "Heal yourself and nearby team mates by 2.0 hearts"
+         description: "Heal yourself and nearby \nteam mates by 2.0 hearts"
       2:
          title: "Ability - Heal II"
-         description: "Heal yourself and nearby team mates by 2.5 hearts"
+         description: "Heal yourself and nearby \nteam mates by 2.5 hearts"
       3:
          title: "Ability - Heal III"
-         description: "Heal yourself and nearby team mates by 3.0 hearts"
+         description: "Heal yourself and nearby \nteam mates by 3.0 hearts"
       4:
          title: "Ability - Heal IV"
-         description: "Heal yourself and nearby team mates by 3.5 hearts"
+         description: "Heal yourself and nearby \nteam mates by 3.5 hearts"
       5:
          title: "Ability - Heal V"
-         description: "Heal yourself and nearby team mates by 4.0 hearts"
+         description: "Heal yourself and nearby \nteam mates by 4.0 hearts"
       6:
          title: "Ability - Heal VI"
-         description: "Heal yourself and nearby team mates by 4.5 hearts"
+         description: "Heal yourself and nearby \nteam mates by 4.5 hearts"
       7:
          title: "Ability - Heal VII"
-         description: "Heal yourself and nearby team mates by 5.0 hearts"
+         description: "Heal yourself and nearby \nteam mates by 5.0 hearts"
       8:
          title: "Ability - Heal VIII"
-         description: "Heal yourself and nearby team mates by 5.5 hearts"
+         description: "Heal yourself and nearby \nteam mates by 5.5 hearts"
       9:
          title: "Ability - Heal IX"
-         description: "Heal yourself and nearby team mates by 6.0 hearts"
+         description: "Heal yourself and nearby \nteam mates by 6.0 hearts"
     RESIST:
       1:
          title: "Skill 1 - Resist I"
-         description: "Getting hit has a 11% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 11% chance to \nreceive Resistance I for 1 seconds"
       2:
          title: "Skill 1 - Resist II"
-         description: "Getting hit has a 14% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 14% chance to \nreceive Resistance I for 1 seconds"
       3:
          title: "Skill 1 - Resist III"
-         description: "Getting hit has a 17% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 17% chance to \nreceive Resistance I for 1 seconds"
       4:
          title: "Skill 1 - Resist IV"
-         description: "Getting hit has a 20% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 20% chance to \nreceive Resistance I for 1 seconds"
       5:
          title: "Skill 1 - Resist V"
-         description: "Getting hit has a 23% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 23% chance to \nreceive Resistance I for 1 seconds"
       6:
          title: "Skill 1 - Resist VI"
-         description: "Getting hit has a 26% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 26% chance to \nreceive Resistance I for 1 seconds"
       7:
          title: "Skill 1 - Resist VII"
-         description: "Getting hit has a 29% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 29% chance to \nreceive Resistance I for 1 seconds"
       8:
          title: "Skill 1 - Resist VIII"
-         description: "Getting hit has a 32% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 32% chance to \nreceive Resistance I for 1 seconds"
       9:
          title: "Skill 1 - Resist IX"
-         description: "Getting hit has a 35% chance to receive Resistance I for 1 seconds"
+         description: "Getting hit has a 35% chance to \nreceive Resistance I for 1 seconds"
     SWIFTNESS:
       1:
          title: "Skill 2 - Swiftness I"
-         description: "Getting hit by an arrow has a 10% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 10% \nchance to give you Speed II for 3 seconds"
       2:
          title: "Skill 2 - Swiftness II"
-         description: "Getting hit by an arrow has a 15% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 15% \nchance to give you Speed II for 3 seconds"
       3:
          title: "Skill 2 - Swiftness III"
-         description: "Getting hit by an arrow has a 20% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 20% \nchance to give you Speed II for 3 seconds"
       4:
          title: "Skill 2 - Swiftness IV"
-         description: "Getting hit by an arrow has a 25% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 25% \nchance to give you Speed II for 3 seconds"
       5:
          title: "Skill 2 - Swiftness V"
-         description: "Getting hit by an arrow has a 30% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 30% \nchance to give you Speed II for 3 seconds"
       6:
          title: "Skill 2 - Swiftness VI"
-         description: "Getting hit by an arrow has a 35% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 35% \nchance to give you Speed II for 3 seconds"
       7:
          title: "Skill 2 - Swiftness VII"
-         description: "Getting hit by an arrow has a 40% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 40% \nchance to give you Speed II for 3 seconds"
       8:
          title: "Skill 2 - Swiftness VIII"
-         description: "Getting hit by an arrow has a 45% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 45% \nchance to give you Speed II for 3 seconds"
       9:
          title: "Skill 2 - Swiftness IX"
-         description: "Getting hit by an arrow has a 50% chance to give you Speed II for 3 seconds"
+         description: "Getting hit by an arrow has a 50% \nchance to give you Speed II for 3 seconds"
     ZOMBIE:
       1:
          title: "Kit Items - Zombie I"
@@ -131,31 +131,31 @@ classes:
     EXPLOSIVE_ARROW:
       1:
          title: "Ability - Explosive Arrow I"
-         description: "Fire an explosive arrow that deals 2.0 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 2.0 damage \nto nearby enemies with 100% armor penetration"
       2:
          title: "Ability - Explosive Arrow II"
-         description: "Fire an explosive arrow that deals 2.5 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 2.5 damage \nto nearby enemies with 100% armor penetration"
       3:
          title: "Ability - Explosive Arrow III"
-         description: "Fire an explosive arrow that deals 3.0 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 3.0 damage \nto nearby enemies with 100% armor penetration"
       4:
          title: "Ability - Explosive Arrow IV"
-         description: "Fire an explosive arrow that deals 3.5 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 3.5 damage \nto nearby enemies with 100% armor penetration"
       5:
          title: "Ability - Explosive Arrow V"
-         description: "Fire an explosive arrow that deals 4.0 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 4.0 damage \nto nearby enemies with 100% armor penetration"
       6:
          title: "Ability - Explosive Arrow VI"
-         description: "Fire an explosive arrow that deals 4.5 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 4.5 damage \nto nearby enemies with 100% armor penetration"
       7:
          title: "Ability - Explosive Arrow VII"
-         description: "Fire an explosive arrow that deals 5.0 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 5.0 damage \nto nearby enemies with 100% armor penetration"
       8:
          title: "Ability - Explosive Arrow VIII"
-         description: "Fire an explosive arrow that deals 5.5 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 5.5 damage \nto nearby enemies with 100% armor penetration"
       9:
          title: "Ability - Explosive Arrow IX"
-         description: "Fire an explosive arrow that deals 6.0 damage to nearby enemies with 100% armor penetration"
+         description: "Fire an explosive arrow that deals 6.0 damage \nto nearby enemies with 100% armor penetration"
     BOOMERANG:
       1:
          title: "Skill 1 - Boomerang I"
@@ -187,31 +187,31 @@ classes:
     MUTUAL_WEAKNESS:
       1:
          title: "Skill 2 - Mutual Weakness I"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 2.0 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 2.0 second"
       2:
          title: "Skill 2 - Mutual Weakness II"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 2.5 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 2.5 second"
       3:
          title: "Skill 2 - Mutual Weakness III"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 3.0 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 3.0 second"
       4:
          title: "Skill 2 - Mutual Weakness IV"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 3.5 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 3.5 second"
       5:
          title: "Skill 2 - Mutual Weakness V"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 4.0 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 4.0 second"
       6:
          title: "Skill 2 - Mutual Weakness VI"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 4.5 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 4.5 second"
       7:
          title: "Skill 2 - Mutual Weakness VII"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 5.0 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 5.0 second"
       8:
          title: "Skill 2 - Mutual Weakness VIII"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 5.5 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 5.5 second"
       9:
          title: "Skill 2 - Mutual Weakness IX"
-         description: "Upon arrow hit, inflict Slowness I and gain Regeneration I and Slowness I for 6.0 second"
+         description: "Upon arrow hit, inflict Slowness I and gain \nRegeneration I and Slowness I for 6.0 second"
     SKELETON:
       1:
          title: "Kit Items - Skeleton I"
@@ -244,87 +244,87 @@ classes:
     LIGHTNING:
       1:
          title: "Ability - Lightning I"
-         description: "Strike nearby enemies with lightning that does 1.0 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 1.0 damage with 100% armor penetration"
       2:
          title: "Ability - Lightning II"
-         description: "Strike nearby enemies with lightning that does 1.5 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 1.5 damage with 100% armor penetration"
       3:
          title: "Ability - Lightning III"
-         description: "Strike nearby enemies with lightning that does 2.0 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 2.0 damage with 100% armor penetration"
       4:
          title: "Ability - Lightning IV"
-         description: "Strike nearby enemies with lightning that does 2.5 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 2.5 damage with 100% armor penetration"
       5:
          title: "Ability - Lightning V"
-         description: "Strike nearby enemies with lightning that does 3.0 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 3.0 damage with 100% armor penetration"
       6:
          title: "Ability - Lightning VI"
-         description: "Strike nearby enemies with lightning that does 3.5 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 3.5 damage with 100% armor penetration"
       7:
          title: "Ability - Lightning VII"
-         description: "Strike nearby enemies with lightning that does 4.0 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 4.0 damage with 100% armor penetration"
       8:
          title: "Ability - Lightning VIII"
-         description: "Strike nearby enemies with lightning that does 4.5 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 4.5 damage with 100% armor penetration"
       9:
          title: "Ability - Lightning IX"
-         description: "Strike nearby enemies with lightning that does 5.0 damage with 100% armor penetration"
+         description: "Strike nearby enemies with lightning that \ndoes 5.0 damage with 100% armor penetration"
     RECHARGE:
       1:
          title: "Skill 1 - Recharge I"
          description: "Killing an enemy gives you Regeneration I and Resistance I for 2.0 seconds"
       2:
          title: "Skill 1 - Recharge II"
-         description: "Killing an enemy gives you Regeneration I and Resistance I for 2.5 seconds"
+         description: "Killing an enemy gives you Regeneration I \nand Resistance I for 2.5 seconds"
       3:
          title: "Skill 1 - Recharge III"
-         description: "Killing an enemy gives you Regeneration I and Resistance I for 3.0 seconds"
+         description: "Killing an enemy gives you Regeneration I \nand Resistance I for 3.0 seconds"
       4:
          title: "Skill 1 - Recharge IV"
-         description: "Killing an enemy gives you Regeneration I and Resistance I for 3.5 seconds"
+         description: "Killing an enemy gives you Regeneration I \nand Resistance I for 3.5 seconds"
       5:
          title: "Skill 1 - Recharge V"
-         description: "Killing an enemy gives you Regeneration I and Resistance I for 4.0 seconds"
+         description: "Killing an enemy gives you Regeneration I \nand Resistance I for 4.0 seconds"
       6:
          title: "Skill 1 - Recharge VI"
-         description: "Killing an enemy gives you Regeneration I and Resistance I for 4.5 seconds"
+         description: "Killing an enemy gives you Regeneration I \nand Resistance I for 4.5 seconds"
       7:
          title: "Skill 1 - Recharge VII"
-         description: "Killing an enemy gives you Regeneration I and Resistance I for 5.0 seconds"
+         description: "Killing an enemy gives you Regeneration I \nand Resistance I for 5.0 seconds"
       8:
          title: "Skill 1 - Recharge VIII"
-         description: "Killing an enemy gives you Regeneration I and Resistance I for 5.5 seconds"
+         description: "Killing an enemy gives you Regeneration I \nand Resistance I for 5.5 seconds"
       9:
          title: "Skill 1 - Recharge IX"
-         description: "Killing an enemy gives you Regeneration I and Resistance I for 6.0 seconds"
+         description: "Killing an enemy gives you Regeneration I \nand Resistance I for 6.0 seconds"
     FLURRY:
       1:
          title: "Skill 2 - Flurry I"
-         description: "10% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "10% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
       2:
          title: "Skill 2 - Flurry II"
-         description: "15% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "15% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
       3:
          title: "Skill 2 - Flurry III"
-         description: "20% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "20% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
       4:
          title: "Skill 2 - Flurry IV"
-         description: "25% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "25% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
       5:
          title: "Skill 2 - Flurry V"
-         description: "30% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "30% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
       6:
          title: "Skill 2 - Flurry VI"
-         description: "35% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "35% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
       7:
          title: "Skill 2 - Flurry VII"
-         description: "40% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "40% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
       8:
          title: "Skill 2 - Flurry VIII"
-         description: "45% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "45% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
       9:
          title: "Skill 2 - Flurry IX"
-         description: "50% chance to gain Speed I for 2 seconds upon hitting an enemy"
+         description: "50% chance to gain Speed I \nfor 2 seconds upon hitting an enemy"
     HEROBRINE:
       1:
          title: "Kit Items - Herobrine I"
@@ -357,31 +357,31 @@ classes:
     EXPLODE:
       1:
          title: "Ability - Explode I"
-         description: "Detonate an explosion that deals 3.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 3.0 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
       2:
          title: "Ability - Explode II"
-         description: "Detonate an explosion that deals 3.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 3.5 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
       3:
          title: "Ability - Explode III"
-         description: "Detonate an explosion that deals 4.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 4.0 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
       4:
          title: "Ability - Explode IV"
-         description: "Detonate an explosion that deals 4.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 4.5 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
       5:
          title: "Ability - Explode V"
-         description: "Detonate an explosion that deals 5.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 5.0 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
       6:
          title: "Ability - Explode VI"
-         description: "Detonate an explosion that deals 5.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 5.5 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
       7:
          title: "Ability - Explode VII"
-         description: "Detonate an explosion that deals 6.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 6.0 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
       8:
          title: "Ability - Explode VIII"
-         description: "Detonate an explosion that deals 6.5 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 6.5 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
       9:
          title: "Ability - Explode IX"
-         description: "Detonate an explosion that deals 7.0 damage to nearby enemies with 100% armor penetration and takes 3 seconds to explode"
+         description: "Detonate an explosion that deals 7.0 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
     POWERFUL_WEAKNESS:
       1:
          title: "Skill 1 - Powerful Weakness I"
@@ -413,31 +413,31 @@ classes:
     SUPPORT:
       1:
          title: "Skill 2 - Support I"
-         description: "6.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "6.0% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
       2:
          title: "Skill 2 - Support II"
-         description: "6.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "6.5% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
       3:
          title: "Skill 2 - Support III"
-         description: "7.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "7.0% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
       4:
          title: "Skill 2 - Support IV"
-         description: "7.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "7.5% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
       5:
          title: "Skill 2 - Support V"
-         description: "8.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "8.0% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
       6:
          title: "Skill 2 - Support VI"
-         description: "8.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "8.5% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
       7:
          title: "Skill 2 - Support VII"
-         description: "9.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "9.0% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
       8:
          title: "Skill 2 - Support VIII"
-         description: "9.5% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "9.5% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
       9:
          title: "Skill 2 - Support IX"
-         description: "10.0% chance to summon a Primed TNT which explodes after 3 seconds upon getting hit by an enemy, does not deal damage to you or your team mates"
+         description: "10.0% chance to summon a Primed TNT which explodes after 3 seconds \nupon getting hit by an enemy, does not deal damage to you or your team mates"
     CREEPER:
       1:
          title: "Kit Items - Creeper I"
@@ -470,87 +470,87 @@ classes:
     TORNADO:
       1:
          title: "Ability - Tornado I"
-         description: "Summon a tornado for 2.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 2.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
       2:
          title: "Ability - Tornado II"
-         description: "Summon a tornado for 2.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 2.5 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
       3:
          title: "Ability - Tornado III"
-         description: "Summon a tornado for 3.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 3.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
       4:
          title: "Ability - Tornado IV"
-         description: "Summon a tornado for 3.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 3.5 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
       5:
          title: "Ability - Tornado V"
-         description: "Summon a tornado for 4.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 4.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
       6:
          title: "Ability - Tornado VI"
-         description: "Summon a tornado for 4.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 4.5 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
       7:
          title: "Ability - Tornado VII"
-         description: "Summon a tornado for 5.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 5.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
       8:
          title: "Ability - Tornado VIII"
-         description: "Summon a tornado for 5.5 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 5.5 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
       9:
          title: "Ability - Tornado IX"
-         description: "Summon a tornado for 6.0 seconds, dealing 3.0 damage with 100% armor penetration every second"
+         description: "Summon a tornado for 6.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
     WEAKENING_SWING:
       1:
          title: "Skill 1 - Weakening Swing I"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 2.0 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 2.0 seconds"
       2:
          title: "Skill 1 - Weakening Swing II"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 2.5 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 2.5 seconds"
       3:
          title: "Skill 1 - Weakening Swing III"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 3.0 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 3.0 seconds"
       4:
          title: "Skill 1 - Weakening Swing IV"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 3.5 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 3.5 seconds"
       5:
          title: "Skill 1 - Weakening Swing V"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 4.0 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 4.0 seconds"
       6:
          title: "Skill 1 - Weakening Swing VI"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 4.5 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 4.5 seconds"
       7:
          title: "Skill 1 - Weakening Swing VII"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 5.0 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 5.0 seconds"
       8:
          title: "Skill 1 - Weakening Swing VIII"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 5.5 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 5.5 seconds"
       9:
          title: "Skill 1 - Weakening Swing IX"
-         description: "Upon hitting an enemy player, 20% chance to inflict Weakness I for 6.0 seconds"
+         description: "Upon hitting an enemy player, 20% chance \nto inflict Weakness I for 6.0 seconds"
     SWIFT_BACKUP:
       1:
          title: "Skill 2 - Swift Backup I"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 4.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 4.0 seconds. Wolf has permanent Speed II"
       2:
          title: "Skill 2 - Swift Backup II"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 5.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 5.0 seconds. Wolf has permanent Speed II"
       3:
          title: "Skill 2 - Swift Backup III"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 6.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 6.0 seconds. Wolf has permanent Speed II"
       4:
          title: "Skill 2 - Swift Backup IV"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 7.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 7.0 seconds. Wolf has permanent Speed II"
       5:
          title: "Skill 2 - Swift Backup V"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 8.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 8.0 seconds. Wolf has permanent Speed II"
       6:
          title: "Skill 2 - Swift Backup VI"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 9.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 9.0 seconds. Wolf has permanent Speed II"
       7:
          title: "Skill 2 - Swift Backup VII"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 10.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 10.0 seconds. Wolf has permanent Speed II"
       8:
          title: "Skill 2 - Swift Backup VIII"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 11.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 11.0 seconds. Wolf has permanent Speed II"
       9:
          title: "Skill 2 - Swift Backup IX"
-         description: "Upon getting hit, 10% chance to spawn a wolf that protects you for 12.0 seconds. Wolf has permanent Speed II"
+         description: "Upon getting hit, 10% chance to spawn a wolf that \nprotects you for 12.0 seconds. Wolf has permanent Speed II"
     SPIRIT_WARRIOR:
       1:
          title: "Kit Items - Spirit Warrior I"
@@ -583,31 +583,31 @@ classes:
     WITHER_HEADS:
       1:
          title: "Ability - Wither Heads I"
-         description: "Fire three wither heads which explode on impact, dealing 2.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 2.0 damage per head with 100% armor penetration"
       2:
          title: "Ability - Wither Heads II"
-         description: "Fire three wither heads which explode on impact, dealing 2.5 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 2.5 damage per head with 100% armor penetration"
       3:
          title: "Ability - Wither Heads III"
-         description: "Fire three wither heads which explode on impact, dealing 3.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 3.0 damage per head with 100% armor penetration"
       4:
          title: "Ability - Wither Heads IV"
-         description: "Fire three wither heads which explode on impact, dealing 3.5 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 3.5 damage per head with 100% armor penetration"
       5:
          title: "Ability - Wither Heads V"
-         description: "Fire three wither heads which explode on impact, dealing 4.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 4.0 damage per head with 100% armor penetration"
       6:
          title: "Ability - Wither Heads VI"
-         description: "Fire three wither heads which explode on impact, dealing 4.5 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 4.5 damage per head with 100% armor penetration"
       7:
          title: "Ability - Wither Heads VII"
-         description: "Fire three wither heads which explode on impact, dealing 5.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 5.0 damage per head with 100% armor penetration"
       8:
          title: "Ability - Wither Heads VIII"
-         description: "Fire three wither heads which explode on impact, dealing 5.5 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 5.5 damage per head with 100% armor penetration"
       9:
          title: "Ability - Wither Heads IX"
-         description: "Fire three wither heads which explode on impact, dealing 6.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 6.0 damage per head with 100% armor penetration"
     SOUL_SUCKER:
       1:
          title: "Skill 1 - Soul Sucker I"
@@ -666,31 +666,31 @@ classes:
          description: "15% chance to gain 1.0 health upon being hit"
     WITHER_MINION:
       1:
-         title: "Kit Items - Spirit Warrior I"
+         title: "Kit Items - Wither Minion I"
          description: "Iron Armor \nIron Sword \n4 Steak \n32 Cobblestone"
       2:
-         title: "Kit Items - Spirit Warrior II"
+         title: "Kit Items - Wither Minion II"
          description: "Iron Armor \nIron Sword \n8 Steak \n48 Cobblestone"
       3:
-         title: "Kit Items - Spirit Warrior III"
+         title: "Kit Items - Wither Minion III"
          description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone"
       4:
-         title: "Kit Items - Spirit Warrior IV"
+         title: "Kit Items - Wither Minion IV"
          description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764)"
       5:
-         title: "Kit Items - Spirit Warrior V"
+         title: "Kit Items - Wither Minion V"
          description: "Iron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       6:
-         title: "Kit Items - Spirit Warrior VI"
+         title: "Kit Items - Wither Minion VI"
          description: "Iron Helmet (Protection I) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \nPotion Of Speed II"
       7:
-         title: "Kit Items - Spirit Warrior VII"
+         title: "Kit Items - Wither Minion VII"
          description: "Iron Helmet (Protection II) \nIron Armor \nIron Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       8:
-         title: "Kit Items - Spirit Warrior VIII"
+         title: "Kit Items - Wither Minion VIII"
          description: "Iron Helmet (Protection II) \nIron Armor \nDiamond Sword \n16 Steak \n64 Cobblestone \nPotion Of Heal (8 \u2764) \n2 Potion Of Speed II"
       9:
-         title: "Kit Items - Spirit Warrior IX"
+         title: "Kit Items - Wither Minion IX"
          description: "Diamond Helmet (Protection II) \nIron Armor \nDiamond Sword \n16 Steak \n64 Cobblestone \n2 Potion Of Heal (8 \u2764) \n2 Potion Of Speed II"
          
 death-messages:
@@ -713,8 +713,8 @@ death-messages:
     - "%s&7 pierced %s&7 using their arrow!"
   diamond_sword:
     - "%s&7 sliced through %s&7 with a diamond sword!"
-    - "%s&7 split %s in two using a diamond sword!"
+    - "%s&7 split %s&7 in two using a diamond sword!"
   iron_sword:
     - "%s&7 slayed %s&7 with an iron sword!"
   stone_sword:
-    - "%s&7 violently bashed the face of %s in with a stone sword!"
+    - "%s&7 violently bashed the face of %s&7 in with a stone sword!"
