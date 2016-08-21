@@ -470,31 +470,31 @@ classes:
     TORNADO:
       1:
          title: "Ability - Tornado I"
-         description: "Summon a tornado for 2.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 2.0 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
       2:
          title: "Ability - Tornado II"
-         description: "Summon a tornado for 2.5 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 2.5 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
       3:
          title: "Ability - Tornado III"
-         description: "Summon a tornado for 3.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 3.0 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
       4:
          title: "Ability - Tornado IV"
-         description: "Summon a tornado for 3.5 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 3.5 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
       5:
          title: "Ability - Tornado V"
-         description: "Summon a tornado for 4.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 4.0 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
       6:
          title: "Ability - Tornado VI"
-         description: "Summon a tornado for 4.5 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 4.5 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
       7:
          title: "Ability - Tornado VII"
-         description: "Summon a tornado for 5.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 5.0 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
       8:
          title: "Ability - Tornado VIII"
-         description: "Summon a tornado for 5.5 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 5.5 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
       9:
          title: "Ability - Tornado IX"
-         description: "Summon a tornado for 6.0 seconds, dealing 3.0 \ndamage with 100% armor penetration every second"
+         description: "Summon a tornado for 6.0 seconds, dealing 2.0 \ndamage with 100% armor penetration every second"
     WEAKENING_SWING:
       1:
          title: "Skill 1 - Weakening Swing I"
