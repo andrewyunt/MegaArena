@@ -203,6 +203,9 @@ public enum Ability implements Upgradable {
 				@Override
 				public void run() {
 					
+					if (!player.isInGame())
+						return;
+					
 					ExplodeEffect explodeEffect = new ExplodeEffect(MegaArena.getInstance().getEffectManager());
 	    	        
 	    	        explodeEffect.amount = 10;

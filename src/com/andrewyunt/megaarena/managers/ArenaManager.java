@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -100,9 +101,9 @@ public class ArenaManager {
 	 * @return
 	 * 		A collection of registered arenas of the specified arena type.
 	 */
-	public Collection<Arena> getArenas(Arena.Type type) {
+	public Set<Arena> getArenas(Arena.Type type) {
 
-		Collection<Arena> arenas = new HashSet<Arena>();
+		Set<Arena> arenas = new HashSet<Arena>();
 
 		for (Map.Entry<String, Arena> entry : this.arenas.entrySet()) {
 			Arena arena = entry.getValue();
@@ -120,9 +121,9 @@ public class ArenaManager {
 	 * @return
 	 * 		A collection of all registered arenas on the server.
 	 */
-	public Collection<Arena> getArenas() {
+	public Set<Arena> getArenas() {
 
-		Collection<Arena> arenas = new HashSet<Arena>();
+		Set<Arena> arenas = new HashSet<Arena>();
 
 		for (Map.Entry<String, Arena> entry : this.arenas.entrySet())
 			arenas.add(entry.getValue());
