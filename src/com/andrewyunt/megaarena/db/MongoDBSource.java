@@ -59,7 +59,8 @@ public class MongoDBSource extends DatabaseHandler {
 	@Override
 	public void savePlayer(GamePlayer player) {
 
-		String uuid = player.getBukkitPlayer().getUniqueId().toString();
+		String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName())
+				.getUniqueId().toString();
 		
 		DBObject field = new BasicDBObject("uuid", uuid);
 		DBObject playerObj = playersCollection.findOne(field);
