@@ -35,6 +35,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -353,7 +354,14 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			} else
 				nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
 			
-			nearbyPlayer.removePotionEffect(PotionEffectType.WITHER);
+	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+	            @Override
+	            public void run() {
+	            	
+	            	nearbyPlayer.removePotionEffect(PotionEffectType.WITHER);
+	            }
+	        }, 1L);
 		}
 	}
 }
