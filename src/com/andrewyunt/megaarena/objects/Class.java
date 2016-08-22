@@ -343,7 +343,7 @@ public enum Class implements Upgradable {
 				break;
 			case 9:
 				inv.setItem(0, new ItemStack(Material.DIAMOND_SWORD, 1));
-				inv.setItem(3, potS2);
+				inv.setItem(2, potS2);
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
