@@ -15,6 +15,7 @@
  */
 package com.andrewyunt.megaarena.command;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -70,16 +71,17 @@ public class DuelCommand implements CommandExecutor {
 			return false;
 		}
 		
-		GamePlayer targetPlayer = null;
+		Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
+		GamePlayer targetAP = null;
 		
 		try {
-			targetPlayer = MegaArena.getInstance().getPlayerManager().getPlayer(args[0]);
+			targetAP = MegaArena.getInstance().getPlayerManager().getPlayer(targetPlayer.getName());
 		} catch (PlayerException e) {
 			sender.sendMessage(ChatColor.RED + "The target player is currently offline.");
 			return false;
 		}
 		
-		if (targetPlayer.isInGame()) {
+		if (targetAP.isInGame()) {
 			sender.sendMessage(String.format(ChatColor.RED + "The player %s is currently in a game and cannot duel.", targetPlayer.getName()));
 			return false;
 		}
@@ -89,17 +91,15 @@ public class DuelCommand implements CommandExecutor {
 			return false;
 		}
 		
-		targetPlayer.setRequestingPlayer(player);
+		targetAP.setRequestingPlayer(player);
 		
-		Player targetBukkitPlayer = targetPlayer.getBukkitPlayer();
-		
-		targetBukkitPlayer.sendMessage(String.format(ChatColor.AQUA + "%s is currently requesting you to a duel.",
+		targetPlayer.sendMessage(String.format(ChatColor.AQUA + "%s is currently requesting you to a duel.",
 				player.getName() + ChatColor.GREEN));
-		targetBukkitPlayer.sendMessage(ChatColor.AQUA + "/duelaccept");
-		targetBukkitPlayer.sendMessage(ChatColor.AQUA + "/dueldeny");
+		targetPlayer.sendMessage(ChatColor.AQUA + "/duelaccept");
+		targetPlayer.sendMessage(ChatColor.AQUA + "/dueldeny");
 		
 		sender.sendMessage(String.format(ChatColor.GREEN + "You have requested %s to a duel.",
-				ChatColor.AQUA + targetBukkitPlayer.getName() + ChatColor.GREEN));
+				ChatColor.AQUA + targetPlayer.getName() + ChatColor.GREEN));
 		
 		return true;
 	}
