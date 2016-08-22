@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -30,8 +31,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 
+import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SideException;
 
@@ -57,6 +60,78 @@ public class Game {
 			sides.add(new GameSide(this, GameSide.Type.GREEN));
 		} else
 			sides.add(new GameSide(this, GameSide.Type.INDEPENDENT));
+		
+		if (arena.getType() != Arena.Type.TDM)
+			return;
+		
+		/* Repeating task used for automatic team balancing in TDM */
+        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+            	
+            	GameSide blue = null;
+            	GameSide green = null;
+            	
+            	try {
+            		blue = getSide(GameSide.Type.BLUE);
+            		green = getSide(GameSide.Type.GREEN);
+				} catch (SideException e) {
+				}
+            	
+				int bluePlayers = getPlayers(blue).size();
+				int greenPlayers = getPlayers(green).size();
+				
+            	int totalPlayers = bluePlayers + greenPlayers;
+            	
+            	GameSide morePlayers = null;
+            	
+            	if (bluePlayers > greenPlayers)
+            		morePlayers = blue;
+            	else if (greenPlayers > bluePlayers)
+            		morePlayers = green;
+            	else
+            		return;
+            	
+            	int balanceGap = 0;
+            	
+            	if (totalPlayers > 20 && totalPlayers < 40)
+            		balanceGap = 5;
+            	else if (totalPlayers > 40)
+            		balanceGap = 10;
+            	else
+            		return;
+            	
+            	int playerDiff = 0;
+            	
+        		if (morePlayers == blue) {
+        			if (bluePlayers - greenPlayers < balanceGap)
+        				return;
+        			
+        			playerDiff = bluePlayers - greenPlayers;
+        		} else if (morePlayers == green) {
+        			if (greenPlayers - bluePlayers < balanceGap)
+        				return;
+        			
+        			playerDiff = greenPlayers - bluePlayers;
+        		}
+        		
+        		List<GamePlayer> morePlayersList = new ArrayList<GamePlayer>(getPlayers(morePlayers));
+        		
+        		while (playerDiff > 0) {
+        			Random random = new Random();
+        			GamePlayer moved = morePlayersList.get(random.nextInt(morePlayersList.size()));
+        			
+        			morePlayersList.remove(moved);
+        			
+        			try {
+						removePlayer(moved);
+						addPlayer(moved, Action.TEAM_BALANCE);
+					} catch (PlayerException e) {
+					}
+        		}
+            }
+        }, 0L, 6000L);
 	}
 	
 	/**
@@ -76,7 +151,7 @@ public class Game {
 	 * @param player
 	 * 		The player to be added to the game.
 	 */
-	public void addPlayer(GamePlayer player) {
+	public void addPlayer(GamePlayer player, Action action) {
 		
 		Player bp = player.getBukkitPlayer();
 		
@@ -125,8 +200,14 @@ public class Game {
 		
 		GameSide.Type sideType = side.getSideType();
 		
-		bp.sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side.",
-				ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
+		if (action == Action.VOLUNTARY)
+			bp.sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side."
+					+ ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
+		else if (action == Action.TEAM_BALANCE)
+			bp.sendMessage(ChatColor.GREEN + String.format(
+					"You have been automatically moved to "
+					+ "the %s side by an automatic team balance.",
+					ChatColor.AQUA + side.getSideType().getName() + ChatColor.GREEN));
 		
 		spawnPlayer(player, sideType);
 	}
@@ -231,10 +312,27 @@ public class Game {
 	/**
 	 * Gets all players currently in the game.
 	 * 
-	 * @return
-	 * 		A collection of players currently in the game.
+	 * @returns
+	 * 		A set of players currently in the game.
 	 */
-	public Collection<GamePlayer> getPlayers() {
+	public Set<GamePlayer> getPlayers() {
+		
+		return players;
+	}
+	
+	/**
+	 * Gets all players currently in the game from the specified side.
+	 * 
+	 * @return
+	 * 		A set of players currently in the game on the specified side.
+	 */
+	public Set<GamePlayer> getPlayers(GameSide side) {
+		
+		Set<GamePlayer> players = new HashSet<GamePlayer>(this.players);
+		
+		for (GamePlayer player : players)
+			if (player.getSide() != side)
+				players.remove(player);
 		
 		return players;
 	}
@@ -242,7 +340,7 @@ public class Game {
 	/**
 	 * Removes all players / placed blocks, and sets the arena game to null.
 	 */
-	public void end() {
+	public void removePlayer() {
 		
 		Set<GamePlayer> toRemove = new HashSet<GamePlayer>();
 		
