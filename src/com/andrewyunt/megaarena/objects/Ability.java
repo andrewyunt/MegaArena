@@ -148,6 +148,7 @@ public enum Ability implements Upgradable {
 		} else if (this == EXPLOSIVE_ARROW) {
 			
 			Projectile arrow = bp.launchProjectile(Arrow.class);
+			arrow.setVelocity(arrow.getVelocity().multiply(2.0));
 			arrow.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
 			arrow.setShooter(bp);
 			
