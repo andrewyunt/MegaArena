@@ -34,6 +34,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -351,6 +352,8 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 				return;
 			} else
 				nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
+			
+			nearbyPlayer.removePotionEffect(PotionEffectType.WITHER);
 		}
 	}
 }
