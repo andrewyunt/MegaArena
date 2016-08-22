@@ -55,7 +55,6 @@ public class GamePlayer {
 	private Class classType;
 	private boolean hasFallen, sentActivate = false;
 	private Arena selectedArena;
-	private Location previousLocation;
 	private GameMode previousGameMode;
 	private GameSide side;
 	private int energy;
@@ -285,16 +284,6 @@ public class GamePlayer {
 	public int getEnergy() {
 		
 		return this.energy;
-	}
-
-	public void setPreviousLocation(Location previousLocation) {
-		
-		this.previousLocation = previousLocation;
-	}
-	
-	public Location getPreviousLocation() {
-		
-		return previousLocation;
 	}
 	
 	public void setPreviousGameMode(GameMode previousGameMode) {

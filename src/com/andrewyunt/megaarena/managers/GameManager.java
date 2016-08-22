@@ -27,6 +27,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.GameException;
+import com.andrewyunt.megaarena.objects.Action;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.GameSide;
@@ -137,7 +138,7 @@ public class GameManager {
 	 * @throws GameException
 	 * 		If the specified arena type is a DUEL, GameException is thrown.
 	 */
-	public void matchMake(GamePlayer player, Arena.Type type) throws GameException {
+	public void matchMake(GamePlayer player, Arena.Type type, Action action) throws GameException {
 
 		if (type == Arena.Type.DUEL)
 			throw new GameException("Matchmaking is not available for duels.");
@@ -170,7 +171,7 @@ public class GameManager {
 			@Override
 			public void run() {
 				
-				game.addPlayer(player);
+				game.addPlayer(player, action);
 			}
 		}, 1L);
 	}

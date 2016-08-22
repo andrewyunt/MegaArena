@@ -156,10 +156,6 @@ public class Game {
 		Player bp = player.getBukkitPlayer();
 		
 		player.setPreviousGameMode(bp.getGameMode());
-		
-		Location prevLoc = bp.getLocation();
-		prevLoc.setY(prevLoc.getY() + 1);
-		player.setPreviousLocation(prevLoc);
 	
 		GameSide side = null;
 		
@@ -201,8 +197,9 @@ public class Game {
 		GameSide.Type sideType = side.getSideType();
 		
 		if (action == Action.VOLUNTARY)
-			bp.sendMessage(String.format(ChatColor.GREEN + "You have joined the %s side."
-					+ ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
+			bp.sendMessage(ChatColor.GREEN + String.format(
+					"You have joined the %s side.",
+					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
 		else if (action == Action.TEAM_BALANCE)
 			bp.sendMessage(ChatColor.GREEN + String.format(
 					"You have been automatically moved to "
@@ -296,9 +293,9 @@ public class Game {
 		/* Set player's lobby inventory */
 		player.updateHotBar();
 		
-		Location loc = player.getPreviousLocation();
+		/* Teleport the player to the spawn location */
+		Location loc = bp.getWorld().getSpawnLocation().clone();
 		
-		/* Teleport player to previous location */
 		Chunk chunk = loc.getChunk();
 		
 		if (!chunk.isLoaded())
@@ -340,7 +337,7 @@ public class Game {
 	/**
 	 * Removes all players / placed blocks, and sets the arena game to null.
 	 */
-	public void removePlayer() {
+	public void end() {
 		
 		Set<GamePlayer> toRemove = new HashSet<GamePlayer>();
 		

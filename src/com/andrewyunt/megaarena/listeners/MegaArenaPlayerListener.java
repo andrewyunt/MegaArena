@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,6 +44,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -84,6 +87,25 @@ public class MegaArenaPlayerListener implements Listener {
 
 		/* Update player hotbar */
 		player.updateHotBar();
+		
+		/* Teleport the player to the spawn location */
+		Location loc = bp.getWorld().getSpawnLocation().clone();
+		
+		Chunk chunk = loc.getChunk();
+		
+		if (!chunk.isLoaded())
+			chunk.load();
+		
+		loc.setY(loc.getY() + 1);
+		
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				
+				bp.teleport(loc, TeleportCause.COMMAND);
+			}
+		}, 1L);
 	}
 
 	@EventHandler
@@ -164,14 +186,16 @@ public class MegaArenaPlayerListener implements Listener {
 		} else if (name.equals("Play : Team-deathmatch")) {
 			
 			try {
-				plugin.getGameManager().matchMake(gp, Arena.Type.TDM);
+				plugin.getGameManager().matchMake(gp, Arena.Type.TDM,
+						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
 			} catch (GameException e) {
 			}
 			
 		} else if (name.equals("Play : Free-for-all")) {
 
 			try {
-				plugin.getGameManager().matchMake(gp, Arena.Type.FFA);
+				plugin.getGameManager().matchMake(gp, Arena.Type.FFA, 
+						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
 			} catch (GameException e) {
 			}
 		}
