@@ -78,8 +78,6 @@ public class MegaArenaPlayerListener implements Listener {
 			}
 		}
 		
-		MegaArena.getInstance().getDataSource().loadPlayer(player);
-		
 		/* Set player's scoreboard to default scoreboard */
 		player.updateDefaultScoreboard();
 		bp.setScoreboard(player.getDefaultScoreboard());

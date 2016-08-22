@@ -194,10 +194,16 @@ public class Game {
 		player.setGame(null);
 		player.setSide(null);
 		
-		/* Set player energy to 0 */
+		/* Set player's energy to 0 */
 		player.setEnergy(0);
 		
-		/* Set player lobby health, food, experience and game mode */
+		/* Set player's speed boolean to false */
+		player.setHasSpeed(false);
+		
+		/* Remove player's potion effects */
+		bp.getActivePotionEffects().clear();
+		
+		/* Set player's lobby health, food, experience and game mode */
 		bp.setMaxHealth(20.0D);
 		bp.setHealth(20.0D);
 		bp.setFoodLevel(20);
@@ -205,7 +211,8 @@ public class Game {
 		bp.setLevel(0);
 		bp.setGameMode(player.getPreviousGameMode());
 		
-		/* Set player lobby inventory */
+		
+		/* Set player's lobby inventory */
 		player.updateHotBar();
 		
 		Location loc = player.getPreviousLocation();
