@@ -323,8 +323,6 @@ public class GamePlayer {
 		
 		this.coins = ((Double) coins).intValue();
 		
-		MegaArena.getInstance().getDataSource().savePlayer(this);
-		
 		updateDefaultScoreboard();
 	}
 	
@@ -336,8 +334,6 @@ public class GamePlayer {
 	public void setEarnedCoins(double earnedCoins) {
 		
 		this.earnedCoins = ((Double) earnedCoins).intValue();
-		
-		MegaArena.getInstance().getDataSource().savePlayer(this);
 	}
 	
 	public int getEarnedCoins() {
@@ -415,8 +411,6 @@ public class GamePlayer {
 	public void setKills(double kills) {
 		
 		this.kills = ((Double) kills).intValue();
-		
-		MegaArena.getInstance().getDataSource().savePlayer(this);
 		
 		updateDefaultScoreboard();
 	}

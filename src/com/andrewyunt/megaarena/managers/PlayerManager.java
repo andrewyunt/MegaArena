@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
@@ -48,6 +49,8 @@ public class PlayerManager {
 
 		GamePlayer player = new GamePlayer(name);
 
+		MegaArena.getInstance().getDataSource().loadPlayer(player);
+		
 		players.put(name, player);
 
 		return player;
@@ -65,6 +68,8 @@ public class PlayerManager {
 		
 		if (!players.containsKey(player.getName()))
 			throw new PlayerException("The player specified is not in the plugin's records.");
+		
+		MegaArena.getInstance().getDataSource().savePlayer(player);
 		
 		players.remove(player.getName());
 	}
