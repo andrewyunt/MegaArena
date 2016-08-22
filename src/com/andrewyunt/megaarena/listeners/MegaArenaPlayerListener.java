@@ -68,40 +68,41 @@ public class MegaArenaPlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 
-		Player bp = event.getPlayer();
-		GamePlayer player = null;
-
-		/* Get the player's GamePlayer object and if it doesn't exist, add it */
-		try {
-			player = MegaArena.getInstance().getPlayerManager().createPlayer(bp.getName());
-		} catch (PlayerException e) {
-			try {
-				player = MegaArena.getInstance().getPlayerManager().getPlayer(bp.getName());
-			} catch (PlayerException e1) {
-			}
-		}
-		
-		/* Set player's scoreboard to default scoreboard */
-		player.updateDefaultScoreboard();
-		bp.setScoreboard(player.getDefaultScoreboard());
-
-		/* Update player hotbar */
-		player.updateHotBar();
-		
-		/* Teleport the player to the spawn location */
-		Location loc = bp.getWorld().getSpawnLocation().clone();
-		
-		Chunk chunk = loc.getChunk();
-		
-		if (!chunk.isLoaded())
-			chunk.load();
-		
-		loc.setY(loc.getY() + 1);
+		final Player bp = event.getPlayer();
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
 			@Override
 			public void run() {
+				
+				GamePlayer player = null;
+
+				/* Get the player's GamePlayer object and if it doesn't exist, add it */
+				try {
+					player = MegaArena.getInstance().getPlayerManager().createPlayer(bp.getName());
+				} catch (PlayerException e) {
+					try {
+						player = MegaArena.getInstance().getPlayerManager().getPlayer(bp.getName());
+					} catch (PlayerException e1) {
+					}
+				}
+				
+				/* Set player's scoreboard to default scoreboard */
+				player.updateDefaultScoreboard();
+				bp.setScoreboard(player.getDefaultScoreboard());
+				
+				/* Update player hotbar */
+				player.updateHotBar();
+				
+				/* Teleport the player to the spawn location */
+				Location loc = bp.getWorld().getSpawnLocation().clone();
+				
+				Chunk chunk = loc.getChunk();
+				
+				if (!chunk.isLoaded())
+					chunk.load();
+				
+				loc.setY(loc.getY() + 1);
 				
 				bp.teleport(loc, TeleportCause.COMMAND);
 			}

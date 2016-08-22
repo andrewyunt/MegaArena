@@ -79,6 +79,9 @@ public class DuelCommand implements CommandExecutor {
 		} catch (PlayerException e) {
 			sender.sendMessage(ChatColor.RED + "The target player is currently offline.");
 			return false;
+		} catch (NullPointerException e) {
+			sender.sendMessage(ChatColor.RED + "The target player does not exist.");
+			return false;
 		}
 		
 		if (targetAP.isInGame()) {
