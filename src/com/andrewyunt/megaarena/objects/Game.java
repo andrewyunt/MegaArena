@@ -327,9 +327,14 @@ public class Game {
 		
 		Set<GamePlayer> players = new HashSet<GamePlayer>(this.players);
 		
+		Set<GamePlayer> toRemove = new HashSet<GamePlayer>();
+		
 		for (GamePlayer player : players)
 			if (player.getSide() != side)
-				players.remove(player);
+				toRemove.add(player);
+		
+		for (GamePlayer player : toRemove)
+			players.remove(player);
 		
 		return players;
 	}
