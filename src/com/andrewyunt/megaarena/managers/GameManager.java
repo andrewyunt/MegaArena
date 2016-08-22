@@ -142,34 +142,34 @@ public class GameManager {
 		if (type == Arena.Type.DUEL)
 			throw new GameException("Matchmaking is not available for duels.");
 
+		Player bp = player.getBukkitPlayer();
+
+		if (player.isInGame()) {
+			bp.sendMessage(ChatColor.RED + "You are already in a game.");
+			return;
+		}
+
+		if (!player.hasSelectedClass()) {
+			bp.sendMessage(ChatColor.RED + "You must select a class before entering a game.");
+			return;
+		}
+
+		List<Game> games = new ArrayList<Game>(getGames(type));
+
+		if (games.size() < 1) {
+			bp.sendMessage(String.format(ChatColor.RED + "There are not active %s games at the moment.",
+					type.toString()));
+			return;
+		}
+
+		Collections.shuffle(games);
+		Game game = games.get(0);
+		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
 			@Override
 			public void run() {
 				
-				Player bp = player.getBukkitPlayer();
-
-				if (player.isInGame()) {
-					bp.sendMessage(ChatColor.RED + "You are already in a game.");
-					return;
-				}
-
-				if (!(player.hasSelectedClass())) {
-					bp.sendMessage(ChatColor.RED + "You must select a class before entering a game.");
-					return;
-				}
-
-				List<Game> games = new ArrayList<Game>(getGames(type));
-
-				if (games.size() < 1) {
-					bp.sendMessage(String.format(ChatColor.RED + "There are not active %s games at the moment.",
-							type.toString()));
-					return;
-				}
-
-				Collections.shuffle(games);
-				Game game = games.get(0);
-
 				game.addPlayer(player);
 			}
 		}, 1L);

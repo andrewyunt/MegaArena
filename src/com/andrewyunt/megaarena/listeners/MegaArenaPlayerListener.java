@@ -99,8 +99,6 @@ public class MegaArenaPlayerListener implements Listener {
 			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
-		
-		MegaArena.getInstance().getDataSource().savePlayer(gp);
 
 		if (!gp.isInGame())
 			return;

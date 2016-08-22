@@ -50,7 +50,6 @@ import net.shortninja.staffplus.StaffPlus;
 public class GamePlayer {
 	
 	private String name;
-	private Player player;
 	private Game game;
 	private GamePlayer requestingPlayer;
 	private Class classType;
@@ -73,7 +72,6 @@ public class GamePlayer {
 		
 		/* Set variables */
 		this.name = name;
-		player = MegaArena.getInstance().getServer().getPlayer(name);
 		
 		/* Set the scoreboard variable and its attributes */
 		ScoreboardManager manager = Bukkit.getScoreboardManager();
@@ -90,7 +88,7 @@ public class GamePlayer {
 	
 	public Player getBukkitPlayer() {
 		
-		return player;
+		return MegaArena.getInstance().getServer().getPlayer(name);
 	}
 	
 	public Game getGame() {
@@ -168,12 +166,12 @@ public class GamePlayer {
 	
 	public boolean isStaffMode() {
 		
-		return StaffPlus.get().modeCoordinator.isInMode(player.getUniqueId());
+		return StaffPlus.get().modeCoordinator.isInMode(getBukkitPlayer().getUniqueId());
 	}
 	
 	public void updateHotBar() {
 		
-		PlayerInventory inv = player.getInventory();
+		PlayerInventory inv = getBukkitPlayer().getInventory();
 		
 		inv.setHelmet(new ItemStack(Material.AIR));
 		inv.setChestplate(new ItemStack(Material.AIR));
@@ -210,11 +208,11 @@ public class GamePlayer {
 		playTDM.setItemMeta(playTDMMeta);
 		
 		/* Set items in player's inventory */
-		player.getInventory().setItem(0, shop);
-		player.getInventory().setItem(1, layoutEditor);
-		player.getInventory().setItem(2, classSelector);
-		player.getInventory().setItem(7, playFFA);
-		player.getInventory().setItem(8, playTDM);
+		getBukkitPlayer().getInventory().setItem(0, shop);
+		getBukkitPlayer().getInventory().setItem(1, layoutEditor);
+		getBukkitPlayer().getInventory().setItem(2, classSelector);
+		getBukkitPlayer().getInventory().setItem(7, playFFA);
+		getBukkitPlayer().getInventory().setItem(8, playTDM);
 	}
 	
 	public GameSide getSide() {
@@ -231,13 +229,13 @@ public class GamePlayer {
 		
 		Location loc = spawn.getLocation().clone();
 		
-		player.setMaxHealth(40D);
-		player.setHealth(40D);
-		player.setFoodLevel(20);
+		getBukkitPlayer().setMaxHealth(40D);
+		getBukkitPlayer().setHealth(40D);
+		getBukkitPlayer().setFoodLevel(20);
 		setEnergy(0);
-		player.setGameMode(GameMode.SURVIVAL);
+		getBukkitPlayer().setGameMode(GameMode.SURVIVAL);
 		
-		player.getInventory().clear();
+		getBukkitPlayer().getInventory().clear();
 		classType.giveKitItems(this);
 		
 		Chunk chunk = loc.getChunk();
@@ -247,7 +245,7 @@ public class GamePlayer {
 		
 		loc.setY(loc.getY() + 1);
 		
-		player.teleport(loc, TeleportCause.COMMAND);
+		getBukkitPlayer().teleport(loc, TeleportCause.COMMAND);
 	}
 	
 	public void addEnergy(int energy) {
@@ -273,15 +271,15 @@ public class GamePlayer {
 			if (!sentActivate) {
 				sentActivate = true;
 				if (classType == Class.SKELETON)
-					player.sendMessage(ChatColor.AQUA + "Left click " + ChatColor.GREEN +
+					getBukkitPlayer().sendMessage(ChatColor.AQUA + "Left click " + ChatColor.GREEN +
 							"using your bow to activate your ability!");
 				else
-					player.sendMessage(ChatColor.AQUA + "Right click " + ChatColor.GREEN +
+					getBukkitPlayer().sendMessage(ChatColor.AQUA + "Right click " + ChatColor.GREEN +
 						"using your sword to activate your ability!");
 			}
 		
-		player.setLevel(this.energy);
-		player.setExp(this.energy / 100.0F);
+		getBukkitPlayer().setLevel(this.energy);
+		getBukkitPlayer().setExp(this.energy / 100.0F);
 	}
 	
 	public int getEnergy() {
@@ -324,6 +322,8 @@ public class GamePlayer {
 	public void setCoins(double coins) {
 		
 		this.coins = ((Double) coins).intValue();
+		
+		MegaArena.getInstance().getDataSource().savePlayer(this);
 		
 		updateDefaultScoreboard();
 	}
@@ -382,7 +382,7 @@ public class GamePlayer {
 	 */
 	public int getLevel(Upgradable upgradable) {
 		
-		Player bp = player;
+		Player bp = getBukkitPlayer();
 		
 		for (int i = 9; i > 1; i--)
 			if (bp.hasPermission(String.format("megaarena.%s.%s", upgradable.toString().toLowerCase(), i)))
@@ -404,7 +404,7 @@ public class GamePlayer {
 	public void setLevel(Upgradable upgradable, int level) {
 		
 		MegaArena.getInstance().getServer().dispatchCommand(MegaArena.getInstance().getServer().getConsoleSender(),
-				String.format("pex user %s add megaarena.%s.%s", player.getName(), upgradable.toString().toLowerCase(), level));
+				String.format("pex user %s add megaarena.%s.%s", getBukkitPlayer().getName(), upgradable.toString().toLowerCase(), level));
 	}
 	
 	public void addKill() {
@@ -415,6 +415,8 @@ public class GamePlayer {
 	public void setKills(double kills) {
 		
 		this.kills = ((Double) kills).intValue();
+		
+		MegaArena.getInstance().getDataSource().savePlayer(this);
 		
 		updateDefaultScoreboard();
 	}
