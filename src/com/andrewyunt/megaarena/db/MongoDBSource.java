@@ -125,8 +125,35 @@ public class MongoDBSource extends DatabaseHandler {
             player.setCoins(getDouble(playerObj, "coins"));
     }
  
+    @Override
+    public void loadEarnedCoins(GamePlayer player) {
  
+        String uuid = player.getBukkitPlayer().getUniqueId().toString();
  
+        DBObject field = new BasicDBObject("uuid", uuid);
+        DBObject playerObj = playersCollection.findOne(field);
+ 
+        if (playerObj.containsField("earnedCoins"))
+            player.setEarnedCoins(getDouble(playerObj, "earnedCoins"));
+    }
+ 
+    @Override
+    public void loadKills(GamePlayer player) {
+ 
+        String uuid = player.getBukkitPlayer().getUniqueId().toString();
+ 
+        DBObject field = new BasicDBObject("uuid", uuid);
+        DBObject playerObj = playersCollection.findOne(field);
+ 
+        if (playerObj.containsField("kills"))
+            player.setKills(getDouble(playerObj, "kills"));
+    }
+    
+    private static double getDouble(DBObject from, String what) {
+    	
+        Object coinsObj = from.get(what);
+        
+        return coinsObj.getClass() == Integer.class ? (int) (Integer) coinsObj : (Double) coinsObj;
     }
  
     @Override
