@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
@@ -254,12 +255,12 @@ public enum Ability implements Upgradable {
 			
 	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 	        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
-	            int elapsedTime = 0;
+	            float elapsedTime = 0;
 	        	
 	        	@Override
 	            public void run() {
 	            	
-	            	if (elapsedTime > duration)
+	            	if (elapsedTime >= duration)
 	            		return;
 	            	
 	    			for (double y = 0; y < maxHeight; y+= 0.05) {
@@ -300,12 +301,12 @@ public enum Ability implements Upgradable {
 	    				}
 	    			}
 	    			
-	    			elapsedTime++;
+	    			elapsedTime = elapsedTime + 0.5F;
 	            }
-	        }, 0L, (long) (duration * 20L));
+	        }, 0L, (long) 10L);
 	        
 	        new BukkitRunnable() {
-	        	float elapsedTime = 0;
+	        	int elapsedTime = 0;
 	        	
 	        	public void run() {
 	            	
@@ -337,7 +338,7 @@ public enum Ability implements Upgradable {
 	            		((Damageable) entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill and the red invisibility period 
 	            		entityGP.setLastDamageCause(DamageCause.CONTACT);
 	            		
-	            		double health = ((Damageable) entity).getHealth() - 1.0D;
+	            		double health = ((Damageable) entity).getHealth() - 2.0D;
 	            		
 	            		if (health > 0)
 	            			((Damageable) entity).setHealth(health);
@@ -345,9 +346,9 @@ public enum Ability implements Upgradable {
 	            			((Damageable) entity).setHealth(0D);
 	            	}
 	            	
-	            	elapsedTime = elapsedTime + 0.5F;
+	            	elapsedTime++;
 	            }
-	        }.runTaskTimer(MegaArena.getInstance(), 0L, 10L);
+	        }.runTaskTimer(MegaArena.getInstance(), 0L, 20L);
 			
 		} else if (this == WITHER_HEADS) {
 			
