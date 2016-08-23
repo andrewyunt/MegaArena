@@ -205,7 +205,9 @@ public enum Class implements Upgradable {
 			switch (kitLevel){
 				case 1:
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
-					inv.setItem(8, new ItemStack(Material.ARROW, 32));
+					inv.setItem(4, new ItemStack(Material.COBBLESTONE, 32));
+					inv.setItem(7, new ItemStack(Material.ARROW, 32));
+					inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 4));
 					break;
 				case 2:
 					inv.setItem(2, new ItemStack(Material.BOW, 1));
