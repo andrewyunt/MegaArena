@@ -21,6 +21,10 @@ commands:
   dueldeny:
     description: Deny a request to duel a player.
     permission: megaarena.dueldeny
+  duelstoggle:
+    description: Toggle receiving duel requests from players off.
+    permission: megaarena.duelstoggle
+  
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -78,4 +82,7 @@ permissions:
      default: true
    megaarena.dueldeny:
      description: Allows you to deny a duel from another player.
+     default: true
+   megaarena.duelstoggle:
+     description: Allows you to toggle receiving duel requests off.
      default: true

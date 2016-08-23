@@ -15,7 +15,9 @@
  */
 package com.andrewyunt.megaarena.objects;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -51,7 +53,7 @@ public class GamePlayer {
 	
 	private String name;
 	private Game game;
-	private GamePlayer requestingPlayer;
+	private List<GamePlayer> requestingPlayers = new ArrayList<GamePlayer>();
 	private Class classType;
 	private boolean hasFallen, sentActivate = false;
 	private Arena selectedArena;
@@ -66,6 +68,7 @@ public class GamePlayer {
 	private Scoreboard defaultScoreboard;
 	private Objective defaultObjective;
 	private DamageCause lastDamageCause;
+	private boolean acceptingDuels = true;
 	
 	public GamePlayer(String name) {
 		
@@ -105,19 +108,34 @@ public class GamePlayer {
 		return game != null;
 	}
 	
-	public GamePlayer getRequestingPlayer() {
+	public GamePlayer getLastRequestingPlayer() {
 		
-		return requestingPlayer;
+		int size = requestingPlayers.size();
+		
+		if (size < 1)
+			return null;
+		
+		return requestingPlayers.get(size - 1);
 	}
 	
-	public void setRequestingPlayer(GamePlayer requestingPlayer) {
+	public List<GamePlayer> getRequestingPlayers() {
 		
-		this.requestingPlayer = requestingPlayer;
+		return requestingPlayers;
 	}
 	
-	public boolean hasDuelRequest() {
+	public void addRequestingPlayer(GamePlayer player) {
 		
-		return requestingPlayer != null;
+		requestingPlayers.add(player);
+	}
+	
+	public void removeRequestingPlayer(GamePlayer player) {
+		
+		requestingPlayers.remove(player);
+	}
+	
+	public boolean hasRequestingPlayer() {
+		
+		return requestingPlayers.size() > 0;
 	}
 	
 	public void setClassType(Class classType) {
@@ -457,5 +475,15 @@ public class GamePlayer {
 	public DamageCause getLastDamageCause() {
 		
 		return lastDamageCause;
+	}
+	
+	public void setAcceptingDuels(boolean acceptingDuels) {
+		
+		this.acceptingDuels = acceptingDuels;
+	}
+	
+	public boolean isAcceptingDuels() {
+		
+		return acceptingDuels;
 	}
 }

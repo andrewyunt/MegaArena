@@ -27,7 +27,8 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
 import net.md_5.bungee.api.ChatColor;
 
 /**
- * The dueldeny command class which is used as a Bukkit CommandExecutor.
+ * The dueldeny command class which is used as a Bukkit CommandExecutor
+ * to deny duel requests
  * 
  * @author Andrew Yunt
  */
@@ -56,7 +57,25 @@ public class DuelDenyCommand implements CommandExecutor {
 		} catch (PlayerException e) {
 		}
 		
-		GamePlayer requestingPlayer = player.getRequestingPlayer();
+		MegaArena plugin = MegaArena.getInstance();
+		GamePlayer requestingPlayer = null;
+		
+		try {
+			requestingPlayer = args.length > 0 
+					? plugin.getPlayerManager().getPlayer(plugin.getServer().getPlayer(args[0]).getName())
+					: player.getLastRequestingPlayer();
+		} catch (PlayerException e) {
+			sender.sendMessage(ChatColor.RED + "The specified player does not exist.");
+			return false;
+		} catch (NullPointerException e) {
+			sender.sendMessage(ChatColor.RED + "You currently have no active duel requests.");
+			return false;
+		}
+		
+		if (!player.getRequestingPlayers().contains(requestingPlayer)) {
+			sender.sendMessage(ChatColor.RED + "The specified player is not requesting you to a duel.");
+			return false;
+		}
 		
 		player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format("You denied %s's request to a duel.",
 				ChatColor.AQUA + requestingPlayer.getName() + ChatColor.GREEN));
@@ -64,7 +83,7 @@ public class DuelDenyCommand implements CommandExecutor {
 		requestingPlayer.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s denied your request to a duel.",
 				player.getName() + ChatColor.GREEN));
 		
-		player.setRequestingPlayer(null);
+		requestingPlayer.removeRequestingPlayer(requestingPlayer);
 		
 		return true;
 	}

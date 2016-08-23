@@ -28,6 +28,7 @@ import com.andrewyunt.megaarena.command.ArenaCommand;
 import com.andrewyunt.megaarena.command.DuelAcceptCommand;
 import com.andrewyunt.megaarena.command.DuelCommand;
 import com.andrewyunt.megaarena.command.DuelDenyCommand;
+import com.andrewyunt.megaarena.command.DuelsToggleCommand;
 import com.andrewyunt.megaarena.configuration.ArenaConfiguration;
 import com.andrewyunt.megaarena.db.DataSource;
 import com.andrewyunt.megaarena.db.MongoDBSource;
@@ -114,6 +115,7 @@ public class MegaArena extends JavaPlugin {
 		getCommand("duel").setExecutor(new DuelCommand());
 		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
 		getCommand("dueldeny").setExecutor(new DuelDenyCommand());
+		getCommand("duelstoggle").setExecutor(new DuelsToggleCommand());
 		
 		/* Register events */
 		pm.registerEvents(new MegaArenaPlayerListener(), this);

@@ -30,7 +30,8 @@ import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
 /**
- * The duelaccept command class which is used as a Bukkit CommandExecutor.
+ * The duelaccept command class which is used as a Bukkit CommandExecutor
+ * to accept duel requests.
  * 
  * @author Andrew Yunt
  */
@@ -59,7 +60,7 @@ public class DuelAcceptCommand implements CommandExecutor {
 		} catch (PlayerException e) {
 		}
 		
-		if (!(player.hasDuelRequest()))
+		if (!(player.hasRequestingPlayer()))
 			return false;
 		
 		if (player.isInGame()) {
@@ -67,12 +68,32 @@ public class DuelAcceptCommand implements CommandExecutor {
 			return false;
 		}
 		
-		GamePlayer requestingPlayer = player.getRequestingPlayer();
-	
-		player.setRequestingPlayer(null);
+		MegaArena plugin = MegaArena.getInstance();
+		GamePlayer requestingPlayer = null;
+		
+		try {
+			requestingPlayer = args.length > 0 
+					? plugin.getPlayerManager().getPlayer(plugin.getServer().getPlayer(args[0]).getName())
+					: player.getLastRequestingPlayer();
+		} catch (PlayerException e) {
+			sender.sendMessage(ChatColor.RED + "The specified player does not exist.");
+			return false;
+		} catch (NullPointerException e) {
+			sender.sendMessage(ChatColor.RED + "You currently have no active duel requests.");
+			return false;
+		}
+		
+		if (!player.getRequestingPlayers().contains(requestingPlayer)) {
+			sender.sendMessage(ChatColor.RED + "The specified player is not requesting you to a duel.");
+			return false;
+		}
+		
+		player.removeRequestingPlayer(requestingPlayer);
 		
 		if (requestingPlayer.isInGame()) {
-			sender.sendMessage(String.format(ChatColor.RED + "The player %s is currently in a game and cannot duel.", requestingPlayer.getName()));
+			sender.sendMessage(String.format(
+					ChatColor.RED + "The player %s is currently in a game and cannot duel.",
+					requestingPlayer.getName()));
 			return false;
 		}
 		
