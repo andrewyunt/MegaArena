@@ -47,9 +47,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.event.EffectApplyEvent;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.managers.PlayerManager;
@@ -540,5 +542,12 @@ public class MegaArenaPlayerListener implements Listener {
 		
 		if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM)
 			event.getEntity().remove();
+	}
+	
+	@EventHandler
+	public void onEffectApply(EffectApplyEvent event) {
+		
+		if (event.getEffectType() == PotionEffectType.WITHER)
+			event.setCancelled(true);
 	}
 }

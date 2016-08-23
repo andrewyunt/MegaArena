@@ -43,7 +43,7 @@ public enum Class implements Upgradable {
 	HEROBRINE("Herobrine", LIGHTNING, RECHARGE, FLURRY, 10),
 	CREEPER("Creeper", EXPLODE, POWERFUL_WEAKNESS, SUPPORT, 10),
 	SPIRIT_WARRIOR("Spirit Warrior", TORNADO, WEAKENING_SWING, SWIFT_BACKUP, 5),
-	WITHER_MINION("Wither Minion", WITHER_HEADS, SOUL_SUCKER, UNDEAD, 5);
+	WITHER_MINION("Wither Minion", WITHER_HEADS, SOUL_SUCKER, UNDEAD, 4);
 	
 	private String name;
 	private Ability ability;

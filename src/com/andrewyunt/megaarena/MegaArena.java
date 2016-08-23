@@ -37,6 +37,7 @@ import com.andrewyunt.megaarena.listeners.MegaArenaPlayerAbilityListener;
 import com.andrewyunt.megaarena.listeners.MegaArenaPlayerListener;
 import com.andrewyunt.megaarena.listeners.MegaArenaPlayerSkillListener;
 import com.andrewyunt.megaarena.managers.ArenaManager;
+import com.andrewyunt.megaarena.managers.EventManager;
 import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
@@ -72,6 +73,7 @@ public class MegaArena extends JavaPlugin {
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
 	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
+	private final EventManager eventManager = new EventManager();
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
 	private final DataSource dataSource = new MongoDBSource();
 	
@@ -118,6 +120,8 @@ public class MegaArena extends JavaPlugin {
 		getCommand("duelstoggle").setExecutor(new DuelsToggleCommand());
 		
 		/* Register events */
+		eventManager.registerEffectApplyEvent();
+		
 		pm.registerEvents(new MegaArenaPlayerListener(), this);
 		pm.registerEvents(new MegaArenaPlayerAbilityListener(), this);
 		pm.registerEvents(new MegaArenaPlayerSkillListener(), this);

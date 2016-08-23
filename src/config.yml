@@ -583,31 +583,31 @@ classes:
     WITHER_HEADS:
       1:
          title: "Ability - Wither Heads I"
-         description: "Fire three wither heads which explode on impact, \ndealing 2.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 1.0 damage per head with 100% armor penetration"
       2:
          title: "Ability - Wither Heads II"
-         description: "Fire three wither heads which explode on impact, \ndealing 2.5 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 1.5 damage per head with 100% armor penetration"
       3:
          title: "Ability - Wither Heads III"
-         description: "Fire three wither heads which explode on impact, \ndealing 3.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 2.0 damage per head with 100% armor penetration"
       4:
          title: "Ability - Wither Heads IV"
-         description: "Fire three wither heads which explode on impact, \ndealing 3.5 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 2.5 damage per head with 100% armor penetration"
       5:
          title: "Ability - Wither Heads V"
-         description: "Fire three wither heads which explode on impact, \ndealing 4.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 3.0 damage per head with 100% armor penetration"
       6:
          title: "Ability - Wither Heads VI"
-         description: "Fire three wither heads which explode on impact, \ndealing 4.5 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 3.5 damage per head with 100% armor penetration"
       7:
          title: "Ability - Wither Heads VII"
-         description: "Fire three wither heads which explode on impact, \ndealing 5.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 4.0 damage per head with 100% armor penetration"
       8:
          title: "Ability - Wither Heads VIII"
-         description: "Fire three wither heads which explode on impact, \ndealing 5.5 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 4.5 damage per head with 100% armor penetration"
       9:
          title: "Ability - Wither Heads IX"
-         description: "Fire three wither heads which explode on impact, \ndealing 6.0 damage per head with 100% armor penetration"
+         description: "Fire three wither heads which explode on impact, \ndealing 5.0 damage per head with 100% armor penetration"
     SOUL_SUCKER:
       1:
          title: "Skill 1 - Soul Sucker I"

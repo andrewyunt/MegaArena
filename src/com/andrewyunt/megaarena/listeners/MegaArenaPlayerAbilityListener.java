@@ -34,8 +34,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -43,7 +41,6 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.utilities.Utils;
-
 import de.slikey.effectlib.effect.ExplodeEffect;
 import de.slikey.effectlib.util.DynamicLocation;
 
@@ -53,8 +50,8 @@ import de.slikey.effectlib.util.DynamicLocation;
  * @author Andrew Yunt
  */
 public class MegaArenaPlayerAbilityListener implements Listener {
-
-	@EventHandler(priority = EventPriority.MONITOR)
+	
+    @EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 
 		ItemStack item = event.getItem();
@@ -343,7 +340,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			if (nearbyAP.getGame().getArena().getType() == Arena.Type.TDM && nearbyAP.getSide() == shooterAP.getSide())
 				continue;
 
-			double dmg = 1.5 + (shooterAP.getLevel(shooterAP.getClassType().getAbility()) * 0.5);
+			double dmg = 0.5 + (shooterAP.getLevel(shooterAP.getClassType().getAbility()) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill
 												// as well as red damage and invisibility
@@ -353,15 +350,6 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 				return;
 			} else
 				nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
-			
-	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-	            @Override
-	            public void run() {
-	            	
-	            	nearbyPlayer.removePotionEffect(PotionEffectType.WITHER);
-	            }
-	        }, 1L);
 		}
 	}
 }
