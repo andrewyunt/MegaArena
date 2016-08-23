@@ -15,6 +15,7 @@
  */
 package com.andrewyunt.megaarena.managers;
 
+import org.bukkit.Bukkit;
 import org.bukkit.potion.PotionEffectType;
 
 import com.andrewyunt.megaarena.MegaArena;
@@ -50,9 +51,14 @@ public class EventManager {
 
 					if (entityID == playerID) {
 						byte effectID = event.getPacket().getBytes().read(0);
-						EffectApplyEvent calledEvent = new EffectApplyEvent(event.getPlayer(), PotionEffectType.getById(effectID), event.isCancelled());
+						EffectApplyEvent effectEvent = new EffectApplyEvent(
+								event.getPlayer(),
+								PotionEffectType.getById(effectID),
+								event.isCancelled());
+						
+						Bukkit.getServer().getPluginManager().callEvent(effectEvent);
 
-						if (calledEvent.isCancelled()) {
+						if (effectEvent.isCancelled()) {
 	                        event.getPlayer().removePotionEffect(PotionEffectType.getById(effectID));
 							
 							event.setCancelled(true);

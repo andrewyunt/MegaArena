@@ -760,10 +760,10 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (Math.random() > percentage)
 			return;
 
-		if (((Damageable) damager).getHealth() > ((Damageable) damager).getMaxHealth() - 2.0)
+		if (((Damageable) damager).getHealth() > ((Damageable) damager).getMaxHealth() - 1.0)
 			((Damageable) damager).setHealth(40.0);
 		else
-			((Damageable) damager).setHealth(((Damageable) damager).getHealth() + 2.0);
+			((Damageable) damager).setHealth(((Damageable) damager).getHealth() + 1.0);
 
 		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
 				ChatColor.AQUA + Skill.SOUL_SUCKER.getName() + ChatColor.GREEN));
@@ -817,10 +817,10 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (Math.random() > percentage)
 			return;
 
-		if (((Damageable) damaged).getHealth() > ((Damageable) damaged).getMaxHealth() - 2.0)
+		if (((Damageable) damaged).getHealth() > ((Damageable) damaged).getMaxHealth() - 1.0)
 			((Damageable) damaged).setHealth(40.0);
 		else
-			((Damageable) damaged).setHealth(((Damageable) damaged).getHealth() + 2.0);
+			((Damageable) damaged).setHealth(((Damageable) damaged).getHealth() + 1.0);
 
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
 				ChatColor.AQUA + Skill.UNDEAD.getName() + ChatColor.GREEN));

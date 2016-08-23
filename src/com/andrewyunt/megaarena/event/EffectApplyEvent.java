@@ -16,6 +16,8 @@
 package com.andrewyunt.megaarena.event;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 import org.bukkit.potion.PotionEffectType;
 
 /**
@@ -23,11 +25,12 @@ import org.bukkit.potion.PotionEffectType;
  * 
  * @author Andrew Yunt
  */
-public class EffectApplyEvent {
+public class EffectApplyEvent extends Event {
 	
 	private Player player;
 	private PotionEffectType effectType;
 	private boolean isCancelled;
+	private static final HandlerList handlers = new HandlerList();
 
 	public EffectApplyEvent(Player player, PotionEffectType effectType, boolean isCancelled) {
 		
@@ -54,5 +57,16 @@ public class EffectApplyEvent {
 	public void setCancelled(boolean isCancelled) {
 		
 		this.isCancelled = isCancelled;
+	}
+
+	@Override
+	public HandlerList getHandlers() {
+		
+		return handlers;
+	}
+	
+    public static HandlerList getHandlerList() {
+
+		return handlers;
 	}
 }
