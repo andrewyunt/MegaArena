@@ -123,21 +123,18 @@ public class MegaArenaPlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		if (!gp.isInGame())
-			return;
-		
-		Game game = gp.getGame();
-		
-		if (game.getArena().getType() == Arena.Type.DUEL) {
-			MegaArena.getInstance().getGameManager().deleteGame(game, 
-					String.format("%s has left the game and has left you victorious!",
-					ChatColor.AQUA + gp.getName() + ChatColor.GREEN));
-			return;
-		}
-		
-		try {
-			game.removePlayer(gp);
-		} catch (PlayerException e) {
+		if (gp.isInGame()) {
+			Game game = gp.getGame();
+			
+			if (game.getArena().getType() == Arena.Type.DUEL)
+				MegaArena.getInstance().getGameManager().deleteGame(game, 
+						String.format("%s has left the game and has left you victorious!",
+						ChatColor.AQUA + gp.getName() + ChatColor.GREEN));
+			
+			try {
+				game.removePlayer(gp);
+			} catch (PlayerException e) {
+			}
 		}
 		
 		try {
