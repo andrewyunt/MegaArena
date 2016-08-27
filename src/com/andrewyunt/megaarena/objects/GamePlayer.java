@@ -62,6 +62,7 @@ public class GamePlayer {
 	private DamageCause lastDamageCause;
 	private boolean acceptingDuels = true;
 	private DisplayBoard displayBoard = null;
+	private List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
 	
 	public GamePlayer(String name) {
 		
@@ -506,5 +507,24 @@ public class GamePlayer {
 		
 		/* Display board to player */
 		displayBoard.display();
+	}
+	
+	public List<GamePlayer> getSkullHitPlayers() {
+		
+		return skullHitPlayers;
+	}
+	
+	public void addSkullHitPlayer(GamePlayer player) {
+		
+		skullHitPlayers.add(player);
+		
+        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+            	
+            	skullHitPlayers.remove(player);
+            }
+        }, 20L);
 	}
 }

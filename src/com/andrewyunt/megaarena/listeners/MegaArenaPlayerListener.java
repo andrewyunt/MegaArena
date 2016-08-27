@@ -83,10 +83,6 @@ public class MegaArenaPlayerListener implements Listener {
 				try {
 					player = MegaArena.getInstance().getPlayerManager().createPlayer(bp.getName());
 				} catch (PlayerException e) {
-					try {
-						player = MegaArena.getInstance().getPlayerManager().getPlayer(bp.getName());
-					} catch (PlayerException e1) {
-					}
 				}
 				
 				/* Set player's scoreboard to default scoreboard */

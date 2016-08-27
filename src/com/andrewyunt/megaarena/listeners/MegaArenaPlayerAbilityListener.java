@@ -34,6 +34,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -254,15 +255,15 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 		event.setCancelled(true);
 
-		GamePlayer shooter = null;
+		GamePlayer shooterGP = null;
 
 		try {
-			shooter = MegaArena.getInstance().getPlayerManager()
+			shooterGP = MegaArena.getInstance().getPlayerManager()
 					.getPlayer(((Player) ((Projectile) entity).getShooter()).getName());
 		} catch (PlayerException e) {
 		}
 
-		Player bukkitShooter = shooter.getBukkitPlayer();
+		Player shooter = shooterGP.getBukkitPlayer();
 
 		ExplodeEffect explodeEffect = new ExplodeEffect(MegaArena.getInstance().getEffectManager());
 
@@ -275,20 +276,31 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			if (!(nearby instanceof Player))
 				continue;
 
-			if (nearby == bukkitShooter)
+			if (nearby == shooterGP)
 				continue;
 
 			Player nearbyPlayer = (Player) nearby;
+			GamePlayer nearbyGP = null;
+			
+			try {
+				nearbyGP = MegaArena.getInstance().getPlayerManager().getPlayer(nearbyPlayer.getName());
+			} catch (PlayerException e) {
+			}
+			
+			if (nearbyGP.getSkullHitPlayers().contains(shooterGP))
+				continue;
 
-			double dmg = 1.5 + (shooter.getLevel(shooter.getClassType().getAbility()) * 0.5);
+			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
-			dmgPlayer.damage(0.00001D, bukkitShooter);// So the player will get the kill as well as
+			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill as well as
 													  // red damage and invisibility
 			if (dmgPlayer.getHealth() < dmg) {
 				dmgPlayer.setHealth(0D);
 				return;
 			} else
 				nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
+			
+			nearbyGP.addSkullHitPlayer(shooterGP);
 		}
 	}
 
@@ -340,7 +352,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			if (nearbyAP.getGame().getArena().getType() == Arena.Type.TDM && nearbyAP.getSide() == shooterAP.getSide())
 				continue;
 
-			double dmg = 0.5 + (shooterAP.getLevel(shooterAP.getClassType().getAbility()) * 0.5);
+			double dmg = 1.5 + (shooterAP.getLevel(shooterAP.getClassType().getAbility()) * .5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill
 												// as well as red damage and invisibility
