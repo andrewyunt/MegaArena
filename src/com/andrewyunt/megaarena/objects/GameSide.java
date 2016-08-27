@@ -1,4 +1,4 @@
-/**
+/*
  * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
  *
  * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
@@ -16,7 +16,6 @@
 package com.andrewyunt.megaarena.objects;
 
 import org.bukkit.ChatColor;
-import org.bukkit.scoreboard.Team;
 
 /**
  * The class used to store side information.
@@ -62,18 +61,11 @@ public class GameSide {
 	
 	private Game game;
 	private Type sideType;
-	private Team team;
 	
 	public GameSide(Game game, Type type) {
 		
 		this.game = game;
 		this.sideType = type;
-		
-		team = game.getScoreboard().registerNewTeam(type.getName());
-		team.setPrefix(sideType.getNameColor() + "");
-		
-		if (game.getArena().getType() == Arena.Type.TDM)
-			team.setAllowFriendlyFire(false);
 	}
 	
 	public Game getGame() {
@@ -84,10 +76,5 @@ public class GameSide {
 	public Type getSideType() {
 		
 		return sideType;
-	}
-	
-	public Team getTeam() {
-		
-		return team;
 	}
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
  *
  * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
@@ -15,7 +15,6 @@
  */
 package com.andrewyunt.megaarena.managers;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -23,6 +22,7 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.configuration.ArenaConfiguration;
 import com.andrewyunt.megaarena.exception.ArenaException;

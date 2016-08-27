@@ -1,4 +1,4 @@
-/**
+/*
  * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
  *
  * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -197,8 +198,10 @@ public class MegaArena extends JavaPlugin {
 		for (GamePlayer gp : playerManager.getPlayers())
 			toSave.add(gp);
 		
-		for (GamePlayer gp : toSave)
+		for (GamePlayer gp : toSave) {
+			Bukkit.getServer().broadcastMessage(gp.getName());
 			MegaArena.getInstance().getDataSource().savePlayer(gp);
+		}
 	}
 	
 	/**

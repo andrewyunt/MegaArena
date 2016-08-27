@@ -1,4 +1,4 @@
-/**
+/*
  * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
  *
  * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;

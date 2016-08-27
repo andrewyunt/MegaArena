@@ -1,5 +1,5 @@
-/**
- * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
+/*
+ * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reerved.
  *
  * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
  * herein are proprietary to Andrew Yunt and may be covered by U.S. and Foreign Patents, patents in process, and are protected by trade secret or copyright law.
@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
@@ -33,12 +32,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
 
@@ -65,22 +58,35 @@ public class GamePlayer {
 	private int coins = 0;
 	private int earnedCoins = 0;
 	private int kills = 0;
-	private Scoreboard defaultScoreboard;
-	private Objective defaultObjective;
+	private int killStreak = 0;
 	private DamageCause lastDamageCause;
 	private boolean acceptingDuels = true;
+	private DisplayBoard displayBoard = null;
 	
 	public GamePlayer(String name) {
 		
 		/* Set variables */
 		this.name = name;
 		
-		/* Set the scoreboard variable and its attributes */
-		ScoreboardManager manager = Bukkit.getScoreboardManager();
-		defaultScoreboard = manager.getNewScoreboard();
+		/* Set up scoreboard */
+		String title = ChatColor.AQUA + "" + ChatColor.BOLD + "MegaArena";
 		
-		/* Register the default scoreboard objective */
-		registerDefaultObjective();
+		displayBoard = new DisplayBoard(getBukkitPlayer(), title);
+		
+        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+        	ChatColor curTitleColor = ChatColor.AQUA;
+        	
+            @Override
+            public void run() {
+            	
+            	ChatColor newTitleColor = curTitleColor == ChatColor.AQUA ? ChatColor.WHITE : ChatColor.AQUA;
+            	
+            	displayBoard.setTitle(newTitleColor + "" + ChatColor.BOLD + "MegaArena");
+            	
+            	curTitleColor = newTitleColor;
+            }
+        }, 0L, 20L);
 	}
 	
 	public String getName() {
@@ -330,7 +336,7 @@ public class GamePlayer {
 		
 		this.coins = ((Double) coins).intValue();
 		
-		updateDefaultScoreboard();
+		updateScoreboard();
 	}
 	
 	public int getCoins() {
@@ -413,13 +419,15 @@ public class GamePlayer {
 	public void addKill() {
 		
 		setKills(kills + 1);
+		
+		setKillStreak(killStreak + 1);
 	}
 	
 	public void setKills(double kills) {
 		
 		this.kills = ((Double) kills).intValue();
 		
-		updateDefaultScoreboard();
+		updateScoreboard();
 	}
 	
 	public int getKills() {
@@ -427,44 +435,16 @@ public class GamePlayer {
 		return kills;
 	}
 	
-	public void registerDefaultObjective() {
+	public void setKillStreak(int killStreak) {
 		
-		/* Define the default objective variable */
-		defaultObjective =  defaultScoreboard.registerNewObjective("default", "dummy");
+		this.killStreak = killStreak;
 		
-		/* Set the objective's display slot and name */
-		defaultObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-		defaultObjective.setDisplayName(ChatColor.AQUA + "AMOSITA.NET" + ChatColor.DARK_GRAY +
-				" - " + ChatColor.GREEN + "MegaArena");
+		updateScoreboard();
 	}
 	
-	public void updateDefaultScoreboard() {
+	public int getKillStreak() {
 		
-		defaultObjective.unregister();
-		registerDefaultObjective();
-		
-		/* Add space to scoreboard */
-		Score space = defaultObjective.getScore("");
-		space.setScore(5);
-		
-		/* Set player's kills */
-		Score killsTitle = defaultObjective.getScore(ChatColor.GREEN + "Kills:");
-		killsTitle.setScore(4);
-		
-		Score killsValue = defaultObjective.getScore(String.valueOf(kills));
-		killsValue.setScore(3);
-		
-		/* Set player's coins */
-		Score coinsTitle = defaultObjective.getScore(ChatColor.GREEN + "Coins:");
-		coinsTitle.setScore(2);
-		
-		Score coinsValue = defaultObjective.getScore(String.valueOf(coins));
-		coinsValue.setScore(1);
-	}
-	
-	public Scoreboard getDefaultScoreboard() {
-		
-		return defaultScoreboard;
+		return killStreak;
 	}
 	
 	public void setLastDamageCause(DamageCause lastDamageCause) {
@@ -485,5 +465,46 @@ public class GamePlayer {
 	public boolean isAcceptingDuels() {
 		
 		return acceptingDuels;
+	}
+	
+	public DisplayBoard getDisplayBoard() {
+		
+		return displayBoard;
+	}
+	
+	public void updateScoreboard() {
+		
+		/* Clear current fields */
+		displayBoard.clear();
+		
+		displayBoard.putField(ChatColor.RESET + " ");
+		
+		/* Display player's coins */
+		displayBoard.putField(ChatColor.GOLD + "" + ChatColor.BOLD + "Coins");
+		displayBoard.putField(String.valueOf(coins));
+		
+		/* Display player's kills */
+		displayBoard.putField(ChatColor.RED + "" + ChatColor.BOLD + "Kills");
+		displayBoard.putField(String.valueOf(kills));
+		
+		if (isInGame()) {
+			displayBoard.putField(ChatColor.RESET + "  ");
+			
+			/* Display player's killstreak */
+			displayBoard.putField(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Killstreak");
+			displayBoard.putField(String.valueOf(killStreak));
+			
+			/* Display player's team */
+			displayBoard.putField(ChatColor.GREEN + "" + ChatColor.BOLD + "Team");
+			displayBoard.putField(side.getSideType().getName());
+		}
+		
+		displayBoard.putField(ChatColor.RESET + "   ");
+		
+		/* Display server's IP */
+		displayBoard.putField(ChatColor.YELLOW + "mc.amosita.net");
+		
+		/* Display board to player */
+		displayBoard.display();
 	}
 }

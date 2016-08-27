@@ -1,4 +1,4 @@
-/**
+/*
  * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
  *
  * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained

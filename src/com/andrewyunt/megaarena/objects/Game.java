@@ -1,4 +1,4 @@
-/**
+/*
  * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
  *
  * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -32,7 +31,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.Scoreboard;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -49,7 +47,6 @@ public class Game {
 	private Set<GamePlayer> players = new HashSet<GamePlayer>();
 	private Set<Block> placedBlocks = new HashSet<Block>();
 	private Set<GameSide> sides = new HashSet<GameSide>();
-	private Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
 	public Game(Arena arena) {
 		
@@ -156,7 +153,7 @@ public class Game {
 		Player bp = player.getBukkitPlayer();
 		
 		player.setPreviousGameMode(bp.getGameMode());
-	
+		
 		GameSide side = null;
 		
 		try {
@@ -191,8 +188,7 @@ public class Game {
 		player.setGame(this);
 		player.setSide(side);
 		
-		side.getTeam().addPlayer(bp);
-		bp.setScoreboard(scoreboard);
+		player.updateScoreboard();
 		
 		GameSide.Type sideType = side.getSideType();
 		
@@ -204,7 +200,7 @@ public class Game {
 			bp.sendMessage(ChatColor.GREEN + String.format(
 					"You have been automatically moved to "
 					+ "the %s side by an automatic team balance.",
-					ChatColor.AQUA + side.getSideType().getName() + ChatColor.GREEN));
+					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
 		
 		spawnPlayer(player, sideType);
 	}
@@ -263,9 +259,7 @@ public class Game {
 		
 		Player bp = player.getBukkitPlayer();
 		
-		/* Remove player from team scoreboard and set scoreboard to null */
-		player.getSide().getTeam().removePlayer(bp);
-		bp.setScoreboard(player.getDefaultScoreboard());
+		player.updateScoreboard();
 		
 		/* Remove player from players set then set the player's game and side to null */
 		players.remove(player);
@@ -416,16 +410,5 @@ public class Game {
 				return side;
 		
 		throw new SideException("The side of the specified type does not exist.");
-	}
-	
-	/**
-	 * Gets the scoreboard for the game.
-	 * 
-	 * @return
-	 * 		The game's scoreboard object.
-	 */
-	public Scoreboard getScoreboard() {
-		
-		return scoreboard;
 	}
 }

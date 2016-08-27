@@ -1,4 +1,4 @@
-/**
+/*
  * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
  *
  * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
@@ -17,14 +17,18 @@ package com.andrewyunt.megaarena.db;
  
 import java.net.UnknownHostException;
 import java.util.Date;
- 
-import com.mongodb.*;
+
 import org.bukkit.configuration.file.FileConfiguration;
- 
+
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
  
 public class MongoDBSource extends DatabaseHandler {
  
