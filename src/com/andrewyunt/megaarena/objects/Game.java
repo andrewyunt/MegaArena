@@ -27,10 +27,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -188,6 +191,22 @@ public class Game {
 		player.setGame(this);
 		player.setSide(side);
 		
+		for (GamePlayer updatePlayer : players) {
+			Scoreboard scoreboard = updatePlayer.getDisplayBoard().getScoreboard();
+			
+			for (GameSide addSide : sides) {
+				Team team = scoreboard.getTeam(addSide.getSideType().getName());
+				
+				if (team == null)
+					team = scoreboard.registerNewTeam(addSide.getSideType().getName());
+					
+				team.setPrefix(addSide.getSideType().getNameColor() + "");
+				
+				for (GamePlayer addPlayer : getPlayers(addSide))
+					team.addPlayer(addPlayer.getBukkitPlayer());
+			}
+		}
+		
 		player.updateScoreboard();
 		
 		GameSide.Type sideType = side.getSideType();
@@ -261,9 +280,24 @@ public class Game {
 		
 		player.updateScoreboard();
 		
-		/* Remove player from players set then set the player's game and side to null */
+		/* Remove player from players set and then set the player's game to null*/
 		players.remove(player);
 		player.setGame(null);
+		
+		/* Remove player from scoreboard teams */
+		for (GamePlayer toRemove : players)
+			toRemove.getDisplayBoard().getScoreboard().getTeam(player.getSide().getSideType().getName())
+			.removePlayer(player.getBukkitPlayer());
+		
+		/* Remove players from player's own side */
+		for (GameSide side : sides) {
+			Team team = player.getDisplayBoard().getScoreboard().getTeam(side.getSideType().getName());
+			
+			for (OfflinePlayer op : team.getPlayers())
+				team.removePlayer(op);
+		}
+		
+		/* Set the player's side to null */
 		player.setSide(null);
 		
 		/* Set player's energy to 0 */
@@ -286,7 +320,7 @@ public class Game {
 		
 		/* Set player's lobby inventory */
 		player.updateHotBar();
-		
+			
 		/* Teleport the player to the spawn location */
 		Location loc = bp.getWorld().getSpawnLocation().clone();
 		

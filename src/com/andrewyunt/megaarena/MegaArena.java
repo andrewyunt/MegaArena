@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -198,10 +197,8 @@ public class MegaArena extends JavaPlugin {
 		for (GamePlayer gp : playerManager.getPlayers())
 			toSave.add(gp);
 		
-		for (GamePlayer gp : toSave) {
-			Bukkit.getServer().broadcastMessage(gp.getName());
+		for (GamePlayer gp : toSave)
 			MegaArena.getInstance().getDataSource().savePlayer(gp);
-		}
 	}
 	
 	/**

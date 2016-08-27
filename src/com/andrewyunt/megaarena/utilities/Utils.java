@@ -4,23 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.objects.Vector3D;
-
-import net.minecraft.server.v1_7_R4.NBTTagCompound;
-import net.minecraft.server.v1_7_R4.NBTTagList;
 
 /**
  * The general utilities class for methods without a category / methods yet
@@ -178,26 +171,4 @@ public class Utils {
  
         return vector;
     }
-    
-    /**
-     * Returns an ItemStack with the enchantment glow effect added
-     * (no enchantments are shown on the item).
-     * 
-     * @author Andrew Yunt
-     */
-	public static ItemStack addGlow(ItemStack is) {
-		
-		CraftItemStack cbItemStack = (CraftItemStack) is;
-		
-		if (cbItemStack == null)
-			return null;
-		
-		net.minecraft.server.v1_7_R4.ItemStack handle = CraftItemStack.asNMSCopy(is);
-		handle.setTag(new NBTTagCompound());
-	
-		NBTTagList tagList = new NBTTagList();
-		tagList.add(new NBTTagCompound());
-		
-		handle.tag.set("ench", tagList);
-	}
 }
