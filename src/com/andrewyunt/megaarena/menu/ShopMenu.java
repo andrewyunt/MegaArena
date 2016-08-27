@@ -330,7 +330,10 @@ public class ShopMenu implements Listener {
 				upgradable = classType;
 			}
 			
-			int cost = MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
+			int cost = classType.isHero() ? 
+					MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "hero-upgrade-cost")
+					: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
+			
 			gp.removeCoins(cost);
 			
 			gp.setLevel(upgradable, slot);
