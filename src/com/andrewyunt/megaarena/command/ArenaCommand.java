@@ -44,8 +44,14 @@ public class ArenaCommand implements CommandExecutor {
 	private static final List<String> help = new ArrayList<String>();
 
 	static {
-		help.add("/arena create [name] [type]");
-		help.add("/arena delete [name]");
+		help.add(ChatColor.DARK_GRAY + "=" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "[ " + ChatColor.AQUA + 
+				"MegaArena Help" + ChatColor.DARK_GRAY + " ]" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "=");
+		help.add(ChatColor.GREEN + "/arena create " + ChatColor.AQUA + "[name] [type]");
+		help.add(ChatColor.GREEN + "/arena delete");
+		help.add(ChatColor.GREEN + "/arena select " + ChatColor.AQUA + "[name]");
+		help.add(ChatColor.GREEN + "/arena edit");
+		help.add(ChatColor.GREEN + "/arena addspawn " + ChatColor.AQUA + "[name] [side]");
+		help.add(ChatColor.GREEN + "/arena removespawn " + ChatColor.AQUA + "[name]");
 	}
 	
 	@Override
@@ -355,8 +361,11 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
+			sender.sendMessage(ChatColor.DARK_GRAY + "=" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "[ " + ChatColor.AQUA + 
+				"Arenas List" + ChatColor.DARK_GRAY + " ]" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "=");
+			
 			for (Arena arena : MegaArena.getInstance().getArenaManager().getArenas())
-				sender.sendMessage(ChatColor.AQUA + arena.getName());
+				sender.sendMessage(ChatColor.GREEN + arena.getName());
 		}
 		
 		return true;
