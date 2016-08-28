@@ -25,7 +25,6 @@ import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -70,18 +69,13 @@ public class GamePlayer {
 		/* Set variables */
 		this.name = name;
 		
-		Server server = MegaArena.getInstance().getServer();
-		
-		/* Set player's name prefix */
-		server.dispatchCommand(server.getConsoleSender(), 
-				String.format("nte player %s prefix %s", name, "&f"));
-		
 		/* Set up scoreboard */
 		String title = ChatColor.AQUA + "" + ChatColor.BOLD + "MegaArena";
 		
 		displayBoard = new DisplayBoard(getBukkitPlayer(), title);
 		
-        server.getScheduler().scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
         	ChatColor curTitleColor = ChatColor.AQUA;
         	
             @Override
@@ -339,9 +333,9 @@ public class GamePlayer {
 		setCoins(this.coins - coins);
 	}
 	
-	public void setCoins(double coins) {
+	public void setCoins(int coins) {
 		
-		this.coins = ((Double) coins).intValue();
+		this.coins = coins;
 		
 		updateScoreboard();
 	}
@@ -351,9 +345,9 @@ public class GamePlayer {
 		return coins;
 	}
 	
-	public void setEarnedCoins(double earnedCoins) {
+	public void setEarnedCoins(int earnedCoins) {
 		
-		this.earnedCoins = ((Double) earnedCoins).intValue();
+		this.earnedCoins = earnedCoins;
 	}
 	
 	public int getEarnedCoins() {
@@ -430,9 +424,9 @@ public class GamePlayer {
 		setKillStreak(killStreak + 1);
 	}
 	
-	public void setKills(double kills) {
+	public void setKills(int kills) {
 		
-		this.kills = ((Double) kills).intValue();
+		this.kills = kills;
 		
 		updateScoreboard();
 	}

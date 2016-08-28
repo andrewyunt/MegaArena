@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.scheduler.BukkitScheduler;
+
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
@@ -49,7 +51,15 @@ public class PlayerManager {
 
 		GamePlayer player = new GamePlayer(name);
 
-		MegaArena.getInstance().getDataSource().loadPlayer(player);
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+        scheduler.runTaskAsynchronously(MegaArena.getInstance(), new Runnable() {
+
+			@Override
+			public void run() {
+				
+				MegaArena.getInstance().getDataSource().loadPlayer(player);
+			}
+        });
 		
 		players.put(name, player);
 
@@ -69,7 +79,15 @@ public class PlayerManager {
 		if (!players.containsKey(player.getName()))
 			throw new PlayerException("The player specified is not in the plugin's records.");
 		
-		MegaArena.getInstance().getDataSource().savePlayer(player);
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+        scheduler.runTaskAsynchronously(MegaArena.getInstance(), new Runnable() {
+
+			@Override
+			public void run() {
+				
+				MegaArena.getInstance().getDataSource().savePlayer(player);
+			}
+        });
 		
 		players.remove(player.getName());
 	}

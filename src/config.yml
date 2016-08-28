@@ -1,7 +1,8 @@
 # MongoDB Connection Details
 database-ip: 127.0.0.1
-database-port: 27017
+database-port: 3306
 database-name: MegaArena
+database-pass: password
 
 # Coins needed for each tier upgrade (Tier 1 is not included as it is default)
 tier-2-upgrade-cost: 50

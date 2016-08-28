@@ -15,9 +15,6 @@
  */
 package com.andrewyunt.megaarena.db;
 
-import java.util.Date;
-
-import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
@@ -29,19 +26,11 @@ public abstract class DataSource {
 	
 	public abstract void savePlayer(GamePlayer player);
 	
-	public abstract void loadClassType(GamePlayer player);
-	
-	public abstract void loadCoins(GamePlayer player);
-	
-	public abstract void loadEarnedCoins(GamePlayer player);
-	
-	public abstract void loadKills(GamePlayer player);
-	
-	public abstract void saveLayouts(GamePlayer player);
-	
 	public abstract void saveLayout(GamePlayer player, Class classType);
 	
 	public abstract void loadLayout(GamePlayer player, Class classType);
 	
-	public abstract void saveKill(GamePlayer killer, GamePlayer victim, Date date, Arena arena);
+	public abstract void createTables();
+	
+	public abstract void createPlayersTable();
 }

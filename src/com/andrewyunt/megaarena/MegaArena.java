@@ -19,11 +19,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.command.ArenaCommand;
 import com.andrewyunt.megaarena.command.DuelAcceptCommand;
@@ -32,7 +34,7 @@ import com.andrewyunt.megaarena.command.DuelDenyCommand;
 import com.andrewyunt.megaarena.command.DuelsToggleCommand;
 import com.andrewyunt.megaarena.configuration.ArenaConfiguration;
 import com.andrewyunt.megaarena.db.DataSource;
-import com.andrewyunt.megaarena.db.MongoDBSource;
+import com.andrewyunt.megaarena.db.MySQLSource;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.listeners.MegaArenaPlayerAbilityListener;
 import com.andrewyunt.megaarena.listeners.MegaArenaPlayerListener;
@@ -76,7 +78,7 @@ public class MegaArena extends JavaPlugin {
 	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
 	private final EventManager eventManager = new EventManager();
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
-	private final DataSource dataSource = new MongoDBSource();
+	private final DataSource dataSource = new MySQLSource();
 	
 	private static MegaArena instance = null;
 	
@@ -106,12 +108,22 @@ public class MegaArena extends JavaPlugin {
 		saveDefaultConfig();
 		arenaConfiguration.saveDefaultConfig();
 		
-		/* Connect to the database */
-		if (!dataSource.connect()) {
-			logger.severe("Could not connect to the database, shutting down...");
-			pm.disablePlugin(this);
-			return;
-		}
+		BukkitScheduler scheduler = server.getScheduler();
+        scheduler.runTaskAsynchronously(this, new Runnable() {
+
+			@Override
+			public void run() {
+				
+	    		/* Connect to the database */
+	    		if (!dataSource.connect()) {
+	    			logger.severe("Could not connect to the database, shutting down...");
+	    			pm.disablePlugin(MegaArena.getInstance());
+	    			return;
+	    		}
+	    		
+	    		dataSource.createTables();
+			}
+        });
 		
 		/* Set command executors */
 		getCommand("arena").setExecutor(new ArenaCommand());

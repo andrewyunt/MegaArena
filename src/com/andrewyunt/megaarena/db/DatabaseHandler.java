@@ -15,13 +15,11 @@
  */
 package com.andrewyunt.megaarena.db;
 
-import com.andrewyunt.megaarena.objects.GamePlayer;
-
 public abstract class DatabaseHandler extends DataSource {
 	
 	@Override
-	public void saveLayouts(GamePlayer player) {
+	public void createTables() {
 		
-		//TODO: Auto-generated method stub
+		createPlayersTable();
 	}
 }
