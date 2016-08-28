@@ -1,7 +1,7 @@
 name: MegaArena
 main: com.andrewyunt.megaarena.MegaArena
 version: 1.0
-softdepend: [Vault,StaffPlus,EffectLib,NametagEdit]
+softdepend: [Vault,StaffPlus,EffectLib]
 
 ############################################################
 # +------------------------------------------------------+ #

@@ -93,7 +93,7 @@ public class MegaArena extends JavaPlugin {
 	public void onEnable() {
 		
 		/* Check for dependencies */
-		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("NametagEdit") == null ||  pm.getPlugin("EffectLib") == null || !(setupPermissions())) {
+		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("EffectLib") == null || !(setupPermissions())) {
 			logger.severe("MegaArena is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
