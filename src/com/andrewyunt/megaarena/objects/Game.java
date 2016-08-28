@@ -28,6 +28,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -191,21 +192,10 @@ public class Game {
 		player.setGame(this);
 		player.setSide(side);
 		
-		for (GamePlayer updatePlayer : players) {
-			Scoreboard scoreboard = updatePlayer.getDisplayBoard().getScoreboard();
-			
-			for (GameSide addSide : sides) {
-				Team team = scoreboard.getTeam(addSide.getSideType().getName());
-				
-				if (team == null)
-					team = scoreboard.registerNewTeam(addSide.getSideType().getName());
-					
-				team.setPrefix(addSide.getSideType().getNameColor() + "");
-				
-				for (GamePlayer addPlayer : getPlayers(addSide))
-					team.addPlayer(addPlayer.getBukkitPlayer());
-			}
-		}
+		Server server = MegaArena.getInstance().getServer();
+		
+		server.dispatchCommand(server.getConsoleSender(), 
+				String.format("nte player %s prefix %s", player.getName(), side.getSideType().getNameColor()));
 		
 		player.updateScoreboard();
 		
@@ -278,27 +268,13 @@ public class Game {
 		
 		Player bp = player.getBukkitPlayer();
 		
-		player.updateScoreboard();
-		
-		/* Remove player from players set and then set the player's game to null*/
+		/* Remove player from players set then set the player's game and side to null*/
 		players.remove(player);
-		player.setGame(null);
-		
-		/* Remove player from scoreboard teams */
-		for (GamePlayer toRemove : players)
-			toRemove.getDisplayBoard().getScoreboard().getTeam(player.getSide().getSideType().getName())
-			.removePlayer(player.getBukkitPlayer());
-		
-		/* Remove players from player's own side */
-		for (GameSide side : sides) {
-			Team team = player.getDisplayBoard().getScoreboard().getTeam(side.getSideType().getName());
-			
-			for (OfflinePlayer op : team.getPlayers())
-				team.removePlayer(op);
-		}
-		
-		/* Set the player's side to null */
+		player.setGame(null);	
 		player.setSide(null);
+		
+		/* Update player's scoreboard */
+		player.updateScoreboard();
 		
 		/* Set player's energy to 0 */
 		player.setEnergy(0);
@@ -317,6 +293,11 @@ public class Game {
 		bp.setLevel(0);
 		bp.setGameMode(player.getPreviousGameMode());
 		
+		/* Remove player's colored tag */
+		Server server = MegaArena.getInstance().getServer();
+		
+		server.dispatchCommand(server.getConsoleSender(), 
+				String.format("nte player %s prefix %s", player.getName(), "&f"));
 		
 		/* Set player's lobby inventory */
 		player.updateHotBar();

@@ -24,6 +24,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import com.andrewyunt.megaarena.command.ArenaCommand;
 import com.andrewyunt.megaarena.command.DuelAcceptCommand;
 import com.andrewyunt.megaarena.command.DuelCommand;
@@ -92,7 +93,7 @@ public class MegaArena extends JavaPlugin {
 	public void onEnable() {
 		
 		/* Check for dependencies */
-		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("EffectLib") == null || !(setupPermissions())) {
+		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("NametagEdit") == null ||  pm.getPlugin("EffectLib") == null || !(setupPermissions())) {
 			logger.severe("MegaArena is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
@@ -177,7 +178,7 @@ public class MegaArena extends JavaPlugin {
 	 * <p>
 	 * Removes all active games and sends the shutdown message to all players
 	 * kicked from the games.
-	 * <p>
+	 * </p>
 	 */
 	@Override
 	public void onDisable() {
