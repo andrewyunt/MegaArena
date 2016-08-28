@@ -297,8 +297,12 @@ public class MegaArenaPlayerListener implements Listener {
 		if (damagedGP.getGame().getArena().getType() != Arena.Type.TDM)
 			return;
 
-		if (damagedGP.getSide() != damagerGP.getSide())
-			damagedGP.addAssistPlayer(damagerGP);
+		if (damagedGP.getSide() == damagerGP.getSide()) {
+			event.setCancelled(true);
+			return;
+		}			
+		
+		damagedGP.addAssistPlayer(damagerGP);
 	}
 
 	@EventHandler

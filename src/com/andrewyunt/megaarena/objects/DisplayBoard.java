@@ -3,7 +3,6 @@ package com.andrewyunt.megaarena.objects;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -22,7 +21,7 @@ public class DisplayBoard {
 	private Scoreboard scoreboard;
 	private Objective objective;
 	private String title = null;
-	private HashMap<OfflinePlayer, Score> fields = new HashMap<OfflinePlayer, Score>();
+	private HashMap<String, Score> fields = new HashMap<String, Score>();
 
 	public DisplayBoard(Player player, String title) {
 		
@@ -49,7 +48,7 @@ public class DisplayBoard {
 			text += " ";
 
 		while (true) {
-			if (!fields.keySet().contains(Bukkit.getOfflinePlayer(text)))
+			if (!fields.keySet().contains(text))
 				break;
 
 			text = text.substring(0, text.length() - 1);
@@ -58,11 +57,11 @@ public class DisplayBoard {
 				return;
 		}
 
-		fields.put(Bukkit.getOfflinePlayer(text), objective.getScore(Bukkit.getOfflinePlayer(text)));
-		fields.get(Bukkit.getOfflinePlayer(text)).setScore(0);
+		fields.put(text, objective.getScore(text));
+		fields.get(text).setScore(0);
 		
-		for (OfflinePlayer p : fields.keySet())
-			fields.get(p).setScore(fields.get(p).getScore() + 1);
+		for (String str : fields.keySet())
+			fields.get(str).setScore(fields.get(str).getScore() + 1);
 	}
 
 	/**
