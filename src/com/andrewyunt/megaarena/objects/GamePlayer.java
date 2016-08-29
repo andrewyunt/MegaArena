@@ -18,6 +18,7 @@ package com.andrewyunt.megaarena.objects;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -30,8 +31,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
+
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
 
@@ -193,7 +194,7 @@ public class GamePlayer {
 		return StaffPlus.get().modeCoordinator.isInMode(getBukkitPlayer().getUniqueId());
 	}
 	
-	public void updateHotBar() {
+	public void updateHotbar() {
 		
 		PlayerInventory inv = getBukkitPlayer().getInventory();
 		
@@ -203,40 +204,11 @@ public class GamePlayer {
 		inv.setBoots(new ItemStack(Material.AIR));
 		inv.clear();
 		
-		/* Create items */
-		ItemStack shop = new ItemStack(Material.EMERALD);
-		ItemStack layoutEditor = new ItemStack(Material.CHEST);
-		ItemStack classSelector = new ItemStack(Material.COMMAND);
-		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
-		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
-		
-		/* Get item metas */
-		ItemMeta shopMeta = shop.getItemMeta();
-		ItemMeta layoutEditorMeta = layoutEditor.getItemMeta();
-		ItemMeta classSelectorMeta = classSelector.getItemMeta();
-		ItemMeta playFFAMeta = playFFA.getItemMeta();
-		ItemMeta playTDMMeta = playTDM.getItemMeta();
-		
-		/* Set meta display names */
-		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
-		layoutEditorMeta.setDisplayName(ChatColor.YELLOW + "Layout Editor");
-		classSelectorMeta.setDisplayName(ChatColor.RED + "Class Selector");
-		playFFAMeta.setDisplayName("Play : Free-for-all");
-		playTDMMeta.setDisplayName("Play : Team-deathmatch");
-		
-		/* Set item metas */
-		shop.setItemMeta(shopMeta);
-		layoutEditor.setItemMeta(layoutEditorMeta);
-		classSelector.setItemMeta(classSelectorMeta);
-		playFFA.setItemMeta(playFFAMeta);
-		playTDM.setItemMeta(playTDMMeta);
-		
-		/* Set items in player's inventory */
-		getBukkitPlayer().getInventory().setItem(0, shop);
-		getBukkitPlayer().getInventory().setItem(1, layoutEditor);
-		getBukkitPlayer().getInventory().setItem(2, classSelector);
-		getBukkitPlayer().getInventory().setItem(7, playFFA);
-		getBukkitPlayer().getInventory().setItem(8, playTDM);
+		for (Map.Entry<Integer, ItemStack> entry : MegaArena.getInstance().getHotbarItems().entrySet()) {
+		    int pos = entry.getKey();
+		    ItemStack is = entry.getValue();
+		    inv.setItem(pos, is);
+		}
 	}
 	
 	public GameSide getSide() {

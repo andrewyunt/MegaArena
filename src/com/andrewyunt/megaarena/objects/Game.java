@@ -322,7 +322,7 @@ public class Game {
 		bp.setGameMode(player.getPreviousGameMode());
 		
 		/* Set player's lobby inventory */
-		player.updateHotBar();
+		player.updateHotbar();
 			
 		/* Teleport the player to the spawn location */
 		Location loc = bp.getWorld().getSpawnLocation().clone();

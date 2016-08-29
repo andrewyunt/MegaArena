@@ -52,7 +52,7 @@ import de.slikey.effectlib.util.DynamicLocation;
  */
 public class MegaArenaPlayerAbilityListener implements Listener {
 	
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 
 		ItemStack item = event.getItem();
@@ -94,7 +94,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void onEPH(EntityDamageByEntityEvent event) {
 		
 		if (!(event.getDamager() instanceof Player))
@@ -133,7 +133,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			playerGP.addEnergy(playerGP.getClassType().getEnergyPerClick());
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void onEPC(PlayerInteractEvent event) {
 
 		if (!(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK))

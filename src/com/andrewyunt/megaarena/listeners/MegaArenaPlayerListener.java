@@ -89,7 +89,7 @@ public class MegaArenaPlayerListener implements Listener {
 				player.updateScoreboard();
 				
 				/* Update player hotbar */
-				player.updateHotBar();
+				player.updateHotbar();
 				
 				/* Teleport the player to the spawn location */
 				Location loc = bp.getWorld().getSpawnLocation().clone();
@@ -172,8 +172,8 @@ public class MegaArenaPlayerListener implements Listener {
 
 		} else if (name.equals(ChatColor.YELLOW + "Layout Editor")) {
 
-			player.sendMessage(ChatColor.RED + "The layout editor is coming soon!");
-
+			plugin.getLayoutEditorMenu().openMainMenu(gp);
+			
 		} else if (name.equals(ChatColor.RED + "Class Selector")) {
 
 			plugin.getClassSelectorMenu().openMainMenu(gp);
@@ -533,7 +533,7 @@ public class MegaArenaPlayerListener implements Listener {
 		event.setCancelled(true);
 	}
 	
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler (priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		
 		if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM)

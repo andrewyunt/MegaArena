@@ -15,6 +15,7 @@
  */
 package com.andrewyunt.megaarena.db;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -22,9 +23,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.Inventory;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.BukkitSerialization;
 
 public class MySQLSource extends DatabaseHandler {
  
@@ -52,9 +55,7 @@ public class MySQLSource extends DatabaseHandler {
 				Class.forName("com.mysql.jdbc.Driver");
 				connection = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + database, user, pass);
 			}
-		} catch (SQLException e) {
-			return false;
-		} catch (ClassNotFoundException e1) {
+		} catch (SQLException | ClassNotFoundException e) {
 			return false;
 		}
         
@@ -76,9 +77,12 @@ public class MySQLSource extends DatabaseHandler {
         
         try {     	
 			statement.executeUpdate(String.format(
-					"INSERT INTO " + database + ".Players (uuid, class, coins, earned_coins, kills) VALUES ('%s', '%s', %s, %s, %s);",
+					"INSERT INTO `Players` (`uuid`, `class`, `accepting_duels`, `coins`, `earned_coins`, `kills`)"
+							+ " VALUES ('%s', '%s', %s, %s, %s, %s) ON DUPLICATE KEY UPDATE class = '%2$s',"
+							+ " accepting_duels = %3$s, coins = %4$s, earned_coins = %5$s, kills = %6$s;",
 					uuid,
 					classType == null ? "none" : classType.toString(),
+					player.isAcceptingDuels() == true ? 1 : 0,
 					player.getCoins(),
 					player.getEarnedCoins(),
 					player.getKills()));
@@ -96,7 +100,7 @@ public class MySQLSource extends DatabaseHandler {
         ResultSet resultSet = null;
         
 		try {
-			resultSet = statement.executeQuery("SELECT * FROM " + database + ".Players WHERE uuid = '" + uuid + "';");
+			resultSet = statement.executeQuery("SELECT * FROM `Players` WHERE `uuid` = '" + uuid + "';");
 		} catch (SQLException e) {
 			return; // player does not exist, so don't load their data
 		}
@@ -108,42 +112,100 @@ public class MySQLSource extends DatabaseHandler {
     			if (!classStr.equals("none"))
     				player.setClassType(com.andrewyunt.megaarena.objects.Class.valueOf(classStr));
     			
+    			player.setAcceptingDuels(resultSet.getInt("accepting_duels") == 1 ? true : false);
     			player.setCoins(resultSet.getInt("coins"));
     			player.setEarnedCoins(resultSet.getInt("earned_coins"));
     			player.setKills(resultSet.getInt("kills"));
     		}
 		} catch (SQLException e) {
-			e.printStackTrace();
 			MegaArena.getInstance().getLogger().severe(String.format(
 					"An error occured while loading %s.", player.getName()));
 		}
     }
 
 	@Override
-	public void saveLayout(GamePlayer player, com.andrewyunt.megaarena.objects.Class classType) {
-		// TODO Auto-generated method stub
+	public void saveLayout(GamePlayer player, com.andrewyunt.megaarena.objects.Class classType, Inventory inv) {
 		
+        String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
+        String version = MegaArena.getInstance().getDescription().getVersion();
+        
+        try {     	
+			statement.executeUpdate(String.format(
+					"INSERT INTO `Layouts` (`uuid`, `layout`, `inventory`, `version`)"
+							+ " VALUES ('%s', '%s', '%s', '%s') ON DUPLICATE KEY UPDATE `layout` = '%2$s',"
+							+ "`inventory` = '%3$s';",
+					uuid,
+					classType.toString(),
+					BukkitSerialization.toBase64(inv),
+					version));
+		} catch (SQLException e) {
+			MegaArena.getInstance().getLogger().severe(String.format(
+					"An error occured while saving %s.", player.getName()));
+		}
 	}
 
 	@Override
-	public void loadLayout(GamePlayer player, com.andrewyunt.megaarena.objects.Class classType) {
-		// TODO Auto-generated method stub
+	public Inventory loadLayout(GamePlayer player, com.andrewyunt.megaarena.objects.Class classType) {
 		
+		String uuid = player.getBukkitPlayer().getUniqueId().toString();
+		String version = MegaArena.getInstance().getDescription().getVersion();
+		
+        ResultSet resultSet = null;
+        
+		try {
+			resultSet = statement.executeQuery("SELECT * FROM `Layouts` WHERE `uuid` = '" + uuid + "' AND"
+					+ " layout = '" + classType.toString() + "' AND `version` = '" + version + "';");
+		} catch (SQLException e) {
+			return null; // layout doesn't exist
+		}
+		
+        try {
+    		while (resultSet.next()) {
+    			String layoutStr = resultSet.getString("inventory");
+    			return BukkitSerialization.fromBase64(layoutStr);
+    		}
+		} catch (SQLException | IOException e) {
+			MegaArena.getInstance().getLogger().severe(String.format(
+					"An error occured while loading %s's %s layout.", player.getName(), 
+					player.getClassType().getName()));
+		}
+        
+		return null;
 	}
 	
 	@Override
 	public void createPlayersTable() {
-	    String query = "CREATE TABLE IF NOT EXISTS Players"
-	            + "  (uuid             VARCHAR(50),"
-	            + "   class            VARCHAR(20),"
-	            + "   coins            BIGINT,"
-	            + "   earned_coins     BIGINT,"
-	            + "   kills            BIGINT);";
+		
+	    String query = "CREATE TABLE IF NOT EXISTS `Players`"
+	            + "  (`uuid`             CHAR(36) PRIMARY KEY NOT NULL,"
+	            + "   `class`            CHAR(20) NOT NULL,"
+	            + "   `accepting_duels`  INT,"
+	            + "   `coins`            INT,"
+	            + "   `earned_coins`     INT,"
+	            + "   `kills`            INT);";
 	    
 	    try {
 			statement.execute(query);
 		} catch (SQLException e) {
 			MegaArena.getInstance().getLogger().severe( "An error occured while creating the Players table.");
+		}
+	}
+	
+	@Override
+	public void createLayoutsTable() {
+		
+	    String query = "CREATE TABLE IF NOT EXISTS `Layouts`"
+	            + "  (`uuid`             CHAR(36) NOT NULL,"
+	            + "   `layout`           CHAR(20) NOT NULL,"
+	            + "   `inventory`        VARCHAR(8000) NOT NULL,"
+	            + "   `version`          CHAR(10) NOT NULL,"
+	            + "   PRIMARY KEY (`uuid`, `layout`));";
+
+	    
+	    try {
+			statement.execute(query);
+		} catch (SQLException e) {
+			MegaArena.getInstance().getLogger().severe( "An error occured while creating the Layouts table.");
 		}
 	}
 }

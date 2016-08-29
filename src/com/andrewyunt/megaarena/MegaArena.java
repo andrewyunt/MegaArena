@@ -15,12 +15,17 @@
  */
 package com.andrewyunt.megaarena;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
@@ -44,6 +49,7 @@ import com.andrewyunt.megaarena.managers.EventManager;
 import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
+import com.andrewyunt.megaarena.menu.LayoutEditorMenu;
 import com.andrewyunt.megaarena.menu.ShopMenu;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
@@ -71,6 +77,8 @@ public class MegaArena extends JavaPlugin {
     private Permission permissions = null;
     private ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
     private ShopMenu shopMenu = new ShopMenu();
+    private LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
+    private Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
 	
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
@@ -140,9 +148,13 @@ public class MegaArena extends JavaPlugin {
 		pm.registerEvents(new MegaArenaPlayerSkillListener(), this);
 		pm.registerEvents(classSelectorMenu, this);
 		pm.registerEvents(shopMenu, this);
+		pm.registerEvents(layoutEditorMenu, this);
 		
 		/* Load all arenas from arenas.yml */
 		arenaManager.loadArenas();
+		
+		/* Create hotbar items and add them to the map */
+		createHotbarItems();
 		
 		/* Create games for FFA and TDM arenas */
 		for (Arena arena : arenaManager.getArenas(Arena.Type.TDM))
@@ -311,5 +323,59 @@ public class MegaArena extends JavaPlugin {
 	public ShopMenu getShopMenu() {
 		
 		return shopMenu;
+	}
+	
+	/**
+	 * Gets the stored instance of the layout editor menu.
+	 * 
+	 * @return
+	 * 		The instance of the layout editor menu.
+	 */
+	public LayoutEditorMenu getLayoutEditorMenu() {
+		
+		return layoutEditorMenu;
+	}
+	
+	public void createHotbarItems() {
+		
+		/* Create items */
+		ItemStack shop = new ItemStack(Material.EMERALD);
+		ItemStack layoutEditor = new ItemStack(Material.CHEST);
+		ItemStack classSelector = new ItemStack(Material.COMMAND);
+		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
+		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
+		
+		/* Get item metas */
+		ItemMeta shopMeta = shop.getItemMeta();
+		ItemMeta layoutEditorMeta = layoutEditor.getItemMeta();
+		ItemMeta classSelectorMeta = classSelector.getItemMeta();
+		ItemMeta playFFAMeta = playFFA.getItemMeta();
+		ItemMeta playTDMMeta = playTDM.getItemMeta();
+		
+		/* Set meta display names */
+		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
+		layoutEditorMeta.setDisplayName(ChatColor.YELLOW + "Layout Editor");
+		classSelectorMeta.setDisplayName(ChatColor.RED + "Class Selector");
+		playFFAMeta.setDisplayName("Play : Free-for-all");
+		playTDMMeta.setDisplayName("Play : Team-deathmatch");
+		
+		/* Set item metas */
+		shop.setItemMeta(shopMeta);
+		layoutEditor.setItemMeta(layoutEditorMeta);
+		classSelector.setItemMeta(classSelectorMeta);
+		playFFA.setItemMeta(playFFAMeta);
+		playTDM.setItemMeta(playTDMMeta);
+		
+		/* Set hotbar items in map */
+		hotbarItems.put(0, shop);
+		hotbarItems.put(1, layoutEditor);
+		hotbarItems.put(2, classSelector);
+		hotbarItems.put(7, playFFA);
+		hotbarItems.put(8, playTDM);
+	}
+	
+	public Map<Integer, ItemStack> getHotbarItems() {
+		
+		return hotbarItems;
 	}
 }

@@ -141,8 +141,8 @@ public class ClassSelectorMenu implements Listener {
 		inv = Bukkit.createInventory(null, 27, "Hero Classes");
 
 		ItemStack goBack = new ItemStack(Material.ARROW);
-		ItemStack spiritWarrior = new ItemStack(Material.ENCHANTMENT_TABLE);
 		ItemStack witherMinion = new ItemStack(Material.SKULL_ITEM, 1, (short) 1);
+		ItemStack spiritWarrior = new ItemStack(Material.ENCHANTMENT_TABLE);
 
 		ItemMeta goBackMeta = goBack.getItemMeta();
 		ItemMeta spiritWarriorMeta = spiritWarrior.getItemMeta();
@@ -159,9 +159,9 @@ public class ClassSelectorMenu implements Listener {
 		for (int i = 0; i < 12; i++)
 			inv.setItem(i, glassPane);
 
-		inv.setItem(12, spiritWarrior);
+		inv.setItem(12, witherMinion);
 		inv.setItem(13, glassPane);
-		inv.setItem(14, witherMinion);
+		inv.setItem(14, spiritWarrior);
 
 		for (int i = 15; i < 22; i++)
 			inv.setItem(i, glassPane);
@@ -227,7 +227,7 @@ public class ClassSelectorMenu implements Listener {
 				return;
 			}
 			
-			gp.setClassType(Class.valueOf(classStr.toUpperCase()));
+			gp.setClassType(Class.valueOf(classStr));
 			
 			player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
 					ChatColor.AQUA + name + ChatColor.GREEN));

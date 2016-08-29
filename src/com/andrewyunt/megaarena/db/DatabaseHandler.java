@@ -21,5 +21,6 @@ public abstract class DatabaseHandler extends DataSource {
 	public void createTables() {
 		
 		createPlayersTable();
+		createLayoutsTable();
 	}
 }

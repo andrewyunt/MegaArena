@@ -21,14 +21,19 @@ import static com.andrewyunt.megaarena.objects.Skill.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import com.andrewyunt.megaarena.MegaArena;
 
 /**
  * The enumeration used for player's selected class types.
@@ -93,10 +98,181 @@ public enum Class implements Upgradable {
 		return hero;
 	}
 
-	public ItemStack[] giveKitItems(GamePlayer ap) {
+	public void giveKitItems(GamePlayer player) {
 
-		PlayerInventory inv = ap.getBukkitPlayer().getInventory();
-		int kitLevel = ap.getLevel(this);
+		Player bp = player.getBukkitPlayer();
+		PlayerInventory playerInv = bp.getInventory();
+		int kitLevel = player.getLevel(this);
+
+		ItemStack helmet;
+		ItemStack chest;
+		ItemStack leggings;
+		ItemStack boots;
+
+		playerInv.setHelmet(new ItemStack(Material.IRON_HELMET, 1));
+		playerInv.setChestplate(new ItemStack(Material.IRON_CHESTPLATE, 1));
+		playerInv.setLeggings(new ItemStack(Material.IRON_LEGGINGS, 1));
+		playerInv.setBoots(new ItemStack(Material.IRON_BOOTS, 1));
+
+		if (this == ZOMBIE) {
+
+			switch (kitLevel) {
+			case 6:
+				chest = new ItemStack(Material.IRON_CHESTPLATE, 1);
+				chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+				playerInv.setChestplate(chest);
+				break;
+			case 7:
+				chest = new ItemStack(Material.IRON_CHESTPLATE, 1);
+				chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+				playerInv.setChestplate(chest);
+				break;
+			case 8:
+				chest = new ItemStack(Material.IRON_CHESTPLATE, 1);
+				chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setChestplate(chest);
+				break;
+			case 9:
+				chest = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
+				chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setChestplate(chest);
+				break;
+			default:
+				break;
+			}
+
+		} else if (this == SKELETON) {
+
+			switch (kitLevel) {
+			case 7:
+				helmet = new ItemStack(Material.IRON_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 2);
+				playerInv.setHelmet(helmet);
+				break;
+			case 8:
+				helmet = new ItemStack(Material.IRON_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 3);
+				playerInv.setHelmet(helmet);
+				break;
+			case 9:
+				helmet = new ItemStack(Material.DIAMOND_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 4);
+				playerInv.setHelmet(helmet);
+				break;
+			default:
+				break;
+			}
+
+		} else if (this == HEROBRINE) {
+
+			switch (kitLevel) {
+			case 8:
+				helmet = new ItemStack(Material.IRON_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setHelmet(helmet);
+				break;
+			case 9:
+				helmet = new ItemStack(Material.DIAMOND_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setHelmet(helmet);
+				break;
+			default:
+				break;
+			}
+
+		} else if (this == CREEPER) {
+
+			switch (kitLevel) {
+			case 6:
+				leggings = new ItemStack(Material.IRON_LEGGINGS);
+				leggings.addEnchantment(Enchantment.PROTECTION_EXPLOSIONS, 1);
+				playerInv.setLeggings(leggings);
+				break;
+			case 7:
+				leggings = new ItemStack(Material.IRON_LEGGINGS);
+				leggings.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+				playerInv.setLeggings(leggings);
+				break;
+			case 8:
+				leggings = new ItemStack(Material.IRON_LEGGINGS);
+				leggings.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setLeggings(leggings);
+				break;
+			case 9:
+				leggings = new ItemStack(Material.DIAMOND_LEGGINGS);
+				leggings.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				leggings.addEnchantment(Enchantment.PROTECTION_EXPLOSIONS, 2);
+				playerInv.setLeggings(leggings);
+				break;
+			default:
+				break;
+			}
+
+		} else if (this == SPIRIT_WARRIOR) {
+
+			switch (kitLevel) {
+			case 6:
+				boots = new ItemStack(Material.IRON_BOOTS);
+				boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+				playerInv.setBoots(boots);
+				break;
+			case 7:
+				boots = new ItemStack(Material.IRON_BOOTS);
+				boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setBoots(boots);
+				break;
+			case 8:
+				boots = new ItemStack(Material.IRON_BOOTS);
+				boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				boots.addEnchantment(Enchantment.PROTECTION_FALL, 1);
+				playerInv.setBoots(boots);
+				break;
+			case 9:
+				boots = new ItemStack(Material.DIAMOND_BOOTS);
+				boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				boots.addEnchantment(Enchantment.PROTECTION_FALL, 2);
+				playerInv.setBoots(boots);
+				break;
+			default:
+				break;
+			}
+
+		} else if (this == WITHER_MINION) {
+
+			switch (kitLevel) {
+			case 6:
+				helmet = new ItemStack(Material.IRON_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+				playerInv.setHelmet(helmet);
+				break;
+			case 7:
+				helmet = new ItemStack(Material.IRON_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setHelmet(helmet);
+				break;
+			case 8:
+				helmet = new ItemStack(Material.IRON_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setHelmet(helmet);
+				break;
+			case 9:
+				helmet = new ItemStack(Material.DIAMOND_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setHelmet(helmet);
+				break;
+			default:
+				break;
+			}
+		}
+		
+		playerInv.setContents(getKitInventoryItems(player).getContents());
+	}
+	
+	public Inventory getKitInventoryItems(GamePlayer player) {
+		
+		Player bp = player.getBukkitPlayer();
+		Inventory inv = Bukkit.createInventory(bp, 36);
+		int kitLevel = player.getLevel(this);
 
 		/* Health potion */
 		ItemStack potH = new ItemStack(Material.POTION, 1);
@@ -125,19 +301,11 @@ public enum Class implements Upgradable {
 		potS.setItemMeta(pmS);
 		ItemStack potS2 = new ItemStack(Material.POTION, 2);
 		potS2.setItemMeta(pmS);
-
-		ItemStack chest;
+		
 		ItemStack bow;
-		ItemStack helmet;
-		ItemStack leggings;
-		ItemStack boots;
 
 		inv.setItem(4, new ItemStack(Material.COBBLESTONE, 32));
 		inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 4));
-		inv.setHelmet(new ItemStack(Material.IRON_HELMET, 1));
-		inv.setChestplate(new ItemStack(Material.IRON_CHESTPLATE, 1));
-		inv.setLeggings(new ItemStack(Material.IRON_LEGGINGS, 1));
-		inv.setBoots(new ItemStack(Material.IRON_BOOTS, 1));
 
 		if (this == ZOMBIE) {
 
@@ -170,36 +338,24 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				chest = new ItemStack(Material.IRON_CHESTPLATE, 1);
-				chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-				inv.setChestplate(chest);
 				break;
 			case 7:
 				inv.setItem(2, potS2);
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				chest = new ItemStack(Material.IRON_CHESTPLATE, 1);
-				chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-				inv.setChestplate(chest);
 				break;
 			case 8:
 				inv.setItem(2, potS2);
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				chest = new ItemStack(Material.IRON_CHESTPLATE, 1);
-				chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setChestplate(chest);
 				break;
 			case 9:
 				inv.setItem(2, potS2);
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				chest = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
-				chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setChestplate(chest);
 				break;
 			default:
 				break;
@@ -265,9 +421,6 @@ public enum Class implements Upgradable {
 				inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(7, new ItemStack(Material.ARROW, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.IRON_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 2);
-				inv.setHelmet(helmet);
 				break;
 			case 8:
 				inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
@@ -279,9 +432,6 @@ public enum Class implements Upgradable {
 				inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(7, new ItemStack(Material.ARROW, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.IRON_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 3);
-				inv.setHelmet(helmet);
 				break;
 			case 9:
 				inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
@@ -293,9 +443,6 @@ public enum Class implements Upgradable {
 				inv.setItem(5, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(7, new ItemStack(Material.ARROW, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.DIAMOND_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 4);
-				inv.setHelmet(helmet);
 				break;
 			default:
 				break;
@@ -346,9 +493,6 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.IRON_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setHelmet(helmet);
 				break;
 			case 9:
 				inv.setItem(0, new ItemStack(Material.DIAMOND_SWORD, 1));
@@ -356,9 +500,6 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.DIAMOND_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setHelmet(helmet);
 				break;
 			default:
 				break;
@@ -395,37 +536,24 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				leggings = new ItemStack(Material.IRON_LEGGINGS);
-				leggings.addEnchantment(Enchantment.PROTECTION_EXPLOSIONS, 1);
-				inv.setLeggings(leggings);
 				break;
 			case 7:
 				inv.setItem(2, potS);
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				leggings = new ItemStack(Material.IRON_LEGGINGS);
-				leggings.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-				inv.setLeggings(leggings);
 				break;
 			case 8:
 				inv.setItem(2, potS2);
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				leggings = new ItemStack(Material.IRON_LEGGINGS);
-				leggings.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setLeggings(leggings);
 				break;
 			case 9:
 				inv.setItem(2, potS2);
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				leggings = new ItemStack(Material.DIAMOND_LEGGINGS);
-				leggings.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				leggings.addEnchantment(Enchantment.PROTECTION_EXPLOSIONS, 2);
-				inv.setLeggings(leggings);
 				break;
 			default:
 				break;
@@ -462,18 +590,12 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				boots = new ItemStack(Material.IRON_BOOTS);
-				boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-				inv.setBoots(boots);
 				break;
 			case 7:
 				inv.setItem(2, potS2);
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				boots = new ItemStack(Material.IRON_BOOTS);
-				boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setBoots(boots);
 				break;
 			case 8:
 				inv.setItem(0, new ItemStack(Material.DIAMOND_SWORD, 1));
@@ -481,10 +603,6 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				boots = new ItemStack(Material.IRON_BOOTS);
-				boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				boots.addEnchantment(Enchantment.PROTECTION_FALL, 1);
-				inv.setBoots(boots);
 				break;
 			case 9:
 				inv.setItem(0, new ItemStack(Material.DIAMOND_SWORD, 1));
@@ -492,10 +610,6 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				boots = new ItemStack(Material.DIAMOND_BOOTS);
-				boots.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				boots.addEnchantment(Enchantment.PROTECTION_FALL, 2);
-				inv.setBoots(boots);
 				break;
 			default:
 				break;
@@ -532,18 +646,12 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.IRON_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-				inv.setHelmet(helmet);
 				break;
 			case 7:
 				inv.setItem(2, potS2);
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.IRON_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setHelmet(helmet);
 				break;
 			case 8:
 				inv.setItem(0, new ItemStack(Material.DIAMOND_SWORD, 1));
@@ -551,9 +659,6 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.IRON_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setHelmet(helmet);
 				break;
 			case 9:
 				inv.setItem(0, new ItemStack(Material.DIAMOND_SWORD, 1));
@@ -561,15 +666,17 @@ public enum Class implements Upgradable {
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
-				helmet = new ItemStack(Material.DIAMOND_HELMET);
-				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-				inv.setHelmet(helmet);
 				break;
 			default:
 				break;
 			}
 		}
-
-		return inv.getContents();
+		
+		Inventory loadedInv = MegaArena.getInstance().getDataSource().loadLayout(player, this);
+		
+		if (loadedInv != null)
+			inv = loadedInv;
+			
+		return inv;
 	}
 }

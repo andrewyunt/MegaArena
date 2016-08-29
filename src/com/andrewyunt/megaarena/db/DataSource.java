@@ -15,6 +15,8 @@
  */
 package com.andrewyunt.megaarena.db;
 
+import org.bukkit.inventory.Inventory;
+
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
@@ -26,11 +28,13 @@ public abstract class DataSource {
 	
 	public abstract void savePlayer(GamePlayer player);
 	
-	public abstract void saveLayout(GamePlayer player, Class classType);
+	public abstract void saveLayout(GamePlayer player, Class classType, Inventory inv);
 	
-	public abstract void loadLayout(GamePlayer player, Class classType);
+	public abstract Inventory loadLayout(GamePlayer player, Class classType);
 	
 	public abstract void createTables();
 	
 	public abstract void createPlayersTable();
+
+	public abstract void createLayoutsTable();
 }

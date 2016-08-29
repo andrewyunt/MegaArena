@@ -284,9 +284,7 @@ public class ShopMenu implements Listener {
 				return;
 			}
 			
-			String classStr = name.replace(" ", "_").toUpperCase();
-			
-			if (!player.hasPermission("megaarena.class." + classStr.toLowerCase()))  {
+			if (!player.hasPermission("megaarena.class." + name.replace(" ", "_").toLowerCase()))  {
 				player.sendMessage(ChatColor.RED + "You do not own that class.");
 				return;
 			}
@@ -331,7 +329,7 @@ public class ShopMenu implements Listener {
 			}
 			
 			int cost = classType.isHero() ? 
-					MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "hero-upgrade-cost")
+					MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-hero-upgrade-cost")
 					: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
 			
 			gp.removeCoins(cost);

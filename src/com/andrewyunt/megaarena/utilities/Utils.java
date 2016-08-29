@@ -11,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.objects.Vector3D;
@@ -170,5 +172,55 @@ public class Utils {
         vector.setZ(x * sin + z * cos);
  
         return vector;
+    }
+    
+    public static Inventory fromChest(Inventory inv) {
+    	
+    	Inventory newInv = Bukkit.createInventory(null, 36);
+    	
+    	for (int i = 0; i <= 26; i++) {
+    		ItemStack is = inv.getItem(i);
+    		
+    		if (is == null)
+    			continue;
+    		
+    		newInv.setItem(i + 9, is.clone());
+    	}
+    	
+    	for (int i = 27; i <= 35; i++) {
+    		ItemStack is = inv.getItem(i);
+    		
+    		if (is == null)
+    			continue;
+    		
+    		newInv.setItem(i - 27, is.clone());
+    	}
+    	
+		return newInv;
+    }
+    
+    public static Inventory toChest(Inventory inv) {
+    	
+    	Inventory newInv = Bukkit.createInventory(null, 36);
+    	
+    	for (int i = 0; i <= 8; i++) {
+    		ItemStack is = inv.getItem(i);
+    		
+    		if (is == null)
+    			continue;
+    		
+    		newInv.setItem(i + 27, is.clone());
+    	}
+    	
+    	for (int i = 9; i <= 34; i++) {
+    		ItemStack is = inv.getItem(i);
+    		
+    		if (is == null)
+    			continue;
+    		
+    		newInv.setItem(i - 9, is.clone());
+    	}
+    	
+		return newInv;
     }
 }
