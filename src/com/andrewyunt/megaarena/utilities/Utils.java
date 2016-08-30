@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -222,5 +223,27 @@ public class Utils {
     	}
     	
 		return newInv;
+    }
+    
+    public static int getHighestEntry(ConfigurationSection section) {
+    	
+    	int highest = 0;
+    	
+    	if (section == null)
+    		return 1;
+    	
+    	Set<String> keys = section.getKeys(false);
+    	
+    	if (keys.size() == 0)
+    		return 0;
+    	
+    	for (String key : section.getKeys(false)) {
+    		int num = Integer.valueOf(key);
+    		
+    		if (highest < num)
+    			highest = num;
+    	}
+    	
+    	return highest;
     }
 }

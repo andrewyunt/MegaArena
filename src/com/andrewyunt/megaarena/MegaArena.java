@@ -38,6 +38,7 @@ import com.andrewyunt.megaarena.command.DuelCommand;
 import com.andrewyunt.megaarena.command.DuelDenyCommand;
 import com.andrewyunt.megaarena.command.DuelsToggleCommand;
 import com.andrewyunt.megaarena.configuration.ArenaConfiguration;
+import com.andrewyunt.megaarena.configuration.SignConfiguration;
 import com.andrewyunt.megaarena.db.DataSource;
 import com.andrewyunt.megaarena.db.MySQLSource;
 import com.andrewyunt.megaarena.exception.GameException;
@@ -48,6 +49,7 @@ import com.andrewyunt.megaarena.managers.ArenaManager;
 import com.andrewyunt.megaarena.managers.EventManager;
 import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
+import com.andrewyunt.megaarena.managers.SignManager;
 import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
 import com.andrewyunt.megaarena.menu.LayoutEditorMenu;
 import com.andrewyunt.megaarena.menu.ShopMenu;
@@ -85,7 +87,9 @@ public class MegaArena extends JavaPlugin {
 	private final PlayerManager playerManager = new PlayerManager();
 	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
 	private final EventManager eventManager = new EventManager();
+	private final SignManager signManager = new SignManager();
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
+	private final SignConfiguration signConfiguration = new SignConfiguration();
 	private final DataSource dataSource = new MySQLSource();
 	
 	private static MegaArena instance = null;
@@ -129,7 +133,7 @@ public class MegaArena extends JavaPlugin {
 	    			return;
 	    		}
 	    		
-	    		dataSource.createTables();
+	    		dataSource.updateDB();
 			}
         });
 		
@@ -282,6 +286,17 @@ public class MegaArena extends JavaPlugin {
 	}
 	
 	/**
+	 * Gets the instance of the SignManager class.
+	 * 
+	 * @return
+	 * 		Instance of the SignManager class.
+	 */
+	public SignManager getSignManager() {
+		
+		return signManager;
+	}
+	
+	/**
 	 * Gets the instance of the ArenaConfiguration class.
 	 * 
 	 * @return
@@ -290,6 +305,17 @@ public class MegaArena extends JavaPlugin {
 	public ArenaConfiguration getArenaConfig() {
 		
 		return arenaConfiguration;
+	}
+	
+	/**
+	 * Gets the instance of the SignConfiguration class.
+	 * 
+	 * @return
+	 * 		Instance of the SignConfiguration class.
+	 */
+	public SignConfiguration getSignConfig() {
+		
+		return signConfiguration;
 	}
 	
 	/**

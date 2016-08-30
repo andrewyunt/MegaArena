@@ -21,7 +21,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 
@@ -122,14 +127,41 @@ public class MySQLSource extends DatabaseHandler {
 					"An error occured while loading %s.", player.getName()));
 		}
     }
+    
+	@Override
+	public Map<OfflinePlayer, Integer> getMostKills() {
+		
+		Map<OfflinePlayer, Integer> mostKills =  new HashMap<OfflinePlayer, Integer>();
+		
+		ResultSet resultSet = null;
+		
+		try {
+			resultSet = statement.executeQuery("SELECT `uuid`, `kills` FROM `Players` ORDER BY `kills` DESC LIMIT 5;");
+		} catch (SQLException e) {
+			return null;
+		}
+		
+		try {
+			while (resultSet.next()) {
+				OfflinePlayer op = Bukkit.getServer().getOfflinePlayer(UUID.fromString(resultSet.getString("uuid")));
+				int kills = resultSet.getInt("kills");
+				
+				mostKills.put(op, kills);
+			}
+		} catch (SQLException e) {
+			MegaArena.getInstance().getLogger().severe("An error occured while getting players with the most kills.");
+		}
+		
+		return mostKills;
+	}
 
 	@Override
 	public void saveLayout(GamePlayer player, com.andrewyunt.megaarena.objects.Class classType, Inventory inv) {
 		
-        String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
-        String version = MegaArena.getInstance().getDescription().getVersion();
-        
-        try {     	
+		String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
+		String version = MegaArena.getInstance().getDescription().getVersion();
+		
+		try {
 			statement.executeUpdate(String.format(
 					"INSERT INTO `Layouts` (`uuid`, `layout`, `inventory`, `version`)"
 							+ " VALUES ('%s', '%s', '%s', '%s') ON DUPLICATE KEY UPDATE `layout` = '%2$s',"
@@ -206,6 +238,19 @@ public class MySQLSource extends DatabaseHandler {
 			statement.execute(query);
 		} catch (SQLException e) {
 			MegaArena.getInstance().getLogger().severe( "An error occured while creating the Layouts table.");
+		}
+	}
+	
+	@Override
+	public void cleanupLayouts() {
+		
+		String version = MegaArena.getInstance().getDescription().getVersion();
+		String query = "DELETE * from `Layouts` where NOT (`version` = '" + version + "');";
+		
+	    try {
+			statement.execute(query);
+		} catch (SQLException e) {
+			MegaArena.getInstance().getLogger().severe( "An error occured while cleaning the Layouts table.");
 		}
 	}
 }

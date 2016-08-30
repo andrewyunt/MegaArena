@@ -15,6 +15,9 @@
  */
 package com.andrewyunt.megaarena.db;
 
+import java.util.Map;
+
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.Inventory;
 
 import com.andrewyunt.megaarena.objects.Class;
@@ -32,9 +35,13 @@ public abstract class DataSource {
 	
 	public abstract Inventory loadLayout(GamePlayer player, Class classType);
 	
-	public abstract void createTables();
+	public abstract void updateDB();
 	
 	public abstract void createPlayersTable();
 
 	public abstract void createLayoutsTable();
+	
+	public abstract void cleanupLayouts();
+	
+	public abstract Map<OfflinePlayer, Integer> getMostKills();
 }

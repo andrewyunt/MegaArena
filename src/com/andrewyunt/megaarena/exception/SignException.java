@@ -13,58 +13,24 @@
  * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
  * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
  */
-package com.andrewyunt.megaarena.objects;
-
-import org.bukkit.Location;
+package com.andrewyunt.megaarena.exception;
 
 /**
- * The class used to store spawn information.
+ * The exception which is used when an error occurs with the SignDisplay object.
  * 
  * @author Andrew Yunt
  */
-public class Spawn {
-	
-	private boolean isUsed;
-	private Arena arena;
-	private Location location;
-	private GameSide.Type sideType;
-	private String name;
-	
-	public Spawn(String name, Arena arena, Location location, GameSide.Type sideType) {
-		
-		this.name = name;
-		this.arena = arena;
-		this.location = location;
-		this.sideType = sideType;
-	}
-	
-	public void setUsed(boolean isUsed) {
-		
-		this.isUsed = isUsed;
-	}
-	
-	public boolean isUsed() {
-		
-		return isUsed;
-	}
-	
-	public String getName() {
-		
-		return name;
-	}
-	
-	public Arena getArena() {
-		
-		return arena;
-	}
-	
-	public Location getLocation() {
-		
-		return location;
-	}
+public class SignException extends Exception {
 
-	public GameSide.Type getSide() {
+	private static final long serialVersionUID = 8364007684590051100L;
+
+	public SignException() {
 		
-		return sideType;
+		super("An exception occured while conducting an operation on a sign.");
+	}
+	
+	public SignException(String message) {
+		
+		super(message);
 	}
 }

@@ -18,9 +18,11 @@ package com.andrewyunt.megaarena.db;
 public abstract class DatabaseHandler extends DataSource {
 	
 	@Override
-	public void createTables() {
+	public void updateDB() {
 		
 		createPlayersTable();
 		createLayoutsTable();
+		
+		cleanupLayouts();
 	}
 }

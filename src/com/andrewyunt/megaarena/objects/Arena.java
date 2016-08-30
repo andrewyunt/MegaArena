@@ -162,7 +162,6 @@ public class Arena {
 		
 		MegaArena.getInstance().getArenaConfig().saveConfig();
 		
-		/* Error starts here */
 		MegaArena.getInstance().getArenaManager().loadArena(arenaConfig.getConfigurationSection("arenas." + name));
 	}
 	

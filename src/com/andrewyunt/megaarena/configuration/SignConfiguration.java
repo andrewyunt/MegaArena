@@ -29,11 +29,11 @@ import com.andrewyunt.megaarena.MegaArena;
 
 /**
  * 
- * The class used for the arenas.yml configuration file.
+ * The class used for the signs.yml configuration file.
  * 
  * @author Andrew Yunt
  */
-public class ArenaConfiguration {
+public class SignConfiguration {
 	
 	private FileConfiguration config = null;
 	private File configFile = null;
@@ -41,14 +41,14 @@ public class ArenaConfiguration {
 	public void reloadConfig() {
 	    
 		if (configFile == null)
-			configFile = new File(MegaArena.getInstance().getDataFolder(), "arenas.yml");
+			configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
 
 		config = YamlConfiguration.loadConfiguration(configFile);
 
 	    Reader defConfigStream = null;
 	    
 		try {
-			defConfigStream = new InputStreamReader(MegaArena.getInstance().getResource("arenas.yml"), "UTF8");
+			defConfigStream = new InputStreamReader(MegaArena.getInstance().getResource("signs.yml"), "UTF8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -82,9 +82,9 @@ public class ArenaConfiguration {
 	public void saveDefaultConfig() {
 		
 	    if (configFile == null)
-	        configFile = new File(MegaArena.getInstance().getDataFolder(), "arenas.yml");
+	        configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
 	        
 	    if (!configFile.exists())
-	    	MegaArena.getInstance().saveResource("arenas.yml", false);
+	    	MegaArena.getInstance().saveResource("signs.yml", false);
 	}
 }
