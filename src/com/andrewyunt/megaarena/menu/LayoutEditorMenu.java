@@ -18,6 +18,7 @@ package com.andrewyunt.megaarena.menu;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -135,23 +136,61 @@ public class LayoutEditorMenu implements Listener {
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
-	public void onItemMove(InventoryClickEvent event){
+	public void onMoveItemBetweenInventory(InventoryClickEvent event){
 		
-		ItemStack clickedItem = event.getCurrentItem();
-		
-		if (clickedItem == null || clickedItem.getType() == Material.AIR)
+		if (!event.getInventory().getTitle().startsWith("Layout Editor"))
 			return;
 		
-		if (!clickedItem.hasItemMeta())
-			return;
+		Inventory clickedInventory = event.getClickedInventory();
 		
-		String name = clickedItem.getItemMeta().getDisplayName();
-		
-		for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
-			if (!hotbarItem.getItemMeta().getDisplayName().equals(name))
-				continue;
-			
+		if (clickedInventory.getTitle().equals("container.inventory")) {
 			event.setCancelled(true);
+			return;
+		}
+		
+		if (event.isShiftClick()) {
+			event.setCancelled(true);
+			return;
+		}
+		
+		ItemStack currentItem = event.getCurrentItem();
+		
+		if ((currentItem == null || currentItem.getType() == Material.AIR) && event.getCursor() == null) {
+			event.setCancelled(true);
+			return;
+		}
+		
+		if (currentItem.getType() == Material.AIR && event.getCursor().getType() == Material.AIR) {
+			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					
+					try  {
+						for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
+							
+							ItemMeta hotbarMeta = hotbarItem.getItemMeta();
+							
+							if (hotbarMeta == null)
+								continue;
+							
+							ItemStack targetItem = clickedInventory.getItem(event.getSlot());
+							
+							if (targetItem == null)
+								continue;
+							
+							if (!targetItem.getItemMeta().getDisplayName().equals(hotbarMeta.getDisplayName()))
+								continue;
+							
+							clickedInventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
+							MegaArena.getInstance().getPlayerManager().getPlayer(event.getWhoClicked()
+									.getName()).updateHotbar();
+							break;
+						}
+					} catch (IllegalArgumentException | PlayerException e) {
+					}
+				}
+			}, 1L);
 		}
 	}
 	
@@ -171,7 +210,19 @@ public class LayoutEditorMenu implements Listener {
 		if (!is.hasItemMeta())
 			return;
 		
+		for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
+			if (!is.equals(hotbarItem.getItemMeta().getDisplayName()))
+				continue;
+			
+			event.setCancelled(true);
+			return;
+		}
+		
 		String name = is.getItemMeta().getDisplayName();
+		
+		if (name.equals(ChatColor.RESET + "" + ChatColor.DARK_RED + "Health Potion")
+				|| name.equals(ChatColor.RESET + "" + ChatColor.AQUA + "Speed Potion"))
+			return;
 		
 		if (name.equals(" ")) {
 			event.setCancelled(true);
@@ -197,20 +248,17 @@ public class LayoutEditorMenu implements Listener {
 				return;
 			}
 			
-			for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
-				if (!hotbarItem.getItemMeta().getDisplayName().equals(name))
-					continue;
-				
-				event.setCancelled(true);
-				return;
-			}
+			event.setCancelled(true);
 			
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
 				@Override
 				public void run() {
 					
-					openClassMenu(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()));
+					try  {
+						openClassMenu(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()));
+					} catch (IllegalArgumentException e) {
+					}
 				}
 			}, 1L);
 		} catch (PlayerException e) {
