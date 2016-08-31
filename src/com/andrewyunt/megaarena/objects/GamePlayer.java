@@ -359,39 +359,6 @@ public class GamePlayer {
 		return hasSpeed;
 	}
 	
-	/**
-	 * Sets the level of an Upgradable for the specified player.
-	 * 
-	 * @return
-	 * 		The Upgradable level (1-9) of the specified player.
-	 */
-	public int getLevel(Upgradable upgradable) {
-		
-		Player bp = getBukkitPlayer();
-		
-		for (int i = 9; i > 1; i--)
-			if (bp.hasPermission(String.format("megaarena.%s.%s", upgradable.toString().toLowerCase(), i)))
-				return i;
-		
-		return 1;
-	}
-	
-	/**
-	 * Sets the Upgradable level for the specified player to the specified level.
-	 * 
-	 * <p>
-	 * The level integer must be from 1-9 inclusive.
-	 * </p>
-	 * 
-	 * @param level
-	 * 		The level to set the player's Upgradable to.
-	 */
-	public void setLevel(Upgradable upgradable, int level) {
-		
-		MegaArena.getInstance().getServer().dispatchCommand(MegaArena.getInstance().getServer().getConsoleSender(),
-				String.format("pex user %s add megaarena.%s.%s", getBukkitPlayer().getName(), upgradable.toString().toLowerCase(), level));
-	}
-	
 	public void addKill() {
 		
 		setKills(kills + 1);

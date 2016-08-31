@@ -22,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.objects.Upgradable;
 
 public abstract class DataSource {
 	
@@ -41,7 +42,13 @@ public abstract class DataSource {
 
 	public abstract void createLayoutsTable();
 	
+	public abstract void createUpgradesTable();
+	
 	public abstract void cleanupLayouts();
 	
 	public abstract Map<Integer, Map.Entry<OfflinePlayer, Integer>> getMostKills();
+
+	public abstract int getLevel(GamePlayer player, Upgradable upgradable);
+
+	public abstract void setLevel(GamePlayer player, Upgradable upgradable, int level);
 }

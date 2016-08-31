@@ -33,6 +33,7 @@ import org.bukkit.inventory.Inventory;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.objects.Upgradable;
 import com.andrewyunt.megaarena.utilities.BukkitSerialization;
 
 public class MySQLSource extends DatabaseHandler {
@@ -211,6 +212,50 @@ public class MySQLSource extends DatabaseHandler {
 	}
 	
 	@Override
+	public int getLevel(GamePlayer player, Upgradable upgradable) {
+		
+        String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
+
+        ResultSet resultSet = null;
+        
+		try {
+			resultSet = statement.executeQuery("SELECT * FROM `Upgrades` WHERE `uuid` = '" + uuid
+					+ "' AND `upgradable` = '" + upgradable.toString() + "';");
+		} catch (SQLException e) {
+			return 1;
+		}
+ 
+        try {
+    		while (resultSet.next())
+    			return resultSet.getInt("level");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			MegaArena.getInstance().getLogger().severe(String.format(
+					"An error occured while loading %s's %s upgradable.", player.getName(), upgradable.getName()));
+		}
+        
+		return 0;
+	}
+	
+	@Override
+	public void setLevel(GamePlayer player, Upgradable upgradable, int level) {
+		
+		String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
+		
+		try {
+			statement.executeUpdate(String.format(
+					"INSERT INTO `Upgrades` (`uuid`, `upgradable`, `level`)"
+							+ " VALUES ('%s', '%s', '%s') ON DUPLICATE KEY UPDATE `level` = '%3$s';",
+					uuid,
+					upgradable.toString(),
+					level));
+		} catch (SQLException e) {
+			MegaArena.getInstance().getLogger().severe(String.format(
+					"An error occured while saving %s.", player.getName()));
+		}
+	}
+	
+	@Override
 	public void createPlayersTable() {
 		
 	    String query = "CREATE TABLE IF NOT EXISTS `Players`"
@@ -243,6 +288,22 @@ public class MySQLSource extends DatabaseHandler {
 			statement.execute(query);
 		} catch (SQLException e) {
 			MegaArena.getInstance().getLogger().severe( "An error occured while creating the Layouts table.");
+		}
+	}
+	
+	@Override
+	public void createUpgradesTable() {
+		
+	    String query = "CREATE TABLE IF NOT EXISTS `Upgrades`"
+	            + "  (`uuid`             CHAR(36) NOT NULL,"
+	            + "   `upgradable`       CHAR(20) NOT NULL,"
+	            + "   `level`            INT NOT NULL,"
+	            + "   PRIMARY KEY (`uuid`, `upgradable`));";
+	    
+	    try {
+			statement.execute(query);
+		} catch (SQLException e) {
+			MegaArena.getInstance().getLogger().severe( "An error occured while creating the Upgrades table.");
 		}
 	}
 	

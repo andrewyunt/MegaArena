@@ -18,7 +18,6 @@ package com.andrewyunt.megaarena.objects;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -29,7 +28,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 /**

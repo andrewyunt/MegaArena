@@ -86,10 +86,11 @@ public enum Ability implements Upgradable {
 			return;
 		
 		Player bp = player.getBukkitPlayer();
+		int level = MegaArena.getInstance().getDataSource().getLevel(player, this);
 		
 		if (this == HEAL) {
 
-			double hearts = 2.0 + 0.5 * (player.getLevel(this) - 1);
+			double hearts = 2.0 + 0.5 * (level - 1);
 			Set<Player> effectPlayers = new HashSet<Player>();
 			
 			effectPlayers.add(bp);
@@ -174,7 +175,7 @@ public enum Ability implements Upgradable {
 				if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
 					continue;
 				
-				double dmg = 1.0 + 0.5 * (player.getLevel(this) - 1);
+				double dmg = 1.0 + 0.5 * (level - 1);
 				
 				entityPlayer.getWorld().strikeLightningEffect(entityPlayer.getLocation());
 				Damageable dmgVictim = (Damageable) entityPlayer;
@@ -232,7 +233,7 @@ public enum Ability implements Upgradable {
 	    					continue;
 	    				
 	    				Damageable dmgVictim = (Damageable) entity;
-	    				double dmg = 3.0 + 0.5 * (player.getLevel(Ability.EXPLODE) - 1);
+	    				double dmg = 3.0 + 0.5 * (level - 1);
 	    				
 	    				((Damageable) entity).damage(0.00001D, bp);
 	    				
@@ -248,7 +249,7 @@ public enum Ability implements Upgradable {
 			
 			Location location = bp.getLocation();
 			
-			float duration = (float) (1.5 + (0.5 * player.getLevel(this)));
+			float duration = (float) (1.5 + (0.5 * level));
 			double radius = 2;
 			double maxHeight = 5;
 			

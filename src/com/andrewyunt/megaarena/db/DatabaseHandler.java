@@ -22,6 +22,7 @@ public abstract class DatabaseHandler extends DataSource {
 		
 		createPlayersTable();
 		createLayoutsTable();
+		createUpgradesTable();
 		
 		cleanupLayouts();
 	}

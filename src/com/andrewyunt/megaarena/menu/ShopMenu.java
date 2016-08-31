@@ -32,6 +32,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.db.DataSource;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Ability;
 import com.andrewyunt.megaarena.objects.Class;
@@ -124,10 +125,12 @@ public class ShopMenu implements Listener {
 		Skill skillOne = classType.getSkillOne();
 		Skill skillTwo = classType.getSkillTwo();
 
-		int abilityLevel = player.getLevel(ability);
-		int skillOneLevel = player.getLevel(skillOne);
-		int skillTwoLevel = player.getLevel(skillTwo);
-		int kitLevel = player.getLevel(classType);
+		DataSource ds = MegaArena.getInstance().getDataSource();
+		
+		int abilityLevel = ds.getLevel(player, ability);
+		int skillOneLevel = ds.getLevel(player, skillOne);
+		int skillTwoLevel = ds.getLevel(player, skillTwo);
+		int kitLevel = ds.getLevel(player, classType);
 		
 		FileConfiguration config = MegaArena.getInstance().getConfig();
 
@@ -334,7 +337,7 @@ public class ShopMenu implements Listener {
 			
 			gp.removeCoins(cost);
 			
-			gp.setLevel(upgradable, slot);
+			MegaArena.getInstance().getDataSource().setLevel(gp, upgradable, slot);
 			
 			gp.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
 					upgradable.getName() + ChatColor.GREEN));

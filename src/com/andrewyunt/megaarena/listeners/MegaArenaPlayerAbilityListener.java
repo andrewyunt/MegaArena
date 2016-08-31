@@ -290,7 +290,8 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			if (nearbyGP.getSkullHitPlayers().contains(shooterGP))
 				continue;
 
-			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * 0.5);
+			double dmg = 1.5 + (MegaArena.getInstance().getDataSource().getLevel(shooterGP,
+					shooterGP.getClassType().getAbility()) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill as well as
 													  // red damage and invisibility
@@ -316,10 +317,10 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			return;
 
 		Player shooter = (Player) ((Projectile) entity).getShooter();
-		GamePlayer shooterAP = null;
+		GamePlayer shooterGP = null;
 
 		try {
-			shooterAP = MegaArena.getInstance().getPlayerManager().getPlayer(shooter.getName());
+			shooterGP = MegaArena.getInstance().getPlayerManager().getPlayer(shooter.getName());
 		} catch (PlayerException e) {
 		}
 
@@ -339,20 +340,21 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 			Player nearbyPlayer = (Player) nearby;
 
-			GamePlayer nearbyAP = null;
+			GamePlayer nearbyGP = null;
 
 			try {
-				nearbyAP = MegaArena.getInstance().getPlayerManager().getPlayer(nearbyPlayer.getName());
+				nearbyGP = MegaArena.getInstance().getPlayerManager().getPlayer(nearbyPlayer.getName());
 			} catch (PlayerException e) {
 			}
 
-			if (!nearbyAP.isInGame())
+			if (!nearbyGP.isInGame())
 				continue;
 
-			if (nearbyAP.getGame().getArena().getType() == Arena.Type.TDM && nearbyAP.getSide() == shooterAP.getSide())
+			if (nearbyGP.getGame().getArena().getType() == Arena.Type.TDM && nearbyGP.getSide() == shooterGP.getSide())
 				continue;
 
-			double dmg = 1.5 + (shooterAP.getLevel(shooterAP.getClassType().getAbility()) * .5);
+			double dmg = 1.5 + (MegaArena.getInstance().getDataSource()
+					.getLevel(shooterGP, shooterGP.getClassType().getAbility()) * .5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill
 												// as well as red damage and invisibility
