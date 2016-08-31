@@ -234,7 +234,7 @@ public class MySQLSource extends DatabaseHandler {
 					"An error occured while loading %s's %s upgradable.", player.getName(), upgradable.getName()));
 		}
         
-		return 0;
+		return 1;
 	}
 	
 	@Override
