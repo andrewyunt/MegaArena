@@ -187,7 +187,9 @@ public class ShopMenu implements Listener {
 				lore.add("");
 
 				ChatColor color = null;
-				int cost = config.getInt("tier-" + String.valueOf(curLevel) + "-upgrade-cost");
+				int cost = classType.isHero() ? 
+						MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(level) + "-hero-upgrade-cost")
+						: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(level) + "-upgrade-cost");
 				
 				if (available == true) {
 					is = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
