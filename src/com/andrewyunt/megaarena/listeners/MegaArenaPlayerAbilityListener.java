@@ -117,9 +117,6 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		if (!playerGP.isInGame())
 			return;
 		
-		if (playerGP.getClassType() == SKELETON)
-			return;
-		
 		if (!targetGP.isInGame())
 			return;
 		
@@ -130,7 +127,10 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			return;
 
 		if (targetGP.getLastDamageCause() != DamageCause.CUSTOM)
-			playerGP.addEnergy(playerGP.getClassType().getEnergyPerClick());
+			if (playerGP.getClassType() != SKELETON)
+				playerGP.addEnergy(playerGP.getClassType().getEnergyPerClick());
+			else
+				playerGP.addEnergy(3); // Added as number because Skeleton's ENUM only contains the Energy Per Bow Hit, not per Sword Hit.
 	}
 
 	@EventHandler (priority = EventPriority.MONITOR)
@@ -150,9 +150,6 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		if (!clickerGP.isInGame())
 			return;
 
-		if (clickerGP.getClassType() == SKELETON)
-			return;
-		
 		Player clickedPlayer = Utils.getTargetPlayer(clickerPlayer);
 		
 		if (clickedPlayer == null)
@@ -173,8 +170,11 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		
 		if (clickedGP.getGame().getArena().getType() == Arena.Type.TDM && clickedGP.getSide() == clickerGP.getSide())
 			return;
-		
-		clickerGP.addEnergy(clickerGP.getClassType().getEnergyPerClick());
+
+		if (clickerGP.getClassType() != SKELETON)
+			clickerGP.addEnergy(clickerGP.getClassType().getEnergyPerClick());
+		else
+			clickerGP.addEnergy(3); // Added as number because Skeleton's ENUM only contains the Energy Per Bow Hit, not per Sword Hit.
 	}
 
 	@EventHandler

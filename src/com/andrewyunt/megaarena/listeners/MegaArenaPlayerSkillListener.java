@@ -15,6 +15,7 @@
  */
 package com.andrewyunt.megaarena.listeners;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
@@ -113,7 +114,8 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void mutualWeakness(EntityDamageByEntityEvent event) { // Skeleton -> Mutual Weakness -> Works
+	public void weakeningArrow(EntityDamageByEntityEvent event) { // Skeleton -> Mutual Weakness -> Works
+
 
 		/* Checking for a bow hit from a player to a player */
 		if (!(event.getDamager() instanceof Arrow))
@@ -154,25 +156,24 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		
 		DataSource ds = MegaArena.getInstance().getDataSource();
 
-		if (shooterGP.getClassType().getSkillOne().equals(Skill.MUTUAL_WEAKNESS))
-			skillLevel = ds.getLevel(shooterGP, shooterGP.getClassType().getSkillOne());
-		else if (shooterGP.getClassType().getSkillTwo().equals(Skill.MUTUAL_WEAKNESS))
-			skillLevel = ds.getLevel(shooterGP, shooterGP.getClassType().getSkillTwo());
+		if (damagedGP.getClassType().getSkillOne() == Skill.WEAKENING_ARROW)
+			skillLevel = ds.getLevel(damagedGP, damagedGP.getClassType().getSkillOne());
+		else if (damagedGP.getClassType().getSkillTwo() == Skill.WEAKENING_ARROW)
+			skillLevel = ds.getLevel(damagedGP, damagedGP.getClassType().getSkillTwo());
 		else
 			return;
 		
 		/* Apply Effects */
 		int duration = (int) ((2 + 0.5 * (skillLevel - 1))) * 20;
-		PotionEffect slowness = new PotionEffect(PotionEffectType.SLOW, duration, 0, true);
+		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, duration, 1, true);
 		PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, duration, 0, true);
 
-		shooter.addPotionEffect(slowness, true);
 		shooter.addPotionEffect(regen, true);
-		damaged.addPotionEffect(slowness, true);
+		damaged.addPotionEffect(weakness, true);
 
 		shooter.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.MUTUAL_WEAKNESS.getName() + ChatColor.GREEN));
-		damaged.sendMessage(String.format(ChatColor.RED + "%s's arrow inflicted you with Slowness for %s seconds.",
+				ChatColor.AQUA + Skill.WEAKENING_ARROW.getName() + ChatColor.GREEN));
+		damaged.sendMessage(String.format(ChatColor.RED + "%s's arrow inflicted you with Weakness II for %s seconds.",
 				shooter.getName(), String.valueOf(duration / 20)));
 	}
 
@@ -280,9 +281,22 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		if (Math.random() > percentage)
 			return;
-
+		
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 60, 1, true);
-
+		
+		Collection<PotionEffect> effects = damaged.getActivePotionEffects();
+		for (PotionEffect e : effects){
+			if (e.getType() == PotionEffectType.SPEED){
+				if (e.getAmplifier() >= 2)
+					return;
+				else{
+					if (e.getDuration() >= 60)
+						return;
+				}
+					
+			}
+		}
+		
 		damaged.addPotionEffect(speed, true);
 
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
@@ -403,6 +417,19 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		if (Math.random() > percentage)
 			return;
 		
+		Collection<PotionEffect> effects = damager.getActivePotionEffects();
+		for (PotionEffect e : effects){
+			if (e.getType() == PotionEffectType.SPEED){
+				if (e.getAmplifier() >= 1)
+					return;
+				else{
+					if (e.getDuration() >= 40)
+						return;
+				}
+					
+			}
+		}
+		
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
 		damager.addPotionEffect(speed, true);
 
@@ -458,6 +485,11 @@ public class MegaArenaPlayerSkillListener implements Listener {
 			return;
 
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, true);
+		Collection<PotionEffect> effects = damaged.getActivePotionEffects();
+		for (PotionEffect e : effects){
+			if (e.getType() == PotionEffectType.SPEED && e.getAmplifier() >= 1)
+					return;
+		}
 
 		damaged.addPotionEffect(speed, false);
 		damagedGP.setHasSpeed(true);
@@ -615,10 +647,10 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		Damageable dmgPlayer = (Damageable) damaged;
 
-		if (dmgPlayer.getHealth() <= 3.0)
+		if (dmgPlayer.getHealth() <= 2.0)
 			dmgPlayer.setHealth(0.0D);
 		else
-			dmgPlayer.setHealth(dmgPlayer.getHealth() - 3.0D);
+			dmgPlayer.setHealth(dmgPlayer.getHealth() - 2.0D);
 	}
 
 	@EventHandler
@@ -664,7 +696,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		double duration = 2 + 0.5 * (skillLevel - 1);
 
-		if (Math.random() > 0.1D)
+		if (Math.random() > 0.15D)
 			return;
 
 		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, (int) (duration * 20), 0, true);
@@ -720,7 +752,7 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		
 		double duration = 4 + (skillLevel - 1);
 		
-		if (Math.random() > 0.05D)
+		if (Math.random() > 0.1D)
 			return;
 		
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",

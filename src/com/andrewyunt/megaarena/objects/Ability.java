@@ -316,8 +316,9 @@ public enum Ability implements Upgradable {
 	            	for (Entity entity : Utils.getNearbyEntities(location, 5)) {	
 	            		if (!(entity instanceof Player))
 	            			continue;
-	            		
 	            		Player entityPlayer = (Player) entity;
+	            		if (entityPlayer.getLocation().getY() - location.getY() > 3)
+	            			continue;
 	    				GamePlayer entityGP = null;
 	    				
 	    				try {

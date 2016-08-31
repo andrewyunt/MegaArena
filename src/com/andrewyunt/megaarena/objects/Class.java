@@ -44,7 +44,7 @@ import com.andrewyunt.megaarena.MegaArena;
 public enum Class implements Upgradable {
 	
 	ZOMBIE("Zombie", HEAL, RESIST, SWIFTNESS, 4, false),
-	SKELETON("Skeleton", EXPLOSIVE_ARROW, MUTUAL_WEAKNESS, BOOMERANG, 15, false),
+	SKELETON("Skeleton", EXPLOSIVE_ARROW, WEAKENING_ARROW, BOOMERANG, 20, false),
 	HEROBRINE("Herobrine", LIGHTNING, RECHARGE, FLURRY, 10, false),
 	CREEPER("Creeper", EXPLODE, POWERFUL_WEAKNESS, SUPPORT, 10, false),
 	SPIRIT_WARRIOR("Spirit Warrior", TORNADO, WEAKENING_SWING, SWIFT_BACKUP, 5, true),
@@ -165,14 +165,20 @@ public enum Class implements Upgradable {
 
 		} else if (this == HEROBRINE) {
 
+
 			switch (kitLevel) {
+			case 7:
+				helmet = new ItemStack(Material.IRON_HELMET);
+				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+				playerInv.setHelmet(helmet);
+				break;
 			case 8:
 				helmet = new ItemStack(Material.IRON_HELMET);
 				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
 				playerInv.setHelmet(helmet);
 				break;
 			case 9:
-				helmet = new ItemStack(Material.DIAMOND_HELMET);
+				helmet = new ItemStack(Material.IRON_HELMET);
 				helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
 				playerInv.setHelmet(helmet);
 				break;
@@ -481,7 +487,7 @@ public enum Class implements Upgradable {
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 				break;
 			case 7:
-				inv.setItem(0, new ItemStack(Material.DIAMOND_SWORD, 1));
+				inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
 				inv.setItem(2, potS);
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
@@ -495,7 +501,9 @@ public enum Class implements Upgradable {
 				inv.setItem(8, new ItemStack(Material.COOKED_BEEF, 16));
 				break;
 			case 9:
-				inv.setItem(0, new ItemStack(Material.DIAMOND_SWORD, 1));
+				ItemStack ironSword = new ItemStack(Material.IRON_SWORD);
+				ironSword.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+				inv.setItem(0, ironSword);
 				inv.setItem(2, potS2);
 				inv.setItem(3, potH2);
 				inv.setItem(4, new ItemStack(Material.COBBLESTONE, 64));
@@ -504,7 +512,7 @@ public enum Class implements Upgradable {
 			default:
 				break;
 			}
-
+			
 		} else if (this == CREEPER) {
 
 			inv.setItem(0, new ItemStack(Material.IRON_SWORD, 1));
