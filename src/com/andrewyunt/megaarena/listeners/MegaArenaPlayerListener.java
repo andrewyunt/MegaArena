@@ -379,13 +379,13 @@ public class MegaArenaPlayerListener implements Listener {
 		if (game.getArena().getType() == Arena.Type.DUEL)
 			return;
 		
-		int killCoins = 50;
+		int killCoins = 12;
 
 		if (killer.hasPermission("megaarena.coins.double"))
-			killCoins = 100;
+			killCoins = 24;
 		
 		if (killer.hasPermission("megaarena.coins.triple"))
-			killCoins = 150;
+			killCoins = 36;
 			
 		killerGP.addCoins(killCoins);
 		killer.sendMessage(ChatColor.GREEN + String.format("You killed %s and received %s coins.",
