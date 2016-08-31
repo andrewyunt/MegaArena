@@ -375,19 +375,24 @@ public class Game {
 	 */
 	public void end() {
 		
-		Set<GamePlayer> toRemove = new HashSet<GamePlayer>();
+		Set<GamePlayer> toRemovePlayers = new HashSet<GamePlayer>();
 		
 		for (GamePlayer player : players)
-			toRemove.add(player);
+			toRemovePlayers.add(player);
 		
-		for (GamePlayer player : toRemove)
+		for (GamePlayer player : toRemovePlayers)
 			try {
 				removePlayer(player);
 			} catch (PlayerException e) {
 			}
 		
+		Set<Block> toRemoveBlocks= new HashSet<Block>();
+		
 		for (Block block : placedBlocks)
-			block.setType(Material.AIR);
+			toRemoveBlocks.add(block);
+		
+		for (Block block : toRemoveBlocks)
+			removePlacedBlock(block);
 		
 		if (arena.getType() == Arena.Type.DUEL)
 			for (Spawn spawn : arena.getSpawns())
@@ -405,6 +410,15 @@ public class Game {
 	public void addPlacedBlock(Block block) {
 		
 		placedBlocks.add(block);
+		
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+
+				removePlacedBlock(block);
+			}
+		}, 200L);
 	}
 	
 	/**
@@ -416,6 +430,8 @@ public class Game {
 	public void removePlacedBlock(Block block) {
 		
 		placedBlocks.remove(block);
+		
+		block.setType(Material.AIR);
 	}
 	
 	/**

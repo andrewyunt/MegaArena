@@ -18,6 +18,7 @@ package com.andrewyunt.megaarena.listeners;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -328,15 +329,6 @@ public class MegaArenaPlayerListener implements Listener {
 		}
 
 		player.getGame().addPlacedBlock(block);
-
-		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-
-				block.setType(Material.AIR);
-			}
-		}, 200L);
 	}
 
 	@EventHandler
@@ -546,7 +538,7 @@ public class MegaArenaPlayerListener implements Listener {
 	public void onEffectApply(EffectApplyEvent event) {
 		
 		if (event.getEffectType() == PotionEffectType.WITHER)
-			event.setCancelled(true);
+			event.getPlayer().removePotionEffect(PotionEffectType.WITHER);
 	}
 	
 	@EventHandler
