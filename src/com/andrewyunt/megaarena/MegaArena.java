@@ -27,8 +27,6 @@ import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -59,7 +57,6 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
 
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
-import net.milkbowl.vault.permission.Permission;
 
 /**
  * The main class in the MegaArena plugin.
@@ -75,8 +72,6 @@ public class MegaArena extends JavaPlugin {
 	private Logger logger = getLogger();
 	private Server server = getServer();
 	private PluginManager pm = server.getPluginManager();
-	private ServicesManager sm = server.getServicesManager();
-    private Permission permissions = null;
     private ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
     private ShopMenu shopMenu = new ShopMenu();
     private LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
@@ -107,7 +102,7 @@ public class MegaArena extends JavaPlugin {
 	public void onEnable() {
 		
 		/* Check for dependencies */
-		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("EffectLib") == null || !(setupPermissions())) {
+		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("EffectLib") == null) {
 			logger.severe("MegaArena is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
@@ -179,30 +174,6 @@ public class MegaArena extends JavaPlugin {
 				logger.warning(e.getMessage());
 			}
 	}
-    
-	/**
-	 * Sets up the Vault permissions.
-	 */
-    private boolean setupPermissions() {
-    	
-        RegisteredServiceProvider<Permission> permissionProvider = sm.getRegistration(Permission.class);
-        
-        if (permissionProvider != null)
-            permissions = permissionProvider.getProvider();
-            
-        return (permissions != null);
-    }
-    
-    /**
-     * Gets the Vault permissions.
-     * 
-     * @return
-     * 		Instance of the Vault Permission class.
-     */
-    public Permission getPermissions() {
-    	
-    	return permissions;
-    }
 	
 	/**
 	 * Method is executed while the plugin is being disabled.
