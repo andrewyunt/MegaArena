@@ -265,10 +265,10 @@ public enum Class implements Upgradable {
 			}
 		}
 		
-		playerInv.setContents(getKitInventoryItems(player).getContents());
+		playerInv.setContents(getKitInventoryItems(player, true).getContents());
 	}
 	
-	public Inventory getKitInventoryItems(GamePlayer player) {
+	public Inventory getKitInventoryItems(GamePlayer player, boolean loadFromDB) {
 		
 		Player bp = player.getBukkitPlayer();
 		Inventory inv = Bukkit.createInventory(bp, 36);
@@ -672,10 +672,12 @@ public enum Class implements Upgradable {
 			}
 		}
 		
-		Inventory loadedInv = MegaArena.getInstance().getDataSource().loadLayout(player, this);
+		if (loadFromDB) {
+			Inventory loadedInv = MegaArena.getInstance().getDataSource().loadLayout(player, this);
 		
-		if (loadedInv != null)
-			inv = loadedInv;
+			if (loadedInv != null)
+				inv = loadedInv;
+		}
 			
 		return inv;
 	}

@@ -10,9 +10,9 @@ tier-3-upgrade-cost: 125
 tier-4-upgrade-cost: 300
 tier-5-upgrade-cost: 600
 tier-6-upgrade-cost: 3500
-tier-7-upgrade-cost: 6500
-tier-8-upgrade-cost: 8500
-tier-9-upgrade-cost: 14000
+tier-7-upgrade-cost: 8500
+tier-8-upgrade-cost: 10000
+tier-9-upgrade-cost: 20000
 
 # Coins needed for each hero tier upgrade (Tier 1 is not included as it is default)
 tier-2-hero-upgrade-cost: 100
@@ -20,9 +20,9 @@ tier-3-hero-upgrade-cost: 250
 tier-4-hero-upgrade-cost: 600
 tier-5-hero-upgrade-cost: 1200
 tier-6-hero-upgrade-cost: 7000
-tier-7-hero-upgrade-cost: 13000
-tier-8-hero-upgrade-cost: 17000
-tier-9-hero-upgrade-cost: 28000
+tier-7-hero-upgrade-cost: 17000
+tier-8-hero-upgrade-cost: 20000
+tier-9-hero-upgrade-cost: 40000
 
 classes:
   ZOMBIE:

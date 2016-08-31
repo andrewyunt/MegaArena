@@ -113,13 +113,13 @@ public class LayoutEditorMenu implements Listener {
 		player.getBukkitPlayer().openInventory(inv);
 	}
 	
-	public void openClassMenu(GamePlayer player, Class classType) {
+	public void openClassMenu(GamePlayer player, Class classType, boolean loadFromDB) {
 		
 		player.getBukkitPlayer().getInventory().clear();
 		
 		inv = Bukkit.createInventory(null, 45, "Layout Editor - " + classType.getName());
 		
-		ItemStack[] contents = Utils.toChest(classType.getKitInventoryItems(player)).getContents();
+		ItemStack[] contents = Utils.toChest(classType.getKitInventoryItems(player, loadFromDB)).getContents();
 		inv.setContents(contents);
 		
 		for (int i = 36; i < 40; i++)
@@ -131,7 +131,13 @@ public class LayoutEditorMenu implements Listener {
 		goBack.setItemMeta(goBackMeta);
 		inv.setItem(40, goBack);
 		
-		for (int i = 41; i < 45; i++)
+		ItemStack reset = new ItemStack(Material.STORAGE_MINECART);
+		ItemMeta resetMeta = reset.getItemMeta();
+		resetMeta.setDisplayName("Reset Layout");
+		reset.setItemMeta(resetMeta);
+		inv.setItem(41, reset);
+		
+		for (int i = 42; i < 45; i++)
 			inv.setItem(i, glassPane);
 		
 		player.getBukkitPlayer().openInventory(inv);
@@ -250,6 +256,15 @@ public class LayoutEditorMenu implements Listener {
 				return;
 			}
 			
+			if (name.equals("Reset Layout")) {
+				if (title.startsWith("Layout Editor -")) {
+					openClassMenu(gp, Class.valueOf(title.replace("Layout Editor - ", "")
+							.replace(" ", "_").toUpperCase()), false);
+					event.setCancelled(true);
+				}
+				return;
+			}
+			
 			event.setCancelled(true);
 			
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
@@ -258,7 +273,7 @@ public class LayoutEditorMenu implements Listener {
 				public void run() {
 					
 					try  {
-						openClassMenu(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()));
+						openClassMenu(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()), true);
 					} catch (IllegalArgumentException e) {
 					}
 				}
