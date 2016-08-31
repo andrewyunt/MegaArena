@@ -188,8 +188,8 @@ public class ShopMenu implements Listener {
 
 				ChatColor color = null;
 				int cost = classType.isHero() ? 
-						MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(level) + "-hero-upgrade-cost")
-						: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(level) + "-upgrade-cost");
+						MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(curLevel) + "-hero-upgrade-cost")
+						: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(curLevel) + "-upgrade-cost");
 				
 				if (available == true) {
 					is = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
@@ -332,7 +332,7 @@ public class ShopMenu implements Listener {
 				slot = slot - 26;
 				upgradable = classType;
 			}
-			
+
 			int cost = classType.isHero() ? 
 					MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-hero-upgrade-cost")
 					: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
