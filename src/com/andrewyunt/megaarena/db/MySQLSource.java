@@ -169,11 +169,12 @@ public class MySQLSource extends DatabaseHandler {
 		
 		try {
 			statement.executeUpdate(String.format(
-					"INSERT INTO `Layouts` (`uuid`, `layout`, `inventory`, `version`)"
-							+ " VALUES ('%s', '%s', '%s', '%s') ON DUPLICATE KEY UPDATE `layout` = '%2$s',"
-							+ "`inventory` = '%3$s';",
+					"INSERT INTO `Layouts` (`uuid`, `layout`, `level`, `inventory`, `version`)"
+							+ " VALUES ('%s', '%s', %s, '%s', '%s') ON DUPLICATE KEY UPDATE `layout` = '%2$s',"
+							+ "`inventory` = '%4$s';",
 					uuid,
 					classType.toString(),
+					getLevel(player, classType),
 					BukkitSerialization.toBase64(inv),
 					version));
 		} catch (SQLException e) {
@@ -192,7 +193,8 @@ public class MySQLSource extends DatabaseHandler {
         
 		try {
 			resultSet = statement.executeQuery("SELECT * FROM `Layouts` WHERE `uuid` = '" + uuid + "' AND"
-					+ " layout = '" + classType.toString() + "' AND `version` = '" + version + "';");
+					+ " layout = '" + classType.toString() + "' AND `level` = " + getLevel(player, classType)
+					+ " AND `version` = '" + version + "';");
 		} catch (SQLException e) {
 			return null; // layout doesn't exist
 		}
@@ -279,9 +281,10 @@ public class MySQLSource extends DatabaseHandler {
 	    String query = "CREATE TABLE IF NOT EXISTS `Layouts`"
 	            + "  (`uuid`             CHAR(36) NOT NULL,"
 	            + "   `layout`           CHAR(20) NOT NULL,"
+	            + "   `level`            INT NOT NULL,"
 	            + "   `inventory`        VARCHAR(8000) NOT NULL,"
 	            + "   `version`          CHAR(10) NOT NULL,"
-	            + "   PRIMARY KEY (`uuid`, `layout`));";
+	            + "   PRIMARY KEY (`uuid`, `layout`, `level`));";
 
 	    
 	    try {
