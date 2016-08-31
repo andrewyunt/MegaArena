@@ -401,13 +401,13 @@ public class MegaArenaPlayerListener implements Listener {
 					continue;
 
 				Player assistPlayer = assistGP.getBukkitPlayer();
-				int assistCoins = 5;
+				int assistCoins = 6;
 
 				if (assistPlayer.hasPermission("megaarena.coins.double"))
-					assistCoins = 10;
+					assistCoins = 12;
 				
 				if (assistPlayer.hasPermission("megaarena.coins.triple"))
-					assistCoins = 15;
+					assistCoins = 18;
 
 				assistGP.addCoins(assistCoins);
 				assistPlayer.sendMessage(
