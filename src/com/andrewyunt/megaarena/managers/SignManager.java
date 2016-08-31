@@ -16,10 +16,10 @@
 package com.andrewyunt.megaarena.managers;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Location;
-import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.andrewyunt.megaarena.MegaArena;
@@ -32,15 +32,15 @@ public class SignManager {
 	
 	public Set<SignDisplay> signs = new HashSet<SignDisplay>();
 
-	public SignDisplay createSign(SignDisplay.Type type, Location loc, long updateInterval) throws SignException {
+	public SignDisplay createSign(Location loc, int place, long updateInterval) throws SignException {
 		
-		if (type == null || loc == null || updateInterval < 1)
+		if (place == 0 || loc == null || updateInterval < 1)
 			throw new SignException();
 		
 		SignDisplay sign = new SignDisplay(
 				Utils.getHighestEntry(MegaArena.getInstance().getSignConfig().getConfig()
-						.getConfigurationSection("signs")),
-				type, loc, updateInterval);
+						.getConfigurationSection("signs")) + 1,
+				loc, place, updateInterval, false);
 		signs.add(sign);
 		
 		return sign;
@@ -83,8 +83,8 @@ public class SignManager {
 	public SignDisplay getSign(Location loc) throws SignException {
 		
 		for (SignDisplay signDisplay : signs)
-			for (Sign sign : signDisplay.getBukkitSigns().values())
-				if (sign.getLocation() == loc)
+			if (signDisplay.getBukkitSign() != null)
+				if (loc == signDisplay.getBukkitSign().getLocation())
 					return signDisplay;
 			
 		throw new SignException("The specified sign does not exist.");
@@ -113,8 +113,13 @@ public class SignManager {
 
 		ConfigurationSection signs = MegaArena.getInstance().getSignConfig().getConfig()
 				.getConfigurationSection("signs");
+		
+		if (signs == null)
+			return;
 
-		for (String name : signs.getValues(false).keySet())
+		Map<String, Object> cfgValues = signs.getValues(false);
+		
+		for (String name : cfgValues.keySet())
 			loadSign(signs.getConfigurationSection(name));
 	}
 

@@ -21,6 +21,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -100,7 +101,7 @@ public class MySQLSource extends DatabaseHandler {
     @Override
     public void loadPlayer(GamePlayer player) {
  
-        String uuid = player.getBukkitPlayer().getUniqueId().toString();
+        String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
 
         ResultSet resultSet = null;
         
@@ -123,15 +124,16 @@ public class MySQLSource extends DatabaseHandler {
     			player.setKills(resultSet.getInt("kills"));
     		}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			MegaArena.getInstance().getLogger().severe(String.format(
 					"An error occured while loading %s.", player.getName()));
 		}
     }
     
 	@Override
-	public Map<OfflinePlayer, Integer> getMostKills() {
+	public Map<Integer, Map.Entry<OfflinePlayer, Integer>> getMostKills() {
 		
-		Map<OfflinePlayer, Integer> mostKills =  new HashMap<OfflinePlayer, Integer>();
+		Map<Integer, Map.Entry<OfflinePlayer, Integer>> mostKills =  new HashMap<Integer, Map.Entry<OfflinePlayer, Integer>>();
 		
 		ResultSet resultSet = null;
 		
@@ -142,11 +144,14 @@ public class MySQLSource extends DatabaseHandler {
 		}
 		
 		try {
+			int place = 1;
+			
 			while (resultSet.next()) {
 				OfflinePlayer op = Bukkit.getServer().getOfflinePlayer(UUID.fromString(resultSet.getString("uuid")));
-				int kills = resultSet.getInt("kills");
 				
-				mostKills.put(op, kills);
+				mostKills.put(place, new AbstractMap.SimpleEntry(op, resultSet.getInt("kills")));
+				
+				place++;
 			}
 		} catch (SQLException e) {
 			MegaArena.getInstance().getLogger().severe("An error occured while getting players with the most kills.");

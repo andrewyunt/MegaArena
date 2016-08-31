@@ -119,6 +119,7 @@ public class MegaArena extends JavaPlugin {
 		/* Save default configs to plugin folder */
 		saveDefaultConfig();
 		arenaConfiguration.saveDefaultConfig();
+		signConfiguration.saveDefaultConfig();
 		
 		BukkitScheduler scheduler = server.getScheduler();
         scheduler.runTaskAsynchronously(this, new Runnable() {
@@ -156,6 +157,9 @@ public class MegaArena extends JavaPlugin {
 		
 		/* Load all arenas from arenas.yml */
 		arenaManager.loadArenas();
+		
+		/* Load all signs from signs.yml */
+		signManager.loadSigns();
 		
 		/* Create hotbar items and add them to the map */
 		createHotbarItems();

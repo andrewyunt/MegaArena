@@ -23,8 +23,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -62,7 +60,6 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.objects.SignDisplay;
 
 /**
  * The listener class used for general event handling within the plugin
@@ -555,7 +552,7 @@ public class MegaArenaPlayerListener implements Listener {
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		
-		if (event.getLine(0) == null || event.getLine(1) == null || event.getLine(2) == null)
+		if (event.getLine(0) == null || event.getLine(1) == null)
 			return;
 		
 		if (!event.getLine(0).equalsIgnoreCase("[Leaderboard]"))
@@ -564,52 +561,31 @@ public class MegaArenaPlayerListener implements Listener {
 		Player player = event.getPlayer();
 		
 		if (!player.hasPermission("megaarena.sign.create")) {
-			player.sendMessage(ChatColor.RED + "You do not have permission to create a MegaArena sign.");
+			player.sendMessage(ChatColor.RED + "You do not have permission to create a leaderboard sign.");
 			return;
 		}
 		
-		SignDisplay.Type type = null;
+		int place = 0;
 		
 		try {
-			type = SignDisplay.Type.valueOf(event.getLine(1).toUpperCase());
-		} catch (IllegalArgumentException e) {
-			player.sendMessage(ChatColor.RED + "You have placed an invalid sign type.");
-			return;
-		}
-		
-		int signNum = 0;
-		
-		try {
-			signNum = Integer.valueOf(event.getLine(2));
+			place = Integer.valueOf(event.getLine(1));
 		} catch (NumberFormatException e) {
-			player.sendMessage(ChatColor.RED + "You did not enter an integer for the sign number.");
+			player.sendMessage(ChatColor.RED + "You did not enter an integer for the sign place.");
 			return;
 		}
 		
-		Block block = event.getBlock();
-		Block aboveSign = block.getRelative(BlockFace.UP);
-		
-		if (signNum > 1 && aboveSign.getType() != Material.SIGN_POST &&
-				aboveSign.getType() != Material.WALL_SIGN) {
-			player.sendMessage(ChatColor.RED + "There must be a sign above to place a sign with a sign"
-					+ " number greater than 1.");
+		if (place > 5) {
+			player.sendMessage(ChatColor.RED + "You may not enter a place over 5.");
 			return;
 		}
 		
-		if (signNum == 1)
-			try {
-				MegaArena.getInstance().getSignManager().createSign(type,
-						event.getBlock().getLocation(),
-						6000L);
-			} catch (SignException e) {
-				player.sendMessage(ChatColor.RED + e.getMessage());
-			}
-		else
-			try {
-				MegaArena.getInstance().getSignManager().getSign(
-						aboveSign.getLocation()).addSign(signNum, (Sign) block.getState());
-			} catch (SignException e) {
-				player.sendMessage(ChatColor.RED + e.getMessage());
-			}
+		try {
+			MegaArena.getInstance().getSignManager().createSign(
+					event.getBlock().getLocation(),
+					place,
+					6000L);
+		} catch (SignException e) {
+			player.sendMessage(ChatColor.RED + e.getMessage());
+		}
 	}
 }

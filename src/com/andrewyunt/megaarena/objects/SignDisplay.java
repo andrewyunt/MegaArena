@@ -15,12 +15,13 @@
  */
 package com.andrewyunt.megaarena.objects;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,6 +29,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
@@ -37,53 +39,46 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class SignDisplay {
 	
-	/**
-	 * The enum used for possible sign types.
-	 * 
-	 * @author Andrew Yunt
-	 *
-	 */
-	public enum Type {
-		KILLS
-	}
-	
 	private int configNumber;
-	private Type type;
-	private Map<Integer, Sign> bukkitSigns = new HashMap<Integer, Sign>();
+	private Sign bukkitSign;
+	private int place;
 	
 	/**
-	 * Creates a sign display of the specified type, location and update interval.
+	 * Creates a sign display with the specified location and update interval.
 	 * 
-	 * @param type
-	 * 		The type of the display.
 	 * @param loc
 	 * 		The location of the display.
 	 * @param updateInterval
 	 * 		The update interval of the display in ticks.
+	 * @param place
+	 * 		The place on the leaderboard the sign should display.
 	 */
-	public SignDisplay (int configNumber, SignDisplay.Type type, Location loc, long updateInterval) {
+	public SignDisplay (int configNumber, Location loc, int place, long updateInterval, boolean load) {
 		
 		this.configNumber = configNumber;
-		this.type = type;
+		this.place = place;
 		
 		Block block = loc.getWorld().getBlockAt(loc);
 		
-		if (block instanceof Sign)
-			bukkitSigns.put(1, (Sign) block.getState());
+		if (block.getType() == Material.SIGN_POST || block.getType() == Material.WALL_SIGN)
+			bukkitSign =(Sign) block.getState();
+		
+		if (!load)
+			save();
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+			boolean refresh = !load;
+			
 			@Override
 			public void run() {
 				
-				refreshSigns();
+				if (refresh)
+					refresh();
+				
+				refresh = true;
 			}
 		}, 0L, (long) updateInterval);
-	}
-	
-	public Type getType() {
-		
-		return type;
 	}
 	
 	public int getConfigNumber() {
@@ -91,18 +86,23 @@ public class SignDisplay {
 		return configNumber;
 	}
 	
-	public Map<Integer, Sign> getBukkitSigns() {
+	public Sign getBukkitSign() {
 		
-		return bukkitSigns;
+		return bukkitSign;
 	}
 	
-	public void addSign(int signNumber, Sign sign) {
+	public void refresh() {
 		
-		bukkitSigns.put(signNumber, sign);
-	}
-	
-	public void refreshSigns() {
+		Map<Integer, Entry<OfflinePlayer, Integer>> mostKills = MegaArena.getInstance().getDataSource().getMostKills();
+		Entry<OfflinePlayer, Integer> entry = mostKills.get(place);
 		
+		OfflinePlayer op = entry.getKey();
+		
+		bukkitSign.setLine(0, op.getName());
+		bukkitSign.setLine(1, entry.getValue() + " Kills");
+		bukkitSign.setLine(3, place + Utils.getNumberSuffix(place) + " Place");
+
+		bukkitSign.update();
 	}
 	
 	public void save() {
@@ -110,14 +110,10 @@ public class SignDisplay {
 		MegaArena plugin = MegaArena.getInstance();
 		FileConfiguration signConfig = plugin.getSignConfig().getConfig();
 		
-		signConfig.set("signs." + configNumber + ".type", type.toString());
+		signConfig.set("signs." + configNumber + ".place", place);
 		
-		ConfigurationSection bukkitSignsSection = signConfig.createSection(
-				"signs." + configNumber + ".bukkitSigns");
-		
-		for (Map.Entry<Integer, Sign> entry : bukkitSigns.entrySet())
-			bukkitSignsSection.createSection(String.valueOf(entry.getKey()),
-					Utils.serializeLocation(entry.getValue().getLocation()));
+		signConfig.createSection("signs." + configNumber + ".location",
+				Utils.serializeLocation(bukkitSign.getLocation()));
 		
 		MegaArena.getInstance().getSignConfig().saveConfig();
 		
@@ -128,20 +124,10 @@ public class SignDisplay {
 	public static SignDisplay loadFromConfig(ConfigurationSection section) {
 		
 		SignDisplay signDisplay = null;
+		int place = section.getInt("place");
+		Location loc = Utils.deserializeLocation(section.getConfigurationSection("location"));
 		
-		Type type = Type.valueOf(section.getString("type"));
-		
-		ConfigurationSection signsSection = section.getConfigurationSection("bukkitSigns");
-		
-		for (String key : signsSection.getKeys(false)) {
-			Location loc = Utils.deserializeLocation(signsSection.getConfigurationSection(key));
-			
-			if (Integer.valueOf(key) == 1)
-				signDisplay = new SignDisplay(Integer.valueOf(section.getName()), type, loc, 6000);
-			
-			signDisplay.addSign(Integer.valueOf(key),
-					(Sign) loc.getWorld().getBlockAt(loc).getState());
-		}
+		signDisplay = new SignDisplay(Integer.valueOf(section.getName()), loc, place, 6000L, true);
 		
 		return signDisplay;
 	}

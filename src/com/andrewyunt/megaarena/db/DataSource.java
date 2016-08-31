@@ -43,5 +43,5 @@ public abstract class DataSource {
 	
 	public abstract void cleanupLayouts();
 	
-	public abstract Map<OfflinePlayer, Integer> getMostKills();
+	public abstract Map<Integer, Map.Entry<OfflinePlayer, Integer>> getMostKills();
 }

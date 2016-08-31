@@ -246,4 +246,24 @@ public class Utils {
     	
     	return highest;
     }
+    
+    public static String getNumberSuffix(int num) {
+    	
+    	num = num % 100;
+    	
+        if (num >= 11 && num <= 13)
+            return "th";
+        
+        switch (num % 10) {
+        case 1:
+            return "st";
+        case 2:
+            return "nd";
+        case 3:
+            return "rd";
+        default:
+            return "th";
+        }
+    }
+
 }
