@@ -115,6 +115,8 @@ public class LayoutEditorMenu implements Listener {
 	
 	public void openClassMenu(GamePlayer player, Class classType) {
 		
+		player.getBukkitPlayer().getInventory().clear();
+		
 		inv = Bukkit.createInventory(null, 45, "Layout Editor - " + classType.getName());
 		
 		ItemStack[] contents = Utils.toChest(classType.getKitInventoryItems(player)).getContents();
@@ -143,7 +145,7 @@ public class LayoutEditorMenu implements Listener {
 		
 		Inventory clickedInventory = event.getClickedInventory();
 		
-		if (clickedInventory.getTitle().equals("container.inventory")) {
+		if (clickedInventory.getTitle().equals("container.inventory") || clickedInventory.getTitle() == null) {
 			event.setCancelled(true);
 			return;
 		}
@@ -276,13 +278,20 @@ public class LayoutEditorMenu implements Listener {
 		
 		Class classType = Class.valueOf(title.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
 		
-		GamePlayer gp = null; 
-		
 		try {
-			gp = MegaArena.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+			final GamePlayer gp = MegaArena.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+			
+			MegaArena.getInstance().getDataSource().saveLayout(gp, classType, Utils.fromChest(inv));
+			
+	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+	            @Override
+	            public void run() {
+	            	
+	            	gp.updateHotbar();
+	            }
+	        }, 5L);
 		} catch (PlayerException e) {
 		}
-		
-		MegaArena.getInstance().getDataSource().saveLayout(gp, classType, Utils.fromChest(inv));
 	}
 }
