@@ -760,8 +760,11 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 		Wolf wolf = (Wolf) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.WOLF);
 		wolf.setOwner((AnimalTamer) damaged);
-		((LivingEntity) wolf).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1), true);
-
+		wolf.setMaxHealth(1.0D);
+		wolf.setHealth(1.0D);
+		((LivingEntity) wolf).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2), true);
+		((LivingEntity) wolf).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, Integer.MAX_VALUE, 1), true);
+		
 		new BukkitRunnable() {
 			@Override
 			public void run() {
