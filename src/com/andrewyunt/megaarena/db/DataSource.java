@@ -28,6 +28,8 @@ public abstract class DataSource {
 	
 	public abstract boolean connect();
 	
+	public abstract boolean disconnect();
+	
 	public abstract void loadPlayer(GamePlayer player);
 	
 	public abstract void savePlayer(GamePlayer player);

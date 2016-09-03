@@ -74,9 +74,24 @@ public class MySQLSource extends DatabaseHandler {
  
         return true;
     }
+    
+    @Override
+    public boolean disconnect() {
+    	
+    	try {
+			connection.close();
+		} catch (SQLException e) {
+			return false;
+		}
+    	
+    	return true;
+    }
  
     @Override
     public void savePlayer(GamePlayer player) {
+    	
+    	if (!player.isLoaded())
+    		return;
     	
         String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
  
@@ -128,7 +143,10 @@ public class MySQLSource extends DatabaseHandler {
 			e.printStackTrace();
 			MegaArena.getInstance().getLogger().severe(String.format(
 					"An error occured while loading %s.", player.getName()));
+			return;
 		}
+        
+        player.setLoaded(true);
     }
     
 	@Override

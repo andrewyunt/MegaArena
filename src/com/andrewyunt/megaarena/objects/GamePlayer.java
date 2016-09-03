@@ -64,6 +64,7 @@ public class GamePlayer {
 	private boolean acceptingDuels = true;
 	private DisplayBoard displayBoard = null;
 	private List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
+	private boolean loaded = false;
 	
 	public GamePlayer(String name) {
 		
@@ -464,5 +465,15 @@ public class GamePlayer {
             	skullHitPlayers.remove(player);
             }
         }, 20L);
+	}
+	
+	public void setLoaded(boolean loaded) {
+		
+		this.loaded = loaded;
+	}
+	
+	public boolean isLoaded() {
+		
+		return loaded;
 	}
 }

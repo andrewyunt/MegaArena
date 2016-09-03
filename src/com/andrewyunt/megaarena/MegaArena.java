@@ -203,6 +203,8 @@ public class MegaArena extends JavaPlugin {
 		
 		for (GamePlayer gp : toSave)
 			MegaArena.getInstance().getDataSource().savePlayer(gp);
+		
+		dataSource.disconnect();
 	}
 	
 	/**
