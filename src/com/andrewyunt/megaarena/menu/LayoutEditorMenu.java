@@ -115,7 +115,14 @@ public class LayoutEditorMenu implements Listener {
 	
 	public void openClassMenu(GamePlayer player, Class classType, boolean loadFromDB) {
 		
-		player.getBukkitPlayer().getInventory().clear();
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				
+				player.getBukkitPlayer().getInventory().clear();
+			}
+		}, 6L);
 		
 		inv = Bukkit.createInventory(null, 45, "Layout Editor - " + classType.getName());
 		
