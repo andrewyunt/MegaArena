@@ -116,22 +116,14 @@ public class MegaArena extends JavaPlugin {
 		arenaConfiguration.saveDefaultConfig();
 		signConfiguration.saveDefaultConfig();
 		
-		BukkitScheduler scheduler = server.getScheduler();
-        scheduler.runTaskAsynchronously(this, new Runnable() {
-
-			@Override
-			public void run() {
-				
-	    		/* Connect to the database */
-	    		if (!dataSource.connect()) {
-	    			logger.severe("Could not connect to the database, shutting down...");
-	    			pm.disablePlugin(MegaArena.getInstance());
-	    			return;
-	    		}
-	    		
-	    		dataSource.updateDB();
-			}
-        });
+		/* Connect to the database */
+		if (!dataSource.connect()) {
+			logger.severe("Could not connect to the database, shutting down...");
+			pm.disablePlugin(MegaArena.getInstance());
+			return;
+		}
+		
+		dataSource.updateDB();
 		
 		/* Set command executors */
 		getCommand("arena").setExecutor(new ArenaCommand());
