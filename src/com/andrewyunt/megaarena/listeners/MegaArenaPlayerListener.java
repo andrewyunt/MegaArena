@@ -325,7 +325,7 @@ public class MegaArenaPlayerListener implements Listener {
 		GamePlayer ownerGP = null;
 		
 		try {
-			ownerGP = MegaArena.getInstance().getPlayerManager().getPlayer(ownerGP.getName());
+			ownerGP = MegaArena.getInstance().getPlayerManager().getPlayer(owner.getName());
 		} catch (PlayerException e) {
 			return;
 		}
@@ -408,17 +408,27 @@ public class MegaArenaPlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerKill(PlayerDeathEvent event) {
 		
-		Player player = event.getEntity();
-
-		if (player.getKiller() == null || !(player.getKiller() instanceof Player))
-			return;
-
-		Player killer = player.getKiller();
+		Player killed = event.getEntity();
+		Player killer = null;
+		
+		EntityDamageEvent ede = killed.getLastDamageCause();
+		if (ede instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) ede;
+			Entity damager = edbe.getDamager();
+			if (damager instanceof Wolf)
+				killer = (Player) ((Wolf) damager).getOwner();
+			else
+				if (!(killed.getKiller() instanceof Player))
+					return;
+				else
+					killer = killed.getKiller();
+		}
+		
 		GamePlayer playerGP = null;
 		GamePlayer killerGP = null;
 
 		try {
-			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killed.getName());
 			killerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killer.getName());
 		} catch (PlayerException e) {
 		}
@@ -443,7 +453,7 @@ public class MegaArenaPlayerListener implements Listener {
 			
 		killerGP.addCoins(killCoins);
 		killer.sendMessage(ChatColor.GREEN + String.format("You killed %s and received %s coins.",
-				ChatColor.AQUA + player.getName() + ChatColor.GREEN,
+				ChatColor.AQUA + killed.getName() + ChatColor.GREEN,
 				ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
 
 		if (game.getArena().getType() == Arena.Type.TDM)
@@ -467,7 +477,7 @@ public class MegaArenaPlayerListener implements Listener {
 				assistPlayer.sendMessage(
 						ChatColor.GREEN + String.format("You earned %s coins for assisting the kill of %s.",
 								ChatColor.AQUA + String.valueOf(assistCoins) + ChatColor.GREEN,
-								ChatColor.AQUA + player.getName() + ChatColor.GREEN));
+								ChatColor.AQUA + killed.getName() + ChatColor.GREEN));
 			}
 	}
 	
