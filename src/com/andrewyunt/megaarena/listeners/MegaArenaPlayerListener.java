@@ -20,8 +20,10 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AnimalTamer;
@@ -62,6 +64,7 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.objects.Vector3D;
 
 /**
  * The listener class used for general event handling within the plugin
@@ -307,6 +310,22 @@ public class MegaArenaPlayerListener implements Listener {
 		}			
 		
 		damagedGP.addAssistPlayer(damagerGP);
+	}
+	
+	@EventHandler
+	public void onBlood(EntityDamageByEntityEvent event) {
+		
+		Entity damaged = event.getEntity();
+
+		if (!(damaged instanceof Player))
+			return;
+		
+		Location loc = damaged.getLocation();
+		
+		World world = loc.getWorld();world.playEffect(
+				loc.add(0.0D, 0.8D, 0.0D),
+				Effect.STEP_SOUND,
+				Material.REDSTONE_BLOCK);
 	}
 	
 	@EventHandler
