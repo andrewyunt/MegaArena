@@ -44,6 +44,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -64,7 +66,6 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.objects.Vector3D;
 
 /**
  * The listener class used for general event handling within the plugin
@@ -663,5 +664,23 @@ public class MegaArenaPlayerListener implements Listener {
 		} catch (SignException e) {
 			player.sendMessage(ChatColor.RED + e.getMessage());
 		}
+	}
+	
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		
+		Player player = (Player) event.getWhoClicked();
+		GamePlayer gp = null;
+		
+		try {
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (!gp.isInGame())
+			return;
+		
+		if (event.getSlotType() == SlotType.ARMOR)
+			event.setCancelled(true);
 	}
 }
