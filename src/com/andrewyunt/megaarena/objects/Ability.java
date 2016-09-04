@@ -20,6 +20,7 @@ import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
@@ -41,10 +42,6 @@ import com.andrewyunt.megaarena.utilities.DirectionUtils;
 import com.andrewyunt.megaarena.utilities.DirectionUtils.CardinalDirection;
 import com.andrewyunt.megaarena.utilities.Utils;
 
-import de.slikey.effectlib.effect.ExplodeEffect;
-import de.slikey.effectlib.effect.HeartEffect;
-import de.slikey.effectlib.util.DynamicLocation;
-import de.slikey.effectlib.util.ParticleEffect;
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
 /**
@@ -135,10 +132,11 @@ public enum Ability implements Upgradable {
 				((Damageable) bp).setHealth(40D);
 			
 			for (Player effectPlayer : effectPlayers) {
-		        HeartEffect heartEffect = new HeartEffect(MegaArena.getInstance().getEffectManager());
-		        heartEffect.particle = ParticleEffect.HEART;
-		        heartEffect.setDynamicOrigin(new DynamicLocation(effectPlayer.getLocation()));
-		        heartEffect.start();
+				Location loc = effectPlayer.getEyeLocation().clone();
+				
+				loc.getWorld().spigot().playEffect(
+						loc.add(0.0D, 0.8D, 0.0D),
+						Effect.HEART);
 			}
 			
 			bp.sendMessage(String.format(ChatColor.GREEN + "You have used the %s ability" + 
@@ -207,12 +205,11 @@ public enum Ability implements Upgradable {
 					if (!player.isInGame())
 						return;
 					
-					ExplodeEffect explodeEffect = new ExplodeEffect(MegaArena.getInstance().getEffectManager());
-	    	        
-	    	        explodeEffect.amount = 10;
-	    	        explodeEffect.setDynamicOrigin(new DynamicLocation(bp.getLocation()));
-	    	        
-	    	        explodeEffect.start();
+					Location loc = bp.getLocation().clone();
+					
+					loc.getWorld().spigot().playEffect(
+							loc.add(0.0D, 0.8D, 0.0D),
+							Effect.EXPLOSION_LARGE);
 	    			
 	    			for (Entity entity : bp.getNearbyEntities(5, 3, 5)) {
 	    				if (!(entity instanceof Player))

@@ -17,7 +17,10 @@ package com.andrewyunt.megaarena.listeners;
 
 import static com.andrewyunt.megaarena.objects.Class.SKELETON;
 
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -41,9 +44,6 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.utilities.Utils;
-
-import de.slikey.effectlib.effect.ExplodeEffect;
-import de.slikey.effectlib.util.DynamicLocation;
 
 /**
  * The listener class used for abilities which holds methods to listen on events.
@@ -264,13 +264,12 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		}
 
 		Player shooter = shooterGP.getBukkitPlayer();
-
-		ExplodeEffect explodeEffect = new ExplodeEffect(MegaArena.getInstance().getEffectManager());
-
-		explodeEffect.amount = 10;
-		explodeEffect.setDynamicOrigin(new DynamicLocation(entity.getLocation()));
-
-		explodeEffect.start();
+		
+		Location loc = entity.getLocation().clone();
+		
+		loc.getWorld().spigot().playEffect(
+				loc.add(0.0D, 0.8D, 0.0D),
+				Effect.EXPLOSION_LARGE);
 
 		for (Entity nearby : entity.getNearbyEntities(3D, 3D, 3D)) {
 			if (!(nearby instanceof Player))
@@ -323,13 +322,12 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			shooterGP = MegaArena.getInstance().getPlayerManager().getPlayer(shooter.getName());
 		} catch (PlayerException e) {
 		}
+		
+		Location loc = entity.getLocation().clone();
 
-		ExplodeEffect explodeEffect = new ExplodeEffect(MegaArena.getInstance().getEffectManager());
-
-		explodeEffect.amount = 10;
-		explodeEffect.setDynamicOrigin(new DynamicLocation(entity.getLocation()));
-
-		explodeEffect.start();
+		loc.getWorld().spigot().playEffect(
+				loc.add(0.0D, 0.8D, 0.0D),
+				Effect.EXPLOSION_LARGE);
 
 		for (Entity nearby : entity.getNearbyEntities(5D, 3D, 5D)) {
 			if (!(nearby instanceof Player))

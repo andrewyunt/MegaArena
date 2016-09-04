@@ -55,9 +55,6 @@ import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
-import de.slikey.effectlib.EffectLib;
-import de.slikey.effectlib.EffectManager;
-
 /**
  * The main class in the MegaArena plugin.
  * 
@@ -80,7 +77,6 @@ public class MegaArena extends JavaPlugin {
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
-	private final EffectManager effectManager = new EffectManager(EffectLib.instance());
 	private final EventManager eventManager = new EventManager();
 	private final SignManager signManager = new SignManager();
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
@@ -102,7 +98,7 @@ public class MegaArena extends JavaPlugin {
 	public void onEnable() {
 		
 		/* Check for dependencies */
-		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("EffectLib") == null) {
+		if (pm.getPlugin("StaffPlus") == null) {
 			logger.severe("MegaArena is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
@@ -241,17 +237,6 @@ public class MegaArena extends JavaPlugin {
 	public PlayerManager getPlayerManager() {
 		
 		return playerManager;
-	}
-	
-	/**
-	 * Gets the instance of the EffectManager class.
-	 * 
-	 * @return
-	 * 		Instance of the EffectManager class.
-	 */
-	public EffectManager getEffectManager() {
-		
-		return effectManager;
 	}
 	
 	/**
