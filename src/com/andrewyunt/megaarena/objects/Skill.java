@@ -25,7 +25,7 @@ public enum Skill implements Upgradable {
 	RESIST("Resist"),
 	SWIFTNESS("Swiftness"),
 	BOOMERANG("Boomerang"),
-	WEAKENING_ARROW("Mutual Weakness"),
+	WEAKENING_ARROW("Weakening Arrow"),
 	RECHARGE("Recharge"),
 	FLURRY("Flurry"),
 	POWERFUL_WEAKNESS("Powerful Weakness"),

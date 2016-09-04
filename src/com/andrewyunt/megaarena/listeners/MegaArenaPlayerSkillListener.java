@@ -114,21 +114,20 @@ public class MegaArenaPlayerSkillListener implements Listener {
 	}
 
 	@EventHandler
-	public void weakeningArrow(EntityDamageByEntityEvent event) { // Skeleton -> Mutual Weakness -> Works
-
-
+	public void weakeningArrow(EntityDamageByEntityEvent event) {
+		
 		/* Checking for a bow hit from a player to a player */
 		if (!(event.getDamager() instanceof Arrow))
 			return;
-
-		final Arrow arrow = (Arrow) event.getDamager();
+		
+		Arrow arrow = (Arrow) event.getDamager();
 
 		if (!(arrow.getShooter() instanceof Player))
 			return;
-
+		
 		if (!(event.getEntity() instanceof Player))
 			return;
-
+		
 		/* Casting to players */
 		Player shooter = (Player) arrow.getShooter();
 		Player damaged = (Player) event.getEntity();
@@ -148,23 +147,23 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		/* Check if players are in-game */
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
 		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
-
+		
 		int skillLevel = 0;
 		
 		DataSource ds = MegaArena.getInstance().getDataSource();
 
-		if (damagedGP.getClassType().getSkillOne() == Skill.WEAKENING_ARROW)
+		if (shooterGP.getClassType().getSkillOne() == Skill.WEAKENING_ARROW)
 			skillLevel = ds.getLevel(damagedGP, damagedGP.getClassType().getSkillOne());
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.WEAKENING_ARROW)
+		else if (shooterGP.getClassType().getSkillTwo() == Skill.WEAKENING_ARROW)
 			skillLevel = ds.getLevel(damagedGP, damagedGP.getClassType().getSkillTwo());
 		else
 			return;
 		
 		/* Apply Effects */
-		int duration = (int) ((2 + 0.5 * (skillLevel - 1))) * 20;
+		int duration = (int) (2 + 0.5 * (skillLevel - 1)) * 20;
 		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, duration, 1, true);
 		PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, duration, 0, true);
 
