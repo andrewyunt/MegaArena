@@ -87,28 +87,36 @@ public class MySQLSource extends DatabaseHandler {
     		return;
     	
         String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
- 
-        com.andrewyunt.megaarena.objects.Class classType = player.getClassType();
         
-		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> {
-			try {
-				statement.executeUpdate(String.format(
-						"INSERT INTO `Players` (`uuid`, `class`, `accepting_duels`, `blood_particles`, `coins`, `earned_coins`, `kills`)"
-				+ " VALUES ('%s', '%s', %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE class = '%2$s',"
-				+ " accepting_duels = %3$s, blood_particles = %4$s, coins = %5$s, earned_coins = %6$s, kills = %7$s;",
-				uuid,
-				classType == null ? "none" : classType.toString(),
-				player.isAcceptingDuels() ? 1 : 0,
-				player.hasBloodEffect() ? 1 : 0,
-				player.getCoins(),
-				player.getEarnedCoins(),
-				player.getKills()));
-			} catch (SQLException e) {
-				MegaArena.getInstance().getLogger().severe(String.format(
-						"An error occured while saving %s.", player.getName()));
-			}
-        });
+        if (MegaArena.getInstance().isEnabled()) {
+    		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+    		scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> {
+    			savePlayer(player, uuid);
+            });
+        } else
+        	savePlayer(player, uuid);
+    }
+    
+    private void savePlayer(GamePlayer player, String uuid) {
+    	
+    	com.andrewyunt.megaarena.objects.Class classType = player.getClassType();
+    	
+		try {
+			statement.executeUpdate(String.format(
+					"INSERT INTO `Players` (`uuid`, `class`, `accepting_duels`, `blood_particles`, `coins`, `earned_coins`, `kills`)"
+			+ " VALUES ('%s', '%s', %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE class = '%2$s',"
+			+ " accepting_duels = %3$s, blood_particles = %4$s, coins = %5$s, earned_coins = %6$s, kills = %7$s;",
+			uuid,
+			classType == null ? "none" : classType.toString(),
+			player.isAcceptingDuels() ? 1 : 0,
+			player.hasBloodEffect() ? 1 : 0,
+			player.getCoins(),
+			player.getEarnedCoins(),
+			player.getKills()));
+		} catch (SQLException e) {
+			MegaArena.getInstance().getLogger().severe(String.format(
+					"An error occured while saving %s.", player.getName()));
+		}
     }
  
     @Override
@@ -174,6 +182,36 @@ public class MySQLSource extends DatabaseHandler {
             }
         });
 	}
+	
+	@Override
+	public Inventory loadLayout(GamePlayer player, com.andrewyunt.megaarena.objects.Class classType) {
+		
+		String uuid = player.getBukkitPlayer().getUniqueId().toString();
+		String version = MegaArena.getInstance().getDescription().getVersion();
+		
+        ResultSet resultSet = null;
+        
+		try {
+			resultSet = statement.executeQuery("SELECT * FROM `Layouts` WHERE `uuid` = '" + uuid + "' AND"
+					+ " layout = '" + classType.toString() + "' AND `level` = " + getLevel(player, classType)
+					+ " AND `version` = '" + version + "';");
+		} catch (SQLException e) {
+			return null; // layout doesn't exist
+		}
+		
+        try {
+    		while (resultSet.next()) {
+    			String layoutStr = resultSet.getString("inventory");
+    			return BukkitSerialization.fromBase64(layoutStr);
+    		}
+		} catch (SQLException | IOException e) {
+			MegaArena.getInstance().getLogger().severe(String.format(
+					"An error occured while loading %s's %s layout.", player.getName(), 
+					player.getClassType().getName()));
+		}
+        
+		return null;
+	}
     
 	@Override
 	public Map<Integer, Map.Entry<OfflinePlayer, Integer>> getMostKills() {
@@ -203,36 +241,6 @@ public class MySQLSource extends DatabaseHandler {
 		}
 		
 		return mostKills;
-	}
-
-	@Override
-	public Inventory loadLayout(GamePlayer player, com.andrewyunt.megaarena.objects.Class classType) {
-		
-		String uuid = player.getBukkitPlayer().getUniqueId().toString();
-		String version = MegaArena.getInstance().getDescription().getVersion();
-		
-        ResultSet resultSet = null;
-        
-		try {
-			resultSet = statement.executeQuery("SELECT * FROM `Layouts` WHERE `uuid` = '" + uuid + "' AND"
-					+ " layout = '" + classType.toString() + "' AND `level` = " + getLevel(player, classType)
-					+ " AND `version` = '" + version + "';");
-		} catch (SQLException e) {
-			return null; // layout doesn't exist
-		}
-		
-        try {
-    		while (resultSet.next()) {
-    			String layoutStr = resultSet.getString("inventory");
-    			return BukkitSerialization.fromBase64(layoutStr);
-    		}
-		} catch (SQLException | IOException e) {
-			MegaArena.getInstance().getLogger().severe(String.format(
-					"An error occured while loading %s's %s layout.", player.getName(), 
-					player.getClassType().getName()));
-		}
-        
-		return null;
 	}
 	
 	@Override
