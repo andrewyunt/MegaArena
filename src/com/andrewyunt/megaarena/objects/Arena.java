@@ -15,18 +15,17 @@
  */
 package com.andrewyunt.megaarena.objects;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.SpawnException;
+import com.andrewyunt.megaarena.utilities.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.SpawnException;
-import com.andrewyunt.megaarena.utilities.Utils;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * The class used to store arena information.
@@ -44,8 +43,8 @@ public class Arena {
 		TDM
 	}
 	
-	private Map<String, Spawn> spawns = new HashMap<String, Spawn>();
-	private Type type;
+	private final Map<String, Spawn> spawns = new HashMap<String, Spawn>();
+	private final Type type;
 	private String name;
 	private Game game;
 	private boolean isEdit;

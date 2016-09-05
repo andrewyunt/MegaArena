@@ -1,11 +1,6 @@
 package com.andrewyunt.megaarena.utilities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.andrewyunt.megaarena.objects.Vector3D;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,7 +11,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.andrewyunt.megaarena.objects.Vector3D;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The general utilities class for methods without a category / methods yet
@@ -48,13 +44,8 @@ public class Utils {
 	}
 	
 	public static List<String> colorizeList(List<String> list, ChatColor color) {
-		
-		List<String> colorized = new ArrayList<String>();
 
-		for (String line : list)
-			colorized.add(color + line);
-
-		return colorized;
+		return list.stream().map(line -> color + line).collect(Collectors.toList());
 	}
 
 	/**
@@ -130,20 +121,13 @@ public class Utils {
         	return false;
         if(Math.abs(d.z * c.x - d.x * c.z) > e.z * ad.x + e.x * ad.z + epsilon) 
         	return false;
-        if(Math.abs(d.x * c.y - d.y * c.x) > e.x * ad.y + e.y * ad.x + epsilon)
-        	return false;
- 
-        return true;
-    }
+
+		return Math.abs(d.x * c.y - d.y * c.x) <= e.x * ad.y + e.y * ad.x + epsilon;
+	}
     
     public static List<org.bukkit.entity.Entity> getNearbyEntities(Location l, int distance){
-    	
-    	List<org.bukkit.entity.Entity> entities = new ArrayList<org.bukkit.entity.Entity>();
-    	for (org.bukkit.entity.Entity e : l.getWorld().getEntities())
-    		if (l.distanceSquared(e.getLocation()) <= distance*distance)
-    			entities.add(e);
-    	
-    	return entities;
+
+		return l.getWorld().getEntities().stream().filter(e -> l.distanceSquared(e.getLocation()) <= distance * distance).collect(Collectors.toList());
     }
     
     /**

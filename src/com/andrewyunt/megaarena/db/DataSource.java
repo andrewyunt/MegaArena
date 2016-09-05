@@ -28,7 +28,7 @@ public abstract class DataSource {
 	
 	public abstract boolean connect();
 	
-	public abstract boolean disconnect();
+	public abstract void disconnect();
 	
 	public abstract void loadPlayer(GamePlayer player);
 	

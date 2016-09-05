@@ -15,23 +15,15 @@
  */
 package com.andrewyunt.megaarena.managers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.GameException;
+import com.andrewyunt.megaarena.objects.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.GameException;
-import com.andrewyunt.megaarena.objects.Action;
-import com.andrewyunt.megaarena.objects.Arena;
-import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.objects.GameSide;
-import com.andrewyunt.megaarena.objects.Game;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The class used to cache games, create games, and perform operations on them.
@@ -40,7 +32,7 @@ import com.andrewyunt.megaarena.objects.Game;
  */
 public class GameManager {
 
-	public Set<Game> games = new HashSet<Game>();
+	public final Set<Game> games = new HashSet<Game>();
 
 	/**
 	 * Creates an empty game in the specified arena and adds it to the games set.
@@ -117,13 +109,7 @@ public class GameManager {
 	 */
 	public Set<Game> getGames(Arena.Type type) {
 
-		Set<Game> games = new HashSet<Game>();
-
-		for (Game game : this.games)
-			if (game.getArena().getType() == type)
-				games.add(game);
-
-		return games;
+		return this.games.stream().filter(game -> game.getArena().getType() == type).collect(Collectors.toSet());
 	}
 
 	/**
@@ -167,12 +153,6 @@ public class GameManager {
 		Game game = games.get(0);
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				
-				game.addPlayer(player, action);
-			}
-		}, 1L);
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> game.addPlayer(player, action), 1L);
 	}
 }

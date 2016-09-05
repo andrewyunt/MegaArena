@@ -15,19 +15,10 @@
  */
 package com.andrewyunt.megaarena.objects;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.exception.SideException;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -35,9 +26,8 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.exception.SideException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The class used to store game attributes, placed blocks, and players.
@@ -46,10 +36,10 @@ import com.andrewyunt.megaarena.exception.SideException;
  */
 public class Game {
 	
-	private Arena arena;
-	private Set<GamePlayer> players = new HashSet<GamePlayer>();
-	private Set<Block> placedBlocks = new HashSet<Block>();
-	private Set<GameSide> sides = new HashSet<GameSide>();
+	private final Arena arena;
+	private final Set<GamePlayer> players = new HashSet<GamePlayer>();
+	private final Set<Block> placedBlocks = new HashSet<Block>();
+	private final Set<GameSide> sides = new HashSet<GameSide>();
 
 	public Game(Arena arena) {
 		
@@ -66,70 +56,67 @@ public class Game {
 		
 		/* Repeating task used for automatic team balancing in TDM */
         BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-            	
-            	GameSide blue = null;
-            	GameSide green = null;
-            	
-            	try {
-            		blue = getSide(GameSide.Type.BLUE);
-            		green = getSide(GameSide.Type.GREEN);
-				} catch (SideException e) {
-				}
-            	
-				int bluePlayers = getPlayers(blue).size();
-				int greenPlayers = getPlayers(green).size();
-				
-            	int totalPlayers = bluePlayers + greenPlayers;
-            	
-            	GameSide morePlayers = null;
-            	
-            	if (bluePlayers > greenPlayers)
-            		morePlayers = blue;
-            	else if (greenPlayers > bluePlayers)
-            		morePlayers = green;
-            	else
-            		return;
-            	
-            	int balanceGap = 0;
-            	
-            	if (totalPlayers > 20 && totalPlayers < 40)
-            		balanceGap = 5;
-            	else if (totalPlayers > 40)
-            		balanceGap = 10;
-            	else
-            		return;
-            	
-            	int playerDiff = 0;
-            	
-        		if (morePlayers == blue) {
-        			if (bluePlayers - greenPlayers < balanceGap)
-        				return;
-        			
-        			playerDiff = bluePlayers - greenPlayers;
-        		} else if (morePlayers == green) {
-        			if (greenPlayers - bluePlayers < balanceGap)
-        				return;
-        			
-        			playerDiff = greenPlayers - bluePlayers;
-        		}
-        		
-        		List<GamePlayer> morePlayersList = new ArrayList<GamePlayer>(getPlayers(morePlayers));
-        		
-        		while (playerDiff > 0) {
-        			Random random = new Random();
-        			GamePlayer moved = morePlayersList.get(random.nextInt(morePlayersList.size()));
-        			
-        			morePlayersList.remove(moved);
-        			
-        			try {
-						removePlayer(moved);
-						addPlayer(moved, Action.TEAM_BALANCE);
-					} catch (PlayerException e) {
-					}
-        		}
+        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), () -> {
+
+            GameSide blue = null;
+            GameSide green = null;
+
+            try {
+                blue = getSide(GameSide.Type.BLUE);
+                green = getSide(GameSide.Type.GREEN);
+            } catch (SideException e) {
+            }
+
+            int bluePlayers = getPlayers(blue).size();
+            int greenPlayers = getPlayers(green).size();
+
+            int totalPlayers = bluePlayers + greenPlayers;
+
+            GameSide morePlayers = null;
+
+            if (bluePlayers > greenPlayers)
+                morePlayers = blue;
+            else if (greenPlayers > bluePlayers)
+                morePlayers = green;
+            else
+                return;
+
+            int balanceGap = 0;
+
+            if (totalPlayers > 20 && totalPlayers < 40)
+                balanceGap = 5;
+            else if (totalPlayers > 40)
+                balanceGap = 10;
+            else
+                return;
+
+            int playerDiff = 0;
+
+            if (morePlayers == blue) {
+                if (bluePlayers - greenPlayers < balanceGap)
+                    return;
+
+                playerDiff = bluePlayers - greenPlayers;
+            } else if (morePlayers == green) {
+                if (greenPlayers - bluePlayers < balanceGap)
+                    return;
+
+                playerDiff = greenPlayers - bluePlayers;
+            }
+
+            List<GamePlayer> morePlayersList = new ArrayList<GamePlayer>(getPlayers(morePlayers));
+
+            while (playerDiff > 0) {
+                Random random = new Random();
+                GamePlayer moved = morePlayersList.get(random.nextInt(morePlayersList.size()));
+
+                morePlayersList.remove(moved);
+
+                try {
+                    removePlayer(moved);
+                    addPlayer(moved, Action.TEAM_BALANCE);
+                } catch (PlayerException e) {
+                }
             }
         }, 0L, 6000L);
 	}
@@ -290,9 +277,8 @@ public class Game {
   		/* Update teams to remove player */
   		for (GameSide side : sides) {
   			Team team = player.getDisplayBoard().getScoreboard().getTeam(side.getSideType().getName());
-  			
-  			for (OfflinePlayer op : team.getPlayers())
-  				team.removePlayer(op);
+
+			team.getPlayers().forEach(team::removePlayer);
   		}
   		
   		/* Set the player's side to null */
@@ -358,14 +344,9 @@ public class Game {
 		
 		Set<GamePlayer> players = new HashSet<GamePlayer>(this.players);
 		
-		Set<GamePlayer> toRemove = new HashSet<GamePlayer>();
-		
-		for (GamePlayer player : players)
-			if (player.getSide() != side)
-				toRemove.add(player);
-		
-		for (GamePlayer player : toRemove)
-			players.remove(player);
+		Set<GamePlayer> toRemove = players.stream().filter(player -> player.getSide() != side).collect(Collectors.toSet());
+
+		toRemove.forEach(players::remove);
 		
 		return players;
 	}
@@ -376,9 +357,8 @@ public class Game {
 	public void end() {
 		
 		Set<GamePlayer> toRemovePlayers = new HashSet<GamePlayer>();
-		
-		for (GamePlayer player : players)
-			toRemovePlayers.add(player);
+
+		toRemovePlayers.addAll(players);
 		
 		for (GamePlayer player : toRemovePlayers)
 			try {
@@ -387,12 +367,10 @@ public class Game {
 			}
 		
 		Set<Block> toRemoveBlocks= new HashSet<Block>();
-		
-		for (Block block : placedBlocks)
-			toRemoveBlocks.add(block);
-		
-		for (Block block : toRemoveBlocks)
-			removePlacedBlock(block);
+
+		toRemoveBlocks.addAll(placedBlocks);
+
+		toRemoveBlocks.forEach(this::removePlacedBlock);
 		
 		if (arena.getType() == Arena.Type.DUEL)
 			for (Spawn spawn : arena.getSpawns())
@@ -412,13 +390,7 @@ public class Game {
 		placedBlocks.add(block);
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-
-				removePlacedBlock(block);
-			}
-		}, 200L);
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> removePlacedBlock(block), 200L);
 	}
 	
 	/**

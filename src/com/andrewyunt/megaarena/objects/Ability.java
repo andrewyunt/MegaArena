@@ -15,34 +15,26 @@
  */
 package com.andrewyunt.megaarena.objects;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.utilities.DirectionUtils;
+import com.andrewyunt.megaarena.utilities.DirectionUtils.CardinalDirection;
+import com.andrewyunt.megaarena.utilities.Utils;
+import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.WitherSkull;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.utilities.DirectionUtils;
-import com.andrewyunt.megaarena.utilities.DirectionUtils.CardinalDirection;
-import com.andrewyunt.megaarena.utilities.Utils;
-
-import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * The enumeration for abilities, their names, and the method to use them.
@@ -198,49 +190,46 @@ public enum Ability implements Upgradable {
 		} else if (this == EXPLODE) {
 			
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					
-					if (!player.isInGame())
-						return;
-					
-					Location loc = bp.getLocation().clone();
-					
-					loc.getWorld().spigot().playEffect(
-							loc.add(0.0D, 0.8D, 0.0D),
-							Effect.EXPLOSION_LARGE);
-	    			
-	    			for (Entity entity : bp.getNearbyEntities(5, 3, 5)) {
-	    				if (!(entity instanceof Player))
-	    					continue;
-	    				
-	    				Player entityPlayer = (Player) entity;
-	    				GamePlayer entityAP = null;
-	    				
-	    				try {
-	    					entityAP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
-	    				} catch (PlayerException e) {
-	    				}
-	    				
-	    				if (!entityAP.isInGame())
-	    					continue;
-	    				
-	    				if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
-	    					continue;
-	    				
-	    				Damageable dmgVictim = (Damageable) entity;
-	    				double dmg = 3.0 + 0.5 * (level - 1);
-	    				
-	    				((Damageable) entity).damage(0.00001D, bp);
-	    				
-	    				if (dmgVictim.getHealth() <= dmg)
-	    					dmgVictim.setHealth(0D);
-	    				else
-	    					dmgVictim.setHealth(dmgVictim.getHealth() - dmg);
-	    			}
-	    		}
-			}, 60L);
+			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
+
+                if (!player.isInGame())
+                    return;
+
+                Location loc = bp.getLocation().clone();
+
+                loc.getWorld().spigot().playEffect(
+                        loc.add(0.0D, 0.8D, 0.0D),
+                        Effect.EXPLOSION_LARGE);
+
+                for (Entity entity : bp.getNearbyEntities(5, 3, 5)) {
+                    if (!(entity instanceof Player))
+                        continue;
+
+                    Player entityPlayer = (Player) entity;
+                    GamePlayer entityAP = null;
+
+                    try {
+                        entityAP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
+                    } catch (PlayerException e) {
+                    }
+
+                    if (!entityAP.isInGame())
+                        continue;
+
+                    if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
+                        continue;
+
+                    Damageable dmgVictim = (Damageable) entity;
+                    double dmg = 3.0 + 0.5 * (level - 1);
+
+                    ((Damageable) entity).damage(0.00001D, bp);
+
+                    if (dmgVictim.getHealth() <= dmg)
+                        dmgVictim.setHealth(0D);
+                    else
+                        dmgVictim.setHealth(dmgVictim.getHealth() - dmg);
+                }
+            }, 60L);
 			
 		} else if (this == TORNADO) {
 			

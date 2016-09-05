@@ -37,9 +37,9 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class SignDisplay {
 	
-	private int configNumber;
+	private final int configNumber;
 	private Sign bukkitSign;
-	private int place;
+	private final int place;
 	
 	/**
 	 * Creates a sign display with the specified location and update interval.
@@ -76,7 +76,7 @@ public class SignDisplay {
 				
 				refresh = true;
 			}
-		}, 0L, (long) updateInterval);
+		}, 0L, updateInterval);
 	}
 	
 	public int getConfigNumber() {

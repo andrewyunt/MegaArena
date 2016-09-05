@@ -27,8 +27,8 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class EffectApplyEvent extends Event {
 	
-	private Player player;
-	private PotionEffectType effectType;
+	private final Player player;
+	private final PotionEffectType effectType;
 	private boolean isCancelled;
 	private static final HandlerList handlers = new HandlerList();
 
