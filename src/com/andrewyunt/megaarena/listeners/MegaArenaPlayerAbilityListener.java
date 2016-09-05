@@ -268,7 +268,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		
 		loc.getWorld().spigot().playEffect(
 				loc.add(0.0D, 0.8D, 0.0D),
-				Effect.EXPLOSION_LARGE);
+				Effect.EXPLOSION_HUGE);
 
 		for (Entity nearby : entity.getNearbyEntities(3D, 3D, 3D)) {
 			if (!(nearby instanceof Player))
@@ -326,7 +326,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 		loc.getWorld().spigot().playEffect(
 				loc.add(0.0D, 0.8D, 0.0D),
-				Effect.EXPLOSION_LARGE);
+				Effect.EXPLOSION_HUGE);
 
 		for (Entity nearby : entity.getNearbyEntities(5D, 3D, 5D)) {
 			if (!(nearby instanceof Player))

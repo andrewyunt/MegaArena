@@ -55,6 +55,7 @@ public class GamePlayer {
 	private DisplayBoard displayBoard = null;
 	private final List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
 	private boolean loaded = false;
+	private boolean hasBloodEffect = false;
 	
 	public GamePlayer(String name) {
 		
@@ -151,7 +152,7 @@ public class GamePlayer {
 		return classType != null;
 	}
 	
-	public void setHasFallen(boolean hasFallen) {
+	public void setFallen(boolean hasFallen) {
 		
 		this.hasFallen = hasFallen;
 	}
@@ -453,5 +454,15 @@ public class GamePlayer {
 	public boolean isLoaded() {
 		
 		return loaded;
+	}
+	
+	public void setBloodEffect(boolean hasBloodEffect) {
+		
+		this.hasBloodEffect = hasBloodEffect;
+	}
+	
+	public boolean hasBloodEffect() {
+		
+		return hasBloodEffect;
 	}
 }

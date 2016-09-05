@@ -13,68 +13,57 @@
  * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
  * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
  */
-package com.andrewyunt.megaarena.objects;
+package com.andrewyunt.megaarena.command;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 
 /**
- * The class used to store side information.
+ * The bloodtoggle command class which is used as a Bukkit CommandExecutor
+ * to toggle blood particles on or off.
  * 
  * @author Andrew Yunt
  */
-public class GameSide {
+public class BloodToggleCommand implements CommandExecutor {
 	
-	/**
-	 * The enumeration for the type a GameSide is.
-	 * 
-	 * <p>
-	 * The preferred way to use this enum is GameSide.Type.member
-	 * </p>
-	 * 
-	 * @author Andrew Yunt
-	 */
-	public enum Type {
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		BLUE("Blue", ChatColor.BLUE),
-		GREEN("Green", ChatColor.GREEN),
-		SOLO("Solo", ChatColor.RED);
+		if (!cmd.getName().equalsIgnoreCase("bloodtoggle"))
+			return false;
 		
-		private final String name;
-		private final ChatColor nameColor;
-		
-		Type(String name, ChatColor nameColor) {
-			
-			this.name = name;
-			this.nameColor = nameColor;
+		if (!(sender instanceof Player)) {
+			System.out.println("You may not execute that command from the console.");
+			return false;
 		}
 		
-		public String getName() {
-			
-			return name;
+		if (!sender.hasPermission("megaarena.bloodtoggle")) {
+			sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+			return false;
 		}
 		
-		public ChatColor getNameColor() {
-			
-			return nameColor;
+		GamePlayer player = null;
+		
+		try {
+			player = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName());
+		} catch (PlayerException e) {
 		}
-	}
-	
-	private final Game game;
-	private final Type sideType;
-	
-	public GameSide(Game game, Type type) {
 		
-		this.game = game;
-		this.sideType = type;
-	}
-	
-	public Game getGame() {
+		boolean hasBloodEffect = !player.hasBloodEffect();
 		
-		return game;
-	}
-	
-	public Type getSideType() {
+		player.setBloodEffect(hasBloodEffect);
 		
-		return sideType;
+		player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format(
+				"Blood particles toggled %s successfully.",
+				ChatColor.AQUA + (hasBloodEffect ? "on" : "off") + ChatColor.GREEN));
+		
+		return true;
 	}
 }

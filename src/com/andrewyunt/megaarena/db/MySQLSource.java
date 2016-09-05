@@ -91,23 +91,23 @@ public class MySQLSource extends DatabaseHandler {
         com.andrewyunt.megaarena.objects.Class classType = player.getClassType();
         
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> {
-        	
-        try {
-        	statement.executeUpdate(String.format(
-                        "INSERT INTO `Players` (`uuid`, `class`, `accepting_duels`, `coins`, `earned_coins`, `kills`)"
-                                + " VALUES ('%s', '%s', %s, %s, %s, %s) ON DUPLICATE KEY UPDATE class = '%2$s',"
-                                + " accepting_duels = %3$s, coins = %4$s, earned_coins = %5$s, kills = %6$s;",
-                        uuid,
-                        classType == null ? "none" : classType.toString(),
-						player.isAcceptingDuels() ? 1 : 0,
-                        player.getCoins(),
-                        player.getEarnedCoins(),
-                        player.getKills()));
-            } catch (SQLException e) {
-                MegaArena.getInstance().getLogger().severe(String.format(
-                        "An error occured while saving %s.", player.getName()));
-            }
+		scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> {
+			try {
+				statement.executeUpdate(String.format(
+						"INSERT INTO `Players` (`uuid`, `class`, `accepting_duels`, `blood_particles`, `coins`, `earned_coins`, `kills`)"
+				+ " VALUES ('%s', '%s', %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE class = '%2$s',"
+				+ " accepting_duels = %3$s, blood_particles = %4$s, coins = %5$s, earned_coins = %6$s, kills = %7$s;",
+				uuid,
+				classType == null ? "none" : classType.toString(),
+				player.isAcceptingDuels() ? 1 : 0,
+				player.hasBloodEffect() ? 1 : 0,
+				player.getCoins(),
+				player.getEarnedCoins(),
+				player.getKills()));
+			} catch (SQLException e) {
+				MegaArena.getInstance().getLogger().severe(String.format(
+						"An error occured while saving %s.", player.getName()));
+			}
         });
     }
  
@@ -134,6 +134,7 @@ public class MySQLSource extends DatabaseHandler {
 						player.setClassType(com.andrewyunt.megaarena.objects.Class.valueOf(classStr));
 
 					player.setAcceptingDuels(resultSet.getInt("accepting_duels") == 1);
+					player.setBloodEffect(resultSet.getInt("blood_particles") == 1);
 					player.setCoins(resultSet.getInt("coins"));
 					player.setEarnedCoins(resultSet.getInt("earned_coins"));
 					player.setKills(resultSet.getInt("kills"));
@@ -157,7 +158,6 @@ public class MySQLSource extends DatabaseHandler {
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
         scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> {
-
             try {
                 statement.executeUpdate(String.format(
                         "INSERT INTO `Layouts` (`uuid`, `layout`, `level`, `inventory`, `version`)"
@@ -268,7 +268,6 @@ public class MySQLSource extends DatabaseHandler {
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
         scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> {
-
             try {
                 statement.executeUpdate(String.format(
                         "INSERT INTO `Upgrades` (`uuid`, `upgradable`, `level`)"
@@ -290,6 +289,7 @@ public class MySQLSource extends DatabaseHandler {
 	            + "  (`uuid`             CHAR(36) PRIMARY KEY NOT NULL,"
 	            + "   `class`            CHAR(20) NOT NULL,"
 	            + "   `accepting_duels`  INT,"
+	            + "   `blood_particles`  INT,"
 	            + "   `coins`            INT,"
 	            + "   `earned_coins`     INT,"
 	            + "   `kills`            INT);";

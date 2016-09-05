@@ -53,7 +53,7 @@ public class GameManager {
 			if (arena.getSpawns().size() < 2)
 				throw new GameException(ChatColor.GREEN + String.format(
 						"The match for the arena %s was not able to start because the minimum number"
-								+ " of INDEPENDENT spawns were not defined.",
+								+ " of Solo spawns were not defined.",
 						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 			else if (arena.getType() == Arena.Type.TDM)
 				if (arena.getSpawns(GameSide.Type.GREEN).size() < 1 || arena.getSpawns(GameSide.Type.BLUE).size() < 1)

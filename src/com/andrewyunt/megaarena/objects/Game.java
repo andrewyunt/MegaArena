@@ -49,7 +49,7 @@ public class Game {
 			sides.add(new GameSide(this, GameSide.Type.BLUE));
 			sides.add(new GameSide(this, GameSide.Type.GREEN));
 		} else
-			sides.add(new GameSide(this, GameSide.Type.INDEPENDENT));
+			sides.add(new GameSide(this, GameSide.Type.SOLO));
 		
 		if (arena.getType() != Arena.Type.TDM)
 			return;
@@ -148,7 +148,7 @@ public class Game {
 		
 		try {
 			if (arena.getType() == Arena.Type.DUEL || arena.getType() == Arena.Type.FFA)
-				side = getSide(GameSide.Type.INDEPENDENT);
+				side = getSide(GameSide.Type.SOLO);
 			else if (arena.getType() == Arena.Type.TDM) {
 				int bluePlayers = 0;
 				int greenPlayers = 0;
@@ -238,13 +238,13 @@ public class Game {
 			
 		} else if (arena.getType() == Arena.Type.FFA) {
 			
-			player.setHasFallen(false);
+			player.setFallen(false);
 			Collections.shuffle(spawns);
 			player.spawn(spawns.get(0));
 			
 		} else if (arena.getType() == Arena.Type.TDM) {
 			
-			player.setHasFallen(false);
+			player.setFallen(false);
 			Collections.shuffle(spawns);
 			player.spawn(spawns.get(0));
 		}

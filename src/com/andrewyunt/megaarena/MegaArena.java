@@ -30,6 +30,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.andrewyunt.megaarena.command.ArenaCommand;
+import com.andrewyunt.megaarena.command.BloodToggleCommand;
 import com.andrewyunt.megaarena.command.DuelAcceptCommand;
 import com.andrewyunt.megaarena.command.DuelCommand;
 import com.andrewyunt.megaarena.command.DuelDenyCommand;
@@ -126,6 +127,7 @@ public class MegaArena extends JavaPlugin {
 		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
 		getCommand("dueldeny").setExecutor(new DuelDenyCommand());
 		getCommand("duelstoggle").setExecutor(new DuelsToggleCommand());
+		getCommand("bloodtoggle").setExecutor(new BloodToggleCommand());
 		
 		/* Register events */
 		eventManager.registerEffectApplyEvent();

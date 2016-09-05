@@ -270,8 +270,8 @@ public class ArenaCommand implements CommandExecutor {
 				}
 			
 			if (arena.getType() == Arena.Type.FFA || arena.getType() == Arena.Type.DUEL)
-				if (!args[2].equalsIgnoreCase("INDEPENDENT")) {
-					sender.sendMessage(ChatColor.RED + "You can only add INDEPENDENT spawns to a DUEL or TDM arena.");
+				if (!args[2].equalsIgnoreCase("solo")) {
+					sender.sendMessage(ChatColor.RED + "You can only add Solo spawns to a Duel or TDM arena.");
 					return false;
 				}
 			
