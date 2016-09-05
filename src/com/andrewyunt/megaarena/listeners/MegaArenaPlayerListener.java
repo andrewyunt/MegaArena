@@ -24,6 +24,8 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -241,7 +243,7 @@ public class MegaArenaPlayerListener implements Listener {
 		if (gp.hasFallen())
 			return;
 		
-		gp.setHasFallen(true);
+		gp.setFallen(true);
 		event.setCancelled(true);
 	}
 
@@ -303,12 +305,29 @@ public class MegaArenaPlayerListener implements Listener {
 		if (!(damaged instanceof Player))
 			return;
 		
-		Location loc = damaged.getLocation();
+		Location loc = damaged.getLocation().clone();
 		
-		World world = loc.getWorld();world.playEffect(
-				loc.add(0.0D, 0.8D, 0.0D),
-				Effect.STEP_SOUND,
-				Material.REDSTONE_BLOCK);
+		for (Entity entity : Utils.getNearbyEntities(loc, 10)) {
+			if (!(entity instanceof Player))
+				continue;
+			
+			Player player = (Player) entity;
+			GamePlayer gp = null;
+			
+			try {
+				gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			} catch (PlayerException e) {
+				continue;
+			}
+			
+			if (!gp.hasBloodEffect())
+				continue;
+			
+			player.playEffect(
+					loc.add(0.0D, 0.8D, 0.0D),
+					Effect.STEP_SOUND,
+					Material.REDSTONE_BLOCK);
+		}
 	}
 	
 	@EventHandler
