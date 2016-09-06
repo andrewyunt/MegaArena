@@ -27,6 +27,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
+import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SpawnException;
 import com.andrewyunt.megaarena.objects.Arena;
@@ -344,11 +345,18 @@ public class ArenaCommand implements CommandExecutor {
 			
 			if (arena.isEdit()) {
 				arena.setEdit(false);
+				
+				try {
+					MegaArena.getInstance().getGameManager().createGame(arena);
+				} catch (GameException e) {
+				}
+				
 				sender.sendMessage(String.format(ChatColor.GREEN + "You have disabled edit mode for the arena %s.",
 						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 			} else {
-				MegaArena.getInstance().getGameManager().deleteGame(arena.getGame(),
-						ChatColor.RED + "The game you were in has ended due to admins setting the arena to edit mode.");
+				if (arena.isInUse())
+					MegaArena.getInstance().getGameManager().deleteGame(arena.getGame(),
+							ChatColor.RED + "The game you were in has ended due to admins setting the arena to edit mode.");
 				arena.setEdit(true);
 				sender.sendMessage(String.format(ChatColor.GREEN + "You have enabled edit mode for the arena %s.",
 						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
