@@ -34,6 +34,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -133,10 +134,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 	}
 
 	@EventHandler (priority = EventPriority.MONITOR)
-	public void onEPC(PlayerInteractEvent event) {
-
-		if (!(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK))
-			return;
+	public void onEPC(PlayerAnimationEvent event) {
 
 		Player clickerPlayer = event.getPlayer();
 		GamePlayer clickerGP = null;

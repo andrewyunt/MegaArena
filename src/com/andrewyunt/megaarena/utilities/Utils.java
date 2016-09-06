@@ -65,9 +65,9 @@ public class Utils {
  
         for(Player p : player.getWorld().getPlayers()) {
             Vector3D targetPos = new Vector3D(p.getLocation());
-            Vector3D minimum = targetPos.add(-0.39, 0, -0.39);
-            Vector3D maximum = targetPos.add(0.39, 1.9, 0.39);
-            double range = 4.2;
+            Vector3D minimum = targetPos.add(-0.3, 0, -0.3);
+            Vector3D maximum = targetPos.add(0.3, 1.9, 0.3);
+            double range = 4.5;
             
             if (p.getLocation().distanceSquared(player.getLocation()) > range*range)
             	continue;
