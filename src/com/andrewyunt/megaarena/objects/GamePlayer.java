@@ -15,17 +15,10 @@
  */
 package com.andrewyunt.megaarena.objects;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.ArenaException;
+import net.shortninja.staffplus.StaffPlus;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -33,10 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.ArenaException;
-
-import net.shortninja.staffplus.StaffPlus;
+import java.util.*;
 
 /**
  * The class used to store player's information.
@@ -45,16 +35,16 @@ import net.shortninja.staffplus.StaffPlus;
  */
 public class GamePlayer {
 	
-	private String name;
+	private final String name;
 	private Game game;
-	private List<GamePlayer> requestingPlayers = new ArrayList<GamePlayer>();
+	private final List<GamePlayer> requestingPlayers = new ArrayList<GamePlayer>();
 	private Class classType;
 	private boolean hasFallen, sentActivate = false;
 	private Arena selectedArena;
 	private GameMode previousGameMode;
 	private GameSide side;
 	private int energy;
-	private Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
+	private final Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
 	private boolean hasSpeed;
 	private int coins = 0;
 	private int earnedCoins = 0;
@@ -63,8 +53,9 @@ public class GamePlayer {
 	private DamageCause lastDamageCause;
 	private boolean acceptingDuels = true;
 	private DisplayBoard displayBoard = null;
-	private List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
+	private final List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
 	private boolean loaded = false;
+	private boolean hasBloodEffect = false;
 	
 	public GamePlayer(String name) {
 		
@@ -161,7 +152,7 @@ public class GamePlayer {
 		return classType != null;
 	}
 	
-	public void setHasFallen(boolean hasFallen) {
+	public void setFallen(boolean hasFallen) {
 		
 		this.hasFallen = hasFallen;
 	}
@@ -332,13 +323,7 @@ public class GamePlayer {
 		assistPlayers.add(player);
 		
         BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-            	
-            	assistPlayers.remove(player);
-            }
-        }, 200L);
+        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> assistPlayers.remove(player), 200L);
 	}
 	
 	public Set<GamePlayer> getAssistPlayers() {
@@ -458,13 +443,7 @@ public class GamePlayer {
 		skullHitPlayers.add(player);
 		
         BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-            	
-            	skullHitPlayers.remove(player);
-            }
-        }, 20L);
+        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> skullHitPlayers.remove(player), 20L);
 	}
 	
 	public void setLoaded(boolean loaded) {
@@ -475,5 +454,15 @@ public class GamePlayer {
 	public boolean isLoaded() {
 		
 		return loaded;
+	}
+	
+	public void setBloodEffect(boolean hasBloodEffect) {
+		
+		this.hasBloodEffect = hasBloodEffect;
+	}
+	
+	public boolean hasBloodEffect() {
+		
+		return hasBloodEffect;
 	}
 }

@@ -35,7 +35,7 @@ public enum Skill implements Upgradable {
 	SOUL_SUCKER("Soul Sucker"),
 	UNDEAD("Undead");
 	
-	String name;
+	final String name;
 	
 	Skill(String name) {
 		

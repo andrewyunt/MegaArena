@@ -49,8 +49,8 @@ public class DirectionUtils {
 		NORTH_WEST("North West", 315),
 		NORTH_NORTH_WEST("North North West", 337.5);
 
-		private String name;
-		private double degrees;
+		private final String name;
+		private final double degrees;
 
 		CardinalDirection(String name, double degrees) {
 

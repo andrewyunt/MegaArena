@@ -15,16 +15,6 @@
  */
 package com.andrewyunt.megaarena.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
 import com.andrewyunt.megaarena.exception.GameException;
@@ -32,8 +22,18 @@ import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SpawnException;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.objects.Spawn;
 import com.andrewyunt.megaarena.objects.GameSide;
+import com.andrewyunt.megaarena.objects.Spawn;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The arena command class which is used as a Bukkit CommandExecutor.
@@ -185,10 +185,9 @@ public class ArenaCommand implements CommandExecutor {
 			
 			try {
 				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
-			} catch (ArenaException e1) {
-			} catch (PlayerException e1) {
+			} catch (ArenaException | PlayerException e) {
 			}
-			
+
 			if (arena == null) {
 				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
 				return false;
@@ -228,11 +227,13 @@ public class ArenaCommand implements CommandExecutor {
 				arena = MegaArena.getInstance().getArenaManager().getArena(args[1]);
 			} catch (ArenaException e) {
 				sender.sendMessage(ChatColor.RED + e.getMessage());
+				return false;
 			}
 			
 			try {
 				MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).selectArena(arena);
 			} catch (PlayerException e) {
+				return false;
 			}
 			
 			sender.sendMessage(String.format(ChatColor.GREEN + "You have selected the arena %s.",
@@ -272,8 +273,8 @@ public class ArenaCommand implements CommandExecutor {
 				}
 			
 			if (arena.getType() == Arena.Type.FFA || arena.getType() == Arena.Type.DUEL)
-				if (!args[2].equalsIgnoreCase("INDEPENDENT")) {
-					sender.sendMessage(ChatColor.RED + "You can only add INDEPENDENT spawns to a DUEL or TDM arena.");
+				if (!args[2].equalsIgnoreCase("solo")) {
+					sender.sendMessage(ChatColor.RED + "You can only add Solo spawns to a Duel or TDM arena.");
 					return false;
 				}
 			

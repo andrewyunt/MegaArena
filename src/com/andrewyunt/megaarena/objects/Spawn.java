@@ -25,10 +25,10 @@ import org.bukkit.Location;
 public class Spawn {
 	
 	private boolean isUsed;
-	private Arena arena;
-	private Location location;
-	private GameSide.Type sideType;
-	private String name;
+	private final Arena arena;
+	private final Location location;
+	private final GameSide.Type sideType;
+	private final String name;
 	
 	public Spawn(String name, Arena arena, Location location, GameSide.Type sideType) {
 		

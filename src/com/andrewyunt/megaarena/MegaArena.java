@@ -28,8 +28,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 import com.andrewyunt.megaarena.command.ArenaCommand;
+import com.andrewyunt.megaarena.command.BloodToggleCommand;
 import com.andrewyunt.megaarena.command.DuelAcceptCommand;
 import com.andrewyunt.megaarena.command.DuelCommand;
 import com.andrewyunt.megaarena.command.DuelDenyCommand;
@@ -65,13 +69,13 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
  */
 public class MegaArena extends JavaPlugin {
 	
-	private Logger logger = getLogger();
-	private Server server = getServer();
-	private PluginManager pm = server.getPluginManager();
-    private ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
-    private ShopMenu shopMenu = new ShopMenu();
-    private LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
-    private Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
+	private final Logger logger = getLogger();
+	private final Server server = getServer();
+	private final PluginManager pm = server.getPluginManager();
+    private final ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
+    private final ShopMenu shopMenu = new ShopMenu();
+    private final LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
+    private final Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
 	
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
@@ -126,6 +130,7 @@ public class MegaArena extends JavaPlugin {
 		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
 		getCommand("dueldeny").setExecutor(new DuelDenyCommand());
 		getCommand("duelstoggle").setExecutor(new DuelsToggleCommand());
+		getCommand("bloodtoggle").setExecutor(new BloodToggleCommand());
 		
 		/* Register events */
 		eventManager.registerEffectApplyEvent();
@@ -175,18 +180,16 @@ public class MegaArena extends JavaPlugin {
 		
 		/* Remove active games */
 		Set<Game> toRemove = new HashSet<Game>();
-		
-		for (Game game : gameManager.getGames())
-			toRemove.add(game);
+
+		toRemove.addAll(gameManager.getGames());
 		
 		for (Game game : toRemove)
 			gameManager.deleteGame(game, "Server is shutting down...");
 		
 		/* Save players to the database */
 		Set<GamePlayer> toSave = new HashSet<GamePlayer>();
-		
-		for (GamePlayer gp : playerManager.getPlayers())
-			toSave.add(gp);
+
+		toSave.addAll(playerManager.getPlayers());
 		
 		for (GamePlayer gp : toSave)
 			MegaArena.getInstance().getDataSource().savePlayer(gp);

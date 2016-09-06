@@ -15,8 +15,11 @@
  */
 package com.andrewyunt.megaarena.menu;
 
-import java.util.ArrayList;
-
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.objects.Class;
+import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,11 +34,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.objects.Class;
-import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.utilities.Utils;
+import java.util.ArrayList;
 
 /**
  * The class used to create instances of the layout editor menu.
@@ -45,7 +44,7 @@ import com.andrewyunt.megaarena.utilities.Utils;
 public class LayoutEditorMenu implements Listener {
 	
 	private Inventory inv;
-	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+	private final ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
 
 	public LayoutEditorMenu() {
 		
@@ -116,13 +115,7 @@ public class LayoutEditorMenu implements Listener {
 	public void openClassMenu(GamePlayer player, Class classType, boolean loadFromDB) {
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				
-				player.getBukkitPlayer().getInventory().clear();
-			}
-		}, 6L);
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> player.getBukkitPlayer().getInventory().clear(), 6L);
 		
 		inv = Bukkit.createInventory(null, 45, "Layout Editor - " + classType.getName());
 		
@@ -177,35 +170,32 @@ public class LayoutEditorMenu implements Listener {
 		
 		if (currentItem.getType() == Material.AIR && event.getCursor().getType() == Material.AIR) {
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					
-					try  {
-						for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
-							
-							ItemMeta hotbarMeta = hotbarItem.getItemMeta();
-							
-							if (hotbarMeta == null)
-								continue;
-							
-							ItemStack targetItem = clickedInventory.getItem(event.getSlot());
-							
-							if (targetItem == null)
-								continue;
-							
-							if (!targetItem.getItemMeta().getDisplayName().equals(hotbarMeta.getDisplayName()))
-								continue;
-							
-							clickedInventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
-							MegaArena.getInstance().getPlayerManager().getPlayer(event.getWhoClicked()
-									.getName()).updateHotbar();
-							break;
-						}
-					} catch (IllegalArgumentException | PlayerException e) {
-					}
-				}
-			}, 1L);
+			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
+
+                try  {
+                    for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
+
+                        ItemMeta hotbarMeta = hotbarItem.getItemMeta();
+
+                        if (hotbarMeta == null)
+                            continue;
+
+                        ItemStack targetItem = clickedInventory.getItem(event.getSlot());
+
+                        if (targetItem == null)
+                            continue;
+
+                        if (!targetItem.getItemMeta().getDisplayName().equals(hotbarMeta.getDisplayName()))
+                            continue;
+
+                        clickedInventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
+                        MegaArena.getInstance().getPlayerManager().getPlayer(event.getWhoClicked()
+                                .getName()).updateHotbar();
+                        break;
+                    }
+                } catch (IllegalArgumentException | PlayerException e) {
+                }
+            }, 1L);
 		}
 	}
 	
@@ -224,16 +214,16 @@ public class LayoutEditorMenu implements Listener {
 		
 		if (!is.hasItemMeta())
 			return;
+
+		String name = is.getItemMeta().getDisplayName();
 		
 		for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
-			if (!is.equals(hotbarItem.getItemMeta().getDisplayName()))
+			if (!name.equals(hotbarItem.getItemMeta().getDisplayName()))
 				continue;
 			
 			event.setCancelled(true);
 			return;
 		}
-		
-		String name = is.getItemMeta().getDisplayName();
 		
 		if (name.equals(ChatColor.RESET + "" + ChatColor.DARK_RED + "Health Potion")
 				|| name.equals(ChatColor.RESET + "" + ChatColor.AQUA + "Speed Potion"))
@@ -275,16 +265,13 @@ public class LayoutEditorMenu implements Listener {
 			event.setCancelled(true);
 			
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					
-					try  {
-						openClassMenu(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()), true);
-					} catch (IllegalArgumentException e) {
-					}
-				}
-			}, 1L);
+			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
+
+                try  {
+                    openClassMenu(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()), true);
+                } catch (IllegalArgumentException e) {
+                }
+            }, 1L);
 		} catch (PlayerException e) {
 		}
 	}
@@ -306,13 +293,7 @@ public class LayoutEditorMenu implements Listener {
 			MegaArena.getInstance().getDataSource().saveLayout(gp, classType, Utils.fromChest(inv));
 			
 	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-	            @Override
-	            public void run() {
-	            	
-	            	gp.updateHotbar();
-	            }
-	        }, 5L);
+	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), gp::updateHotbar, 5L);
 		} catch (PlayerException e) {
 		}
 	}

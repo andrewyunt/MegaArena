@@ -20,7 +20,6 @@ import static com.andrewyunt.megaarena.objects.Class.SKELETON;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -269,7 +268,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 		
 		loc.getWorld().spigot().playEffect(
 				loc.add(0.0D, 0.8D, 0.0D),
-				Effect.EXPLOSION_LARGE);
+				Effect.EXPLOSION_HUGE);
 
 		for (Entity nearby : entity.getNearbyEntities(3D, 3D, 3D)) {
 			if (!(nearby instanceof Player))
@@ -327,7 +326,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 
 		loc.getWorld().spigot().playEffect(
 				loc.add(0.0D, 0.8D, 0.0D),
-				Effect.EXPLOSION_LARGE);
+				Effect.EXPLOSION_HUGE);
 
 		for (Entity nearby : entity.getNearbyEntities(5D, 3D, 5D)) {
 			if (!(nearby instanceof Player))

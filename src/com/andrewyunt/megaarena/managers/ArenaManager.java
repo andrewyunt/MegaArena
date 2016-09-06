@@ -15,18 +15,18 @@
  */
 package com.andrewyunt.megaarena.managers;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.configuration.ArenaConfiguration;
 import com.andrewyunt.megaarena.exception.ArenaException;
 import com.andrewyunt.megaarena.objects.Arena;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The class used to cache arenas, load arenas, and perform operations on them.
@@ -35,7 +35,7 @@ import com.andrewyunt.megaarena.objects.Arena;
  */
 public class ArenaManager {
 
-	private Map<String, Arena> arenas = new HashMap<String, Arena>();
+	private final Map<String, Arena> arenas = new HashMap<String, Arena>();
 
 	/**
 	 * Creates an arena with the specified name and arena type.
@@ -123,12 +123,7 @@ public class ArenaManager {
 	 */
 	public Set<Arena> getArenas() {
 
-		Set<Arena> arenas = new HashSet<Arena>();
-
-		for (Map.Entry<String, Arena> entry : this.arenas.entrySet())
-			arenas.add(entry.getValue());
-
-		return arenas;
+		return this.arenas.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toSet());
 	}
 
 	/**
@@ -187,7 +182,7 @@ public class ArenaManager {
 	 * @return
 	 * 		The loaded arena from the specified configuration section.
 	 */
-	public Arena loadArena(ConfigurationSection section) {
+	public void loadArena(ConfigurationSection section) {
 
 		Arena arena = Arena.loadFromConfig(section);
 
@@ -195,7 +190,5 @@ public class ArenaManager {
 			arenas.remove(arena.getName());
 
 		arenas.put(arena.getName(), arena);
-
-		return arena;
 	}
 }

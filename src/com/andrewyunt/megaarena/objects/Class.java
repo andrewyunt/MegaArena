@@ -50,12 +50,12 @@ public enum Class implements Upgradable {
 	SPIRIT_WARRIOR("Spirit Warrior", TORNADO, WEAKENING_SWING, SWIFT_BACKUP, 5, true),
 	WITHER_MINION("Wither Minion", WITHER_HEADS, SOUL_SUCKER, UNDEAD, 5, true);
 	
-	private String name;
-	private Ability ability;
-	private Skill skillOne;
-	private Skill skillTwo;
-	private int energyPerClick;
-	private boolean hero;
+	private final String name;
+	private final Ability ability;
+	private final Skill skillOne;
+	private final Skill skillTwo;
+	private final int energyPerClick;
+	private final boolean hero;
 	
 	Class(String name, Ability ability, Skill skillOne, Skill skillTwo, int energyPerClick, boolean hero) {
 		

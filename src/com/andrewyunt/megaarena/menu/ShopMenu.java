@@ -18,6 +18,7 @@ package com.andrewyunt.megaarena.menu;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -49,7 +50,7 @@ import com.andrewyunt.megaarena.utilities.Utils;
 public class ShopMenu implements Listener {
 
 	private Inventory inv;
-	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+	private final ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
 
 	public ShopMenu() {
 		
@@ -191,7 +192,7 @@ public class ShopMenu implements Listener {
 						MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(curLevel) + "-hero-upgrade-cost")
 						: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(curLevel) + "-upgrade-cost");
 				
-				if (available == true) {
+				if (available) {
 					is = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 					color = ChatColor.RED;
 				} else
@@ -281,7 +282,7 @@ public class ShopMenu implements Listener {
 
 		if (title.equals("Class Upgrades")) {
 			
-			if (name == null || name == " ")
+			if (name == null || Objects.equals(name, " "))
 				return;
 
 			if (name.equals("Close")) {

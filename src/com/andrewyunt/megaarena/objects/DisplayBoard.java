@@ -17,11 +17,11 @@ import org.bukkit.scoreboard.Scoreboard;
  */
 public class DisplayBoard {
 	
-	private Player player;
-	private Scoreboard scoreboard;
+	private final Player player;
+	private final Scoreboard scoreboard;
 	private Objective objective;
 	private String title = null;
-	private HashMap<String, Score> fields = new HashMap<String, Score>();
+	private final HashMap<String, Score> fields = new HashMap<String, Score>();
 
 	public DisplayBoard(Player player, String title) {
 		

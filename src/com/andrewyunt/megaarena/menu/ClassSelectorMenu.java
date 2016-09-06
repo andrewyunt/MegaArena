@@ -15,8 +15,10 @@
  */
 package com.andrewyunt.megaarena.menu;
 
-import java.util.ArrayList;
-
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.objects.Class;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -27,10 +29,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.objects.Class;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * The class used to create instances of the class selector menu.
@@ -40,7 +41,7 @@ import com.andrewyunt.megaarena.objects.Class;
 public class ClassSelectorMenu implements Listener {
 
 	private Inventory inv;
-	private ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+	private final ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
 	
 	public ClassSelectorMenu() {
 		
@@ -212,7 +213,7 @@ public class ClassSelectorMenu implements Listener {
 
 		if (title.equals("Normal Classes") || title.equals("Hero Classes")) {
 			
-			if (name == null || name == " ")
+			if (name == null || Objects.equals(name, " "))
 				return;
 
 			if (name.equals("Go Back")) {
@@ -235,13 +236,18 @@ public class ClassSelectorMenu implements Listener {
 			player.closeInventory();
 			
 		} else if (title.equals("Class Selector")) {
-			
-			if (name.equals("NORMAL CLASSES"))
-				openNormalClassSelector(gp);
-			else if (name.equals("HERO CLASSES"))
-				openHeroClassSelector(gp);
-			else if (name.equals("Close"))
-				player.closeInventory();
+
+			switch (name) {
+				case "NORMAL CLASSES":
+					openNormalClassSelector(gp);
+					break;
+				case "HERO CLASSES":
+					openHeroClassSelector(gp);
+					break;
+				case "Close":
+					player.closeInventory();
+					break;
+			}
 		}
 	}
 }

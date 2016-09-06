@@ -15,22 +15,21 @@
  */
 package com.andrewyunt.megaarena.managers;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.configuration.SignConfiguration;
 import com.andrewyunt.megaarena.exception.SignException;
 import com.andrewyunt.megaarena.objects.SignDisplay;
 import com.andrewyunt.megaarena.utilities.Utils;
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class SignManager {
 	
-	public Set<SignDisplay> signs = new HashSet<SignDisplay>();
+	public final Set<SignDisplay> signs = new HashSet<SignDisplay>();
 
 	public SignDisplay createSign(Location loc, int place, long updateInterval) throws SignException {
 		
@@ -73,8 +72,8 @@ public class SignManager {
 	/**
 	 * Gets a registered sign of the specified name.
 	 * 
-	 * @param name
-	 * 		The name of the specified sign.
+	 * @param loc
+	 * 		The location of the specified sign.
 	 * @return
 	 * 		The sign fetched of the specified location.
 	 * @throws SignException

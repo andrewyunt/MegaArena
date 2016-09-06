@@ -21,9 +21,11 @@ commands:
     description: Deny a request to duel a player.
     permission: megaarena.dueldeny
   duelstoggle:
-    description: Toggle receiving duel requests from players off.
+    description: Toggle receiving duel requests from players on or off.
     permission: megaarena.duelstoggle
-  
+  bloodtoggle:
+    description: Toggle blood particles on or off..
+    permission: megaarena.bloodtoggle
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -83,5 +85,8 @@ permissions:
      description: Allows you to deny a duel from another player.
      default: true
    megaarena.duelstoggle:
-     description: Allows you to toggle receiving duel requests off.
+     description: Allows you to toggle receiving duel requests on or off.
+     default: true
+   megaarena.bloodtoggle:
+     description: Allows you to toggle blood particles on or off.
      default: true

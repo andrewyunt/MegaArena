@@ -56,7 +56,7 @@ public class DuelsToggleCommand implements CommandExecutor {
 		} catch (PlayerException e) {
 		}
 		
-		boolean isAcceptingDuels = player.isAcceptingDuels() ? false : true;
+		boolean isAcceptingDuels = !player.isAcceptingDuels();
 		
 		player.setAcceptingDuels(isAcceptingDuels);
 		

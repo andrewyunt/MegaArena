@@ -13,60 +13,57 @@
  * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
  * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
  */
-package com.andrewyunt.megaarena.event;
+package com.andrewyunt.megaarena.command;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import org.bukkit.potion.PotionEffectType;
+
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 
 /**
- * The event which is fired when effects are applied to a player.
+ * The bloodtoggle command class which is used as a Bukkit CommandExecutor
+ * to toggle blood particles on or off.
  * 
  * @author Andrew Yunt
  */
-public class EffectApplyEvent extends Event {
+public class BloodToggleCommand implements CommandExecutor {
 	
-	private final Player player;
-	private final PotionEffectType effectType;
-	private boolean isCancelled;
-	private static final HandlerList handlers = new HandlerList();
-
-	public EffectApplyEvent(Player player, PotionEffectType effectType, boolean isCancelled) {
-		
-		this.player = player;
-		this.effectType = effectType;
-		this.isCancelled = isCancelled;
-	}
-	
-	public Player getPlayer() {
-		
-		return player;
-	}
-	
-	public PotionEffectType getEffectType() {
-		
-		return effectType;
-	}
-
-	public boolean isCancelled() {
-		
-		return isCancelled;
-	}
-	
-	public void setCancelled(boolean isCancelled) {
-		
-		this.isCancelled = isCancelled;
-	}
-
 	@Override
-	public HandlerList getHandlers() {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		return handlers;
-	}
-	
-    public static HandlerList getHandlerList() {
-
-		return handlers;
+		if (!cmd.getName().equalsIgnoreCase("bloodtoggle"))
+			return false;
+		
+		if (!(sender instanceof Player)) {
+			System.out.println("You may not execute that command from the console.");
+			return false;
+		}
+		
+		if (!sender.hasPermission("megaarena.bloodtoggle")) {
+			sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+			return false;
+		}
+		
+		GamePlayer player = null;
+		
+		try {
+			player = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName());
+		} catch (PlayerException e) {
+		}
+		
+		boolean hasBloodEffect = !player.hasBloodEffect();
+		
+		player.setBloodEffect(hasBloodEffect);
+		
+		player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format(
+				"Blood particles toggled %s successfully.",
+				ChatColor.AQUA + (hasBloodEffect ? "on" : "off") + ChatColor.GREEN));
+		
+		return true;
 	}
 }

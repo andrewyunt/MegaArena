@@ -37,10 +37,10 @@ public class GameSide {
 		
 		BLUE("Blue", ChatColor.BLUE),
 		GREEN("Green", ChatColor.GREEN),
-		INDEPENDENT("Independent", ChatColor.RED);
+		SOLO("Solo", ChatColor.RED);
 		
-		private String name;
-		private ChatColor nameColor;
+		private final String name;
+		private final ChatColor nameColor;
 		
 		Type(String name, ChatColor nameColor) {
 			
@@ -59,8 +59,8 @@ public class GameSide {
 		}
 	}
 	
-	private Game game;
-	private Type sideType;
+	private final Game game;
+	private final Type sideType;
 	
 	public GameSide(Game game, Type type) {
 		

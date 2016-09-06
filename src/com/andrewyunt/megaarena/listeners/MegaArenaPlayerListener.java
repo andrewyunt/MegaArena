@@ -15,23 +15,20 @@
  */
 package com.andrewyunt.megaarena.listeners;
 
-import java.util.Collections;
-import java.util.List;
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.GameException;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.exception.SignException;
+import com.andrewyunt.megaarena.managers.PlayerManager;
+import com.andrewyunt.megaarena.objects.Arena;
+import com.andrewyunt.megaarena.objects.Game;
+import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -46,26 +43,14 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.event.EffectApplyEvent;
-import com.andrewyunt.megaarena.exception.GameException;
-import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.exception.SignException;
-import com.andrewyunt.megaarena.managers.PlayerManager;
-import com.andrewyunt.megaarena.objects.Arena;
-import com.andrewyunt.megaarena.objects.Game;
-import com.andrewyunt.megaarena.objects.GamePlayer;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The listener class used for general event handling within the plugin
@@ -81,37 +66,34 @@ public class MegaArenaPlayerListener implements Listener {
 		final Player bp = event.getPlayer();
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				
-				GamePlayer player = null;
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
 
-				/* Get the player's GamePlayer object and if it doesn't exist, add it */
-				try {
-					player = MegaArena.getInstance().getPlayerManager().createPlayer(bp.getName());
-				} catch (PlayerException e) {
-				}
-				
-				/* Set player's scoreboard to default scoreboard */
-				player.updateScoreboard();
-				
-				/* Update player hotbar */
-				player.updateHotbar();
-				
-				/* Teleport the player to the spawn location */
-				Location loc = bp.getWorld().getSpawnLocation().clone();
-				
-				Chunk chunk = loc.getChunk();
-				
-				if (!chunk.isLoaded())
-					chunk.load();
-				
-				loc.setY(loc.getY() + 1);
-				
-				bp.teleport(loc, TeleportCause.COMMAND);
-			}
-		}, 1L);
+            GamePlayer player = null;
+
+            /* Get the player's GamePlayer object and if it doesn't exist, add it */
+            try {
+                player = MegaArena.getInstance().getPlayerManager().createPlayer(bp.getName());
+            } catch (PlayerException e) {
+            }
+
+            /* Set player's scoreboard to default scoreboard */
+            player.updateScoreboard();
+
+            /* Update player hotbar */
+            player.updateHotbar();
+
+            /* Teleport the player to the spawn location */
+            Location loc = bp.getWorld().getSpawnLocation().clone();
+
+            Chunk chunk = loc.getChunk();
+
+            if (!chunk.isLoaded())
+                chunk.load();
+
+            loc.setY(loc.getY() + 1);
+
+            bp.teleport(loc, TeleportCause.COMMAND);
+        }, 1L);
 	}
 
 	@EventHandler
@@ -259,7 +241,7 @@ public class MegaArenaPlayerListener implements Listener {
 		if (gp.hasFallen())
 			return;
 		
-		gp.setHasFallen(true);
+		gp.setFallen(true);
 		event.setCancelled(true);
 	}
 
@@ -321,12 +303,29 @@ public class MegaArenaPlayerListener implements Listener {
 		if (!(damaged instanceof Player))
 			return;
 		
-		Location loc = damaged.getLocation();
+		Location loc = damaged.getLocation().clone();
 		
-		World world = loc.getWorld();world.playEffect(
-				loc.add(0.0D, 0.8D, 0.0D),
-				Effect.STEP_SOUND,
-				Material.REDSTONE_BLOCK);
+		for (Entity entity : Utils.getNearbyEntities(loc, 10)) {
+			if (!(entity instanceof Player))
+				continue;
+			
+			Player player = (Player) entity;
+			GamePlayer gp = null;
+			
+			try {
+				gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			} catch (PlayerException e) {
+				continue;
+			}
+			
+			if (!gp.hasBloodEffect())
+				continue;
+			
+			player.playEffect(
+					loc.add(0.0D, 0.8D, 0.0D),
+					Effect.STEP_SOUND,
+					Material.REDSTONE_BLOCK);
+		}
 	}
 	
 	@EventHandler
@@ -360,7 +359,7 @@ public class MegaArenaPlayerListener implements Listener {
 		
 		Player damagerPlayer = (Player) damager;
 		
-		if (owner.getName() == damagerPlayer.getName()) {
+		if (owner.getName().equals(damagerPlayer.getName())) {
 			event.setCancelled(true);
 			return;
 		}
@@ -617,13 +616,6 @@ public class MegaArenaPlayerListener implements Listener {
 		
 		if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM)
 			event.getEntity().remove();
-	}
-	
-	@EventHandler
-	public void onEffectApply(EffectApplyEvent event) {
-		
-		if (event.getEffectType() == PotionEffectType.WITHER)
-			event.getPlayer().removePotionEffect(PotionEffectType.WITHER);
 	}
 	
 	@EventHandler

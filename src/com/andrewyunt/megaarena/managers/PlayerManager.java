@@ -32,7 +32,7 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
  */
 public class PlayerManager {
 
-	private Map<String, GamePlayer> players = new HashMap<String, GamePlayer>();
+	private final Map<String, GamePlayer> players = new HashMap<String, GamePlayer>();
 
 	/**
 	 * Creates a GamePlayer with the specified name and adds it to the players map.
@@ -52,14 +52,7 @@ public class PlayerManager {
 		GamePlayer player = new GamePlayer(name);
 
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.runTaskAsynchronously(MegaArena.getInstance(), new Runnable() {
-
-			@Override
-			public void run() {
-				
-				MegaArena.getInstance().getDataSource().loadPlayer(player);
-			}
-        });
+        scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> MegaArena.getInstance().getDataSource().loadPlayer(player));
 		
 		players.put(name, player);
 
@@ -80,14 +73,7 @@ public class PlayerManager {
 			throw new PlayerException("The player specified is not in the plugin's records.");
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.runTaskAsynchronously(MegaArena.getInstance(), new Runnable() {
-
-			@Override
-			public void run() {
-				
-				MegaArena.getInstance().getDataSource().savePlayer(player);
-			}
-        });
+        scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> MegaArena.getInstance().getDataSource().savePlayer(player));
 		
 		players.remove(player.getName());
 	}
