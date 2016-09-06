@@ -209,6 +209,9 @@ public class ArenaCommand implements CommandExecutor {
 				}
 			}
 			
+			sender.sendMessage(ChatColor.GREEN + String.format("You deleted the arena %s successfully.",
+					ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+			
 		} else if (args[0].equalsIgnoreCase("select")) {
 			
 			if (!sender.hasPermission("megaarena.arena.select")) {
@@ -343,6 +346,9 @@ public class ArenaCommand implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
 			} catch (PlayerException e) {
 			}
+			
+			if (arena == null)
+				return false;
 			
 			if (arena.isEdit()) {
 				arena.setEdit(false);
