@@ -226,11 +226,13 @@ public class ArenaCommand implements CommandExecutor {
 				arena = MegaArena.getInstance().getArenaManager().getArena(args[1]);
 			} catch (ArenaException e) {
 				sender.sendMessage(ChatColor.RED + e.getMessage());
+				return false;
 			}
 			
 			try {
 				MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).selectArena(arena);
 			} catch (PlayerException e) {
+				return false;
 			}
 			
 			sender.sendMessage(String.format(ChatColor.GREEN + "You have selected the arena %s.",
