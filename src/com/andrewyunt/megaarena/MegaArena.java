@@ -28,10 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 import com.andrewyunt.megaarena.command.ArenaCommand;
 import com.andrewyunt.megaarena.command.BloodToggleCommand;
 import com.andrewyunt.megaarena.command.DuelAcceptCommand;
