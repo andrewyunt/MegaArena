@@ -443,6 +443,9 @@ public class MegaArenaPlayerListener implements Listener {
 					killer = killed.getKiller();
 		}
 		
+		if (killer.getName().equals(killed.getName()))
+			return;
+		
 		GamePlayer playerGP = null;
 		GamePlayer killerGP = null;
 
