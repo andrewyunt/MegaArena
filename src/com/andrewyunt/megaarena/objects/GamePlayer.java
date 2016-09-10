@@ -64,14 +64,20 @@ public class GamePlayer {
 		this.name = name;
 		
 		/* Load upgradable levels */
-		for (Class classType : Class.values())
-			MegaArena.getInstance().getDataSource().getLevel(this, classType);
+		for (Class classType : Class.values()) {
+			int level = MegaArena.getInstance().getDataSource().getLevel(this, classType);
+			upgradeLevels.put(classType, level);
+		}
 		
-		for (Skill skillType : Skill.values())
-			MegaArena.getInstance().getDataSource().getLevel(this, skillType);
+		for (Skill skillType : Skill.values()) {
+			int level = MegaArena.getInstance().getDataSource().getLevel(this, skillType);
+			upgradeLevels.put(skillType, level);
+		}
 		
-		for (Ability abilityType : Ability.values())
-			MegaArena.getInstance().getDataSource().getLevel(this, abilityType);
+		for (Ability abilityType : Ability.values()) {
+			int level = MegaArena.getInstance().getDataSource().getLevel(this, abilityType);
+			upgradeLevels.put(abilityType, level);
+		}
 		
 		/* Set up scoreboard */
 		String title = ChatColor.AQUA + "" + ChatColor.BOLD + "MegaArena";
