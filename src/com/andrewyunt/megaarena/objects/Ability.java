@@ -75,7 +75,7 @@ public enum Ability implements Upgradable {
 			return;
 		
 		Player bp = player.getBukkitPlayer();
-		int level = MegaArena.getInstance().getDataSource().getLevel(player, this);
+		int level = player.getLevel(this);
 		
 		if (this == HEAL) {
 

@@ -102,7 +102,7 @@ public enum Class implements Upgradable {
 
 		Player bp = player.getBukkitPlayer();
 		PlayerInventory playerInv = bp.getInventory();
-		int kitLevel = MegaArena.getInstance().getDataSource().getLevel(player, this);
+		int kitLevel = player.getLevel(this);
 
 		ItemStack helmet;
 		ItemStack chest;
@@ -278,7 +278,7 @@ public enum Class implements Upgradable {
 		
 		Player bp = player.getBukkitPlayer();
 		Inventory inv = Bukkit.createInventory(bp, 36);
-		int kitLevel = MegaArena.getInstance().getDataSource().getLevel(player, this);
+		int kitLevel = player.getLevel(this);
 
 		/* Health potion */
 		ItemStack potH = new ItemStack(Material.POTION, 1);

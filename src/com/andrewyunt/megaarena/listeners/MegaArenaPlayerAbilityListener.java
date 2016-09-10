@@ -286,8 +286,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			if (nearbyGP.getSkullHitPlayers().contains(shooterGP))
 				continue;
 
-			double dmg = 1.5 + (MegaArena.getInstance().getDataSource().getLevel(shooterGP,
-					shooterGP.getClassType().getAbility()) * 0.5);
+			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill as well as
 													  // red damage and invisibility
@@ -348,8 +347,7 @@ public class MegaArenaPlayerAbilityListener implements Listener {
 			if (nearbyGP.getGame().getArena().getType() == Arena.Type.TDM && nearbyGP.getSide() == shooterGP.getSide())
 				continue;
 
-			double dmg = 1.5 + (MegaArena.getInstance().getDataSource()
-					.getLevel(shooterGP, shooterGP.getClassType().getAbility()) * .5);
+			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * .5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill
 												// as well as red damage and invisibility

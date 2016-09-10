@@ -117,6 +117,13 @@ public class MySQLSource extends DatabaseHandler {
 			MegaArena.getInstance().getLogger().severe(String.format(
 					"An error occured while saving %s.", player.getName()));
 		}
+		
+		for (Map.Entry<Upgradable, Integer> entry : player.getUpgradeLevels().entrySet()) {
+			Upgradable upgradable = entry.getKey();
+			int level = entry.getValue();
+			
+			setLevel(player, upgradable, level);
+		}
     }
  
     @Override

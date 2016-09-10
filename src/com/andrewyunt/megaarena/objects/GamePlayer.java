@@ -56,11 +56,22 @@ public class GamePlayer {
 	private final List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
 	private boolean loaded = false;
 	private boolean hasBloodEffect = false;
+	private Map<Upgradable, Integer> upgradeLevels = new HashMap<Upgradable, Integer>();
 	
 	public GamePlayer(String name) {
 		
 		/* Set variables */
 		this.name = name;
+		
+		/* Load upgradable levels */
+		for (Class classType : Class.values())
+			MegaArena.getInstance().getDataSource().getLevel(this, classType);
+		
+		for (Skill skillType : Skill.values())
+			MegaArena.getInstance().getDataSource().getLevel(this, skillType);
+		
+		for (Ability abilityType : Ability.values())
+			MegaArena.getInstance().getDataSource().getLevel(this, abilityType);
 		
 		/* Set up scoreboard */
 		String title = ChatColor.AQUA + "" + ChatColor.BOLD + "MegaArena";
@@ -464,5 +475,26 @@ public class GamePlayer {
 	public boolean hasBloodEffect() {
 		
 		return hasBloodEffect;
+	}
+	
+	public void setClassLevel(Upgradable upgradable, int level) {
+		
+		if (upgradeLevels.containsKey(upgradable))
+			upgradeLevels.remove(upgradable);
+		
+		upgradeLevels.put(upgradable, level);
+	}
+	
+	public int getLevel(Upgradable upgradable) {
+		
+		if (upgradeLevels.containsKey(upgradable))
+			return upgradeLevels.get(upgradable);
+		
+		return 1;
+	}
+	
+	public Map<Upgradable, Integer> getUpgradeLevels() {
+		
+		return upgradeLevels;
 	}
 }
