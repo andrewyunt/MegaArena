@@ -15,18 +15,30 @@
  */
 package com.andrewyunt.megaarena.objects;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.ArenaException;
-import net.shortninja.staffplus.StaffPlus;
-import org.bukkit.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.*;
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.ArenaException;
+
+import net.shortninja.staffplus.StaffPlus;
 
 /**
  * The class used to store player's information.
@@ -57,6 +69,7 @@ public class GamePlayer {
 	private boolean loaded = false;
 	private boolean hasBloodEffect = false;
 	private Map<Upgradable, Integer> upgradeLevels = new HashMap<Upgradable, Integer>();
+	private GamePlayer lastDamager = null;
 	
 	public GamePlayer(String name) {
 		
@@ -79,12 +92,23 @@ public class GamePlayer {
 			upgradeLevels.put(abilityType, level);
 		}
 		
+		/* Get the scheduler */
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		
+		/* Repeating task to remove withering */
+		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				
+				getBukkitPlayer().removePotionEffect(PotionEffectType.WITHER);
+			}
+		}, 0L, 20L);
+		
 		/* Set up scoreboard */
 		String title = ChatColor.AQUA + "" + ChatColor.BOLD + "MegaArena";
 		
 		displayBoard = new DisplayBoard(getBukkitPlayer(), title);
 		
-		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 	    scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
 	    	ChatColor curTitleColor = ChatColor.AQUA;
 	    
@@ -502,5 +526,71 @@ public class GamePlayer {
 	public Map<Upgradable, Integer> getUpgradeLevels() {
 		
 		return upgradeLevels;
+	}
+	
+	public void kill() {
+		
+		if (lastDamager == null)
+			return;
+		
+		if (lastDamager.getName().equals(name))
+			return;
+			
+		if (!(lastDamager.isInGame()))
+			return;
+		
+		getLastDamager().addKill();
+		
+		Game game = lastDamager.getGame();
+		
+		if (game.getArena().getType() == Arena.Type.DUEL)
+			return;
+		
+		Player killerBP = lastDamager.getBukkitPlayer();
+		int killCoins = 12;
+		
+		if (killerBP.hasPermission("megaarena.coins.double"))
+			killCoins = 24;
+		
+		if (killerBP.hasPermission("megaarena.coins.triple"))
+			killCoins = 36;
+			
+		lastDamager.addCoins(killCoins);
+		killerBP.sendMessage(ChatColor.GREEN + String.format("You killed %s and received %s coins.",
+				ChatColor.AQUA + name + ChatColor.GREEN,
+				ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
+		
+		for (GamePlayer assistGP : assistPlayers) {
+			if (assistGP.getName().equals(lastDamager.getName()))
+				continue;
+			
+			if (!assistGP.isInGame())
+				continue;
+
+			Player assistPlayer = assistGP.getBukkitPlayer();
+			int assistCoins = 6;
+
+			if (assistPlayer.hasPermission("megaarena.coins.double"))
+				assistCoins = 12;
+			
+			if (assistPlayer.hasPermission("megaarena.coins.triple"))
+				assistCoins = 18;
+
+			assistGP.addCoins(assistCoins);
+			assistPlayer.sendMessage(
+					ChatColor.GREEN + String.format("You earned %s coins for assisting the kill of %s.",
+							ChatColor.AQUA + String.valueOf(assistCoins) + ChatColor.GREEN,
+							ChatColor.AQUA + name + ChatColor.GREEN));
+		}
+	}
+	
+	public void setLastDamager(GamePlayer lastDamager) {
+		
+		this.lastDamager = lastDamager;
+	}
+	
+	public GamePlayer getLastDamager() {
+		
+		return lastDamager;
 	}
 }

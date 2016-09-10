@@ -50,7 +50,7 @@ import com.andrewyunt.megaarena.utilities.Utils;
  * 
  * @author Andrew Yunt
  */
-public class MegaArenaPlayerAbilityListener implements Listener {
+public class PlayerAbilityListener implements Listener {
 	
     @EventHandler (priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) {

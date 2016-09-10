@@ -58,7 +58,7 @@ import java.util.List;
  * 
  * @author Andrew Yunt
  */
-public class MegaArenaPlayerListener implements Listener {
+public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -100,7 +100,6 @@ public class MegaArenaPlayerListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 
 		Player player = event.getPlayer();
-
 		GamePlayer gp = null;
 
 		try {
@@ -120,6 +119,8 @@ public class MegaArenaPlayerListener implements Listener {
 				game.removePlayer(gp);
 			} catch (PlayerException e) {
 			}
+			
+			gp.kill();
 		}
 		
 		try {
@@ -217,7 +218,7 @@ public class MegaArenaPlayerListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onEntityDamage(EntityDamageEvent event) {
+	public void onPlayerFall(EntityDamageEvent event) {
 		
 		if (!(event.getEntity() instanceof Player))
 			return;
@@ -243,6 +244,32 @@ public class MegaArenaPlayerListener implements Listener {
 		
 		gp.setFallen(true);
 		event.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onPlayerDamage(EntityDamageByEntityEvent event) {
+		
+		Entity damager = event.getDamager();
+		Entity damaged = event.getEntity();
+		
+		if (damager instanceof Wolf)
+			damager = (Player) ((Wolf) damager).getOwner();
+		else if (damager instanceof Projectile)
+			damager = (Player) ((Projectile) damager).getShooter();
+		
+		if (!(damager instanceof Player) || !(damaged instanceof Player))
+			return;
+		
+		GamePlayer damagedGP = null;
+		GamePlayer damagerGP = null;
+		
+		try {
+			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(((Player) damaged).getName());
+			damagerGP = MegaArena.getInstance().getPlayerManager().getPlayer(((Player) damager).getName());
+		} catch (PlayerException e) {
+		}
+		
+		damagedGP.setLastDamager(damagerGP);
 	}
 
 	@EventHandler
@@ -295,15 +322,15 @@ public class MegaArenaPlayerListener implements Listener {
 		damagedGP.addAssistPlayer(damagerGP);
 	}
 	
-	@EventHandler
-	public void onBlood(EntityDamageByEntityEvent event) {
+	@EventHandler (priority = EventPriority.MONITOR)
+	public void onBlood(PlayerAnimationEvent event) {
 		
-		Entity damaged = event.getEntity();
-
-		if (!(damaged instanceof Player))
+		Player clickedPlayer = Utils.getTargetPlayer(event.getPlayer());
+		
+		if (clickedPlayer == null)
 			return;
 		
-		Location loc = damaged.getLocation().clone();
+		Location loc = clickedPlayer.getLocation();
 		
 		for (Entity entity : Utils.getNearbyEntities(loc, 10)) {
 			if (!(entity instanceof Player))
@@ -423,85 +450,6 @@ public class MegaArenaPlayerListener implements Listener {
 
 		event.setCancelled(true);
 	}
-
-	@EventHandler
-	public void onPlayerKill(PlayerDeathEvent event) {
-		
-		Player killed = event.getEntity();
-		Player killer = null;
-		
-		EntityDamageEvent ede = killed.getLastDamageCause();
-		if (ede instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) ede;
-			Entity damager = edbe.getDamager();
-			if (damager instanceof Wolf)
-				killer = (Player) ((Wolf) damager).getOwner();
-			else
-				if (!(killed.getKiller() instanceof Player))
-					return;
-				else
-					killer = killed.getKiller();
-		}
-		
-		if (killer.getName().equals(killed.getName()))
-			return;
-		
-		GamePlayer playerGP = null;
-		GamePlayer killerGP = null;
-
-		try {
-			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killed.getName());
-			killerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killer.getName());
-		} catch (PlayerException e) {
-		}
-			
-		if (!(killerGP.isInGame()))
-			return;
-		
-		killerGP.addKill();
-		
-		Game game = killerGP.getGame();
-		
-		if (game.getArena().getType() == Arena.Type.DUEL)
-			return;
-		
-		int killCoins = 12;
-
-		if (killer.hasPermission("megaarena.coins.double"))
-			killCoins = 24;
-		
-		if (killer.hasPermission("megaarena.coins.triple"))
-			killCoins = 36;
-			
-		killerGP.addCoins(killCoins);
-		killer.sendMessage(ChatColor.GREEN + String.format("You killed %s and received %s coins.",
-				ChatColor.AQUA + killed.getName() + ChatColor.GREEN,
-				ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
-
-		if (game.getArena().getType() == Arena.Type.TDM)
-			for (GamePlayer assistGP : playerGP.getAssistPlayers()) {
-				if (assistGP.getName().equals(killerGP.getName()))
-					continue;
-				
-				if (!assistGP.isInGame())
-					continue;
-
-				Player assistPlayer = assistGP.getBukkitPlayer();
-				int assistCoins = 6;
-
-				if (assistPlayer.hasPermission("megaarena.coins.double"))
-					assistCoins = 12;
-				
-				if (assistPlayer.hasPermission("megaarena.coins.triple"))
-					assistCoins = 18;
-
-				assistGP.addCoins(assistCoins);
-				assistPlayer.sendMessage(
-						ChatColor.GREEN + String.format("You earned %s coins for assisting the kill of %s.",
-								ChatColor.AQUA + String.valueOf(assistCoins) + ChatColor.GREEN,
-								ChatColor.AQUA + killed.getName() + ChatColor.GREEN));
-			}
-	}
 	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
@@ -538,6 +486,8 @@ public class MegaArenaPlayerListener implements Listener {
 			playerGP.getGame().removePlayer(playerGP);
 		} catch (PlayerException e) {
 		}
+		
+		playerGP.kill();
 	}
 	
 	@EventHandler

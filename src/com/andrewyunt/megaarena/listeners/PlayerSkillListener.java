@@ -37,8 +37,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.db.DataSource;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Class;
@@ -51,7 +51,7 @@ import com.andrewyunt.megaarena.objects.Skill;
  * @author Andrew Yunt
  * @author MaccariTA
  */
-public class MegaArenaPlayerSkillListener implements Listener {
+public class PlayerSkillListener implements Listener {
 
 	public HashMap<TNTPrimed, Player> creeperTNT = new HashMap<TNTPrimed, Player>();
 
@@ -296,24 +296,20 @@ public class MegaArenaPlayerSkillListener implements Listener {
 
 	@EventHandler
 	public void recharge(EntityDamageByEntityEvent event) {
-
-		/* Checking if damager and damaged are players */
-		if (!(event.getDamager() instanceof Player))
-			return;
-
+		
+		/* Checking if damaged is a player */
 		if (!(event.getEntity() instanceof Player))
 			return;
 
 		/* Casting to players */
-		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
-		GamePlayer damagerGP = null;
 		GamePlayer damagedGP = null;
+		GamePlayer damagerGP = null;
 
 		try {
-			damagerGP = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
+			damagerGP = damagedGP.getLastDamager();
 		} catch (PlayerException e) {
 		}
 
@@ -350,6 +346,8 @@ public class MegaArenaPlayerSkillListener implements Listener {
 		PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, (int) (seconds * 20), 0, true);
 		PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, (int) (seconds * 20), 0, true);
 
+		Player damager = damagerGP.getBukkitPlayer();
+		
 		damager.addPotionEffect(regen, true);
 		damager.addPotionEffect(resistance, true);
 

@@ -32,11 +32,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
-
 import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.db.DataSource;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Ability;
 import com.andrewyunt.megaarena.objects.Class;

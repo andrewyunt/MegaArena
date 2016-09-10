@@ -40,9 +40,9 @@ import com.andrewyunt.megaarena.configuration.SignConfiguration;
 import com.andrewyunt.megaarena.db.DataSource;
 import com.andrewyunt.megaarena.db.MySQLSource;
 import com.andrewyunt.megaarena.exception.GameException;
-import com.andrewyunt.megaarena.listeners.MegaArenaPlayerAbilityListener;
-import com.andrewyunt.megaarena.listeners.MegaArenaPlayerListener;
-import com.andrewyunt.megaarena.listeners.MegaArenaPlayerSkillListener;
+import com.andrewyunt.megaarena.listeners.PlayerAbilityListener;
+import com.andrewyunt.megaarena.listeners.PlayerListener;
+import com.andrewyunt.megaarena.listeners.PlayerSkillListener;
 import com.andrewyunt.megaarena.managers.ArenaManager;
 import com.andrewyunt.megaarena.managers.EventManager;
 import com.andrewyunt.megaarena.managers.GameManager;
@@ -132,9 +132,9 @@ public class MegaArena extends JavaPlugin {
 		/* Register events */
 		eventManager.registerEffectApplyEvent();
 		
-		pm.registerEvents(new MegaArenaPlayerListener(), this);
-		pm.registerEvents(new MegaArenaPlayerAbilityListener(), this);
-		pm.registerEvents(new MegaArenaPlayerSkillListener(), this);
+		pm.registerEvents(new PlayerListener(), this);
+		pm.registerEvents(new PlayerAbilityListener(), this);
+		pm.registerEvents(new PlayerSkillListener(), this);
 		pm.registerEvents(classSelectorMenu, this);
 		pm.registerEvents(shopMenu, this);
 		pm.registerEvents(layoutEditorMenu, this);
