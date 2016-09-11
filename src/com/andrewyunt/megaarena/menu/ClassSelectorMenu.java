@@ -65,8 +65,8 @@ public class ClassSelectorMenu implements Listener {
 		ItemMeta heroClassesMeta = heroClasses.getItemMeta();
 		ItemMeta closeMeta = close.getItemMeta();
 		
-		normalClassesMeta.setDisplayName("NORMAL CLASSES");
-		heroClassesMeta.setDisplayName("HERO CLASSES");
+		normalClassesMeta.setDisplayName("Normal Classes");
+		heroClassesMeta.setDisplayName("Hero Classes");
 		closeMeta.setDisplayName("Close");
 		
 		normalClasses.setItemMeta(normalClassesMeta);
@@ -240,10 +240,10 @@ public class ClassSelectorMenu implements Listener {
 		} else if (title.equals("Class Selector")) {
 
 			switch (name) {
-				case "NORMAL CLASSES":
+				case "Normal Classes":
 					openNormalClassSelector(gp);
 					break;
-				case "HERO CLASSES":
+				case "Hero Classes":
 					openHeroClassSelector(gp);
 					break;
 				case "Close":

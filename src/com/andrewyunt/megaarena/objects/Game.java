@@ -296,6 +296,9 @@ public class Game {
 		/* Set player's killstreak to 0 */
 		player.setKillStreak(0);
 		
+		/* Set last damager to null */
+		player.setLastDamager(null);
+		
 		/* Remove player's potion effects */
 		bp.getActivePotionEffects().clear();
 		

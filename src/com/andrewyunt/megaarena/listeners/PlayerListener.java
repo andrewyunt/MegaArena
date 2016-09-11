@@ -115,12 +115,12 @@ public class PlayerListener implements Listener {
 						String.format("%s has left the game and has left you victorious!",
 						ChatColor.AQUA + gp.getName() + ChatColor.GREEN));
 			
+			gp.kill();
+			
 			try {
 				game.removePlayer(gp);
 			} catch (PlayerException e) {
 			}
-			
-			gp.kill();
 		}
 		
 		try {

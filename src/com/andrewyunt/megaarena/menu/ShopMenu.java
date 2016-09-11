@@ -18,7 +18,6 @@ package com.andrewyunt.megaarena.menu;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,6 +31,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Ability;
@@ -209,8 +209,6 @@ public class ShopMenu implements Listener {
 		
 		event.setCancelled(true);
 		
-		String name = is.getItemMeta().getDisplayName();
-		
 		Player player = (Player) event.getWhoClicked();
 		GamePlayer gp = null;
 
@@ -218,73 +216,52 @@ public class ShopMenu implements Listener {
 			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
-
-		if (title.equals("Class Upgrades")) {
-			
-			if (name == null || Objects.equals(name, " "))
-				return;
-
-			if (name.equals("Close")) {
-				player.closeInventory();
-				return;
-			}
-			
-			if (!player.hasPermission("megaarena.class." + name.replace(" ", "_").toLowerCase()))  {
-				player.sendMessage(ChatColor.RED + "You do not own that class.");
-				return;
-			}
-			
-			openClassUpgradeMenu(gp, Class.valueOf(name.toUpperCase().replace(' ', '_')));
-			
-		} else {
-			
-			Class classType = Class.valueOf(title.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
-			
-			if (is.getType() == Material.ARROW) {
-				MegaArena.getInstance().getGeneralMenu().openClassMenu(gp, classType);
-				return;
-			}
-
-			if (is.getType() != Material.STAINED_CLAY)
-				return;
-			
-			if (is.getDurability() == 14) {
-				player.sendMessage(ChatColor.RED + "You must unlock the preceding upgrades or you cannot afford that upgrade.");
-				return;
-			} else if (is.getDurability() == 5) {
-				player.sendMessage(ChatColor.RED + "You have already puchased that class upgrade.");
-				return;
-			}
-			
-			Upgradable upgradable = null;
-			int slot = event.getSlot();
-			
-			if (slot < 9) {
-				slot++;
-				upgradable = classType.getAbility();
-			} else if (9 <= slot && slot < 18) {
-				slot = slot - 8;
-				upgradable = classType.getSkillOne();
-			} else if (18 <= slot && slot < 27) {
-				slot = slot - 17;		
-				upgradable = classType.getSkillTwo();
-			} else if (27 <= slot && slot < 36) {
-				slot = slot - 26;
-				upgradable = classType;
-			}
-
-			int cost = classType.isHero() ? 
-					MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-hero-upgrade-cost")
-					: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
-			
-			gp.removeCoins(cost);
-			
-			gp.setClassLevel(upgradable, slot);
-			
-			gp.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
-					upgradable.getName() + ChatColor.GREEN));
-			
-			openClassUpgradeMenu(gp, classType);
+		
+		Class classType = Class.valueOf(title.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
+		
+		if (is.getType() == Material.ARROW) {
+			MegaArena.getInstance().getGeneralMenu().openClassMenu(gp, classType);
+			return;
 		}
+		
+		if (is.getType() != Material.STAINED_CLAY)
+			return;
+		
+		if (is.getDurability() == 14) {
+			player.sendMessage(ChatColor.RED + "You must unlock the preceding upgrades or you cannot afford that upgrade.");
+			return;
+		} else if (is.getDurability() == 5) {
+			player.sendMessage(ChatColor.RED + "You have already puchased that class upgrade.");
+			return;
+		}
+		
+		Upgradable upgradable = null;
+		int slot = event.getSlot();
+		
+		if (slot < 9) {
+			slot++;
+			upgradable = classType.getAbility();
+		} else if (9 <= slot && slot < 18) {
+			slot = slot - 8;
+			upgradable = classType.getSkillOne();
+		} else if (18 <= slot && slot < 27) {
+			slot = slot - 17;		
+			upgradable = classType.getSkillTwo();
+		} else if (27 <= slot && slot < 36) {
+			slot = slot - 26;
+			upgradable = classType;
+		}
+		
+		int cost = classType.isHero() ? 
+				MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-hero-upgrade-cost")
+				: MegaArena.getInstance().getConfig().getInt("tier-" + String.valueOf(slot) + "-upgrade-cost");
+		
+		gp.removeCoins(cost);
+		gp.setClassLevel(upgradable, slot);
+		
+		gp.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
+					upgradable.getName() + ChatColor.GREEN));
+		
+		openClassUpgradeMenu(gp, classType);
 	}
 }

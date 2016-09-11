@@ -45,8 +45,8 @@ public class GeneralMenu implements Listener {
 		ItemMeta heroClassesMeta = heroClasses.getItemMeta();
 		ItemMeta closeMeta = close.getItemMeta();
 		
-		normalClassesMeta.setDisplayName("NORMAL CLASSES");
-		heroClassesMeta.setDisplayName("HERO CLASSES");
+		normalClassesMeta.setDisplayName("Normal Classes");
+		heroClassesMeta.setDisplayName("Hero Classes");
 		closeMeta.setDisplayName("Close");
 		
 		normalClasses.setItemMeta(normalClassesMeta);
@@ -254,10 +254,10 @@ public class GeneralMenu implements Listener {
 		} else if (title.equals("General")) {
 
 			switch (name) {
-				case "NORMAL CLASSES":
+				case "Normal Classes":
 					openNormalClasses(gp);
 					break;
-				case "HERO CLASSES":
+				case "Hero Classes":
 					openHeroClasses(gp);
 					break;
 				case "Close":
