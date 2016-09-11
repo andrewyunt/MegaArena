@@ -1,11 +1,16 @@
 package com.andrewyunt.megaarena.utilities;
 
 import com.andrewyunt.megaarena.objects.Vector3D;
+
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.NBTTagList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -49,11 +54,11 @@ public class Utils {
 	}
 
 	/**
+	 * Gets the target player in a player's crosshairs.
 	 * 
 	 * @author Gavin Lutz
 	 * @param player
 	 * @return
-	 * 
 	 */
     public static Player getTargetPlayer(Player player) {
     	
@@ -93,6 +98,7 @@ public class Utils {
     }
    
     /**
+     * Checks if vectors are intersecting with each other.
      * 
      * @author Gavin Lutz
      * @param p1
@@ -100,7 +106,6 @@ public class Utils {
      * @param min
      * @param max
      * @return
-     * 
      */
     private static boolean hasIntersection(Vector3D p1, Vector3D p2, Vector3D min, Vector3D max) {
     	
@@ -249,5 +254,24 @@ public class Utils {
             return "th";
         }
     }
-
+    
+    public static ItemStack addGlow(ItemStack item){ 
+    	
+    	net.minecraft.server.v1_7_R4.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+    	NBTTagCompound tag = null;
+    	
+    	if (!nmsStack.hasTag()) {
+    		tag = new NBTTagCompound();
+    		nmsStack.setTag(tag);
+    	}
+    	
+    	if (tag == null)
+    		tag = nmsStack.getTag();
+    	
+    	NBTTagList ench = new NBTTagList();
+    	tag.set("ench", ench);
+    	nmsStack.setTag(tag);
+    	
+    	return CraftItemStack.asCraftMirror(nmsStack);
+    }
 }

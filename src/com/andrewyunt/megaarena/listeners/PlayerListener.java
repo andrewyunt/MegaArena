@@ -142,8 +142,8 @@ public class PlayerListener implements Listener {
 
 		Material type = item.getType();
 
-		if (!(type == Material.EMERALD || type == Material.COMMAND || type == Material.CHEST
-				|| type == Material.DIAMOND_SWORD || type == Material.IRON_SWORD))
+		if (!(type == Material.BOOK || type == Material.COMMAND || type == Material.DIAMOND_SWORD
+				|| type == Material.IRON_SWORD))
 			return;
 
 		ItemMeta meta = item.getItemMeta();
@@ -157,18 +157,14 @@ public class PlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		if (name.equals(ChatColor.GREEN + "Shop")) {
+		if (name.equals(ChatColor.AQUA + "General")) {
 
-			plugin.getShopMenu().openClassUpgradesMenu(gp);
+			plugin.getGeneralMenu().openMainMenu(gp);
 
-		} else if (name.equals(ChatColor.YELLOW + "Layout Editor")) {
-
-			plugin.getLayoutEditorMenu().openMainMenu(gp);
+		} else if (name.equals(ChatColor.GREEN + "Class Selector")) {
 			
-		} else if (name.equals(ChatColor.RED + "Class Selector")) {
-
 			plugin.getClassSelectorMenu().openMainMenu(gp);
-
+			
 		} else if (name.equals("Play : Team-deathmatch")) {
 			
 			try {
@@ -178,7 +174,7 @@ public class PlayerListener implements Listener {
 			}
 			
 		} else if (name.equals("Play : Free-for-all")) {
-
+			
 			try {
 				plugin.getGameManager().matchMake(gp, Arena.Type.FFA, 
 						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);

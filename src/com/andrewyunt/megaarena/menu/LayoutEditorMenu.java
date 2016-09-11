@@ -54,64 +54,6 @@ public class LayoutEditorMenu implements Listener {
 		glassPane.setItemMeta(glassPaneMeta);
 	}
 	
-	public void openMainMenu(GamePlayer player) {
-		
-		inv = Bukkit.createInventory(null, 27, "Layout Editor");
-
-		ItemStack zombie = new ItemStack(Material.ROTTEN_FLESH);
-		ItemStack skeleton = new ItemStack(Material.BONE);
-		ItemStack creeper = new ItemStack(Material.TNT);
-		ItemStack herobrine = new ItemStack(Material.ENDER_PEARL);
-		ItemStack witherMinion = new ItemStack(Material.SKULL_ITEM, 1, (short) 1);
-		ItemStack spiritWarrior = new ItemStack(Material.ENCHANTMENT_TABLE);
-		ItemStack close = new ItemStack(Material.ARROW);
-		
-		ItemMeta zombieMeta = zombie.getItemMeta();
-		ItemMeta skeletonMeta = skeleton.getItemMeta();
-		ItemMeta creeperMeta = creeper.getItemMeta();
-		ItemMeta herobrineMeta = herobrine.getItemMeta();
-		ItemMeta witherMinionMeta = witherMinion.getItemMeta();
-		ItemMeta spiritWarriorMeta = spiritWarrior.getItemMeta();
-		ItemMeta closeMeta = close.getItemMeta();
-		
-		zombieMeta.setDisplayName("Zombie");
-		skeletonMeta.setDisplayName("Skeleton");
-		creeperMeta.setDisplayName("Creeper");
-		herobrineMeta.setDisplayName("Herobrine");
-		witherMinionMeta.setDisplayName("Wither Minion");
-		spiritWarriorMeta.setDisplayName("Spirit Warrior");
-		closeMeta.setDisplayName("Close");
-		
-		zombie.setItemMeta(zombieMeta);
-		skeleton.setItemMeta(skeletonMeta);
-		creeper.setItemMeta(creeperMeta);
-		herobrine.setItemMeta(herobrineMeta);
-		witherMinion.setItemMeta(witherMinionMeta);
-		spiritWarrior.setItemMeta(spiritWarriorMeta);
-		close.setItemMeta(closeMeta);
-		
-		for (int i = 0; i < 10; i++)
-			inv.setItem(i, glassPane);
-
-		inv.setItem(10, zombie);
-		inv.setItem(11, skeleton);
-		inv.setItem(12, creeper);
-		inv.setItem(14, herobrine);
-		inv.setItem(13, glassPane);
-		inv.setItem(15, witherMinion);
-		inv.setItem(16, spiritWarrior);
-
-		for (int i = 17; i < 22; i++)
-			inv.setItem(i, glassPane);
-
-		inv.setItem(22, close);
-
-		for (int i = 23; i < 27; i++)
-			inv.setItem(i, glassPane);
-
-		player.getBukkitPlayer().openInventory(inv);
-	}
-	
 	public void openClassMenu(GamePlayer player, Class classType, boolean loadFromDB) {
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
@@ -247,7 +189,8 @@ public class LayoutEditorMenu implements Listener {
 			
 			if (name.equals("Go Back")) {
 				if (title.startsWith("Layout Editor -")) {
-					openMainMenu(gp);
+					MegaArena.getInstance().getGeneralMenu().openClassMenu(gp,
+							Class.valueOf(title.replace("Layout Editor - ", "").replace(" ", "_").toUpperCase()));
 					event.setCancelled(true);
 				}
 				return;

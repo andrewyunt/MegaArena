@@ -100,6 +100,9 @@ public class GamePlayer {
 			@Override
 			public void run() {
 				
+				if (!getBukkitPlayer().isOnline())
+					return;
+				
 				getBukkitPlayer().removePotionEffect(PotionEffectType.WITHER);
 			}
 		}, 0L, 20L);

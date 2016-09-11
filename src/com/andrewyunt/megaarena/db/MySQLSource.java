@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MySQLSource extends DatabaseHandler {
+public class MySQLSource extends DataSource {
  
 	private String ip, database, user, pass;
 	private int port;
@@ -92,9 +92,24 @@ public class MySQLSource extends DatabaseHandler {
     		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
     		scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> {
     			savePlayer(player, uuid);
+    			
+    			for (Map.Entry<Upgradable, Integer> entry : player.getUpgradeLevels().entrySet()) {
+    				Upgradable upgradable = entry.getKey();
+    				int level = entry.getValue();
+    				
+    				setLevel(player, upgradable, level);
+    			}
             });
-        } else
+        } else {
         	savePlayer(player, uuid);
+        	
+    		for (Map.Entry<Upgradable, Integer> entry : player.getUpgradeLevels().entrySet()) {
+    			Upgradable upgradable = entry.getKey();
+    			int level = entry.getValue();
+    			
+    			setLevel(player, upgradable, level);
+    		}
+        }
     }
     
     private void savePlayer(GamePlayer player, String uuid) {
@@ -116,13 +131,6 @@ public class MySQLSource extends DatabaseHandler {
 		} catch (SQLException e) {
 			MegaArena.getInstance().getLogger().severe(String.format(
 					"An error occured while saving %s.", player.getName()));
-		}
-		
-		for (Map.Entry<Upgradable, Integer> entry : player.getUpgradeLevels().entrySet()) {
-			Upgradable upgradable = entry.getKey();
-			int level = entry.getValue();
-			
-			setLevel(player, upgradable, level);
 		}
     }
  
@@ -281,20 +289,17 @@ public class MySQLSource extends DatabaseHandler {
 		
 		String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
 		
-		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> {
-            try {
-                statement.executeUpdate(String.format(
-                        "INSERT INTO `Upgrades` (`uuid`, `upgradable`, `level`)"
-                                + " VALUES ('%s', '%s', '%s') ON DUPLICATE KEY UPDATE `level` = '%3$s';",
-                        uuid,
-                        upgradable.toString(),
-                        level));
-            } catch (SQLException e) {
-                MegaArena.getInstance().getLogger().severe(String.format(
-                        "An error occured while saving %s.", player.getName()));
-            }
-        });
+		try {
+			statement.executeUpdate(String.format(
+					"INSERT INTO `Upgrades` (`uuid`, `upgradable`, `level`)"
+			+ " VALUES ('%s', '%s', '%s') ON DUPLICATE KEY UPDATE `level` = '%3$s';",
+			uuid,
+			upgradable.toString(),
+			level));
+		} catch (SQLException e) {
+			MegaArena.getInstance().getLogger().severe(String.format(
+					"An error occured while saving %s.", player.getName()));
+		}
 	}
 	
 	@Override

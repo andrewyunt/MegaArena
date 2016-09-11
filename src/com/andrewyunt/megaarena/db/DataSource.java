@@ -38,7 +38,14 @@ public abstract class DataSource {
 	
 	public abstract Inventory loadLayout(GamePlayer player, Class classType);
 	
-	public abstract void updateDB();
+	public void updateDB() {
+		
+		createPlayersTable();
+		createLayoutsTable();
+		createUpgradesTable();
+		
+		cleanupLayouts();
+	}
 	
 	public abstract void createPlayersTable();
 

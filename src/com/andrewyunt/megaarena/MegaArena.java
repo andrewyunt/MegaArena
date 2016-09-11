@@ -49,11 +49,13 @@ import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.managers.SignManager;
 import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
+import com.andrewyunt.megaarena.menu.GeneralMenu;
 import com.andrewyunt.megaarena.menu.LayoutEditorMenu;
 import com.andrewyunt.megaarena.menu.ShopMenu;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The main class in the MegaArena plugin.
@@ -72,8 +74,8 @@ public class MegaArena extends JavaPlugin {
     private final ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
     private final ShopMenu shopMenu = new ShopMenu();
     private final LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
+    private final GeneralMenu generalMenu = new GeneralMenu();
     private final Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
-	
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
@@ -138,6 +140,7 @@ public class MegaArena extends JavaPlugin {
 		pm.registerEvents(classSelectorMenu, this);
 		pm.registerEvents(shopMenu, this);
 		pm.registerEvents(layoutEditorMenu, this);
+		pm.registerEvents(generalMenu, this);
 		
 		/* Load all arenas from arenas.yml */
 		arenaManager.loadArenas();
@@ -189,7 +192,7 @@ public class MegaArena extends JavaPlugin {
 		toSave.addAll(playerManager.getPlayers());
 		
 		for (GamePlayer gp : toSave)
-			MegaArena.getInstance().getDataSource().savePlayer(gp);
+			dataSource.savePlayer(gp);
 		
 		dataSource.disconnect();
 	}
@@ -305,6 +308,17 @@ public class MegaArena extends JavaPlugin {
 	}
 	
 	/**
+	 * Gets the stored instance of the general menu.
+	 * 
+	 * @return
+	 * 		The instance of the genu menu.
+	 */
+	public GeneralMenu getGeneralMenu() {
+		
+		return generalMenu;
+	}
+	
+	/**
 	 * Gets the stored instance of the layout editor menu.
 	 * 
 	 * @return
@@ -318,39 +332,34 @@ public class MegaArena extends JavaPlugin {
 	public void createHotbarItems() {
 		
 		/* Create items */
-		ItemStack shop = new ItemStack(Material.EMERALD);
-		ItemStack layoutEditor = new ItemStack(Material.CHEST);
+		ItemStack general = new ItemStack(Material.BOOK);
 		ItemStack classSelector = new ItemStack(Material.COMMAND);
 		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
 		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
 		
 		/* Get item metas */
-		ItemMeta shopMeta = shop.getItemMeta();
-		ItemMeta layoutEditorMeta = layoutEditor.getItemMeta();
+		ItemMeta generalMeta = general.getItemMeta();
 		ItemMeta classSelectorMeta = classSelector.getItemMeta();
 		ItemMeta playFFAMeta = playFFA.getItemMeta();
 		ItemMeta playTDMMeta = playTDM.getItemMeta();
 		
 		/* Set meta display names */
-		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
-		layoutEditorMeta.setDisplayName(ChatColor.YELLOW + "Layout Editor");
-		classSelectorMeta.setDisplayName(ChatColor.RED + "Class Selector");
+		generalMeta.setDisplayName(ChatColor.AQUA + "General");
+		classSelectorMeta.setDisplayName(ChatColor.GREEN + "Class Selector");
 		playFFAMeta.setDisplayName("Play : Free-for-all");
 		playTDMMeta.setDisplayName("Play : Team-deathmatch");
 		
 		/* Set item metas */
-		shop.setItemMeta(shopMeta);
-		layoutEditor.setItemMeta(layoutEditorMeta);
+		general.setItemMeta(generalMeta);
 		classSelector.setItemMeta(classSelectorMeta);
 		playFFA.setItemMeta(playFFAMeta);
 		playTDM.setItemMeta(playTDMMeta);
 		
 		/* Set hotbar items in map */
-		hotbarItems.put(0, shop);
-		hotbarItems.put(1, layoutEditor);
-		hotbarItems.put(2, classSelector);
-		hotbarItems.put(7, playFFA);
-		hotbarItems.put(8, playTDM);
+		hotbarItems.put(0, general);
+		hotbarItems.put(1, classSelector);
+		hotbarItems.put(7, Utils.addGlow(playFFA));
+		hotbarItems.put(8, Utils.addGlow(playTDM));
 	}
 	
 	public Map<Integer, ItemStack> getHotbarItems() {

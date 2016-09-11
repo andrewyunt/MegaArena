@@ -1,25 +1,7 @@
-/*
- * Unpublished Copyright (c) 2016 Andrew Yunt, All Rights Reserved.
- *
- * NOTICE: All information contained herein is, and remains the property of Andrew Yunt. The intellectual and technical concepts contained
- * herein are proprietary to Andrew Yunt and may be covered by U.S. and Foreign Patents, patents in process, and are protected by trade secret or copyright law.
- * Dissemination of this information or reproduction of this material is strictly forbidden unless prior written permission is obtained
- * from Andrew Yunt. Access to the source code contained herein is hereby forbidden to anyone except current Andrew Yunt and those who have executed
- * Confidentiality and Non-disclosure agreements explicitly covering such access.
- *
- * The copyright notice above does not evidence any actual or intended publication or disclosure of this source code, which includes
- * information that is confidential and/or proprietary, and is a trade secret, of COMPANY. ANY REPRODUCTION, MODIFICATION, DISTRIBUTION, PUBLIC PERFORMANCE,
- * OR PUBLIC DISPLAY OF OR THROUGH USE OF THIS SOURCE CODE WITHOUT THE EXPRESS WRITTEN CONSENT OF ANDREW YUNT IS STRICTLY PROHIBITED, AND IN VIOLATION OF
- * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
- * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
- */
 package com.andrewyunt.megaarena.menu;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.objects.Class;
-import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.utilities.Utils;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,30 +14,28 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.objects.Class;
+import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 
-/**
- * The class used to create instances of the class selector menu.
- * 
- * @author Andrew Yunt
- */
-public class ClassSelectorMenu implements Listener {
-
+public class GeneralMenu implements Listener {
+	
 	private Inventory inv;
 	private final ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
-	
-	public ClassSelectorMenu() {
+
+	public GeneralMenu() {
 		
 		ItemMeta glassPaneMeta = glassPane.getItemMeta();
 		glassPaneMeta.setDisplayName(" ");
 		glassPaneMeta.setLore(new ArrayList<String>());
 		glassPane.setItemMeta(glassPaneMeta);
 	}
-
+	
 	public void openMainMenu(GamePlayer player) {
 
-		inv = Bukkit.createInventory(null, 27, "Class Selector");
+		inv = Bukkit.createInventory(null, 27, "General");
 
 		ItemStack normalClasses = new ItemStack(Material.IRON_SWORD);
 		ItemStack heroClasses = new ItemStack(Material.DIAMOND_SWORD);
@@ -91,9 +71,9 @@ public class ClassSelectorMenu implements Listener {
 		player.getBukkitPlayer().openInventory(inv);
 	}
 
-	private void openNormalClassSelector(GamePlayer player) {
+	private void openNormalClasses(GamePlayer player) {
 
-		inv = Bukkit.createInventory(null, 27, "Normal Classes");
+		inv = Bukkit.createInventory(null, 27, "General - Normal Classes");
 		
 		ItemStack zombie = new ItemStack(Material.ROTTEN_FLESH);
 		ItemStack skeleton = new ItemStack(Material.BONE);
@@ -139,9 +119,9 @@ public class ClassSelectorMenu implements Listener {
 		player.getBukkitPlayer().openInventory(inv);
 	}
 
-	private void openHeroClassSelector(GamePlayer player) {
+	private void openHeroClasses(GamePlayer player) {
 
-		inv = Bukkit.createInventory(null, 27, "Hero Classes");
+		inv = Bukkit.createInventory(null, 27, "General - Hero Classes");
 
 		ItemStack goBack = new ItemStack(Material.ARROW);
 		ItemStack witherMinion = new ItemStack(Material.SKULL_ITEM, 1, (short) 1);
@@ -176,7 +156,45 @@ public class ClassSelectorMenu implements Listener {
 
 		player.getBukkitPlayer().openInventory(inv);
 	}
+	
+	public void openClassMenu(GamePlayer player, Class classType) {
+		
+		inv = Bukkit.createInventory(null, 27, "General - Class - " + classType.getName());
 
+		ItemStack upgrades = new ItemStack(Material.EMERALD);
+		ItemStack layoutEditor = new ItemStack(Material.CHEST);
+		ItemStack goBack = new ItemStack(Material.ARROW);
+		
+		ItemMeta upgradesMeta = upgrades.getItemMeta();
+		ItemMeta layoutEditorMeta = layoutEditor.getItemMeta();
+		ItemMeta goBackMeta = goBack.getItemMeta();
+		
+		upgradesMeta.setDisplayName("Upgrades");
+		layoutEditorMeta.setDisplayName("Layout Editor");
+		goBackMeta.setDisplayName("Go Back");
+		
+		upgrades.setItemMeta(upgradesMeta);
+		layoutEditor.setItemMeta(layoutEditorMeta);
+		goBack.setItemMeta(goBackMeta);
+		
+		for (int i = 0; i < 12; i++)
+			inv.setItem(i, glassPane);
+
+		inv.setItem(12, upgrades);
+		inv.setItem(13, glassPane);
+		inv.setItem(14, layoutEditor);
+
+		for (int i = 15; i < 22; i++)
+			inv.setItem(i, glassPane);
+
+		inv.setItem(22, goBack);
+
+		for (int i = 23; i < 27; i++)
+			inv.setItem(i, glassPane);
+
+		player.getBukkitPlayer().openInventory(inv);
+	}
+	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		
@@ -190,7 +208,8 @@ public class ClassSelectorMenu implements Listener {
 		if (title == null)
 			return;
 		
-		if (!(title.equals("Hero Classes") || title.equals("Normal Classes") || title.equals("Class Selector")))
+		if (!(title.equals("General - Hero Classes") || title.equals("General - Normal Classes")
+				|| title.equals("General") || title.startsWith("General - Class - ")))
 			return;
 		
 		event.setCancelled(true);
@@ -213,7 +232,7 @@ public class ClassSelectorMenu implements Listener {
 
 		String name = is.getItemMeta().getDisplayName();
 
-		if (title.equals("Normal Classes") || title.equals("Hero Classes")) {
+		if (title.equals("General - Normal Classes") || title.equals("General - Hero Classes")) {
 			
 			if (name == null || Objects.equals(name, " "))
 				return;
@@ -226,29 +245,43 @@ public class ClassSelectorMenu implements Listener {
 			String classStr = name.replace(" ", "_").toUpperCase();
 
 			if (!player.hasPermission("megaarena.class." + classStr.toLowerCase()))  {
-				player.sendMessage(ChatColor.RED + "You do not have permission to select that class.");
+				player.sendMessage(ChatColor.RED + "You do not own that class.");
 				return;
 			}
 			
-			gp.setClassType(Class.valueOf(classStr));
+			openClassMenu(gp, Class.valueOf(classStr));
 			
-			player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
-					ChatColor.AQUA + name + ChatColor.GREEN));
-			
-			player.closeInventory();
-			
-		} else if (title.equals("Class Selector")) {
+		} else if (title.equals("General")) {
 
 			switch (name) {
 				case "NORMAL CLASSES":
-					openNormalClassSelector(gp);
+					openNormalClasses(gp);
 					break;
 				case "HERO CLASSES":
-					openHeroClassSelector(gp);
+					openHeroClasses(gp);
 					break;
 				case "Close":
 					player.closeInventory();
 					break;
+			}
+		} else if (title.startsWith("General - Class - ")) {
+			
+			String classStr = title.replace("General - Class - ", "").replace(" ", "_").toUpperCase();
+			Class classType = Class.valueOf(classStr);
+			
+			switch (name) {
+			case "Upgrades":
+				MegaArena.getInstance().getShopMenu().openClassUpgradeMenu(gp, classType);
+				break;
+			case "Layout Editor":
+				MegaArena.getInstance().getLayoutEditorMenu().openClassMenu(gp, classType, true);
+				break;
+			case "Go Back":
+				if (classType.isHero())
+					openHeroClasses(gp);
+				else
+					openNormalClasses(gp);
+				break;
 			}
 		}
 	}
