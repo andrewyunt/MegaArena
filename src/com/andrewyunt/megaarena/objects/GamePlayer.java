@@ -22,11 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -96,11 +98,13 @@ public class GamePlayer {
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		
 		/* Repeating task to remove withering */
+		OfflinePlayer op = Bukkit.getServer().getOfflinePlayer(name);
+		
 		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
 			@Override
 			public void run() {
 				
-				if (!getBukkitPlayer().isOnline())
+				if (!op.isOnline())
 					return;
 				
 				getBukkitPlayer().removePotionEffect(PotionEffectType.WITHER);
