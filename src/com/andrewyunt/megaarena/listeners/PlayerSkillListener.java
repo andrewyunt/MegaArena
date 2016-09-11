@@ -312,6 +312,9 @@ public class PlayerSkillListener implements Listener {
 			damagerGP = damagedGP.getLastDamager();
 		} catch (PlayerException e) {
 		}
+		
+		if (damagerGP == null)
+			return;
 
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())

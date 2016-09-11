@@ -478,12 +478,12 @@ public class PlayerListener implements Listener {
 			return;
 		}
 		
+		playerGP.kill();
+		
 		try {
 			playerGP.getGame().removePlayer(playerGP);
 		} catch (PlayerException e) {
 		}
-		
-		playerGP.kill();
 	}
 	
 	@EventHandler

@@ -143,6 +143,9 @@ public class PlayerAbilityListener implements Listener {
 			clickerGP = MegaArena.getInstance().getPlayerManager().getPlayer(clickerPlayer.getName());
 		} catch (PlayerException e) {
 		}
+		
+		if (clickerGP == null)
+			return;
 
 		if (!clickerGP.isInGame())
 			return;
