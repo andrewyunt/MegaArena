@@ -307,7 +307,7 @@ public class PlayerListener implements Listener {
 		if (damagedGP.getLastDamageCause() != DamageCause.CUSTOM)
 			damagedGP.setLastDamageCause(event.getCause());
 		
-		if (damagedGP.getGame().getArena().getType() != Arena.Type.TDM)
+		if (damagedGP.getGame().getArena().getType() == Arena.Type.DUEL)
 			return;
 
 		if (damagedGP.getSide() == damagerGP.getSide()) {
