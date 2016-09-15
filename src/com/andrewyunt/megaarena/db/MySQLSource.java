@@ -188,7 +188,7 @@ public class MySQLSource extends DataSource {
                                 + "`inventory` = '%4$s';",
                         uuid,
                         classType.toString(),
-                        getLevel(player, classType),
+                        player.getLevel(classType),
                         BukkitSerialization.toBase64(inv),
                         version));
             } catch (SQLException e) {
@@ -208,7 +208,7 @@ public class MySQLSource extends DataSource {
         
 		try {
 			resultSet = statement.executeQuery("SELECT * FROM `Layouts` WHERE `uuid` = '" + uuid + "' AND"
-					+ " layout = '" + classType.toString() + "' AND `level` = " + getLevel(player, classType)
+					+ " layout = '" + classType.toString() + "' AND `level` = " + player.getLevel(classType)
 					+ " AND `version` = '" + version + "';");
 		} catch (SQLException e) {
 			return null; // layout doesn't exist
