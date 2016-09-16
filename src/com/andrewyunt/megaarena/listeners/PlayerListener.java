@@ -64,6 +64,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 
 		final Player bp = event.getPlayer();
+		bp.setMaximumNoDamageTicks(0); // Part of the EPC
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
@@ -244,7 +245,6 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerDamage(EntityDamageByEntityEvent event) {
-		
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
 		
@@ -270,7 +270,6 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
 
@@ -310,50 +309,16 @@ public class PlayerListener implements Listener {
 		if (damagedGP.getGame().getArena().getType() == Arena.Type.DUEL)
 			return;
 
-		if (damagedGP.getSide() == damagerGP.getSide()) {
+		if (damagedGP.getGame().getArena().getType() == Arena.Type.TDM && damagedGP.getSide() == damagerGP.getSide()) {
 			event.setCancelled(true);
 			return;
 		}			
 		
 		damagedGP.addAssistPlayer(damagerGP);
 	}
-	
-	@EventHandler (priority = EventPriority.MONITOR)
-	public void onBlood(PlayerAnimationEvent event) {
-		
-		Player clickedPlayer = Utils.getTargetPlayer(event.getPlayer());
-		
-		if (clickedPlayer == null)
-			return;
-		
-		Location loc = clickedPlayer.getLocation();
-		
-		for (Entity entity : Utils.getNearbyEntities(loc, 10)) {
-			if (!(entity instanceof Player))
-				continue;
-			
-			Player player = (Player) entity;
-			GamePlayer gp = null;
-			
-			try {
-				gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
-			} catch (PlayerException e) {
-				continue;
-			}
-			
-			if (!gp.hasBloodEffect())
-				continue;
-			
-			player.playEffect(
-					loc.add(0.0D, 0.8D, 0.0D),
-					Effect.STEP_SOUND,
-					Material.REDSTONE_BLOCK);
-		}
-	}
-	
+
 	@EventHandler
 	public void onWolfDamageByEntity(EntityDamageByEntityEvent event) {
-		
 		if (!(event.getEntity() instanceof Wolf))
 			return;
 		
@@ -401,8 +366,9 @@ public class PlayerListener implements Listener {
 		}
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM
-				&& damagerGP.getSide() == ownerGP.getSide())
+				&& damagerGP.getSide() == ownerGP.getSide()){
 			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler

@@ -17,6 +17,9 @@ package com.andrewyunt.megaarena.listeners;
 
 import static com.andrewyunt.megaarena.objects.Class.SKELETON;
 
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,12 +34,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -51,6 +56,8 @@ import com.andrewyunt.megaarena.utilities.Utils;
  * @author Andrew Yunt
  */
 public class PlayerAbilityListener implements Listener {
+	
+	private ArrayList<Player> onCooldown = new ArrayList<Player>();
 	
     @EventHandler (priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) {
@@ -94,152 +101,106 @@ public class PlayerAbilityListener implements Listener {
 		}
 	}
 
-	@EventHandler (priority = EventPriority.MONITOR)
-	public void onEPH(EntityDamageByEntityEvent event) {
+    @SuppressWarnings("deprecation")
+	@EventHandler (priority = EventPriority.HIGHEST)
+    public void EPC(EntityDamageByEntityEvent event)
+    {
+    	if (!(event.getEntity() instanceof Player))
+    		return;
+    	Player damaged = (Player) event.getEntity();
+    	if (onCooldown.contains(damaged))
+    		event.setCancelled(true);
+    	else {
+    		onCooldown.add(damaged);
+    		new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					onCooldown.remove(damaged);
+				}
+			}.runTaskLater(MegaArena.getInstance(), 10);
+    	}
+    	// Give Energy
+    	if (event.getDamager() instanceof Player){
+			Player damager = (Player) event.getDamager();
+			GamePlayer gpDamager=null;
+			GamePlayer gpDamaged=null;
+			try{
+				gpDamager = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
+				gpDamaged = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
+			}catch(PlayerException e){return;}
 		
-		if (!(event.getDamager() instanceof Player))
-			return;
-		
-		if (!(event.getEntity() instanceof Player))
-			return;
-
-		Player player = (Player) event.getDamager();
-		Player target = (Player) event.getEntity();
-		GamePlayer targetGP = null;
-		GamePlayer playerGP = null;
-
-		try {
-			targetGP = MegaArena.getInstance().getPlayerManager().getPlayer(target.getName());
-			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
-		} catch (PlayerException e) {
-		}
-
-		if (!playerGP.isInGame())
-			return;
-		
-		if (!targetGP.isInGame())
-			return;
-		
-		if (targetGP.getGame().getArena().getType() == Arena.Type.TDM && targetGP.getSide() == playerGP.getSide())
-			return;
-		
-		if (Utils.getTargetPlayer(player) != null)
-			return;
-
-		if (targetGP.getLastDamageCause() != DamageCause.CUSTOM)
-			if (playerGP.getClassType() != SKELETON)
-				playerGP.addEnergy(playerGP.getClassType().getEnergyPerClick());
+			if (!(gpDamaged.isInGame() && gpDamager.isInGame()))
+				return;
+			if (gpDamaged.getGame() != gpDamager.getGame())
+				return;
+			if (gpDamager.getGame().getArena().getType() == Arena.Type.TDM && gpDamager.getSide() == gpDamaged.getSide())
+				return;
+			if (gpDamager.getClassType() != SKELETON)
+				gpDamager.addEnergy(gpDamager.getClassType().getEnergyPerClick());
 			else
-				playerGP.addEnergy(3); // Added as number because Skeleton's ENUM only contains the Energy Per Bow Hit, not per Sword Hit.
-	}
-
-	@EventHandler (priority = EventPriority.MONITOR)
-	public void onEPC(PlayerAnimationEvent event) {
-
-		Player clickerPlayer = event.getPlayer();
-		GamePlayer clickerGP = null;
-
-		try {
-			clickerGP = MegaArena.getInstance().getPlayerManager().getPlayer(clickerPlayer.getName());
-		} catch (PlayerException e) {
+				gpDamager.addEnergy(3); // Since Skeleton ENUM only contains his Bow Hit Energy.
+			Utils.playBloodEffect(damaged, 10);
+			return;
 		}
-		
-		if (clickerGP == null)
+    	if (event.getDamager() instanceof Arrow){
+			Arrow arr = (Arrow) event.getDamager();
+			if (!(arr.getShooter() instanceof Player))
+				return;
+			Player damager = (Player) arr.getShooter();
+			GamePlayer gpDamager=null;
+			GamePlayer gpDamaged=null;
+			try{
+				gpDamager = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
+				gpDamaged = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
+			}catch(PlayerException e){return;}
+			
+			if (event.isCancelled()) // Shooting a red person wouldn't give you Energy.
+				return;
+			
+			if (gpDamaged == gpDamager)
+				return;
+			
+			if (gpDamager.getClassType() != SKELETON)
+				return;
+			
+			gpDamager.addEnergy(gpDamager.getClassType().getEnergyPerClick());
+			Utils.playBloodEffect(damaged, 10);
 			return;
-
-		if (!clickerGP.isInGame())
-			return;
-
-		Player clickedPlayer = Utils.getTargetPlayer(clickerPlayer);
-		
-		if (clickedPlayer == null)
-			return;
-		
-		GamePlayer clickedGP = null;
-		
-		try {
-			clickedGP = MegaArena.getInstance().getPlayerManager().getPlayer(clickedPlayer.getName());
-		} catch (PlayerException e) {
 		}
-		
-		if (!clickedGP.isInGame())
-			return;
-		
-		if (clickedGP.getGame() != clickerGP.getGame())
-			return;
-		
-		if (clickedGP.getGame().getArena().getType() == Arena.Type.TDM && clickedGP.getSide() == clickerGP.getSide())
-			return;
+    }
+    
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void EPC(EntityDamageEvent event)
+    {
+    	if (event instanceof EntityDamageByEntityEvent)
+    		return;
+    	if (!(event.getEntity() instanceof Player))
+    		return;
+    	
+    	Player damaged = (Player) event.getEntity();
+    	
+    	if (onCooldown.contains(damaged)){
+    		event.setCancelled(true);
+    	}
+    	else {
+    		onCooldown.add(damaged);
+    		new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					onCooldown.remove(damaged);
+				}
+			}.runTaskLater(MegaArena.getInstance(), 10);
+    	}
+    }
 
-		if (clickerGP.getClassType() != SKELETON)
-			clickerGP.addEnergy(clickerGP.getClassType().getEnergyPerClick());
-		else
-			clickerGP.addEnergy(3); // Added as number because Skeleton's ENUM only contains the Energy Per Bow Hit, not per Sword Hit.
-	}
-
-	@EventHandler
+    @EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent event) {
-
-		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT))
-			event.setCancelled(true);
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-
-		Entity damaged = event.getEntity();
-		Entity damager = event.getDamager();
-
-		if (!(damaged instanceof Player) || !(damager instanceof Projectile))
-			return;
-
-		PlayerManager playerManager = MegaArena.getInstance().getPlayerManager();
-
-		Player damagedPlayer = (Player) damaged;
-		Player damagerPlayer = null;
-
-		if (damager instanceof Player)
-			damagerPlayer = (Player) damager;
-		else
-			damagerPlayer = (Player) ((Projectile) damager).getShooter();
-
-		GamePlayer damagedGP = null;
-		GamePlayer damagerGP = null;
-
-		try {
-			damagedGP = playerManager.getPlayer(damagedPlayer.getName());
-			damagerGP = playerManager.getPlayer(damagerPlayer.getName());
-		} catch (PlayerException e) {
+		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT)){
+				event.setCancelled(true);
 		}
-
-		if (damagedGP == damagerGP)
-			return;
-
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
-
-		if ((damagerGP.getSide() == damagedGP.getSide()) && damagerGP.getGame().getArena().getType() == Arena.Type.TDM)
-			return;
-
-		if (damager instanceof Projectile) {
-
-			if (damagerGP.getClassType() != SKELETON)
-				return;
-
-			damagerGP.addEnergy(damagerGP.getClassType().getEnergyPerClick());
-
-		} else {
-
-			if (damagerGP.getClassType() == SKELETON)
-				return;
-
-			Material type = damagerPlayer.getItemInHand().getType();
-
-			if (type != Material.STONE_SWORD && type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
-				return;
-
-			damagerGP.addEnergy(damagerGP.getClassType().getEnergyPerClick());
-		}
+		
 	}
 
 	@EventHandler

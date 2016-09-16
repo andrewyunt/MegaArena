@@ -1,20 +1,25 @@
 package com.andrewyunt.megaarena.utilities;
 
-import com.andrewyunt.megaarena.objects.Vector3D;
 
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.NBTTagList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.objects.GamePlayer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,8 +29,6 @@ import java.util.stream.Collectors;
  * to be categorized into another class.
  * 
  * @author Andrew Yunt
- * @author Gavin Lutz
- * @author md_5
  * @author blablubbabc
  */
 public class Utils {
@@ -53,83 +56,6 @@ public class Utils {
 		return list.stream().map(line -> color + line).collect(Collectors.toList());
 	}
 
-	/**
-	 * Gets the target player in a player's crosshairs.
-	 * 
-	 * @author Gavin Lutz
-	 * @param player
-	 * @return
-	 */
-    public static Player getTargetPlayer(Player player) {
-    	
-        Player targetPlayer = null;
-        Location playerPos = player.getEyeLocation();
-        Vector3D playerDir = new Vector3D(playerPos.getDirection());
-        Vector3D playerStart = new Vector3D(playerPos);
-        Vector3D playerEnd = playerStart.add(playerDir.multiply(100));
- 
-        for(Player p : player.getWorld().getPlayers()) {
-            Vector3D targetPos = new Vector3D(p.getLocation());
-            Vector3D minimum = targetPos.add(-0.3, 0, -0.3);
-            Vector3D maximum = targetPos.add(0.3, 1.9, 0.3);
-            double range = 4.5;
-            
-            if (p.getLocation().distanceSquared(player.getLocation()) > range*range)
-            	continue;
-            
-            List<Block> blocks = null;
-            
-            try {
-            	blocks = p.getLastTwoTargetBlocks(null, (int) range);
-            } catch (IllegalStateException e) {
-            	return null;
-            }
-            
-            for (Block b : blocks)
-            	if (b.getType().isOccluding())
-            		return targetPlayer;
-            	
-            if(p != player && hasIntersection(playerStart, playerEnd, minimum, maximum))
-                if(targetPlayer == null || targetPlayer.getLocation().distanceSquared(playerPos) > p.getLocation().distanceSquared(playerPos))
-                    targetPlayer = p;
-        }
-       
-        return targetPlayer;
-    }
-   
-    /**
-     * Checks if vectors are intersecting with each other.
-     * 
-     * @author Gavin Lutz
-     * @param p1
-     * @param p2
-     * @param min
-     * @param max
-     * @return
-     */
-    private static boolean hasIntersection(Vector3D p1, Vector3D p2, Vector3D min, Vector3D max) {
-    	
-        final double epsilon = 0.0001f;
-        Vector3D d = p2.subtract(p1).multiply(0.5);
-        Vector3D e = max.subtract(min).multiply(0.5);
-        Vector3D c = p1.add(d).subtract(min.add(max).multiply(0.5));
-        Vector3D ad = d.abs();
- 
-        if(Math.abs(c.x) > e.x + ad.x)
-        	return false;
-        if(Math.abs(c.y) > e.y + ad.y)
-        	return false;
-        if(Math.abs(c.z) > e.z + ad.z)
-        	return false;
- 
-        if(Math.abs(d.y * c.z - d.z * c.y) > e.y * ad.z + e.z * ad.y + epsilon)
-        	return false;
-        if(Math.abs(d.z * c.x - d.x * c.z) > e.z * ad.x + e.x * ad.z + epsilon) 
-        	return false;
-
-		return Math.abs(d.x * c.y - d.y * c.x) <= e.x * ad.y + e.y * ad.x + epsilon;
-	}
-    
     public static List<org.bukkit.entity.Entity> getNearbyEntities(Location l, int distance){
 
 		return l.getWorld().getEntities().stream().filter(e -> l.distanceSquared(e.getLocation()) <= distance * distance).collect(Collectors.toList());
@@ -273,5 +199,56 @@ public class Utils {
     	nmsStack.setTag(tag);
     	
     	return CraftItemStack.asCraftMirror(nmsStack);
+    }
+    /**
+     * Plays blood effect for players (in the radius) around the specified player
+     * that are in game and has blood effect on.
+     * Note that the effect will not be played for the specified player.
+     *
+     * @param damagedPlayer
+     *            The damaged player (blood will be played on him) - He will not see the effect.
+     * @param bloodRadius
+     *            The radius from damagedPlayer the effect will be played in.
+     */
+    public static void playBloodEffect(Player damagedPlayer, int bloodRadius){
+    	GamePlayer gpDamaged = null;
+    	try{
+    		gpDamaged = MegaArena.getInstance().getPlayerManager().getPlayer(damagedPlayer.getName());
+    	}catch(PlayerException e){
+    		return;
+    	}
+    	if (!gpDamaged.isInGame())
+    		return;
+    	
+    	Location loc = damagedPlayer.getLocation();
+		
+		for (Entity entity : Utils.getNearbyEntities(loc, bloodRadius)) {
+			if (!(entity instanceof Player))
+				continue;
+			
+			Player player = (Player) entity;
+			GamePlayer gp = null;
+			
+			try {
+				gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			} catch (PlayerException e) {
+				continue;
+			}
+			
+			if (player == damagedPlayer){
+				continue;	
+			}
+			if (!gp.isInGame()){
+				continue;
+			}
+			if (!gp.hasBloodEffect()){
+				continue;
+			}
+			
+			player.playEffect(
+					loc.add(0.0D, 0.8D, 0.0D),
+					Effect.STEP_SOUND,
+					Material.REDSTONE_BLOCK);
+		}
     }
 }
