@@ -17,9 +17,9 @@ package com.andrewyunt.megaarena.listeners;
 
 import static com.andrewyunt.megaarena.objects.Class.SKELETON;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,11 +41,9 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.utilities.Utils;
@@ -57,7 +55,7 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class PlayerAbilityListener implements Listener {
 	
-	private ArrayList<Player> onCooldown = new ArrayList<Player>();
+	public static final HashSet<UUID> onCooldown = new HashSet<UUID>(); 
 	
     @EventHandler (priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) {
@@ -108,18 +106,21 @@ public class PlayerAbilityListener implements Listener {
     	if (!(event.getEntity() instanceof Player))
     		return;
     	Player damaged = (Player) event.getEntity();
-    	if (onCooldown.contains(damaged))
+    	
+    	if (onCooldown.contains(damaged.getUniqueId())){
     		event.setCancelled(true);
-    	else {
-    		onCooldown.add(damaged);
-    		new BukkitRunnable() {
-				
-				@Override
-				public void run() {
-					onCooldown.remove(damaged);
-				}
-			}.runTaskLater(MegaArena.getInstance(), 10);
     	}
+    	else{
+    		onCooldown.add(damaged.getUniqueId());
+    		new BukkitRunnable() {
+    			
+    			@Override
+    			public void run() {
+    				onCooldown.remove(damaged.getUniqueId());
+    			}
+    		}.runTaskLater(MegaArena.getInstance(), 10L);
+    	}
+    	
     	// Give Energy
     	if (event.getDamager() instanceof Player){
 			Player damager = (Player) event.getDamager();
@@ -180,19 +181,22 @@ public class PlayerAbilityListener implements Listener {
     	
     	Player damaged = (Player) event.getEntity();
     	
-    	if (onCooldown.contains(damaged)){
+
+    	if (onCooldown.contains(damaged.getUniqueId())){
     		event.setCancelled(true);
     	}
-    	else {
-    		onCooldown.add(damaged);
+    	else{
+    		onCooldown.add(damaged.getUniqueId());
     		new BukkitRunnable() {
-				
-				@Override
-				public void run() {
-					onCooldown.remove(damaged);
-				}
-			}.runTaskLater(MegaArena.getInstance(), 10);
+    			
+    			@Override
+    			public void run() {
+    				onCooldown.remove(damaged.getUniqueId());
+    			}
+    		}.runTaskLater(MegaArena.getInstance(), 10L);
     	}
+		
+    	
     }
 
     @EventHandler

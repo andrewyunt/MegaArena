@@ -33,6 +33,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -54,7 +55,17 @@ import com.andrewyunt.megaarena.objects.Skill;
 public class PlayerSkillListener implements Listener {
 
 	public HashMap<TNTPrimed, Player> creeperTNT = new HashMap<TNTPrimed, Player>();
-
+	@EventHandler
+	public void removeEffects(PlayerDeathEvent e){
+		if (!(e.getEntity() instanceof Player))
+			return;
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				e.getEntity().getActivePotionEffects().clear();
+			}
+		}.runTaskLater(MegaArena.getInstance(), 20);
+	}
 	@EventHandler
 	public void boomerangSkill(EntityDamageByEntityEvent event) {
 
@@ -202,6 +213,9 @@ public class PlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
+		if (PlayerAbilityListener.onCooldown.contains(damaged.getUniqueId()))
+			return;
+		
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.RESIST)
@@ -210,7 +224,7 @@ public class PlayerSkillListener implements Listener {
 			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 		else
 			return;
-
+		
 		double percentage = 0.11 + 0.03 * (skillLevel - 1);
 
 		if (Math.random() > percentage)
@@ -565,6 +579,9 @@ public class PlayerSkillListener implements Listener {
 
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
+		
+		if (PlayerAbilityListener.onCooldown.contains(damaged.getUniqueId()))
+			return;
 
 		int skillLevel = 0;
 		
@@ -591,7 +608,6 @@ public class PlayerSkillListener implements Listener {
 
 	@EventHandler
 	public void disableTNT(EntityDamageByEntityEvent event) {
-		
 		if (!(event.getDamager() instanceof TNTPrimed))
 			return;
 
@@ -599,7 +615,6 @@ public class PlayerSkillListener implements Listener {
 			return;
 
 		TNTPrimed tnt = (TNTPrimed) event.getDamager();
-
 		event.setCancelled(true);
 		
 		if (!creeperTNT.containsKey(tnt))
@@ -717,6 +732,9 @@ public class PlayerSkillListener implements Listener {
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
+			return;
+		
+		if (PlayerAbilityListener.onCooldown.contains(damaged.getUniqueId()))
 			return;
 		
 		int skillLevel = 0;
@@ -837,6 +855,9 @@ public class PlayerSkillListener implements Listener {
 
 		/* Checking that the damaged player is a WITHER MINION */
 		if (damagedGP.getClassType() != Class.WITHER_MINION)
+			return;
+		
+		if (PlayerAbilityListener.onCooldown.contains(damaged.getUniqueId()))
 			return;
 
 		int skillLevel = 0;
