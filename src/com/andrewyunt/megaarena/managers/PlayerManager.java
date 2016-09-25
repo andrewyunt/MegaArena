@@ -51,8 +51,7 @@ public class PlayerManager {
 
 		GamePlayer player = new GamePlayer(name);
 
-		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> MegaArena.getInstance().getDataSource().loadPlayer(player));
+		MegaArena.getInstance().getDataSource().loadPlayer(player);
 		
 		players.put(name, player);
 
@@ -72,8 +71,7 @@ public class PlayerManager {
 		if (!players.containsKey(player.getName()))
 			throw new PlayerException("The player specified is not in the plugin's records.");
 		
-		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.runTaskAsynchronously(MegaArena.getInstance(), () -> MegaArena.getInstance().getDataSource().savePlayer(player));
+		MegaArena.getInstance().getDataSource().savePlayer(player);
 		
 		players.remove(player.getName());
 	}
