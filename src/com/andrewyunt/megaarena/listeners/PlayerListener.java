@@ -212,7 +212,7 @@ public class PlayerListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerFall(EntityDamageEvent event) {
 		
 		if (event.getCause() != DamageCause.FALL)
@@ -369,7 +369,7 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onBlockPlace(BlockPlaceEvent event) {
 
 		GamePlayer player = null;
@@ -392,7 +392,7 @@ public class PlayerListener implements Listener {
 		player.getGame().addPlacedBlock(block);
 	}
 
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 
 		GamePlayer player = null;
