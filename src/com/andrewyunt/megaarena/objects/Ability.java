@@ -17,13 +17,15 @@ package com.andrewyunt.megaarena.objects;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.utilities.DirectionUtils;
-import com.andrewyunt.megaarena.utilities.DirectionUtils.CardinalDirection;
 import com.andrewyunt.megaarena.utilities.Utils;
+
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -191,45 +193,44 @@ public enum Ability implements Upgradable {
 			
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
-
-                if (!player.isInGame())
-                    return;
-
-                Location loc = bp.getLocation().clone();
-
-                loc.getWorld().spigot().playEffect(
-                        loc.add(0.0D, 0.8D, 0.0D),
-                        Effect.EXPLOSION_LARGE);
-
-                for (Entity entity : bp.getNearbyEntities(5, 3, 5)) {
-                    if (!(entity instanceof Player))
-                        continue;
-
-                    Player entityPlayer = (Player) entity;
-                    GamePlayer entityAP = null;
-
-                    try {
-                        entityAP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
-                    } catch (PlayerException e) {
-                    }
-
-                    if (!entityAP.isInGame())
-                        continue;
-
-                    if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
-                        continue;
-
-                    Damageable dmgVictim = (Damageable) entity;
-                    double dmg = 3.0 + 0.5 * (level - 1);
-
-                    ((Damageable) entity).damage(0.00001D, bp);
-
-                    if (dmgVictim.getHealth() <= dmg)
-                        dmgVictim.setHealth(0D);
-                    else
-                        dmgVictim.setHealth(dmgVictim.getHealth() - dmg);
-                }
-            }, 60L);
+				if (!player.isInGame())
+					return;
+				
+				Location loc = bp.getLocation().clone();
+				
+				loc.getWorld().spigot().playEffect(
+						loc.add(0.0D, 0.8D, 0.0D),
+						Effect.EXPLOSION_LARGE);
+				
+				for (Entity entity : bp.getNearbyEntities(5, 3, 5)) {
+					if (!(entity instanceof Player))
+						continue;
+					
+					Player entityPlayer = (Player) entity;
+					GamePlayer entityAP = null;
+					
+					try {
+						entityAP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
+					} catch (PlayerException e) {
+					}
+					
+					if (!entityAP.isInGame())
+						continue;
+					
+					if (entityAP.getGame().getArena().getType() == Arena.Type.TDM && entityAP.getSide() == player.getSide())
+						continue;
+					
+					Damageable dmgVictim = (Damageable) entity;
+					double dmg = 3.0 + 0.5 * (level - 1);
+					
+					((Damageable) entity).damage(0.00001D, bp);
+					
+					if (dmgVictim.getHealth() <= dmg)
+						dmgVictim.setHealth(0D);
+					else
+						dmgVictim.setHealth(dmgVictim.getHealth() - dmg);
+				}
+			}, 60L);
 			
 		} else if (this == TORNADO) {
 			
@@ -239,131 +240,121 @@ public enum Ability implements Upgradable {
 			double radius = 2;
 			double maxHeight = 5;
 			
-	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-	        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
-	            float elapsedTime = 0;
-	        	
-	        	@Override
-	            public void run() {
-	            	
-	            	if (elapsedTime >= duration)
-	            		return;
-	            	
-	    			for (double y = 0; y < maxHeight; y+= 0.05) {
-	    				double x = Math.sin(y * radius);
-	    				double z = Math.cos(y * radius);
-	    				
-	    				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-	    						"snowshovel",
-	    						((float) (location.getX() + x)),
-	    						((float) (location.getY() + y)),
-	    						((float) (location.getZ() + z)),
-	    						0, 0, 0, 1, 0);
-	    				
-	    				for (Entity entity : Utils.getNearbyEntities(bp.getLocation(), 50)) {
-	    					if (!(entity instanceof Player))
-	    						return;
-	    					
-	    					((CraftPlayer) entity).getHandle().playerConnection.sendPacket(packet);
-	    				}
-	    			}
-	    			
-	    			for (int i = 0; i < 5; i++) {
-	    				float xRand = new Random().nextInt(2) - 1;
-	    				float zRand = new Random().nextInt(2) - 1;
-	    				
-	    				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-	    						"largesmoke",
-	    						((float) (location.getX() + xRand)),
-	    						((float) location.getY()),
-	    						((float) (location.getZ() + zRand)),
-	    						0, 0, 0, 1, 0);
-	    				
-	    				for (Entity entity : Utils.getNearbyEntities(bp.getLocation(), 50)) {
-	    					if (!(entity instanceof Player))
-	    						return;
-	    					
-	    					((CraftPlayer) entity).getHandle().playerConnection.sendPacket(packet);
-	    				}
-	    			}
-	    			
-	    			elapsedTime = elapsedTime + 0.5F;
-	            }
-	        }, 0L, (long) 10L);
-	        
-	        new BukkitRunnable() {
-	        	int elapsedTime = 0;
-	        	
-	        	public void run() {
-	            	
-	            	if (elapsedTime >= duration)
-	            		return;
-	            	
-	            	for (Entity entity : Utils.getNearbyEntities(location, 5)) {	
-	            		if (!(entity instanceof Player))
-	            			continue;
-	            		Player entityPlayer = (Player) entity;
-	            		if (entityPlayer.getLocation().getY() - location.getY() > 3)
-	            			continue;
-	    				GamePlayer entityGP = null;
-	    				
-	    				try {
-	    					entityGP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
-	    				} catch (PlayerException e) {
-	    				}
-	    				
-	    				if (!entityGP.isInGame())
-	    					continue;
-	    				
+			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+			scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+				float elapsedTime = 0;
+				
+				@Override
+				public void run() {
+					
+					if (elapsedTime >= duration)
+						return;
+					
+					for (double y = 0; y < maxHeight; y+= 0.05) {
+						double x = Math.sin(y * radius);
+						double z = Math.cos(y * radius);
+						
+						PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
+								"snowshovel",
+								((float) (location.getX() + x)),
+								((float) (location.getY() + y)),
+								((float) (location.getZ() + z)),
+								0, 0, 0, 1, 0);
+						
+						for (Entity entity : Utils.getNearbyEntities(bp.getLocation(), 50)) {
+							if (!(entity instanceof Player))
+								return;
+							
+							((CraftPlayer) entity).getHandle().playerConnection.sendPacket(packet);
+						}
+					}
+					
+					for (int i = 0; i < 5; i++) {
+						float xRand = new Random().nextInt(2) - 1;
+						float zRand = new Random().nextInt(2) - 1;
+						
+						PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
+								"largesmoke",
+								((float) (location.getX() + xRand)),
+								((float) location.getY()),
+								((float) (location.getZ() + zRand)),
+								0, 0, 0, 1, 0);
+						
+						for (Entity entity : Utils.getNearbyEntities(bp.getLocation(), 50)) {
+							if (!(entity instanceof Player))
+								return;
+							
+							((CraftPlayer) entity).getHandle().playerConnection.sendPacket(packet);
+						}
+					}
+					
+					elapsedTime = elapsedTime + 0.5F;
+				}
+			}, 0L, (long) 10L);
+			
+			new BukkitRunnable() {
+				int elapsedTime = 0;
+				
+				public void run() {
+					
+					if (elapsedTime >= duration)
+						return;
+					
+					for (Entity entity : Utils.getNearbyEntities(location, 5)) {
+						if (!(entity instanceof Player))
+							continue;
+						
+						Player entityPlayer = (Player) entity;
+						
+						if (entityPlayer.getLocation().getY() - location.getY() > 3)
+							continue;
+						
+						GamePlayer entityGP = null;
+						
+						try {
+							entityGP = MegaArena.getInstance().getPlayerManager().getPlayer(entityPlayer.getName());
+						} catch (PlayerException e) {
+						}
+						
+						if (!entityGP.isInGame())
+							continue;
+						
 						if (entityGP.getGame().getArena().getType() == Arena.Type.TDM && entityGP.getSide() == player.getSide())
 							continue;
-	            		
-	            		if (((Player) entity) == bp)
-	            			continue;
-
-	            		entityGP.setLastDamageCause(DamageCause.CUSTOM);
-	            		((Damageable) entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill and the red invisibility period 
-	            		entityGP.setLastDamageCause(DamageCause.CONTACT);
-	            		
-	            		double health = ((Damageable) entity).getHealth() - 2.0D;
-	            		
-	            		if (health > 0)
-	            			((Damageable) entity).setHealth(health);
-	            		else
-	            			((Damageable) entity).setHealth(0D);
-	            	}
-	            	
-	            	elapsedTime++;
-	            }
-	        }.runTaskTimer(MegaArena.getInstance(), 0L, 20L);
+						
+						if (((Player) entity) == bp)
+							continue;
+						
+						entityGP.setLastDamageCause(DamageCause.CUSTOM);
+						((Damageable) entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill and the red invisibility period 
+						entityGP.setLastDamageCause(DamageCause.CONTACT);
+						
+						double health = ((Damageable) entity).getHealth() - 2.0D;
+						
+						if (health > 0)
+							((Damageable) entity).setHealth(health);
+						else
+							((Damageable) entity).setHealth(0D);
+					}
+					
+					elapsedTime++;
+				}
+			}.runTaskTimer(MegaArena.getInstance(), 0L, 20L);
 			
 		} else if (this == WITHER_HEADS) {
 			
-			Location eyeLocation = bp.getEyeLocation();
-			CardinalDirection playerDir = DirectionUtils.getCardinalDirection(eyeLocation);
-			
 			Vector originalVector = bp.getEyeLocation().getDirection();
-            Vector rightVector = Utils.rotateYAxis(originalVector, 25);
-            Vector leftVector = Utils.rotateYAxis(originalVector, -25);
-            
-            WitherSkull originalSkull = bp.launchProjectile(WitherSkull.class);
-            originalSkull.setShooter(bp);
-            originalSkull.setVelocity(originalVector.multiply(1));
-            originalSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
-            
-            WitherSkull rightSkull = (WitherSkull) bp.getWorld().spawnEntity(
-            		DirectionUtils.getRelativeLocation(eyeLocation, playerDir.rotate(90), 1),
-            		EntityType.WITHER_SKULL);
-            rightSkull.setShooter(bp);
-            rightSkull.setVelocity(rightVector.multiply(1));
-            rightSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
-            
-            WitherSkull leftSkull = (WitherSkull) bp.getWorld().spawnEntity(
-            		DirectionUtils.getRelativeLocation(eyeLocation, playerDir.rotate(-90), 1),
-            		EntityType.WITHER_SKULL);
-            leftSkull.setShooter(bp);
-            leftSkull.setVelocity(leftVector.multiply(1));
-            leftSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
+			Vector rightVector = Utils.rotateYAxis(originalVector, 25);
+			Vector leftVector = Utils.rotateYAxis(originalVector, -25);
+			
+			WitherSkull originalSkull = bp.launchProjectile(WitherSkull.class, originalVector);
+			originalSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
+			
+			WitherSkull rightSkull = bp.launchProjectile(WitherSkull.class, rightVector);
+			rightSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
+			
+			WitherSkull leftSkull = (WitherSkull) bp.launchProjectile(WitherSkull.class, leftVector);
+			leftSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));
 		}
 		
 		player.setEnergy(0);	

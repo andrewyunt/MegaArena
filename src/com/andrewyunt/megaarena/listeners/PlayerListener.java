@@ -271,7 +271,7 @@ public class PlayerListener implements Listener {
 		damagedGP.setLastDamager(damagerGP);
 	}
 
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerAssist(EntityDamageByEntityEvent event) {
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();

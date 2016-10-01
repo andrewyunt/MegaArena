@@ -74,6 +74,8 @@ public class Utils {
      */
     public static Vector rotateYAxis(Vector vector, double angleD) {
     	
+    	vector = vector.clone();
+    	
         // Validate.notNull(vector);
         if (angleD == 0.0D)
         	return vector;
