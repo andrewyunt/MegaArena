@@ -23,8 +23,6 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.utilities.Utils;
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -217,6 +215,9 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerFall(EntityDamageEvent event) {
 		
+		if (event.getCause() != DamageCause.FALL)
+			return;
+		
 		if (!(event.getEntity() instanceof Player))
 			return;
 		
@@ -230,10 +231,7 @@ public class PlayerListener implements Listener {
 		if (!gp.isInGame())
 			return;
 		
-		if (gp.getGame().getArena().getType() == Arena.Type.DUEL)
-			return;
-		
-		if (event.getCause() != DamageCause.FALL)
+		if (gp.getGame().getArena().getType() != Arena.Type.FFA)
 			return;
 		
 		if (gp.hasFallen())

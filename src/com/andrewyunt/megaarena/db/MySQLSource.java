@@ -247,7 +247,7 @@ public class MySQLSource extends DataSource {
 			while (resultSet.next()) {
 				OfflinePlayer op = Bukkit.getServer().getOfflinePlayer(UUID.fromString(resultSet.getString("uuid")));
 				
-				mostKills.put(place, new AbstractMap.SimpleEntry(op, resultSet.getInt("kills")));
+				mostKills.put(place, new AbstractMap.SimpleEntry<OfflinePlayer, Integer>(op, resultSet.getInt("kills")));
 				
 				place++;
 			}
