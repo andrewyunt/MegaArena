@@ -44,7 +44,6 @@ import com.andrewyunt.megaarena.listeners.PlayerAbilityListener;
 import com.andrewyunt.megaarena.listeners.PlayerListener;
 import com.andrewyunt.megaarena.listeners.PlayerSkillListener;
 import com.andrewyunt.megaarena.managers.ArenaManager;
-import com.andrewyunt.megaarena.managers.EventManager;
 import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.managers.SignManager;
@@ -79,7 +78,6 @@ public class MegaArena extends JavaPlugin {
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
-	private final EventManager eventManager = new EventManager();
 	private final SignManager signManager = new SignManager();
 	private final ArenaConfiguration arenaConfiguration = new ArenaConfiguration();
 	private final SignConfiguration signConfiguration = new SignConfiguration();
@@ -130,9 +128,6 @@ public class MegaArena extends JavaPlugin {
 		getCommand("dueldeny").setExecutor(new DuelDenyCommand());
 		getCommand("duelstoggle").setExecutor(new DuelsToggleCommand());
 		getCommand("bloodtoggle").setExecutor(new BloodToggleCommand());
-		
-		/* Register events */
-		eventManager.registerEffectApplyEvent();
 		
 		pm.registerEvents(new PlayerListener(), this);
 		pm.registerEvents(new PlayerAbilityListener(), this);
@@ -311,7 +306,7 @@ public class MegaArena extends JavaPlugin {
 	 * Gets the stored instance of the general menu.
 	 * 
 	 * @return
-	 * 		The instance of the genu menu.
+	 * 		The instance of the general menu.
 	 */
 	public GeneralMenu getGeneralMenu() {
 		
