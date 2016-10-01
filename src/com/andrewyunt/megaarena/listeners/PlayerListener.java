@@ -263,11 +263,16 @@ public class PlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
+		if (damagedGP.getGame().getArena().getType() == Arena.Type.TDM && damagedGP.getSide() == damagerGP.getSide()) {
+			event.setCancelled(true);
+			return;
+		}
+		
 		damagedGP.setLastDamager(damagerGP);
 	}
 
 	@EventHandler
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+	public void onPlayerAssist(EntityDamageByEntityEvent event) {
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
 
