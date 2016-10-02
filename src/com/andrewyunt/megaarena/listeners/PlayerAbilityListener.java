@@ -17,9 +17,6 @@ package com.andrewyunt.megaarena.listeners;
 
 import static com.andrewyunt.megaarena.objects.Class.SKELETON;
 
-import java.util.HashSet;
-import java.util.UUID;
-
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -55,108 +52,128 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class PlayerAbilityListener implements Listener {
 	
-	public static final HashSet<UUID> onCooldown = new HashSet<UUID>(); 
-	
-    @EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-
+		
 		ItemStack item = event.getItem();
-
+		
 		if (item == null)
 			return;
-
+		
 		Material type = item.getType();
 		Action action = event.getAction();
 		Player player = event.getPlayer();
 		GamePlayer gp = null;
-
+		
 		try {
 			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 		}
-
+		
 		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
-
+			
 			if (!gp.isInGame())
 				return;
-
+			
 			if (gp.getClassType() == SKELETON)
 				return;
-
+			
 			if (!type.toString().toLowerCase().contains("sword"))
 				return;
-
+			
 			gp.getClassType().getAbility().use(gp);
-
+			
 		} else if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
-
+			
 			if (!gp.isInGame())
 				return;
-
+			
 			if (gp.getClassType() == SKELETON)
 				if (type == Material.BOW)
 					gp.getClassType().getAbility().use(gp);
 		}
 	}
-
-    @SuppressWarnings("deprecation")
+	
 	@EventHandler (priority = EventPriority.HIGHEST)
-    public void EPC(EntityDamageByEntityEvent event)
-    {
-    	if (!(event.getEntity() instanceof Player))
-    		return;
-    	Player damaged = (Player) event.getEntity();
-    	
-    	if (onCooldown.contains(damaged.getUniqueId())){
-    		event.setCancelled(true);
-    	}
-    	else{
-    		onCooldown.add(damaged.getUniqueId());
-    		new BukkitRunnable() {
-    			
-    			@Override
-    			public void run() {
-    				onCooldown.remove(damaged.getUniqueId());
-    			}
-    		}.runTaskLater(MegaArena.getInstance(), 10L);
-    	}
-    	
-    	// Give Energy
-    	if (event.getDamager() instanceof Player){
+	public void EPC(EntityDamageByEntityEvent event) {
+		
+		if (!(event.getEntity() instanceof Player))
+			return;
+		
+		Player damaged = (Player) event.getEntity();
+		GamePlayer damagedGP = null;
+		
+		try {
+			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
+		} catch (PlayerException e) {
+		}
+		
+		final GamePlayer finalDamagedGP = damagedGP;
+		
+		if (damagedGP.isCooldown())
+			event.setCancelled(true);
+		else {
+			damagedGP.setCooldown(true);
+			
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					
+					finalDamagedGP.setCooldown(false);
+				}
+			}.runTaskLater(MegaArena.getInstance(), 10L);
+		}
+		
+		// Give energy
+		if (event.getDamager() instanceof Player) {
 			Player damager = (Player) event.getDamager();
 			GamePlayer gpDamager=null;
 			GamePlayer gpDamaged=null;
+			
 			try{
 				gpDamager = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
 				gpDamaged = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
-			}catch(PlayerException e){return;}
+			} catch(PlayerException e) {
+				return;
+			}
 		
 			if (!(gpDamaged.isInGame() && gpDamager.isInGame()))
 				return;
+			
 			if (gpDamaged.getGame() != gpDamager.getGame())
 				return;
+			
 			if (gpDamager.getGame().getArena().getType() == Arena.Type.TDM && gpDamager.getSide() == gpDamaged.getSide())
 				return;
+			
 			if (gpDamager.getClassType() != SKELETON)
 				gpDamager.addEnergy(gpDamager.getClassType().getEnergyPerClick());
 			else
-				gpDamager.addEnergy(3); // Since Skeleton ENUM only contains his Bow Hit Energy.
+				gpDamager.addEnergy(3); // Since SKELETON enum only contains the player's bow hit energy.
+			
 			Utils.playBloodEffect(damaged, 10);
+			
 			return;
 		}
-    	if (event.getDamager() instanceof Arrow){
-			Arrow arr = (Arrow) event.getDamager();
-			if (!(arr.getShooter() instanceof Player))
+		
+		if (event.getDamager() instanceof Arrow) {
+			Arrow arrow = (Arrow) event.getDamager();
+			
+			if (!(arrow.getShooter() instanceof Player))
 				return;
-			Player damager = (Player) arr.getShooter();
+			
+			Player damager = (Player) arrow.getShooter();
 			GamePlayer gpDamager=null;
 			GamePlayer gpDamaged=null;
-			try{
+			
+			try {
 				gpDamager = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
 				gpDamaged = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
-			}catch(PlayerException e){return;}
+			} catch(PlayerException e) {
+				return;
+			}
 			
-			if (event.isCancelled()) // Shooting a red person wouldn't give you Energy.
+			if (event.isCancelled()) // Don't give energy if the shot person is red
 				return;
 			
 			if (gpDamaged == gpDamager)
@@ -166,45 +183,52 @@ public class PlayerAbilityListener implements Listener {
 				return;
 			
 			gpDamager.addEnergy(gpDamager.getClassType().getEnergyPerClick());
+			
 			Utils.playBloodEffect(damaged, 10);
+			
 			return;
 		}
-    }
-    
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void EPC(EntityDamageEvent event)
-    {
-    	if (event instanceof EntityDamageByEntityEvent)
-    		return;
-    	if (!(event.getEntity() instanceof Player))
-    		return;
-    	
-    	Player damaged = (Player) event.getEntity();
-    	
-
-    	if (onCooldown.contains(damaged.getUniqueId())){
-    		event.setCancelled(true);
-    	}
-    	else{
-    		onCooldown.add(damaged.getUniqueId());
-    		new BukkitRunnable() {
-    			
-    			@Override
-    			public void run() {
-    				onCooldown.remove(damaged.getUniqueId());
-    			}
-    		}.runTaskLater(MegaArena.getInstance(), 10L);
-    	}
+	}
+	
+	@EventHandler (priority = EventPriority.HIGHEST)
+	public void EPC(EntityDamageEvent event) {
 		
-    	
-    }
-
-    @EventHandler
-	public void onEntityDamage(EntityDamageByEntityEvent event) {
-		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT)){
-				event.setCancelled(true);
+		if (event instanceof EntityDamageByEntityEvent)
+			return;
+		
+		if (!(event.getEntity() instanceof Player))
+			return;
+		
+		Player damaged = (Player) event.getEntity();
+		GamePlayer damagedGP = null;
+		
+		try {
+			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
+		} catch (PlayerException e) {
 		}
 		
+		final GamePlayer finalDamagedGP = damagedGP;
+		
+		if (damagedGP.isCooldown())
+			event.setCancelled(true);
+		else {
+			damagedGP.setCooldown(true);
+			
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					
+					finalDamagedGP.setCooldown(false);
+				}
+			}.runTaskLater(MegaArena.getInstance(), 10L);
+		}
+	}
+
+	@EventHandler
+	public void onEntityDamage(EntityDamageByEntityEvent event) {
+		
+		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT))
+				event.setCancelled(true);
 	}
 
 	@EventHandler
@@ -319,7 +343,7 @@ public class PlayerAbilityListener implements Listener {
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill
 												// as well as red damage and invisibility
-
+			
 			if (dmgPlayer.getHealth() < dmg) {
 				dmgPlayer.setHealth(0D);
 				return;

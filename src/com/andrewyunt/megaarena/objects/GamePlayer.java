@@ -50,28 +50,22 @@ import net.shortninja.staffplus.StaffPlus;
 public class GamePlayer {
 	
 	private final String name;
-	private Game game;
+	private final Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
 	private final List<GamePlayer> requestingPlayers = new ArrayList<GamePlayer>();
+	private final List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
+	private final Map<Upgradable, Integer> upgradeLevels = new HashMap<Upgradable, Integer>();
+	
+	private Game game;
 	private Class classType;
-	private boolean hasFallen, sentActivate = false;
+	private DamageCause lastDamageCause;
 	private Arena selectedArena;
 	private GameMode previousGameMode;
 	private GameSide side;
-	private int energy;
-	private final Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
-	private boolean hasSpeed;
-	private int coins = 0;
-	private int earnedCoins = 0;
-	private int kills = 0;
-	private int killStreak = 0;
-	private DamageCause lastDamageCause;
-	private boolean acceptingDuels = true;
 	private DisplayBoard displayBoard = null;
-	private final List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
-	private boolean loaded = false;
-	private boolean hasBloodEffect = false;
-	private Map<Upgradable, Integer> upgradeLevels = new HashMap<Upgradable, Integer>();
 	private GamePlayer lastDamager = null;
+	private boolean hasSpeed = false, sentActivate = false, loaded = false, hasBloodEffect = false,
+			hasFallen = false, acceptingDuels = true, cooldown = false;
+	private int coins = 0, earnedCoins = 0, kills = 0, killStreak = 0, energy = 0;
 	
 	public GamePlayer(String name) {
 		
@@ -599,5 +593,15 @@ public class GamePlayer {
 	public GamePlayer getLastDamager() {
 		
 		return lastDamager;
+	}
+	
+	public void setCooldown(boolean cooldown) {
+		
+		this.cooldown = cooldown;
+	}
+	
+	public boolean isCooldown() {
+		
+		return cooldown;
 	}
 }

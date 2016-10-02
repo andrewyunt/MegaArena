@@ -21,11 +21,9 @@ import com.andrewyunt.megaarena.utilities.Utils;
 
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;

@@ -213,7 +213,7 @@ public class PlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
-		if (PlayerAbilityListener.onCooldown.contains(damaged.getUniqueId()))
+		if (damagedGP.isCooldown())
 			return;
 		
 		int skillLevel = 0;
@@ -580,7 +580,7 @@ public class PlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 		
-		if (PlayerAbilityListener.onCooldown.contains(damaged.getUniqueId()))
+		if (damagedGP.isCooldown())
 			return;
 
 		int skillLevel = 0;
@@ -734,7 +734,7 @@ public class PlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 		
-		if (PlayerAbilityListener.onCooldown.contains(damaged.getUniqueId()))
+		if (damagedGP.isCooldown())
 			return;
 		
 		int skillLevel = 0;
@@ -857,7 +857,7 @@ public class PlayerSkillListener implements Listener {
 		if (damagedGP.getClassType() != Class.WITHER_MINION)
 			return;
 		
-		if (PlayerAbilityListener.onCooldown.contains(damaged.getUniqueId()))
+		if (damagedGP.isCooldown())
 			return;
 
 		int skillLevel = 0;
