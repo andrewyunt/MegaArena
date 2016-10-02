@@ -62,6 +62,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 
 		final Player bp = event.getPlayer();
+		
 		bp.setMaximumNoDamageTicks(0); // Part of the EPC
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
@@ -243,6 +244,7 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerDamage(EntityDamageByEntityEvent event) {
+		
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
 		
@@ -273,6 +275,7 @@ public class PlayerListener implements Listener {
 
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerAssist(EntityDamageByEntityEvent event) {
+		
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
 
@@ -322,6 +325,7 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onWolfDamageByEntity(EntityDamageByEntityEvent event) {
+		
 		if (!(event.getEntity() instanceof Wolf))
 			return;
 		
@@ -368,10 +372,8 @@ public class PlayerListener implements Listener {
 			return;
 		}
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM
-				&& damagerGP.getSide() == ownerGP.getSide()){
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == ownerGP.getSide())
 			event.setCancelled(true);
-		}
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)

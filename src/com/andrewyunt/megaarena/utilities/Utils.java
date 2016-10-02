@@ -202,24 +202,31 @@ public class Utils {
     	
     	return CraftItemStack.asCraftMirror(nmsStack);
     }
+    
     /**
      * Plays blood effect for players (in the radius) around the specified player
      * that are in game and has blood effect on.
+     * 
+     * <p>
      * Note that the effect will not be played for the specified player.
+     * </p>
      *
      * @param damagedPlayer
      *            The damaged player (blood will be played on him) - He will not see the effect.
      * @param bloodRadius
      *            The radius from damagedPlayer the effect will be played in.
      */
-    public static void playBloodEffect(Player damagedPlayer, int bloodRadius){
-    	GamePlayer gpDamaged = null;
-    	try{
-    		gpDamaged = MegaArena.getInstance().getPlayerManager().getPlayer(damagedPlayer.getName());
-    	}catch(PlayerException e){
+    public static void playBloodEffect(Player damagedPlayer, int bloodRadius) {
+    	
+    	GamePlayer damagedGP = null;
+    	
+    	try {
+    		damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damagedPlayer.getName());
+    	} catch(PlayerException e){
     		return;
     	}
-    	if (!gpDamaged.isInGame())
+    	
+    	if (!damagedGP.isInGame())
     		return;
     	
     	Location loc = damagedPlayer.getLocation();
@@ -237,20 +244,19 @@ public class Utils {
 				continue;
 			}
 			
-			if (player == damagedPlayer){
-				continue;	
-			}
-			if (!gp.isInGame()){
+			if (player == damagedPlayer)
 				continue;
-			}
-			if (!gp.hasBloodEffect()){
+			
+			if (!gp.isInGame())
 				continue;
-			}
+			
+			if (!gp.hasBloodEffect())
+				continue;
 			
 			player.playEffect(
 					loc.add(0.0D, 0.8D, 0.0D),
 					Effect.STEP_SOUND,
 					Material.REDSTONE_BLOCK);
 		}
-    }
+	}
 }
