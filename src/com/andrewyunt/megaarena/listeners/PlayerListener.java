@@ -376,7 +376,7 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 	}
 
-	@EventHandler (priority = EventPriority.HIGHEST)
+	@EventHandler (priority = EventPriority.LOWEST)
 	public void onBlockPlace(BlockPlaceEvent event) {
 
 		GamePlayer player = null;
@@ -395,11 +395,14 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 			return;
 		}
+		
+		if (event.isCancelled())
+			return;
 
 		player.getGame().addPlacedBlock(block);
 	}
 
-	@EventHandler (priority = EventPriority.HIGHEST)
+	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 
 		GamePlayer player = null;
@@ -414,7 +417,7 @@ public class PlayerListener implements Listener {
 
 		if (player.getGame().getPlacedBlocks().contains(event.getBlock()))
 			return;
-
+		
 		event.setCancelled(true);
 	}
 	
