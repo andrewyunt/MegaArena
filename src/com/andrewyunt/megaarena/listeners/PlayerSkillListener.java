@@ -55,17 +55,22 @@ import com.andrewyunt.megaarena.objects.Skill;
 public class PlayerSkillListener implements Listener {
 
 	public HashMap<TNTPrimed, Player> creeperTNT = new HashMap<TNTPrimed, Player>();
+	
 	@EventHandler
-	public void removeEffects(PlayerDeathEvent e){
+	public void removeEffects(PlayerDeathEvent e) {
+		
 		if (!(e.getEntity() instanceof Player))
 			return;
+		
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				
 				e.getEntity().getActivePotionEffects().clear();
 			}
 		}.runTaskLater(MegaArena.getInstance(), 20);
 	}
+	
 	@EventHandler
 	public void boomerangSkill(EntityDamageByEntityEvent event) {
 
@@ -209,7 +214,10 @@ public class PlayerSkillListener implements Listener {
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
+		if (damagerGP.isCooldown())
+			return;
+		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
@@ -269,38 +277,34 @@ public class PlayerSkillListener implements Listener {
 		/* Check if players are in-game */
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
 		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
 			return;
-
+		
 		int skillLevel = 0;
-
+		
 		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFTNESS)
 			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
 		else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFTNESS)
 			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
 		else
 			return;
-
+		
 		double percentage = 0.10 + 0.05 * (skillLevel - 1);
-
+		
 		if (Math.random() > percentage)
 			return;
 		
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 60, 1, true);
 		
 		Collection<PotionEffect> effects = damaged.getActivePotionEffects();
-		for (PotionEffect e : effects){
-			if (e.getType() == PotionEffectType.SPEED){
+		for (PotionEffect e : effects)
+			if (e.getType() == PotionEffectType.SPEED)
 				if (e.getAmplifier() >= 2)
 					return;
-				else{
+				else
 					if (e.getDuration() >= 60)
 						return;
-				}
-					
-			}
-		}
 		
 		damaged.addPotionEffect(speed, true);
 
@@ -329,11 +333,14 @@ public class PlayerSkillListener implements Listener {
 		
 		if (damagerGP == null)
 			return;
-
+		
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
+		if (damagerGP.isCooldown())
+			return;
+		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 		
@@ -402,6 +409,9 @@ public class PlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
+		if (damagerGP.isCooldown())
+			return;
+		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
@@ -441,16 +451,16 @@ public class PlayerSkillListener implements Listener {
 
 	@EventHandler
 	public void powerfulWeakness(EntityDamageEvent event) {
-
+		
 		/* Check if the entity is player */
 		if (!(event.getEntity() instanceof Player))
 			return;
 
 		/* Casting to players */
 		Player damaged = (Player) event.getEntity();
-
+		
 		GamePlayer damagedGP = null;
-
+		
 		try {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
@@ -572,15 +582,18 @@ public class PlayerSkillListener implements Listener {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
 		}
+		
+		if (damagerGP.isCooldown())
+			return;
 
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
+		
+		if (damagerGP.isCooldown())
+			return;
 
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
-		
-		if (damagedGP.isCooldown())
 			return;
 
 		int skillLevel = 0;
@@ -608,6 +621,7 @@ public class PlayerSkillListener implements Listener {
 
 	@EventHandler
 	public void disableTNT(EntityDamageByEntityEvent event) {
+		
 		if (!(event.getDamager() instanceof TNTPrimed))
 			return;
 
@@ -672,14 +686,17 @@ public class PlayerSkillListener implements Listener {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
 		}
-
+		
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
+		if (damagerGP.isCooldown())
+			return;
+		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
-
+		
 		int skillLevel = 0;
 		
 		if (damagerGP.getClassType().getSkillOne() == Skill.WEAKENING_SWING)
@@ -688,16 +705,16 @@ public class PlayerSkillListener implements Listener {
 			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
 		else
 			return;
-
+		
 		double duration = 2 + 0.5 * (skillLevel - 1);
-
+		
 		if (Math.random() > 0.15D)
 			return;
-
+		
 		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, (int) (duration * 20), 0, true);
 
 		damaged.addPotionEffect(weakness, false);
-
+		
 		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
 				ChatColor.AQUA + Skill.WEAKENING_SWING.getName() + ChatColor.GREEN));
 		damaged.sendMessage(String.format(ChatColor.RED + "%s's hit inflicted you with Weakness for %s seconds.",
@@ -726,9 +743,12 @@ public class PlayerSkillListener implements Listener {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
 		}
-
+		
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
+			return;
+		
+		if (damagerGP.isCooldown())
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
@@ -792,11 +812,14 @@ public class PlayerSkillListener implements Listener {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
 		}
-
+		
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
+		if (damagerGP.isCooldown())
+			return;
+		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 		
@@ -845,11 +868,14 @@ public class PlayerSkillListener implements Listener {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
 		}
-
+		
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
-
+		
+		if (damagerGP.isCooldown())
+			return;
+		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 

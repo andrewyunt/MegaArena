@@ -110,18 +110,18 @@ public class GamePlayer {
 		
 		displayBoard = new DisplayBoard(getBukkitPlayer(), title);
 		
-	    scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
-	    	ChatColor curTitleColor = ChatColor.AQUA;
-	    
-	    	@Override
-	    	public void run() {
-	    		ChatColor newTitleColor = curTitleColor == ChatColor.AQUA ? ChatColor.WHITE : ChatColor.AQUA;
-	    		
-	    		displayBoard.setTitle(newTitleColor + "" + ChatColor.BOLD + "MegaArena");
-	    		
-	    		curTitleColor = newTitleColor;
-	    	}
-	    }, 0L, 20L);
+		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+			ChatColor curTitleColor = ChatColor.AQUA;
+			
+			@Override
+			public void run() {
+				ChatColor newTitleColor = curTitleColor == ChatColor.AQUA ? ChatColor.WHITE : ChatColor.AQUA;
+				
+				displayBoard.setTitle(newTitleColor + "" + ChatColor.BOLD + "MegaArena");
+				
+				curTitleColor = newTitleColor;
+			}
+		}, 0L, 20L);
 	}
 	
 	public String getName() {

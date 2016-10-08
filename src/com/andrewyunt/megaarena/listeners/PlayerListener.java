@@ -265,6 +265,12 @@ public class PlayerListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
+		if (!damagedGP.isInGame())
+			return;
+		
+		if (damagedGP.getGame() != damagerGP.getGame())
+			return;
+		
 		if (damagedGP.getGame().getArena().getType() == Arena.Type.TDM && damagedGP.getSide() == damagerGP.getSide()) {
 			event.setCancelled(true);
 			return;

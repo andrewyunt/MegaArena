@@ -127,8 +127,8 @@ public class PlayerAbilityListener implements Listener {
 		// Give energy
 		if (event.getDamager() instanceof Player) {
 			Player damager = (Player) event.getDamager();
-			GamePlayer gpDamager=null;
-			GamePlayer gpDamaged=null;
+			GamePlayer gpDamager = null;
+			GamePlayer gpDamaged = null;
 			
 			try{
 				gpDamager = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
