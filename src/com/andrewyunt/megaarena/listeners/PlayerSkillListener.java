@@ -215,13 +215,13 @@ public class PlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
-		if (damagedGP.isCooldown())
+		if (damagedGP.isEPCCooldown())
 			return;
 		
 		int skillLevel = 0;
@@ -338,7 +338,7 @@ public class PlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
@@ -409,7 +409,7 @@ public class PlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
@@ -583,14 +583,14 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 
 		/* Check if players are in-game */
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
@@ -691,7 +691,7 @@ public class PlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
@@ -748,13 +748,13 @@ public class PlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 		
-		if (damagedGP.isCooldown())
+		if (damagedGP.isEPCCooldown())
 			return;
 		
 		int skillLevel = 0;
@@ -817,7 +817,7 @@ public class PlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
@@ -873,7 +873,7 @@ public class PlayerSkillListener implements Listener {
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
-		if (damagerGP.isCooldown())
+		if (damagerGP.isEPCCooldown())
 			return;
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
@@ -883,7 +883,7 @@ public class PlayerSkillListener implements Listener {
 		if (damagedGP.getClassType() != Class.WITHER_MINION)
 			return;
 		
-		if (damagedGP.isCooldown())
+		if (damagedGP.isEPCCooldown())
 			return;
 
 		int skillLevel = 0;

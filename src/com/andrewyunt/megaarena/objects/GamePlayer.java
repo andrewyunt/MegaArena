@@ -64,7 +64,7 @@ public class GamePlayer {
 	private DisplayBoard displayBoard = null;
 	private GamePlayer lastDamager = null;
 	private boolean hasSpeed = false, sentActivate = false, loaded = false, hasBloodEffect = false,
-			hasFallen = false, acceptingDuels = true, cooldown = false;
+			hasFallen = false, acceptingDuels = true, epcCooldown = false, bowCooldown = false;
 	private int coins = 0, earnedCoins = 0, kills = 0, killStreak = 0, energy = 0;
 	
 	public GamePlayer(String name) {
@@ -595,13 +595,23 @@ public class GamePlayer {
 		return lastDamager;
 	}
 	
-	public void setCooldown(boolean cooldown) {
+	public void setEPCCooldown(boolean cooldown) {
 		
-		this.cooldown = cooldown;
+		this.epcCooldown = cooldown;
 	}
 	
-	public boolean isCooldown() {
+	public boolean isEPCCooldown() {
 		
-		return cooldown;
+		return epcCooldown;
+	}
+	
+	public void setBowCooldown(boolean bowCooldown) {
+		
+		this.bowCooldown = bowCooldown;
+	}
+	
+	public boolean isBowCooldown() {
+		
+		return bowCooldown;
 	}
 }

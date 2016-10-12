@@ -37,6 +37,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -603,5 +604,41 @@ public class PlayerListener implements Listener {
 		
 		if (event.getSlotType() == SlotType.ARMOR)
 			event.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onShootArrow(EntityShootBowEvent event) {
+		
+		Entity entity = event.getEntity();
+		
+		if (!(entity instanceof Player))
+			return;
+		
+		Player player = (Player) entity;
+		GamePlayer gp = null;
+		
+		try {
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+		}
+		
+		if (gp.isBowCooldown()) {
+			player.sendMessage(ChatColor.RED + "You must wait before using your bow again.");
+			event.setCancelled(true);
+			return;
+		}
+		
+		gp.setBowCooldown(true);
+		
+		final GamePlayer finalGP = gp;
+		
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				
+				finalGP.setBowCooldown(false);
+			}
+		}, 0L, 80L);
 	}
 }

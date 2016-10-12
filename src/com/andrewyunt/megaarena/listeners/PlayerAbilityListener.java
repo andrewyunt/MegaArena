@@ -110,16 +110,16 @@ public class PlayerAbilityListener implements Listener {
 		
 		final GamePlayer finalDamagedGP = damagedGP;
 		
-		if (damagedGP.isCooldown())
+		if (damagedGP.isEPCCooldown())
 			event.setCancelled(true);
 		else {
-			damagedGP.setCooldown(true);
+			damagedGP.setEPCCooldown(true);
 			
 			new BukkitRunnable() {
 				@Override
 				public void run() {
 					
-					finalDamagedGP.setCooldown(false);
+					finalDamagedGP.setEPCCooldown(false);
 				}
 			}.runTaskLater(MegaArena.getInstance(), 10L);
 		}
@@ -209,16 +209,16 @@ public class PlayerAbilityListener implements Listener {
 		
 		final GamePlayer finalDamagedGP = damagedGP;
 		
-		if (damagedGP.isCooldown())
+		if (damagedGP.isEPCCooldown())
 			event.setCancelled(true);
 		else {
-			damagedGP.setCooldown(true);
+			damagedGP.setEPCCooldown(true);
 			
 			new BukkitRunnable() {
 				@Override
 				public void run() {
 					
-					finalDamagedGP.setCooldown(false);
+					finalDamagedGP.setEPCCooldown(false);
 				}
 			}.runTaskLater(MegaArena.getInstance(), 10L);
 		}
