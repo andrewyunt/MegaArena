@@ -21,6 +21,7 @@ import com.andrewyunt.megaarena.utilities.Utils;
 
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -51,6 +52,8 @@ public enum Ability implements Upgradable {
 	WITHER_HEADS("Master's Attack");
 	
 	private String name;
+	private int particleTaskID;
+	private int damageTaskID;
 	
 	Ability(String name) {
 		
@@ -239,14 +242,14 @@ public enum Ability implements Upgradable {
 			double maxHeight = 5;
 			
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-			scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+			particleTaskID = scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
 				float elapsedTime = 0;
 				
 				@Override
 				public void run() {
 					
 					if (elapsedTime >= duration)
-						return;
+						scheduler.cancelTask(particleTaskID);
 					
 					for (double y = 0; y < maxHeight; y+= 0.05) {
 						double x = Math.sin(y * radius);
@@ -290,13 +293,13 @@ public enum Ability implements Upgradable {
 				}
 			}, 0L, (long) 10L);
 			
-			new BukkitRunnable() {
+			damageTaskID = scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new BukkitRunnable() {
 				int elapsedTime = 0;
 				
 				public void run() {
 					
 					if (elapsedTime >= duration)
-						return;
+						scheduler.cancelTask(damageTaskID);
 					
 					for (Entity entity : Utils.getNearbyEntities(location, 5)) {
 						if (!(entity instanceof Player))
@@ -337,7 +340,7 @@ public enum Ability implements Upgradable {
 					
 					elapsedTime++;
 				}
-			}.runTaskTimer(MegaArena.getInstance(), 0L, 20L);
+			}, 20L);
 			
 		} else if (this == WITHER_HEADS) {
 			
