@@ -97,22 +97,22 @@ public class MegaArena extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		
-		/* Check for dependencies */
+		// Check for dependencies
 		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("ProtocolLib") == null) {
 			logger.severe("MegaArena is missing one or more dependencies, shutting down...");
 			pm.disablePlugin(this);
 			return;
 		}
 		
-		/* Set static instance to this */
+		// Set static instance to this
 		instance = this;
 		
-		/* Save default configs to plugin folder */
+		// Save default configs to plugin folder
 		saveDefaultConfig();
 		arenaConfiguration.saveDefaultConfig();
 		signConfiguration.saveDefaultConfig();
 		
-		/* Connect to the database */
+		// Connect to the database */
 		if (!dataSource.connect()) {
 			logger.severe("Could not connect to the database, shutting down...");
 			pm.disablePlugin(MegaArena.getInstance());
@@ -121,7 +121,7 @@ public class MegaArena extends JavaPlugin {
 		
 		dataSource.updateDB();
 		
-		/* Set command executors */
+		// Set command executors
 		getCommand("arena").setExecutor(new ArenaCommand());
 		getCommand("duel").setExecutor(new DuelCommand());
 		getCommand("duelaccept").setExecutor(new DuelAcceptCommand());
@@ -129,6 +129,7 @@ public class MegaArena extends JavaPlugin {
 		getCommand("duelstoggle").setExecutor(new DuelsToggleCommand());
 		getCommand("bloodtoggle").setExecutor(new BloodToggleCommand());
 		
+		// Register events
 		pm.registerEvents(new PlayerListener(), this);
 		pm.registerEvents(new PlayerAbilityListener(), this);
 		pm.registerEvents(new PlayerSkillListener(), this);
@@ -137,10 +138,10 @@ public class MegaArena extends JavaPlugin {
 		pm.registerEvents(layoutEditorMenu, this);
 		pm.registerEvents(generalMenu, this);
 		
-		/* Load all arenas from arenas.yml */
+		// Load all arenas from arenas.yml
 		arenaManager.loadArenas();
 		
-		/* Load all signs from signs.yml */
+		// Load all signs from signs.yml
 		signManager.loadSigns();
 		
 		/* Create hotbar items and add them to the map */
@@ -173,7 +174,7 @@ public class MegaArena extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		
-		/* Remove active games */
+		// Remove active games
 		Set<Game> toRemove = new HashSet<Game>();
 
 		toRemove.addAll(gameManager.getGames());
@@ -181,7 +182,7 @@ public class MegaArena extends JavaPlugin {
 		for (Game game : toRemove)
 			gameManager.deleteGame(game, "Server is shutting down...");
 		
-		/* Save players to the database */
+		// Save players to the database
 		Set<GamePlayer> toSave = new HashSet<GamePlayer>();
 
 		toSave.addAll(playerManager.getPlayers());
@@ -326,31 +327,31 @@ public class MegaArena extends JavaPlugin {
 	
 	public void createHotbarItems() {
 		
-		/* Create items */
+		// Create items
 		ItemStack general = new ItemStack(Material.BOOK);
 		ItemStack classSelector = new ItemStack(Material.COMMAND);
 		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
 		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
 		
-		/* Get item metas */
+		// Get item metas
 		ItemMeta generalMeta = general.getItemMeta();
 		ItemMeta classSelectorMeta = classSelector.getItemMeta();
 		ItemMeta playFFAMeta = playFFA.getItemMeta();
 		ItemMeta playTDMMeta = playTDM.getItemMeta();
 		
-		/* Set meta display names */
+		// Set meta display names
 		generalMeta.setDisplayName(ChatColor.AQUA + "General");
 		classSelectorMeta.setDisplayName(ChatColor.GREEN + "Class Selector");
 		playFFAMeta.setDisplayName("Play : Free-for-all");
 		playTDMMeta.setDisplayName("Play : Team-deathmatch");
 		
-		/* Set item metas */
+		// Set item metas
 		general.setItemMeta(generalMeta);
 		classSelector.setItemMeta(classSelectorMeta);
 		playFFA.setItemMeta(playFFAMeta);
 		playTDM.setItemMeta(playTDMMeta);
 		
-		/* Set hotbar items in map */
+		// Set hotbar items in map
 		hotbarItems.put(0, general);
 		hotbarItems.put(1, classSelector);
 		hotbarItems.put(7, Utils.addGlow(playFFA));
