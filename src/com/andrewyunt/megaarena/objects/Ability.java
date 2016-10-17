@@ -21,7 +21,6 @@ import com.andrewyunt.megaarena.utilities.Utils;
 
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -29,7 +28,6 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
@@ -293,9 +291,10 @@ public enum Ability implements Upgradable {
 				}
 			}, 0L, (long) 10L);
 			
-			damageTaskID = scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new BukkitRunnable() {
+			damageTaskID = scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
 				int elapsedTime = 0;
 				
+				@Override
 				public void run() {
 					
 					if (elapsedTime >= duration)
@@ -340,7 +339,7 @@ public enum Ability implements Upgradable {
 					
 					elapsedTime++;
 				}
-			}, 20L);
+			}, 0L, 20L);
 			
 		} else if (this == WITHER_HEADS) {
 			
