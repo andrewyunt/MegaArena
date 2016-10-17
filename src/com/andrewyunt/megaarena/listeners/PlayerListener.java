@@ -646,12 +646,12 @@ public class PlayerListener implements Listener {
 		final GamePlayer finalGP = gp;
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
 			@Override
 			public void run() {
 				
 				finalGP.setBowCooldown(false);
 			}
-		}, 0L, 80L);
+		}, 25L);
 	}
 }
