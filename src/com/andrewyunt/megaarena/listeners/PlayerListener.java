@@ -390,7 +390,7 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 	}
 
-	@EventHandler (priority = EventPriority.LOWEST)
+	@EventHandler (priority = EventPriority.MONITOR)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		
 		GamePlayer player = null;
@@ -620,7 +620,7 @@ public class PlayerListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onShootArrow(EntityShootBowEvent event) {
+	public void onEntityShootBow(EntityShootBowEvent event) {
 		
 		Entity entity = event.getEntity();
 		
