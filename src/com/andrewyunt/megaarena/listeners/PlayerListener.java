@@ -149,7 +149,7 @@ public class PlayerListener implements Listener {
 
 		Material type = item.getType();
 
-		if (type != Material.COMPASS && type != Material.EMERALD && type == Material.COMMAND)
+		if (type != Material.COMPASS && type != Material.EMERALD && type != Material.COMMAND)
 			return;
 
 		ItemMeta meta = item.getItemMeta();
