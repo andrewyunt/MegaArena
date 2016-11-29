@@ -43,8 +43,6 @@ public abstract class DataSource {
 		createPlayersTable();
 		createLayoutsTable();
 		createUpgradesTable();
-		
-		cleanupLayouts();
 	}
 	
 	public abstract void createPlayersTable();
@@ -52,8 +50,6 @@ public abstract class DataSource {
 	public abstract void createLayoutsTable();
 	
 	public abstract void createUpgradesTable();
-	
-	public abstract void cleanupLayouts();
 	
 	public abstract Map<Integer, Map.Entry<OfflinePlayer, Integer>> getMostKills();
 

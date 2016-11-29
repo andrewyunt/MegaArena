@@ -15,11 +15,6 @@
  */
 package com.andrewyunt.megaarena.menu;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.objects.Class;
-import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.utilities.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -33,6 +28,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.objects.Class;
+import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public class LayoutEditorMenu implements Listener {
 		glassPane.setItemMeta(glassPaneMeta);
 	}
 	
-	public void openClassMenu(GamePlayer player, Class classType, boolean loadFromDB) {
+	public void open(GamePlayer player, Class classType, boolean loadFromDB) {
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> player.getBukkitPlayer().getInventory().clear(), 6L);
@@ -113,10 +114,8 @@ public class LayoutEditorMenu implements Listener {
 		if (currentItem.getType() == Material.AIR && event.getCursor().getType() == Material.AIR) {
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
-
-                try  {
+				try  {
                     for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
-
                         ItemMeta hotbarMeta = hotbarItem.getItemMeta();
 
                         if (hotbarMeta == null)
@@ -189,8 +188,10 @@ public class LayoutEditorMenu implements Listener {
 			
 			if (name.equals("Go Back")) {
 				if (title.startsWith("Layout Editor -")) {
-					MegaArena.getInstance().getGeneralMenu().openClassMenu(gp,
-							Class.valueOf(title.replace("Layout Editor - ", "").replace(" ", "_").toUpperCase()));
+					Class classType = Class.valueOf(title.replace("Layout Editor - ", "").replace(" ", "_").toUpperCase());
+					
+					MegaArena.getInstance().getUpgradesMenu().openClassUpgradeMenu(gp, classType);
+					
 					event.setCancelled(true);
 				}
 				return;
@@ -198,7 +199,7 @@ public class LayoutEditorMenu implements Listener {
 			
 			if (name.equals("Reset Layout")) {
 				if (title.startsWith("Layout Editor -")) {
-					openClassMenu(gp, Class.valueOf(title.replace("Layout Editor - ", "")
+					open(gp, Class.valueOf(title.replace("Layout Editor - ", "")
 							.replace(" ", "_").toUpperCase()), false);
 					event.setCancelled(true);
 				}
@@ -209,12 +210,12 @@ public class LayoutEditorMenu implements Listener {
 			
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
-
-                try  {
-                    openClassMenu(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()), true);
-                } catch (IllegalArgumentException e) {
-                }
-            }, 1L);
+				try  {
+					open(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()), true);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				}
+			}, 1L);
 		} catch (PlayerException e) {
 		}
 	}
@@ -235,8 +236,8 @@ public class LayoutEditorMenu implements Listener {
 			
 			MegaArena.getInstance().getDataSource().saveLayout(gp, classType, Utils.fromChest(inv));
 			
-	        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-	        scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), gp::updateHotbar, 5L);
+			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), gp::updateHotbar, 5L);
 		} catch (PlayerException e) {
 		}
 	}

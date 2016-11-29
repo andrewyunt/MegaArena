@@ -19,13 +19,12 @@ import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.utilities.Utils;
 
-import net.minecraft.server.v1_8_R3.EnumParticle;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
+import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -255,8 +254,7 @@ public enum Ability implements Upgradable {
 						double z = Math.cos(y * radius);
 						
 						PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-								EnumParticle.SNOW_SHOVEL,
-								true,
+								"snowshovel",
 								((float) (location.getX() + x)),
 								((float) (location.getY() + y)),
 								((float) (location.getZ() + z)),
@@ -275,8 +273,7 @@ public enum Ability implements Upgradable {
 						float zRand = new Random().nextInt(2) - 1;
 						
 						PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-								EnumParticle.SMOKE_LARGE,
-								true,
+								"largesmoke",
 								((float) (location.getX() + xRand)),
 								((float) location.getY()),
 								((float) (location.getZ() + zRand)),

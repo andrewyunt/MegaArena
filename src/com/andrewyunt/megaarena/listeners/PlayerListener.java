@@ -16,13 +16,14 @@
 package com.andrewyunt.megaarena.listeners;
 
 import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SignException;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import SebucoHD.Selector.Main;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -44,10 +45,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
@@ -138,54 +141,41 @@ public class PlayerListener implements Listener {
 		
 		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
-		
+
 		ItemStack item = event.getItem();
-		
+
 		if (item == null || !item.hasItemMeta())
 			return;
-		
+
 		Material type = item.getType();
-		
-		if (!(type == Material.BOOK || type == Material.COMMAND || type == Material.DIAMOND_SWORD
-				|| type == Material.IRON_SWORD))
+
+		if (type != Material.COMPASS && type != Material.EMERALD && type == Material.COMMAND)
 			return;
-		
+
 		ItemMeta meta = item.getItemMeta();
 		String name = meta.getDisplayName();
 		Player player = event.getPlayer();
 		GamePlayer gp = null;
-		MegaArena plugin = MegaArena.getInstance();
-		
-		try {
-			gp = plugin.getPlayerManager().getPlayer(player.getName());
-		} catch (PlayerException e) {
-			e.printStackTrace();
-		}
-		
-		if (name.equals(ChatColor.AQUA + "General")) {
-			
-			plugin.getGeneralMenu().openMainMenu(gp);
 
-		} else if (name.equals(ChatColor.GREEN + "Class Selector")) {
-			
-			plugin.getClassSelectorMenu().openMainMenu(gp);
-			
-		} else if (name.equals("Play : Team-deathmatch")) {
-			
-			try {
-				plugin.getGameManager().matchMake(gp, Arena.Type.TDM,
-						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
-			} catch (GameException e) {
-			}
-			
-		} else if (name.equals("Play : Free-for-all")) {
-			
-			try {
-				plugin.getGameManager().matchMake(gp, Arena.Type.FFA, 
-						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
-			} catch (GameException e) {
-			}
+		try {
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
 		}
+
+		if (name.equals(ChatColor.RED + "Server Selector")) {
+			Method method = null;
+			
+			try {
+				method = Main.getInstance().getClass().getDeclaredMethod("getInv", Player.class);
+				method.setAccessible(true);
+				player.openInventory((Inventory) method.invoke(Main.getInstance(), player));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (name.equals(ChatColor.GREEN + "Shop"))
+			MegaArena.getInstance().getShopMenu().openMainMenu(gp);
+		else if (name.equals(ChatColor.YELLOW + "Class Selector"))
+			MegaArena.getInstance().getClassSelectorMenu().openMainMenu(gp);
 	}
 
 	@EventHandler

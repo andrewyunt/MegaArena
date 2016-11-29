@@ -274,7 +274,6 @@ public enum Class implements Upgradable {
 		playerInv.setContents(getKitInventoryItems(player, true).getContents());
 	}
 	
-	// Remember to change the plugin version when changing inventory items.
 	public Inventory getKitInventoryItems(GamePlayer player, boolean loadFromDB) {
 		
 		Player bp = player.getBukkitPlayer();

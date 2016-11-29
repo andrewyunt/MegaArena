@@ -48,9 +48,9 @@ import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.managers.SignManager;
 import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
-import com.andrewyunt.megaarena.menu.GeneralMenu;
 import com.andrewyunt.megaarena.menu.LayoutEditorMenu;
 import com.andrewyunt.megaarena.menu.ShopMenu;
+import com.andrewyunt.megaarena.menu.UpgradesMenu;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
@@ -71,9 +71,9 @@ public class MegaArena extends JavaPlugin {
 	private final Server server = getServer();
 	private final PluginManager pm = server.getPluginManager();
     private final ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
-    private final ShopMenu shopMenu = new ShopMenu();
+    private final UpgradesMenu upgradesMenu = new UpgradesMenu();
     private final LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
-    private final GeneralMenu generalMenu = new GeneralMenu();
+    private final ShopMenu shopMenu = new ShopMenu();
     private final Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
@@ -96,13 +96,6 @@ public class MegaArena extends JavaPlugin {
 	 */
 	@Override
 	public void onEnable() {
-		
-		// Check for dependencies
-		if (pm.getPlugin("StaffPlus") == null || pm.getPlugin("ProtocolLib") == null) {
-			logger.severe("MegaArena is missing one or more dependencies, shutting down...");
-			pm.disablePlugin(this);
-			return;
-		}
 		
 		// Set static instance to this
 		instance = this;
@@ -136,7 +129,7 @@ public class MegaArena extends JavaPlugin {
 		pm.registerEvents(classSelectorMenu, this);
 		pm.registerEvents(shopMenu, this);
 		pm.registerEvents(layoutEditorMenu, this);
-		pm.registerEvents(generalMenu, this);
+		pm.registerEvents(upgradesMenu, this);
 		
 		// Load all arenas from arenas.yml
 		arenaManager.loadArenas();
@@ -293,6 +286,17 @@ public class MegaArena extends JavaPlugin {
 	}
 	
 	/**
+	 * Gets the stored instance of the upgrades menu.
+	 * 
+	 * @return
+	 * 		The instance of the upgrades menu.
+	 */
+	public UpgradesMenu getUpgradesMenu() {
+		
+		return upgradesMenu;
+	}
+	
+	/**
 	 * Gets the stored instance of the shop menu.
 	 * 
 	 * @return
@@ -301,17 +305,6 @@ public class MegaArena extends JavaPlugin {
 	public ShopMenu getShopMenu() {
 		
 		return shopMenu;
-	}
-	
-	/**
-	 * Gets the stored instance of the general menu.
-	 * 
-	 * @return
-	 * 		The instance of the general menu.
-	 */
-	public GeneralMenu getGeneralMenu() {
-		
-		return generalMenu;
 	}
 	
 	/**
@@ -327,35 +320,30 @@ public class MegaArena extends JavaPlugin {
 	
 	public void createHotbarItems() {
 		
-		// Create items
-		ItemStack general = new ItemStack(Material.BOOK);
+		/* Create items */
+		ItemStack serverSelector = new ItemStack(Material.COMPASS);
+		ItemStack shop = new ItemStack(Material.EMERALD);
 		ItemStack classSelector = new ItemStack(Material.COMMAND);
-		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
-		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
 		
-		// Get item metas
-		ItemMeta generalMeta = general.getItemMeta();
+		/* Get item metas */
+		ItemMeta serverSelectorMeta = serverSelector.getItemMeta();
+		ItemMeta shopMeta = shop.getItemMeta();
 		ItemMeta classSelectorMeta = classSelector.getItemMeta();
-		ItemMeta playFFAMeta = playFFA.getItemMeta();
-		ItemMeta playTDMMeta = playTDM.getItemMeta();
 		
-		// Set meta display names
-		generalMeta.setDisplayName(ChatColor.AQUA + "General");
-		classSelectorMeta.setDisplayName(ChatColor.GREEN + "Class Selector");
-		playFFAMeta.setDisplayName("Play : Free-for-all");
-		playTDMMeta.setDisplayName("Play : Team-deathmatch");
+		/* Set meta display names */
+		serverSelectorMeta.setDisplayName(ChatColor.RED + "Server Selector");
+		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
+		classSelectorMeta.setDisplayName(ChatColor.YELLOW + "Class Selector");
 		
-		// Set item metas
-		general.setItemMeta(generalMeta);
+		/* Set item metas */
+		serverSelector.setItemMeta(serverSelectorMeta);
+		shop.setItemMeta(shopMeta);
 		classSelector.setItemMeta(classSelectorMeta);
-		playFFA.setItemMeta(playFFAMeta);
-		playTDM.setItemMeta(playTDMMeta);
 		
-		// Set hotbar items in map
-		hotbarItems.put(0, general);
-		hotbarItems.put(1, classSelector);
-		hotbarItems.put(7, Utils.addGlow(playFFA));
-		hotbarItems.put(8, Utils.addGlow(playTDM));
+		/* Set hotbar items in map */
+		hotbarItems.put(0, serverSelector);
+		hotbarItems.put(1, shop);
+		hotbarItems.put(2, classSelector);
 	}
 	
 	public Map<Integer, ItemStack> getHotbarItems() {
