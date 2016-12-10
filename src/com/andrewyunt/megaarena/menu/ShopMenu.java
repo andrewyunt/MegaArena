@@ -205,7 +205,7 @@ public class ShopMenu implements Listener {
 			
 			String classStr = name.replace(" ", "_").toUpperCase();
 
-			if (!player.hasPermission("megatw.class." + classStr.toLowerCase()))  {
+			if (!player.hasPermission("megaarena.class." + classStr.toLowerCase()))  {
 				player.sendMessage(ChatColor.RED + "You do not own that class.");
 				return;
 			}

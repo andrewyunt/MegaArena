@@ -16,6 +16,7 @@
 package com.andrewyunt.megaarena.listeners;
 
 import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SignException;
 import com.andrewyunt.megaarena.managers.PlayerManager;
@@ -149,7 +150,8 @@ public class PlayerListener implements Listener {
 
 		Material type = item.getType();
 
-		if (type != Material.COMPASS && type != Material.EMERALD && type != Material.COMMAND)
+		if (type != Material.COMPASS && type != Material.EMERALD && type != Material.COMMAND
+				&& type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
 			return;
 
 		ItemMeta meta = item.getItemMeta();
@@ -171,6 +173,24 @@ public class PlayerListener implements Listener {
 				player.openInventory((Inventory) method.invoke(Main.getInstance(), player));
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+		} else if (name.equals("Play : Team-deathmatch")) {
+			try {
+				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.TDM,
+						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
+			} catch (GameException e) {
+				player.sendMessage(e.getMessage());
+				return;
+			}
+			
+		} else if (name.equals("Play : Free-for-all")) {
+			
+			try {
+				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.FFA, 
+						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
+			} catch (GameException e) {
+				player.sendMessage(e.getMessage());
+				return;
 			}
 		} else if (name.equals(ChatColor.GREEN + "Shop"))
 			MegaArena.getInstance().getShopMenu().openMainMenu(gp);

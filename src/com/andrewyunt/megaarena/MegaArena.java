@@ -324,26 +324,36 @@ public class MegaArena extends JavaPlugin {
 		ItemStack serverSelector = new ItemStack(Material.COMPASS);
 		ItemStack shop = new ItemStack(Material.EMERALD);
 		ItemStack classSelector = new ItemStack(Material.COMMAND);
+		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
+		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
 		
 		/* Get item metas */
 		ItemMeta serverSelectorMeta = serverSelector.getItemMeta();
 		ItemMeta shopMeta = shop.getItemMeta();
 		ItemMeta classSelectorMeta = classSelector.getItemMeta();
+		ItemMeta playFFAMeta = playFFA.getItemMeta();
+		ItemMeta playTDMMeta = playTDM.getItemMeta();
 		
 		/* Set meta display names */
 		serverSelectorMeta.setDisplayName(ChatColor.RED + "Server Selector");
 		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
 		classSelectorMeta.setDisplayName(ChatColor.YELLOW + "Class Selector");
+		playFFAMeta.setDisplayName("Play : Free-for-all");
+		playTDMMeta.setDisplayName("Play : Team-deathmatch");
 		
 		/* Set item metas */
 		serverSelector.setItemMeta(serverSelectorMeta);
 		shop.setItemMeta(shopMeta);
 		classSelector.setItemMeta(classSelectorMeta);
+		playFFA.setItemMeta(playFFAMeta);
+		playTDM.setItemMeta(playTDMMeta);
 		
 		/* Set hotbar items in map */
 		hotbarItems.put(0, serverSelector);
 		hotbarItems.put(1, shop);
 		hotbarItems.put(2, classSelector);
+		hotbarItems.put(7, Utils.addGlow(playFFA));
+		hotbarItems.put(8, Utils.addGlow(playTDM));
 	}
 	
 	public Map<Integer, ItemStack> getHotbarItems() {
