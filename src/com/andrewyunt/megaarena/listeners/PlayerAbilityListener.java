@@ -280,8 +280,7 @@ public class PlayerAbilityListener implements Listener {
 
 			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
-			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill as well as
-													  // red damage and invisibility
+			dmgPlayer.damage(0.00001D); // So the player will get the red damage
 			if (dmgPlayer.getHealth() < dmg) {
 				dmgPlayer.setHealth(0D);
 				return;
@@ -341,8 +340,7 @@ public class PlayerAbilityListener implements Listener {
 
 			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * .5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
-			dmgPlayer.damage(0.00001D, shooter);// So the player will get the kill
-												// as well as red damage and invisibility
+			dmgPlayer.damage(0.00001D); // So the player will get the red damage
 			
 			if (dmgPlayer.getHealth() < dmg) {
 				dmgPlayer.setHealth(0D);

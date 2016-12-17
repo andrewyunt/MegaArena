@@ -170,7 +170,7 @@ public enum Ability implements Upgradable {
 				
 				entityPlayer.getWorld().strikeLightningEffect(entityPlayer.getLocation());
 				Damageable dmgVictim = (Damageable) entityPlayer;
-				dmgVictim.damage(0.00001D, bp); // Just so an actual hit will register 
+				dmgVictim.damage(0.00001D); // So the player will get the red damage
 				
 				if (dmgVictim.getHealth() <= dmg)
 					dmgVictim.setHealth(0D);
@@ -222,7 +222,7 @@ public enum Ability implements Upgradable {
 					Damageable dmgVictim = (Damageable) entity;
 					double dmg = 3.0 + 0.5 * (level - 1);
 					
-					((Damageable) entity).damage(0.00001D, bp);
+					((Damageable) entity).damage(0.00001D); // So the player will get the red damage
 					
 					if (dmgVictim.getHealth() <= dmg)
 						dmgVictim.setHealth(0D);
@@ -326,7 +326,7 @@ public enum Ability implements Upgradable {
 							continue;
 						
 						entityGP.setLastDamageCause(DamageCause.CUSTOM);
-						((Damageable) entity).damage(0.00001D, player.getBukkitPlayer()); // So the player will get the kill and the red invisibility period 
+						((Damageable) entity).damage(0.00001D); // So the player will get the red damage
 						entityGP.setLastDamageCause(DamageCause.CONTACT);
 						
 						double health = ((Damageable) entity).getHealth() - 2.0D;
