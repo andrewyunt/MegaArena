@@ -385,7 +385,12 @@ public class Game {
 		placedBlocks.add(block);
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> removePlacedBlock(block), 200L);
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
+			if (!block.getChunk().isLoaded())
+				block.getChunk().load();
+			
+			removePlacedBlock(block);
+		}, 200L);
 	}
 
 	/**
