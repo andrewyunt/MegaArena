@@ -68,6 +68,7 @@ public class PlayerAbilityListener implements Listener {
 		try {
 			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 		
 		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
@@ -109,6 +110,7 @@ public class PlayerAbilityListener implements Listener {
 		try {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 		
 		final GamePlayer finalDamagedGP = damagedGP;
@@ -137,7 +139,7 @@ public class PlayerAbilityListener implements Listener {
 				gpDamager = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
 				gpDamaged = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 			} catch(PlayerException e) {
-				return;
+				e.printStackTrace();
 			}
 		
 			if (!(gpDamaged.isInGame() && gpDamager.isInGame()))
@@ -173,7 +175,7 @@ public class PlayerAbilityListener implements Listener {
 				gpDamager = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
 				gpDamaged = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 			} catch(PlayerException e) {
-				return;
+				e.printStackTrace();
 			}
 			
 			if (event.isCancelled()) // Don't give energy if the shot person is red
@@ -211,6 +213,7 @@ public class PlayerAbilityListener implements Listener {
 		try {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 		
 		final GamePlayer finalDamagedGP = damagedGP;
@@ -239,51 +242,51 @@ public class PlayerAbilityListener implements Listener {
 
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event) {
-
+		
 		Entity entity = event.getEntity();
-
+		
 		if (entity.getType() != EntityType.WITHER_SKULL)
 			return;
 		
 		if (!entity.hasMetadata("MegaArena"))
 			return;
-
+		
 		event.setCancelled(true);
-
+		
 		GamePlayer shooterGP = null;
-
+		
 		try {
 			shooterGP = MegaArena.getInstance().getPlayerManager()
 					.getPlayer(((Player) ((Projectile) entity).getShooter()).getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
-
-		Player shooter = shooterGP.getBukkitPlayer();
 		
 		Location loc = entity.getLocation().clone();
 		
 		loc.getWorld().spigot().playEffect(
 				loc.add(0.0D, 0.8D, 0.0D),
 				Effect.EXPLOSION_HUGE);
-
+		
 		for (Entity nearby : entity.getNearbyEntities(3D, 3D, 3D)) {
 			if (!(nearby instanceof Player))
 				continue;
-
+			
 			if (nearby == shooterGP)
 				continue;
-
+			
 			Player nearbyPlayer = (Player) nearby;
 			GamePlayer nearbyGP = null;
 			
 			try {
 				nearbyGP = MegaArena.getInstance().getPlayerManager().getPlayer(nearbyPlayer.getName());
 			} catch (PlayerException e) {
+				e.printStackTrace();
 			}
 			
 			if (nearbyGP.getSkullHitPlayers().contains(shooterGP))
 				continue;
-
+			
 			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * 0.5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D); // So the player will get the red damage
@@ -299,51 +302,52 @@ public class PlayerAbilityListener implements Listener {
 
 	@EventHandler
 	public void onProjectileHit(ProjectileHitEvent event) {
-
+		
 		Entity entity = event.getEntity();
-
+		
 		if (!(entity instanceof Arrow))
 			return;
-
+		
 		if (!entity.hasMetadata("MegaArena"))
 			return;
-
+		
 		Player shooter = (Player) ((Projectile) entity).getShooter();
 		GamePlayer shooterGP = null;
-
+		
 		try {
 			shooterGP = MegaArena.getInstance().getPlayerManager().getPlayer(shooter.getName());
 		} catch (PlayerException e) {
 		}
 		
 		Location loc = entity.getLocation().clone();
-
+		
 		loc.getWorld().spigot().playEffect(
 				loc.add(0.0D, 0.8D, 0.0D),
 				Effect.EXPLOSION_HUGE);
-
+		
 		for (Entity nearby : entity.getNearbyEntities(5D, 3D, 5D)) {
 			if (!(nearby instanceof Player))
 				continue;
-
+			
 			if (nearby == shooter)
 				continue;
-
+			
 			Player nearbyPlayer = (Player) nearby;
-
+			
 			GamePlayer nearbyGP = null;
-
+			
 			try {
 				nearbyGP = MegaArena.getInstance().getPlayerManager().getPlayer(nearbyPlayer.getName());
 			} catch (PlayerException e) {
+				e.printStackTrace();
 			}
-
+			
 			if (!nearbyGP.isInGame())
 				continue;
-
+			
 			if (nearbyGP.getGame().getArena().getType() == Arena.Type.TDM && nearbyGP.getSide() == shooterGP.getSide())
 				continue;
-
+			
 			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * .5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
 			dmgPlayer.damage(0.00001D); // So the player will get the red damage

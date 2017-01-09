@@ -12,7 +12,7 @@
  * OR PUBLIC DISPLAY OF OR THROUGH USE OF THIS SOURCE CODE WITHOUT THE EXPRESS WRITTEN CONSENT OF ANDREW YUNT IS STRICTLY PROHIBITED, AND IN VIOLATION OF
  * APPLICABLE LAWS AND INTERNATIONAL TREATIES. THE RECEIPT OR POSSESSION OF THIS SOURCE CODE AND/OR RELATED INFORMATION DOES NOT CONVEY OR IMPLY ANY RIGHTS
  * TO REPRODUCE, DISCLOSE OR DISTRIBUTE ITS CONTENTS, OR TO MANUFACTURE, USE, OR SELL ANYTHING THAT IT MAY DESCRIBE, IN WHOLE OR IN PART.
- */
+*/
 package com.andrewyunt.megaarena.listeners;
 
 import java.util.Collection;
@@ -38,6 +38,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -62,19 +63,20 @@ public class PlayerSkillListener implements Listener {
 		if (!(e.getEntity() instanceof Player))
 			return;
 		
-		new BukkitRunnable() {
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
 			@Override
 			public void run() {
 				
 				e.getEntity().getActivePotionEffects().clear();
 			}
-		}.runTaskLater(MegaArena.getInstance(), 20);
+		}, 20L);
 	}
 	
 	@EventHandler
 	public void boomerangSkill(EntityDamageByEntityEvent event) {
 
-		/* Checking for a bow hit from a player to a player */
+		// Checking for a bow hit from a player to a player
 		if (!(event.getDamager() instanceof Arrow))
 			return;
 
@@ -86,7 +88,7 @@ public class PlayerSkillListener implements Listener {
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player shooter = (Player) arrow.getShooter();
 		Player damaged = (Player) event.getEntity();
 		
@@ -102,7 +104,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
 
@@ -130,7 +132,7 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void weakeningArrow(EntityDamageByEntityEvent event) {
 		
-		/* Checking for a bow hit from a player to a player */
+		// Checking for a bow hit from a player to a player
 		if (!(event.getDamager() instanceof Arrow))
 			return;
 		
@@ -142,7 +144,7 @@ public class PlayerSkillListener implements Listener {
 		if (!(event.getEntity() instanceof Player))
 			return;
 		
-		/* Casting to players */
+		// Casting to players
 		Player shooter = (Player) arrow.getShooter();
 		Player damaged = (Player) event.getEntity();
 
@@ -158,7 +160,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -174,7 +176,7 @@ public class PlayerSkillListener implements Listener {
 		else
 			return;
 		
-		/* Apply Effects */
+		// Apply effects
 		int duration = (int) (2 + 0.5 * (skillLevel - 1)) * 20;
 		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, duration, 1, true);
 		PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, duration, 0, true);
@@ -191,14 +193,14 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void resist(EntityDamageByEntityEvent event) {
 
-		/* Check if damager and damaged entities are players */
+		// Check if damager and damaged entities are players
 		if (!(event.getDamager() instanceof Player))
 			return;
 
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
@@ -209,9 +211,10 @@ public class PlayerSkillListener implements Listener {
 			damagerGP = MegaArena.getInstance().getPlayerManager().getPlayer(damager.getName());
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -249,7 +252,7 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void swiftness(EntityDamageByEntityEvent event) {
 
-		/* Checking for a bow hit from a player to a player */
+		// Checking for a bow hit from a player to a player
 		if (!(event.getDamager() instanceof Arrow))
 			return;
 
@@ -261,7 +264,7 @@ public class PlayerSkillListener implements Listener {
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player shooter = (Player) arrow.getShooter();
 		Player damaged = (Player) event.getEntity();
 
@@ -274,7 +277,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!shooterGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -315,11 +318,11 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void recharge(EntityDamageByEntityEvent event) {
 		
-		/* Checking if damaged is a player */
+		// Checking if damaged is a player
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player damaged = (Player) event.getEntity();
 
 		GamePlayer damagedGP = null;
@@ -334,7 +337,7 @@ public class PlayerSkillListener implements Listener {
 		if (damagerGP == null)
 			return;
 		
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -353,7 +356,7 @@ public class PlayerSkillListener implements Listener {
 		else
 			return;
 
-		/* Checking if killed */
+		// Checking if killed
 		boolean dead = false;
 
 		if (event.getDamage() < 0.0001D) {
@@ -382,7 +385,7 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void flurry(EntityDamageByEntityEvent event) {
 		
-		/* Checking if damager and damaged are players */
+		// Checking if damager and damaged are players
 		if (!(event.getDamager() instanceof Player))
 			return;
 		
@@ -392,7 +395,7 @@ public class PlayerSkillListener implements Listener {
 		if (event.getDamage() < 0.001D)
 			return;
 		
-		/* Casting to players */
+		// Casting to players
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
@@ -405,7 +408,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -430,17 +433,13 @@ public class PlayerSkillListener implements Listener {
 			return;
 		
 		Collection<PotionEffect> effects = damager.getActivePotionEffects();
-		for (PotionEffect e : effects){
-			if (e.getType() == PotionEffectType.SPEED){
+		for (PotionEffect e : effects)
+			if (e.getType() == PotionEffectType.SPEED)
 				if (e.getAmplifier() >= 1)
 					return;
-				else{
+				else
 					if (e.getDuration() >= 40)
 						return;
-				}
-					
-			}
-		}
 		
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
 		damager.addPotionEffect(speed, true);
@@ -452,11 +451,11 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void powerfulWeakness(EntityDamageEvent event) {
 		
-		/* Check if the entity is player */
+		// Check if the entity is player
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player damaged = (Player) event.getEntity();
 		
 		GamePlayer damagedGP = null;
@@ -466,11 +465,11 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagedGP.isInGame())
 			return;
 
-		/* Checking that the damaged player is a Creeper */
+		// Checking that the damaged player is a Creeper
 		if (damagedGP.getClassType() != Class.CREEPER)
 			return;
 		
@@ -511,11 +510,11 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void powerfulWeakness(EntityRegainHealthEvent event) {
 
-		/* Check if the entity is player */
+		// Check if the entity is player
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player player = (Player) event.getEntity();
 
 		GamePlayer playerGP = null;
@@ -525,7 +524,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!playerGP.isInGame())
 			return;
 
@@ -563,14 +562,14 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void support(EntityDamageByEntityEvent event) {
 
-		/* Checking if damager and damaged are players */
+		// Checking if damager and damaged are players
 		if (!(event.getDamager() instanceof Player))
 			return;
 
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players 
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
@@ -586,7 +585,7 @@ public class PlayerSkillListener implements Listener {
 		if (damagerGP.isEPCCooldown())
 			return;
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -649,7 +648,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!creeperAP.isInGame() || !damagedGP.isInGame())
 			return;
 
@@ -667,14 +666,14 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void weakeningSwing(EntityDamageByEntityEvent event) {
 
-		/* Checking if damager and damaged are players */
+		// Checking if damager and damaged are players
 		if (!(event.getDamager() instanceof Player))
 			return;
 
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
@@ -687,7 +686,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -724,14 +723,14 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void swiftBackup(EntityDamageByEntityEvent event) {
 
-		/* Checking if damager and damaged are players */
+		// Checking if damager and damaged are players
 		if (!(event.getDamager() instanceof Player))
 			return;
 		
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
@@ -744,7 +743,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -793,14 +792,14 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void soulSucker(EntityDamageByEntityEvent event) {
 
-		/* Checking if damager and damaged are players */
+		// Checking if damager and damaged are players
 		if (!(event.getDamager() instanceof Player))
 			return;
 
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
@@ -813,7 +812,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -849,14 +848,14 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void undead(EntityDamageByEntityEvent event) {
 
-		/* Checking if damager and damaged are players */
+		// Checking if damager and damaged are players
 		if (!(event.getDamager() instanceof Player))
 			return;
 
 		if (!(event.getEntity() instanceof Player))
 			return;
 
-		/* Casting to players */
+		// Casting to players
 		Player damager = (Player) event.getDamager();
 		Player damaged = (Player) event.getEntity();
 
@@ -869,7 +868,7 @@ public class PlayerSkillListener implements Listener {
 		} catch (PlayerException e) {
 		}
 		
-		/* Check if players are in-game */
+		// Check if players are in-game
 		if (!damagerGP.isInGame() || !damagedGP.isInGame())
 			return;
 		
@@ -879,7 +878,7 @@ public class PlayerSkillListener implements Listener {
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
 			return;
 
-		/* Checking that the damaged player is a WITHER MINION */
+		// Checking that the damaged player is a WITHER MINION
 		if (damagedGP.getClassType() != Class.WITHER_MINION)
 			return;
 		

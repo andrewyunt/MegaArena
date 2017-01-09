@@ -72,7 +72,6 @@ public class PlayerListener implements Listener {
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
-			
 			GamePlayer player = null;
 			
 			// Get the player's GamePlayer object and if it doesn't exist, add it
@@ -85,7 +84,7 @@ public class PlayerListener implements Listener {
 			// Set player's scoreboard to default scoreboard
 			player.updateScoreboard();
 			
-			/* Update player hotbar */
+			// Update player hotbar
 			player.updateHotbar();
 			
 			// Teleport the player to the spawn location
@@ -127,6 +126,7 @@ public class PlayerListener implements Listener {
 			try {
 				game.removePlayer(gp);
 			} catch (PlayerException e) {
+				e.printStackTrace();
 			}
 		}
 		
@@ -142,29 +142,37 @@ public class PlayerListener implements Listener {
 		
 		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
-
-		ItemStack item = event.getItem();
-
-		if (item == null || !item.hasItemMeta())
+		
+		ItemStack is = event.getItem();
+		
+		if (is == null || !is.hasItemMeta())
 			return;
-
-		Material type = item.getType();
-
+		
+		Material type = is.getType();
+		
 		if (type != Material.COMPASS && type != Material.EMERALD && type != Material.COMMAND
 				&& type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
 			return;
-
-		ItemMeta meta = item.getItemMeta();
+		
+		if (!is.hasItemMeta())
+			return;
+		
+		ItemMeta meta = is.getItemMeta();
+		
+		if (!meta.hasDisplayName())
+			return;
+		
 		String name = meta.getDisplayName();
 		Player player = event.getPlayer();
 		GamePlayer gp = null;
-
+		
 		try {
 			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
-
-		if (name.equals(ChatColor.RED + "Server Selector")) {
+		
+		if (name.contains(ChatColor.RED + ChatColor.BOLD.toString() + "Server Selector")) {
 			Method method = null;
 			
 			try {
@@ -174,7 +182,7 @@ public class PlayerListener implements Listener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (name.equals("Play : Team-deathmatch")) {
+		} else if (name.contains(ChatColor.BOLD.toString() + "Play : Team-deathmatch")) {
 			try {
 				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.TDM,
 						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
@@ -182,9 +190,7 @@ public class PlayerListener implements Listener {
 				player.sendMessage(e.getMessage());
 				return;
 			}
-			
-		} else if (name.equals("Play : Free-for-all")) {
-			
+		} else if (name.contains(ChatColor.BOLD.toString() + "Play : Free-for-all")) {
 			try {
 				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.FFA, 
 						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
@@ -192,9 +198,9 @@ public class PlayerListener implements Listener {
 				player.sendMessage(e.getMessage());
 				return;
 			}
-		} else if (name.equals(ChatColor.GREEN + "Shop"))
+		} else if (name.contains(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop"))
 			MegaArena.getInstance().getShopMenu().openMainMenu(gp);
-		else if (name.equals(ChatColor.YELLOW + "Class Selector"))
+		else if (name.contains(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector"))
 			MegaArena.getInstance().getClassSelectorMenu().openMainMenu(gp);
 	}
 
@@ -206,6 +212,7 @@ public class PlayerListener implements Listener {
 		try {
 			player = MegaArena.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 		
 		String message = event.getMessage();
@@ -279,6 +286,7 @@ public class PlayerListener implements Listener {
 			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(((Player) damaged).getName());
 			damagerGP = MegaArena.getInstance().getPlayerManager().getPlayer(((Player) damager).getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 		
 		if (!damagedGP.isInGame())
@@ -365,7 +373,6 @@ public class PlayerListener implements Listener {
 			ownerGP = MegaArena.getInstance().getPlayerManager().getPlayer(owner.getName());
 		} catch (PlayerException e) {
 			e.printStackTrace();
-			return;
 		}
 		
 		if (!ownerGP.isInGame())
@@ -388,12 +395,11 @@ public class PlayerListener implements Listener {
 		try {
 			damagerGP = MegaArena.getInstance().getPlayerManager().getPlayer(damagerPlayer.getName());
 		} catch (PlayerException e) {
-			return;
+			e.printStackTrace();
 		}
 		
 		if (!damagerGP.isInGame()) {
 			event.setCancelled(true);
-			return;
 		}
 		
 		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == ownerGP.getSide())
@@ -408,6 +414,7 @@ public class PlayerListener implements Listener {
 		try {
 			player = MegaArena.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 		
 		if (!player.isInGame())

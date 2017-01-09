@@ -238,9 +238,9 @@ public class GamePlayer {
 		inv.clear();
 		
 		for (Map.Entry<Integer, ItemStack> entry : MegaArena.getInstance().getHotbarItems().entrySet()) {
-		    int pos = entry.getKey();
-		    ItemStack is = entry.getValue();
-		    inv.setItem(pos, is);
+			int pos = entry.getKey();
+			ItemStack is = entry.getValue();
+			inv.setItem(pos, is);
 		}
 	}
 	

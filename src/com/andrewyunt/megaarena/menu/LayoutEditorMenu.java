@@ -115,28 +115,29 @@ public class LayoutEditorMenu implements Listener {
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
 				try  {
-                    for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
-                        ItemMeta hotbarMeta = hotbarItem.getItemMeta();
-
-                        if (hotbarMeta == null)
-                            continue;
-
-                        ItemStack targetItem = clickedInventory.getItem(event.getSlot());
-
-                        if (targetItem == null)
-                            continue;
-
-                        if (!targetItem.getItemMeta().getDisplayName().equals(hotbarMeta.getDisplayName()))
-                            continue;
-
-                        clickedInventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
-                        MegaArena.getInstance().getPlayerManager().getPlayer(event.getWhoClicked()
-                                .getName()).updateHotbar();
-                        break;
-                    }
-                } catch (IllegalArgumentException | PlayerException e) {
-                }
-            }, 1L);
+					for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
+						ItemMeta hotbarMeta = hotbarItem.getItemMeta();
+						
+						if (hotbarMeta == null)
+							continue;
+						
+						ItemStack targetItem = clickedInventory.getItem(event.getSlot());
+						
+						if (targetItem == null)
+							continue;
+						
+						if (!targetItem.getItemMeta().getDisplayName().equals(hotbarMeta.getDisplayName()))
+							continue;
+						
+						clickedInventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
+						MegaArena.getInstance().getPlayerManager().getPlayer(event.getWhoClicked()
+								.getName()).updateHotbar();
+						break;
+					}
+				} catch (IllegalArgumentException | PlayerException e) {
+					e.printStackTrace();
+				}
+			}, 1L);
 		}
 	}
 	
@@ -217,6 +218,7 @@ public class LayoutEditorMenu implements Listener {
 				}
 			}, 1L);
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -239,6 +241,7 @@ public class LayoutEditorMenu implements Listener {
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), gp::updateHotbar, 5L);
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 	}
 }

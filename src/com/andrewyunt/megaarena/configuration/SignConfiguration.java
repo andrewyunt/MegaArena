@@ -39,52 +39,51 @@ public class SignConfiguration {
 	private File configFile = null;
 	
 	public void reloadConfig() {
-	    
+		
 		if (configFile == null)
 			configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
-
+		
 		config = YamlConfiguration.loadConfiguration(configFile);
-
-	    Reader defConfigStream = null;
-	    
+		
+		Reader defConfigStream = null;
+		
 		try {
 			defConfigStream = new InputStreamReader(MegaArena.getInstance().getResource("signs.yml"), "UTF8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        config.setDefaults(defConfig);
-	    }
+		if (defConfigStream != null) {
+			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+			config.setDefaults(defConfig);
+		}
 	}
 	
 	public FileConfiguration getConfig() {
 		
-	    if (config == null)
-	        reloadConfig();
-	    
-	    return config;
+		if (config == null)
+			reloadConfig();
+		
+		return config;
 	}
 	
 	public void saveConfig() {
 		
-	    if (config == null || configFile == null)
-	        return;
-	    
-	    try {
-	        getConfig().save(configFile);
-	    } catch (IOException ex) {
-	        MegaArena.getInstance().getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
-	    }
+		if (config == null || configFile == null)
+			return;
+		
+		try {
+			getConfig().save(configFile);
+		} catch (IOException ex) {
+			MegaArena.getInstance().getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
+		}
 	}
 	
 	public void saveDefaultConfig() {
+		if (configFile == null)
+			configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
 		
-	    if (configFile == null)
-	        configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
-	        
-	    if (!configFile.exists())
-	    	MegaArena.getInstance().saveResource("signs.yml", false);
+		if (!configFile.exists())
+			MegaArena.getInstance().saveResource("signs.yml", false);
 	}
 }

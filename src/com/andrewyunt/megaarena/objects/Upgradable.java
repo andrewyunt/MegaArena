@@ -25,10 +25,7 @@ package com.andrewyunt.megaarena.objects;
 public interface Upgradable {
 	
 	/**
-	 * Gets the name of the Upgradable.
-	 * 
-	 * @return
-	 * 		The display name for the Upgradable.
+	 * @return The display name for the Upgradable.
 	 */
-	String getName();
+	public String getName();
 }

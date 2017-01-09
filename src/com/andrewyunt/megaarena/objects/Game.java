@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @author Andrew Yunt
  */
 public class Game {
-	
+
 	private final Arena arena;
 	private final Set<GamePlayer> players = new HashSet<GamePlayer>();
 	private final Set<Block> placedBlocks = new HashSet<Block>();
@@ -54,84 +54,81 @@ public class Game {
 		if (arena.getType() != Arena.Type.TDM)
 			return;
 		
-		/* Repeating task used for automatic team balancing in TDM */
-        BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), () -> {
-
-            GameSide blue = null;
-            GameSide green = null;
-
-            try {
-                blue = getSide(GameSide.Type.BLUE);
-                green = getSide(GameSide.Type.GREEN);
-            } catch (SideException e) {
-            }
-
-            int bluePlayers = getPlayers(blue).size();
-            int greenPlayers = getPlayers(green).size();
-
-            int totalPlayers = bluePlayers + greenPlayers;
-
-            GameSide morePlayers = null;
-
-            if (bluePlayers > greenPlayers)
-                morePlayers = blue;
-            else if (greenPlayers > bluePlayers)
-                morePlayers = green;
-            else
-                return;
-
-            int balanceGap = 0;
-
-            if (totalPlayers > 20 && totalPlayers < 40)
-                balanceGap = 5;
-            else if (totalPlayers > 40)
-                balanceGap = 10;
-            else
-                return;
-
-            int playerDiff = 0;
-
-            if (morePlayers == blue) {
-                if (bluePlayers - greenPlayers < balanceGap)
-                    return;
-
-                playerDiff = bluePlayers - greenPlayers;
-            } else if (morePlayers == green) {
-                if (greenPlayers - bluePlayers < balanceGap)
-                    return;
-
-                playerDiff = greenPlayers - bluePlayers;
-            }
-
-            List<GamePlayer> morePlayersList = new ArrayList<GamePlayer>(getPlayers(morePlayers));
-
-            while (playerDiff > 0) {
-                Random random = new Random();
-                GamePlayer moved = morePlayersList.get(random.nextInt(morePlayersList.size()));
-
-                morePlayersList.remove(moved);
-
-                try {
-                    removePlayer(moved);
-                    addPlayer(moved, Action.TEAM_BALANCE);
-                } catch (PlayerException e) {
-                }
-            }
-        }, 0L, 6000L);
+		// Repeating task used for automatic team balancing in TDM
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), () -> {
+			GameSide blue = null;
+			GameSide green = null;
+			
+			try {
+				blue = getSide(GameSide.Type.BLUE);
+				green = getSide(GameSide.Type.GREEN);
+			} catch (SideException e) {
+				e.printStackTrace();
+			}
+			
+			int bluePlayers = getPlayers(blue).size();
+			int greenPlayers = getPlayers(green).size();
+			int totalPlayers = bluePlayers + greenPlayers;
+			
+			GameSide morePlayers = null;
+			
+			if (bluePlayers > greenPlayers)
+				morePlayers = blue;
+			else if (greenPlayers > bluePlayers)
+				morePlayers = green;
+			else
+				return;
+			
+			int balanceGap = 0;
+			
+			if (totalPlayers > 20 && totalPlayers < 40)
+				balanceGap = 5;
+			else if (totalPlayers > 40)
+				balanceGap = 10;
+			else
+				return;
+			
+			int playerDiff = 0;
+			
+			if (morePlayers == blue) {
+				if (bluePlayers - greenPlayers < balanceGap)
+					return;
+				
+				playerDiff = bluePlayers - greenPlayers;
+			} else if (morePlayers == green) {
+				if (greenPlayers - bluePlayers < balanceGap)
+					return;
+				
+				playerDiff = greenPlayers - bluePlayers;
+			}
+			
+			List<GamePlayer> morePlayersList = new ArrayList<GamePlayer>(getPlayers(morePlayers));
+			
+			while (playerDiff > 0) {
+				Random random = new Random();
+				GamePlayer moved = morePlayersList.get(random.nextInt(morePlayersList.size()));
+				
+				morePlayersList.remove(moved);
+				
+				try {
+					removePlayer(moved);
+					addPlayer(moved, Action.TEAM_BALANCE);
+				} catch (PlayerException e) {
+					e.printStackTrace();
+				}
+			}
+		} , 0L, 6000L);
 	}
-	
+
 	/**
-	 * Gets the arena the game is running in.
-	 * 
-	 * @return
-	 * 		The arena which the game is running in.
+	 * @return The arena which the game is running in.
 	 */
 	public Arena getArena() {
-		
+
 		return arena;
 	}
-	
+
 	/**
 	 * Adds a player to the game and sets their attributes.
 	 * 
@@ -172,6 +169,7 @@ public class Game {
 					side = getSide(GameSide.Type.GREEN);
 			}
 		} catch (SideException e) {
+			e.printStackTrace();
 		}
 		
 		players.add(player);
@@ -199,21 +197,19 @@ public class Game {
 		GameSide.Type sideType = side.getSideType();
 		
 		if (action == Action.VOLUNTARY)
-			bp.sendMessage(ChatColor.GREEN + String.format(
-					"You have joined the %s side.",
+			bp.sendMessage(ChatColor.GREEN + String.format("You have joined the %s side.",
 					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
 		else if (action == Action.TEAM_BALANCE)
 			bp.sendMessage(ChatColor.GREEN + String.format(
-					"You have been automatically moved to "
-					+ "the %s side by an automatic team balance.",
+					"You have been automatically moved to " + "the %s side by an automatic team balance.",
 					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
 		
 		spawnPlayer(player, sideType);
 	}
-	
+
 	/**
-	 * Gets a random spawn of the specified side and checks if it is used if
-	 * the arena is a duel, then spawns them.
+	 * Gets a random spawn of the specified side and checks if it is used if the
+	 * arena is a duel, then spawns them.
 	 * 
 	 * @param player
 	 * 		The specified player to be added to the game.
@@ -225,7 +221,6 @@ public class Game {
 		List<Spawn> spawns = new ArrayList<Spawn>(arena.getSpawns(sideType));
 		
 		if (arena.getType() == Arena.Type.DUEL) {
-			
 			for (Spawn spawn : arena.getSpawns()) {
 				if (spawn.isUsed())
 					continue;
@@ -235,21 +230,17 @@ public class Game {
 				
 				break;
 			}
-			
 		} else if (arena.getType() == Arena.Type.FFA) {
-			
 			player.setFallen(false);
 			Collections.shuffle(spawns);
 			player.spawn(spawns.get(0));
-			
 		} else if (arena.getType() == Arena.Type.TDM) {
-			
 			player.setFallen(false);
 			Collections.shuffle(spawns);
 			player.spawn(spawns.get(0));
 		}
 	}
-	
+
 	/**
 	 * Removes a specified player from the game.
 	 * 
@@ -265,44 +256,44 @@ public class Game {
 		
 		Player bp = player.getBukkitPlayer();
 		
-		/* Remove player from players set and then set the player's game to null*/
-  		players.remove(player);
-  		player.setGame(null);
-  		
-  		/* Remove player from scoreboard teams */
-  		for (GamePlayer toRemove : players)
-  			toRemove.getDisplayBoard().getScoreboard().getTeam(player.getSide().getSideType().getName())
-  			.removePlayer(player.getBukkitPlayer());
-  		
-  		/* Update teams to remove player */
-  		for (GameSide side : sides) {
-  			Team team = player.getDisplayBoard().getScoreboard().getTeam(side.getSideType().getName());
-
-			team.getPlayers().forEach(team::removePlayer);
-  		}
-  		
-  		/* Set the player's side to null */
-  		player.setSide(null);
+		// Remove player from players set and then set the player's game to null
+		players.remove(player);
+		player.setGame(null);
 		
-		/* Update player's scoreboard */
+		// Remove player from scoreboard teams
+		for (GamePlayer toRemove : players)
+			toRemove.getDisplayBoard().getScoreboard().getTeam(player.getSide().getSideType().getName())
+					.removePlayer(player.getBukkitPlayer());
+		
+		// Update teams to remove player
+		for (GameSide side : sides) {
+			Team team = player.getDisplayBoard().getScoreboard().getTeam(side.getSideType().getName());
+			
+			team.getPlayers().forEach(team::removePlayer);
+		}
+		
+		// Set the player's side to null
+		player.setSide(null);
+		
+		// Update player's scoreboard
 		player.updateScoreboard();
 		
-		/* Set player's energy to 0 */
+		// Set player's energy to 0
 		player.setEnergy(0);
 		
-		/* Set player's speed boolean to false */
+		// Set player's speed boolean to false
 		player.setHasSpeed(false);
 		
-		/* Set player's killstreak to 0 */
+		// Set player's killstreak to 0
 		player.setKillStreak(0);
 		
-		/* Set last damager to null */
+		// Set last damager to null
 		player.setLastDamager(null);
 		
-		/* Remove player's potion effects */
+		// Remove player's potion effects
 		bp.getActivePotionEffects().clear();
 		
-		/* Set player's lobby health, food, experience and game mode */
+		// Set player's lobby health, food, experience and game mode
 		bp.setMaxHealth(20.0D);
 		bp.setHealth(20.0D);
 		bp.setFoodLevel(20);
@@ -310,10 +301,10 @@ public class Game {
 		bp.setLevel(0);
 		bp.setGameMode(player.getPreviousGameMode());
 		
-		/* Set player's lobby inventory */
+		// Set player's lobby inventory
 		player.updateHotbar();
-			
-		/* Teleport the player to the spawn location */
+		
+		// Teleport the player to the spawn location
 		Location loc = bp.getWorld().getSpawnLocation().clone();
 		
 		Chunk chunk = loc.getChunk();
@@ -325,54 +316,53 @@ public class Game {
 		
 		bp.teleport(loc, TeleportCause.COMMAND);
 	}
-	
+
 	/**
 	 * Gets all players currently in the game.
 	 * 
-	 * @returns
-	 * 		A set of players currently in the game.
+	 * @returns A set of players currently in the game.
 	 */
 	public Set<GamePlayer> getPlayers() {
-		
+
 		return players;
 	}
-	
+
 	/**
 	 * Gets all players currently in the game from the specified side.
 	 * 
-	 * @return
-	 * 		A set of players currently in the game on the specified side.
+	 * @return A set of players currently in the game on the specified side.
 	 */
 	public Set<GamePlayer> getPlayers(GameSide side) {
 		
 		Set<GamePlayer> players = new HashSet<GamePlayer>(this.players);
+		Set<GamePlayer> toRemove = players.stream().filter(player -> player.getSide() != side)
+				.collect(Collectors.toSet());
 		
-		Set<GamePlayer> toRemove = players.stream().filter(player -> player.getSide() != side).collect(Collectors.toSet());
-
 		toRemove.forEach(players::remove);
 		
 		return players;
 	}
-	
+
 	/**
 	 * Removes all players / placed blocks, and sets the arena game to null.
 	 */
 	public void end() {
-		
+
 		Set<GamePlayer> toRemovePlayers = new HashSet<GamePlayer>();
 
 		toRemovePlayers.addAll(players);
-		
+
 		for (GamePlayer player : toRemovePlayers)
 			try {
 				removePlayer(player);
 			} catch (PlayerException e) {
+				e.printStackTrace();
 			}
 		
-		Set<Block> toRemoveBlocks= new HashSet<Block>();
-
+		Set<Block> toRemoveBlocks = new HashSet<Block>();
+		
 		toRemoveBlocks.addAll(placedBlocks);
-
+		
 		toRemoveBlocks.forEach(this::removePlacedBlock);
 		
 		if (arena.getType() == Arena.Type.DUEL)
@@ -381,7 +371,7 @@ public class Game {
 		
 		arena.setGame(null);
 	}
-	
+
 	/**
 	 * Adds a block to the placed blocks set.
 	 * 
@@ -395,12 +385,12 @@ public class Game {
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> removePlacedBlock(block), 200L);
 	}
-	
+
 	/**
 	 * Removes a block from the placed blocks set.
 	 * 
 	 * @param block
-	 * 		The block to be removed from the placed blocks set. 
+	 * 		The block to be removed from the placed blocks set.
 	 */
 	public void removePlacedBlock(Block block) {
 		
@@ -408,18 +398,17 @@ public class Game {
 		
 		block.setType(Material.AIR);
 	}
-	
+
 	/**
 	 * Gets a Collection of placed blocks.
 	 * 
-	 * @return
-	 * 		A collection of placed blocks.
+	 * @return A collection of placed blocks.
 	 */
 	public Collection<Block> getPlacedBlocks() {
 		
 		return placedBlocks;
 	}
-	
+
 	/**
 	 * Gets the side instance for the side type in the game.
 	 * 
@@ -428,15 +417,14 @@ public class Game {
 	 * @return
 	 * 		The instance of the side for the specified side type.
 	 * @throws SideException
-	 * 		If there is no side in the game with the specified type,
-	 * 		throw SideException.
+	 * 		If there is no side in the game with the specified type, throw SideException.
 	 */
 	public GameSide getSide(GameSide.Type sideType) throws SideException {
-		
+
 		for (GameSide side : sides)
 			if (side.getSideType() == sideType)
 				return side;
-		
+
 		throw new SideException("The side of the specified type does not exist.");
 	}
 }

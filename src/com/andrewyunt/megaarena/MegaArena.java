@@ -19,11 +19,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
@@ -67,14 +64,11 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class MegaArena extends JavaPlugin {
 	
-	private final Logger logger = getLogger();
-	private final Server server = getServer();
-	private final PluginManager pm = server.getPluginManager();
-    private final ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
-    private final UpgradesMenu upgradesMenu = new UpgradesMenu();
-    private final LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
-    private final ShopMenu shopMenu = new ShopMenu();
-    private final Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
+	private final ClassSelectorMenu classSelectorMenu = new ClassSelectorMenu();
+	private final UpgradesMenu upgradesMenu = new UpgradesMenu();
+	private final LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
+	private final ShopMenu shopMenu = new ShopMenu();
+	private final Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
@@ -105,9 +99,11 @@ public class MegaArena extends JavaPlugin {
 		arenaConfiguration.saveDefaultConfig();
 		signConfiguration.saveDefaultConfig();
 		
+		PluginManager pm = getServer().getPluginManager();
+		
 		// Connect to the database */
 		if (!dataSource.connect()) {
-			logger.severe("Could not connect to the database, shutting down...");
+			getLogger().severe("Could not connect to the database, shutting down...");
 			pm.disablePlugin(MegaArena.getInstance());
 			return;
 		}
@@ -145,14 +141,14 @@ public class MegaArena extends JavaPlugin {
 			try {
 				arena.setGame(gameManager.createGame(arena));
 			} catch (GameException e) {
-				logger.warning(e.getMessage());
+				getLogger().warning(e.getMessage());
 			}
 		
 		for (Arena arena : arenaManager.getArenas(Arena.Type.FFA))
 			try {
 				arena.setGame(gameManager.createGame(arena));
 			} catch (GameException e) {
-				logger.warning(e.getMessage());
+				getLogger().warning(e.getMessage());
 			}
 	}
 	
@@ -186,133 +182,61 @@ public class MegaArena extends JavaPlugin {
 		dataSource.disconnect();
 	}
 	
-	/**
-	 * Gets the instance of the MegaArena class.
-	 * 
-	 * @return
-	 * 		Instance of the MegaArena class.
-	 */
 	public static MegaArena getInstance() {
 		
 		return instance;
 	}
 	
-	/**
-	 * Gets the instance of the ArenaManager class.
-	 * 
-	 * @return
-	 * 		Instance of the ArenaManager class.
-	 */
 	public ArenaManager getArenaManager() {
 		
 		return arenaManager;
 	}
 	
-	/**
-	 * Gets the instance of the GameManager class.
-	 * 
-	 * @return
-	 * 		Instance of the GameManager class.
-	 */
 	public GameManager getGameManager() {
 		
 		return gameManager;
 	}
 	
-	/**
-	 * Gets the instance of the PlayerManager class.
-	 * 
-	 * @return
-	 * 		Instance of the PlayerManager class.
-	 */
 	public PlayerManager getPlayerManager() {
 		
 		return playerManager;
 	}
 	
-	/**
-	 * Gets the instance of the SignManager class.
-	 * 
-	 * @return
-	 * 		Instance of the SignManager class.
-	 */
 	public SignManager getSignManager() {
 		
 		return signManager;
 	}
 	
-	/**
-	 * Gets the instance of the ArenaConfiguration class.
-	 * 
-	 * @return
-	 * 		Instance of the ArenaConfiguration class.
-	 */
 	public ArenaConfiguration getArenaConfig() {
 		
 		return arenaConfiguration;
 	}
 	
-	/**
-	 * Gets the instance of the SignConfiguration class.
-	 * 
-	 * @return
-	 * 		Instance of the SignConfiguration class.
-	 */
 	public SignConfiguration getSignConfig() {
 		
 		return signConfiguration;
 	}
 	
-	/**
-	 * Gets the plugin's data source.
-	 * 
-	 * @return
-	 * 		An instance that extends the DataSource class.
-	 */
 	public DataSource getDataSource() {
 		
 		return dataSource;
 	}
 	
-	/**
-	 * Gets the stored instance of the class selector menu.
-	 * 
-	 * @return
-	 * 		The instance of the class selector menu.
-	 */
 	public ClassSelectorMenu getClassSelectorMenu() {
 		
 		return classSelectorMenu;
 	}
 	
-	/**
-	 * Gets the stored instance of the upgrades menu.
-	 * 
-	 * @return
-	 * 		The instance of the upgrades menu.
-	 */
 	public UpgradesMenu getUpgradesMenu() {
 		
 		return upgradesMenu;
 	}
 	
-	/**
-	 * Gets the stored instance of the shop menu.
-	 * 
-	 * @return
-	 * 		The instance of the shop menu.
-	 */
 	public ShopMenu getShopMenu() {
 		
 		return shopMenu;
 	}
 	
-	/**
-	 * Gets the stored instance of the layout editor menu.
-	 * 
-	 * @return
-	 * 		The instance of the layout editor menu.
-	 */
 	public LayoutEditorMenu getLayoutEditorMenu() {
 		
 		return layoutEditorMenu;
@@ -320,40 +244,51 @@ public class MegaArena extends JavaPlugin {
 	
 	public void createHotbarItems() {
 		
-		/* Create items */
+		// Create items
 		ItemStack serverSelector = new ItemStack(Material.COMPASS);
 		ItemStack shop = new ItemStack(Material.EMERALD);
 		ItemStack classSelector = new ItemStack(Material.COMMAND);
 		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
 		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
 		
-		/* Get item metas */
+		// Get item metas
 		ItemMeta serverSelectorMeta = serverSelector.getItemMeta();
 		ItemMeta shopMeta = shop.getItemMeta();
 		ItemMeta classSelectorMeta = classSelector.getItemMeta();
 		ItemMeta playFFAMeta = playFFA.getItemMeta();
 		ItemMeta playTDMMeta = playTDM.getItemMeta();
 		
-		/* Set meta display names */
-		serverSelectorMeta.setDisplayName(ChatColor.RED + "Server Selector");
-		shopMeta.setDisplayName(ChatColor.GREEN + "Shop");
-		classSelectorMeta.setDisplayName(ChatColor.YELLOW + "Class Selector");
-		playFFAMeta.setDisplayName("Play : Free-for-all");
-		playTDMMeta.setDisplayName("Play : Team-deathmatch");
+		// Set meta display names
+		serverSelectorMeta.setDisplayName(ChatColor.RED + ChatColor.BOLD.toString() + "Server Selector");
+		shopMeta.setDisplayName(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop");
+		classSelectorMeta.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector");
+		playFFAMeta.setDisplayName(ChatColor.BOLD.toString() + "Play : Free-for-all");
+		playTDMMeta.setDisplayName(ChatColor.BOLD.toString() + "Play : Team-deathmatch");
 		
-		/* Set item metas */
+		// Set item metas
 		serverSelector.setItemMeta(serverSelectorMeta);
 		shop.setItemMeta(shopMeta);
 		classSelector.setItemMeta(classSelectorMeta);
 		playFFA.setItemMeta(playFFAMeta);
 		playTDM.setItemMeta(playTDMMeta);
 		
-		/* Set hotbar items in map */
+		// Set hotbar items in map
 		hotbarItems.put(0, serverSelector);
 		hotbarItems.put(1, shop);
 		hotbarItems.put(2, classSelector);
 		hotbarItems.put(7, Utils.addGlow(playFFA));
 		hotbarItems.put(8, Utils.addGlow(playTDM));
+		
+		for (Map.Entry<Integer, ItemStack> entry : hotbarItems.entrySet()) {
+			ItemStack is = entry.getValue();
+			
+			if (is == null || !is.hasItemMeta())
+				continue;
+			
+			ItemMeta im = is.getItemMeta();
+			im.setDisplayName(im.getDisplayName() + ChatColor.GRAY + " (Right Click)");
+			is.setItemMeta(im);
+		}
 	}
 	
 	public Map<Integer, ItemStack> getHotbarItems() {
