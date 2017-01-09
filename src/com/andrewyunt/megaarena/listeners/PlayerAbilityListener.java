@@ -95,7 +95,7 @@ public class PlayerAbilityListener implements Listener {
 		}
 	}
 	
-	@EventHandler (priority = EventPriority.HIGHEST)
+	@EventHandler (priority = EventPriority.NORMAL)
 	public void EPC(EntityDamageByEntityEvent event) {
 		
 		if (event.getCause() == DamageCause.FALL)
@@ -195,7 +195,7 @@ public class PlayerAbilityListener implements Listener {
 		}
 	}
 	
-	@EventHandler (priority = EventPriority.HIGHEST)
+	@EventHandler (priority = EventPriority.NORMAL)
 	public void EPC(EntityDamageEvent event) {
 		
 		if (event.getCause() == DamageCause.FALL)
