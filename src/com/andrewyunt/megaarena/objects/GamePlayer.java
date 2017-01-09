@@ -561,6 +561,13 @@ public class GamePlayer {
 				ChatColor.AQUA + name + ChatColor.GREEN,
 				ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
 		
+		if (lastDamager.getKillStreak() > 1) {
+			lastDamager.addCoins(lastDamager.getKillStreak());
+			killerBP.sendMessage(ChatColor.GREEN + String.format("You earned %s coins for a killstreak of %s.",
+					ChatColor.AQUA + String.valueOf(lastDamager.getKillStreak()) + ChatColor.GREEN,
+					ChatColor.AQUA + String.valueOf(lastDamager.getKillStreak()) + ChatColor.GREEN));
+		}
+		
 		for (GamePlayer assistGP : assistPlayers) {
 			if (assistGP.getName().equals(lastDamager.getName()))
 				continue;
