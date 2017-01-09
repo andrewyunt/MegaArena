@@ -29,6 +29,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -540,7 +541,7 @@ public class GamePlayer {
 		if (!(lastDamager.isInGame()))
 			return;
 		
-		getLastDamager().addKill();
+		lastDamager.addKill();
 		
 		Game game = lastDamager.getGame();
 		
@@ -548,6 +549,17 @@ public class GamePlayer {
 			return;
 		
 		Player killerBP = lastDamager.getBukkitPlayer();
+		Damageable kLD = ((Damageable) killerBP);
+		double previousHealth = kLD.getHealth();
+		
+		if (previousHealth + 4 > kLD.getMaxHealth())
+			kLD.setHealth(kLD.getMaxHealth());
+		else
+			kLD.setHealth(kLD.getHealth() + 4);
+		
+		killerBP.sendMessage(ChatColor.LIGHT_PURPLE + String.format("You restored 2 hearts for killing %s.",
+				getBukkitPlayer().getDisplayName()));
+		
 		int killCoins = 12;
 		
 		if (killerBP.hasPermission("megaarena.coins.double"))
