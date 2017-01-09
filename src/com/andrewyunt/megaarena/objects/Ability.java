@@ -192,9 +192,6 @@ public enum Ability implements Upgradable {
 			
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
-				if (!player.isInGame())
-					return;
-				
 				Location loc = bp.getLocation().clone();
 				
 				loc.getWorld().spigot().playEffect(
