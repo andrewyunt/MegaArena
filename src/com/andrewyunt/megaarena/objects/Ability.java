@@ -196,7 +196,7 @@ public enum Ability implements Upgradable {
 				
 				loc.getWorld().spigot().playEffect(
 						loc.add(0.0D, 0.8D, 0.0D),
-						Effect.EXPLOSION_LARGE);
+						Effect.EXPLOSION_HUGE);
 				
 				for (Entity entity : bp.getNearbyEntities(5, 3, 5)) {
 					if (!(entity instanceof Player))
