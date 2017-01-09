@@ -283,9 +283,6 @@ public class Game {
 		// Set player's energy to 0
 		player.setEnergy(0);
 		
-		// Set player's speed boolean to false
-		player.setHasSpeed(false);
-		
 		// Set player's killstreak to 0
 		player.setKillStreak(0);
 		

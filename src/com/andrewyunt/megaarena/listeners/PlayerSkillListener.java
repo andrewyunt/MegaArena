@@ -443,9 +443,8 @@ public class PlayerSkillListener implements Listener {
 			if (e.getType() == PotionEffectType.SPEED)
 				if (e.getAmplifier() >= 1)
 					return;
-				else
-					if (e.getDuration() >= 40)
-						return;
+				else if (e.getDuration() >= 40)
+					return;
 		
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
 		damager.addPotionEffect(speed, true);
@@ -488,9 +487,6 @@ public class PlayerSkillListener implements Listener {
 		if (!damagedGP.hasFallen() && (arenaType == Arena.Type.FFA || arenaType == Arena.Type.TDM))
 			return;
 
-		if (damagedGP.hasSpeed())
-			return;
-
 		int skillLevel = 0;
 
 		if (damagedGP.getClassType().getSkillOne() == Skill.POWERFUL_WEAKNESS)
@@ -508,10 +504,9 @@ public class PlayerSkillListener implements Listener {
 		
 		for (PotionEffect e : effects)
 			if (e.getType() == PotionEffectType.SPEED && e.getAmplifier() >= 1)
-					return;
+				return;
 
 		damaged.addPotionEffect(speed, false);
-		damagedGP.setHasSpeed(true);
 
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
 				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));
@@ -539,9 +534,6 @@ public class PlayerSkillListener implements Listener {
 		if (!playerGP.isInGame())
 			return;
 
-		if (!playerGP.hasSpeed())
-			return;
-
 		int skillLevel = 0;
 
 		if (playerGP.getClassType().getSkillOne() == Skill.POWERFUL_WEAKNESS)
@@ -560,11 +552,16 @@ public class PlayerSkillListener implements Listener {
 
 		if (((Damageable) player).getHealth() < health)
 			return;
+		
+		Collection<PotionEffect> effects = player.getActivePotionEffects();
+		for (PotionEffect e : effects)
+			if (e.getType() == PotionEffectType.SPEED)
+				if (e.getAmplifier() >= 1)
+					return;
 
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 1, 0);
 
 		player.addPotionEffect(speed, true);
-		playerGP.setHasSpeed(false);
 
 		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been deactivated.",
 				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));

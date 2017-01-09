@@ -64,7 +64,7 @@ public class GamePlayer {
 	private GameSide side;
 	private DisplayBoard displayBoard = null;
 	private GamePlayer lastDamager = null;
-	private boolean hasSpeed = false, sentActivate = false, loaded = false, hasBloodEffect = false,
+	private boolean sentActivate = false, loaded = false, hasBloodEffect = false,
 			hasFallen = false, acceptingDuels = true, epcCooldown = false, bowCooldown = false;
 	private int coins = 0, earnedCoins = 0, kills = 0, killStreak = 0, energy = 0;
 	
@@ -372,16 +372,6 @@ public class GamePlayer {
 	public Set<GamePlayer> getAssistPlayers() {
 		
 		return assistPlayers;
-	}
-	
-	public void setHasSpeed(boolean hasSpeed) {
-		
-		this.hasSpeed = hasSpeed;
-	}
-	
-	public boolean hasSpeed() {
-		
-		return hasSpeed;
 	}
 	
 	public void addKill() {
