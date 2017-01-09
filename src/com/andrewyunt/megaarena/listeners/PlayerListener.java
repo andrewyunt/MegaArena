@@ -512,9 +512,10 @@ public class PlayerListener implements Listener {
 			killedColor = killedGP.getSide().getSideType().getNameColor();
 		
 		EntityDamageEvent entityDamageEvent = killed.getLastDamageCause();
-		ConfigurationSection deathMessagesSection = MegaArena.getInstance().getConfig()
-				.getConfigurationSection("death-messages");
-		List<String> msgList = null;
+		
+		if (entityDamageEvent.getEntityType() == null)
+			return;
+		
 		String msg = null;
 		ChatColor killerColor = ChatColor.GRAY;
 		
@@ -533,7 +534,10 @@ public class PlayerListener implements Listener {
 			if (killerGP.isInGame())
 				killerColor = killerGP.getSide().getSideType().getNameColor();
 			
+			ConfigurationSection deathMessagesSection = MegaArena.getInstance().getConfig()
+					.getConfigurationSection("death-messages");
 			Material tool = killer.getItemInHand().getType();
+			List<String> msgList = null;
 			
 			if (tool == Material.IRON_SWORD || tool == Material.DIAMOND_SWORD ||
 					tool == Material.STONE_SWORD || tool == Material.BOW) {

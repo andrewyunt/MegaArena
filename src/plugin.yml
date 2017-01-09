@@ -26,6 +26,8 @@ commands:
   bloodtoggle:
     description: Toggle blood particles on or off..
     permission: megaarena.bloodtoggle
+  spawn:
+    description: Kills the player if they are in a normal FFA or TDM arena.
 
 ############################################################
 # +------------------------------------------------------+ #

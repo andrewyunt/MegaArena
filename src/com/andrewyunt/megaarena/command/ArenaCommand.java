@@ -58,9 +58,6 @@ public class ArenaCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (!cmd.getName().equalsIgnoreCase("arena"))
-			return false;
-		
 		if (!(args.length > 0)) {
 			
 			if (!sender.hasPermission("megaarena.arena.help")) {

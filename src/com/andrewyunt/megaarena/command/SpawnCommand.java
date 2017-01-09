@@ -15,7 +15,6 @@
  */
 package com.andrewyunt.megaarena.command;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,44 +22,39 @@ import org.bukkit.entity.Player;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
 /**
- * The bloodtoggle command class which is used as a Bukkit CommandExecutor
- * to toggle blood particles on or off.
+ * The spawn command class which is used as a Bukkit CommandExecutor.
  * 
  * @author Andrew Yunt
  */
-public class BloodToggleCommand implements CommandExecutor {
-	
+public class SpawnCommand implements CommandExecutor {
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (!(sender instanceof Player)) {
-			System.out.println("You may not execute that command from the console.");
+		if (!(sender instanceof Player))
 			return false;
-		}
 		
-		if (!sender.hasPermission("megaarena.bloodtoggle")) {
-			sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
-			return false;
-		}
-		
-		GamePlayer player = null;
+		Player player = (Player) sender;
+		GamePlayer gp = null;
 		
 		try {
-			player = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName());
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
+			e.printStackTrace();
 		}
 		
-		boolean hasBloodEffect = !player.hasBloodEffect();
+		if (!gp.isInGame())
+			return false;
 		
-		player.setBloodEffect(hasBloodEffect);
+		if (gp.getGame().getArena().getType() == Arena.Type.DUEL)
+			return false;
 		
-		player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format(
-				"Blood particles toggled %s successfully.",
-				ChatColor.AQUA + (hasBloodEffect ? "on" : "off") + ChatColor.GREEN));
+		player.setHealth(0D);
 		
-		return true;
+		return false;
 	}
 }

@@ -37,9 +37,6 @@ public class DuelDenyCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (!cmd.getName().equalsIgnoreCase("dueldeny"))
-			return false;
-		
 		if (!(sender instanceof Player)) {
 			System.out.println("You may not execute that command from the console.");
 			return false;
