@@ -196,6 +196,11 @@ public class Game {
 		
 		player.updateScoreboard();
 		
+		bp.sendMessage(ChatColor.GOLD + ChatColor.BOLD.toString() + "TIP: " + ChatColor.GRAY
+				+ "Use /spawn to return to spawn.");
+		bp.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "Cross-Teaming/Trucing is NOT allowed.");
+		bp.sendMessage("");
+		
 		GameSide.Type sideType = side.getSideType();
 		
 		if (teamBalance)
@@ -203,8 +208,9 @@ public class Game {
 					"You have been automatically moved to " + "the %s side by an automatic team balance.",
 					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
 		else
-			bp.sendMessage(ChatColor.GREEN + String.format("You have joined the %s side.",
-					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
+			bp.sendMessage(ChatColor.GREEN + String.format("You have joined %s.",
+					((sideType == GameSide.Type.SOLO ? ChatColor.AQUA + "FFA" + ChatColor.GREEN :
+						"the " + ChatColor.AQUA + sideType.getName() + ChatColor.GREEN + " team"))));
 		
 		spawnPlayer(player, sideType);
 	}
