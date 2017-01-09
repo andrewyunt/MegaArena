@@ -562,9 +562,16 @@ public class GamePlayer {
 				ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
 		
 		if (lastDamager.getKillStreak() > 1) {
-			lastDamager.addCoins(lastDamager.getKillStreak());
+			int killStreakCoins = lastDamager.getKillStreak();
+			
+			if (killerBP.hasPermission("megaarena.coins.triple"))
+				killStreakCoins = killStreakCoins * 3;
+			else if (killerBP.hasPermission("megaarena.coins.double"))
+				killStreakCoins = killStreakCoins * 2;
+			
+			lastDamager.addCoins(killStreakCoins);
 			killerBP.sendMessage(ChatColor.GREEN + String.format("You earned %s coins for a killstreak of %s.",
-					ChatColor.AQUA + String.valueOf(lastDamager.getKillStreak()) + ChatColor.GREEN,
+					ChatColor.AQUA + String.valueOf(killStreakCoins) + ChatColor.GREEN,
 					ChatColor.AQUA + String.valueOf(lastDamager.getKillStreak()) + ChatColor.GREEN));
 		}
 		
