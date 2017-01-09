@@ -124,7 +124,7 @@ public class GameManager {
 	 * @throws GameException
 	 * 		If the specified arena type is a DUEL, GameException is thrown.
 	 */
-	public void matchMake(GamePlayer player, Arena.Type type, Action action) throws GameException {
+	public void matchMake(GamePlayer player, Arena.Type type) throws GameException {
 
 		if (type == Arena.Type.DUEL)
 			throw new GameException("Matchmaking is not available for duels.");
@@ -153,6 +153,6 @@ public class GameManager {
 		Game game = games.get(0);
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> game.addPlayer(player, action), 1L);
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> game.addPlayer(player, false), 1L);
 	}
 }

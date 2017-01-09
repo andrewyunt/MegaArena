@@ -184,19 +184,15 @@ public class PlayerListener implements Listener {
 			}
 		} else if (name.contains(ChatColor.BOLD.toString() + "Play : Team-deathmatch")) {
 			try {
-				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.TDM,
-						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
+				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.TDM);
 			} catch (GameException e) {
 				player.sendMessage(e.getMessage());
-				return;
 			}
 		} else if (name.contains(ChatColor.BOLD.toString() + "Play : Free-for-all")) {
 			try {
-				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.FFA, 
-						com.andrewyunt.megaarena.objects.Action.VOLUNTARY);
+				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.FFA);
 			} catch (GameException e) {
 				player.sendMessage(e.getMessage());
-				return;
 			}
 		} else if (name.contains(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop"))
 			MegaArena.getInstance().getShopMenu().openMainMenu(gp);

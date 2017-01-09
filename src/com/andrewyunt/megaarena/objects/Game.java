@@ -113,7 +113,7 @@ public class Game {
 				
 				try {
 					removePlayer(moved);
-					addPlayer(moved, Action.TEAM_BALANCE);
+					addPlayer(moved, true);
 				} catch (PlayerException e) {
 					e.printStackTrace();
 				}
@@ -134,8 +134,10 @@ public class Game {
 	 * 
 	 * @param player
 	 * 		The player to be added to the game.
+	 * @param teamBalance
+	 * 		Set this value to true if the player was added due to a team balance.
 	 */
-	public void addPlayer(GamePlayer player, Action action) {
+	public void addPlayer(GamePlayer player, boolean teamBalance) {
 		
 		Player bp = player.getBukkitPlayer();
 		
@@ -196,12 +198,12 @@ public class Game {
 		
 		GameSide.Type sideType = side.getSideType();
 		
-		if (action == Action.VOLUNTARY)
-			bp.sendMessage(ChatColor.GREEN + String.format("You have joined the %s side.",
-					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
-		else if (action == Action.TEAM_BALANCE)
+		if (teamBalance)
 			bp.sendMessage(ChatColor.GREEN + String.format(
 					"You have been automatically moved to " + "the %s side by an automatic team balance.",
+					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
+		else
+			bp.sendMessage(ChatColor.GREEN + String.format("You have joined the %s side.",
 					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
 		
 		spawnPlayer(player, sideType);

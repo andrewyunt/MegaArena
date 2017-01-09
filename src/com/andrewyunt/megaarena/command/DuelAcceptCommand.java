@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.objects.Action;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
@@ -129,8 +128,8 @@ public class DuelAcceptCommand implements CommandExecutor {
 		} catch (GameException e) {
 		}
 		
-		game.addPlayer(player, Action.VOLUNTARY);
-		game.addPlayer(requestingPlayer, Action.VOLUNTARY);
+		game.addPlayer(player, false);
+		game.addPlayer(requestingPlayer, false);
 
 		return true;
 	}
