@@ -70,10 +70,10 @@ public class GamePlayer {
 	
 	public GamePlayer(String name) {
 		
-		/* Set variables */
+		// Set variables
 		this.name = name;
 		
-		/* Load upgradable levels */
+		// Load upgradable levels
 		for (Class classType : Class.values()) {
 			int level = MegaArena.getInstance().getDataSource().getLevel(this, classType);
 			upgradeLevels.put(classType, level);
@@ -89,10 +89,10 @@ public class GamePlayer {
 			upgradeLevels.put(abilityType, level);
 		}
 		
-		/* Get the scheduler */
+		// Get the scheduler
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		
-		/* Repeating task to remove withering */
+		// Repeating task to remove withering
 		OfflinePlayer op = Bukkit.getServer().getOfflinePlayer(name);
 		
 		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
@@ -106,7 +106,7 @@ public class GamePlayer {
 			}
 		}, 0L, 20L);
 		
-		/* Set up scoreboard */
+		// Set up scoreboard
 		String title = ChatColor.AQUA + "" + ChatColor.BOLD + "MegaArena";
 		
 		displayBoard = new DisplayBoard(getBukkitPlayer(), title);
@@ -257,17 +257,18 @@ public class GamePlayer {
 	
 	public void spawn(Spawn spawn) {
 		
-		Location loc = spawn.getLocation().clone();
+		Player bp = getBukkitPlayer();
 		
-		getBukkitPlayer().setMaxHealth(40D);
-		getBukkitPlayer().setHealth(40D);
-		getBukkitPlayer().setFoodLevel(20);
+		bp.setMaxHealth(40D);
+		bp.setHealth(40D);
+		bp.setFoodLevel(20);
 		setEnergy(0);
-		getBukkitPlayer().setGameMode(GameMode.SURVIVAL);
+		bp.setGameMode(GameMode.SURVIVAL);
 		
-		getBukkitPlayer().getInventory().clear();
+		bp.getInventory().clear();
 		classType.giveKitItems(this);
 		
+		Location loc = spawn.getLocation().clone();
 		Chunk chunk = loc.getChunk();
 		
 		if (!chunk.isLoaded())
@@ -275,7 +276,19 @@ public class GamePlayer {
 		
 		loc.setY(loc.getY() + 1);
 		
-		getBukkitPlayer().teleport(loc, TeleportCause.COMMAND);
+		bp.teleport(loc, TeleportCause.COMMAND);
+		
+		if (game.getArena().getType() == Arena.Type.DUEL)
+			return;
+		
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				
+				hasFallen = true;
+			}
+		}, 100L);
 	}
 	
 	public void addEnergy(int energy) {

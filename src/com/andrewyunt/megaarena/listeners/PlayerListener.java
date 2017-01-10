@@ -254,11 +254,8 @@ public class PlayerListener implements Listener {
 		if (gp.getGame().getArena().getType() != Arena.Type.FFA)
 			return;
 		
-		if (gp.hasFallen())
-			return;
-		
-		gp.setFallen(true);
-		event.setCancelled(true);
+		if (!gp.hasFallen())
+			event.setCancelled(true);
 	}
 	
 	@EventHandler
