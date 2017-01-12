@@ -64,8 +64,8 @@ public class GamePlayer {
 	private GameSide side;
 	private DisplayBoard displayBoard = null;
 	private GamePlayer lastDamager = null;
-	private boolean sentActivate = false, loaded = false, hasBloodEffect = false,
-			hasFallen = false, acceptingDuels = true, epcCooldown = false, bowCooldown = false;
+	private boolean sentActivate = false, loaded = false, hasBloodEffect = false, hasFallen = false,
+			acceptingDuels = true, epcCooldown = false, explosiveWeaknessCooldown = false, bowCooldown = false;
 	private int coins = 0, earnedCoins = 0, kills = 0, killStreak = 0, energy = 0;
 	
 	public GamePlayer(String name) {
@@ -624,14 +624,24 @@ public class GamePlayer {
 		return lastDamager;
 	}
 	
-	public void setEPCCooldown(boolean cooldown) {
+	public void setEPCCooldown(boolean epcCooldown) {
 		
-		this.epcCooldown = cooldown;
+		this.epcCooldown = epcCooldown;
 	}
 	
 	public boolean isEPCCooldown() {
 		
 		return epcCooldown;
+	}
+	
+	public void setExplosiveWeaknessCooldown(boolean explosiveWeaknessCooldown) {
+		
+		this.explosiveWeaknessCooldown = explosiveWeaknessCooldown;
+	}
+	
+	public boolean isExplosiveWeaknessCooldown() {
+		
+		return explosiveWeaknessCooldown;
 	}
 	
 	public void setBowCooldown(boolean bowCooldown) {

@@ -17,12 +17,15 @@ package com.andrewyunt.megaarena.listeners;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -56,7 +59,8 @@ import com.andrewyunt.megaarena.objects.Skill;
  */
 public class PlayerSkillListener implements Listener {
 
-	public HashMap<TNTPrimed, Player> creeperTNT = new HashMap<TNTPrimed, Player>();
+	private HashMap<UUID, Player> creeperTNT = new HashMap<UUID, Player>();
+	private HashMap<UUID, GamePlayer> explosiveWeaknessTNT = new HashMap<UUID, GamePlayer>();
 	
 	@EventHandler
 	public void removeEffects(PlayerDeathEvent e) {
@@ -454,117 +458,102 @@ public class PlayerSkillListener implements Listener {
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
-	public void powerfulWeakness(EntityDamageEvent event) {
+	public void explosiveWeakness(EntityDamageEvent event) {
 		
 		if (event.isCancelled())
 			return;
 		
-		// Check if the entity is player
-		if (!(event.getEntity() instanceof Player))
-			return;
-
-		// Casting to players
-		Player damaged = (Player) event.getEntity();
-		
-		GamePlayer damagedGP = null;
-		
-		try {
-			damagedGP = MegaArena.getInstance().getPlayerManager().getPlayer(damaged.getName());
-		} catch (PlayerException e) {
-			e.printStackTrace();
-		}
-
-		// Check if players are in-game
-		if (!damagedGP.isInGame())
-			return;
-
-		// Checking that the damaged player is a Creeper
-		if (damagedGP.getClassType() != Class.CREEPER)
-			return;
-		
-		Arena.Type arenaType = damagedGP.getGame().getArena().getType();
-		
-		if (!damagedGP.hasFallen() && (arenaType == Arena.Type.FFA || arenaType == Arena.Type.TDM))
-			return;
-
-		int skillLevel = 0;
-
-		if (damagedGP.getClassType().getSkillOne() == Skill.POWERFUL_WEAKNESS)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.POWERFUL_WEAKNESS)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
-
-		int health = 16 + (skillLevel - 1);
-
-		if (((Damageable) damaged).getHealth() - event.getFinalDamage() > health)
-			return;
-
-		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, true);
-		Collection<PotionEffect> effects = damaged.getActivePotionEffects();
-		
-		for (PotionEffect e : effects)
-			if (e.getType() == PotionEffectType.SPEED && e.getAmplifier() >= 1)
-				return;
-
-		damaged.addPotionEffect(speed, false);
-
-		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));
+		explosiveWeakness(event.getEntity());
 	}
 
-	@EventHandler
-	public void powerfulWeakness(EntityRegainHealthEvent event) {
+	@EventHandler (priority = EventPriority.HIGHEST)
+	public void explosiveWeakness(EntityRegainHealthEvent event) {
+		
+		if (event.isCancelled())
+			return;
+		
+		explosiveWeakness(event.getEntity());
+	}
+	
+	public void explosiveWeakness(Entity entity) {
 		
 		// Check if the entity is player
-		if (!(event.getEntity() instanceof Player))
+		if (!(entity instanceof Player))
 			return;
-
+		
 		// Casting to players
-		Player player = (Player) event.getEntity();
-
-		GamePlayer playerGP = null;
-
+		Player player = (Player) entity;
+		GamePlayer gp = null;
+		
 		try {
-			playerGP = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
 		} catch (PlayerException e) {
 			e.printStackTrace();
 		}
-
+		
 		// Check if players are in-game
-		if (!playerGP.isInGame())
+		if (!gp.isInGame())
 			return;
-
+		
 		int skillLevel = 0;
-
-		if (playerGP.getClassType().getSkillOne() == Skill.POWERFUL_WEAKNESS)
-			skillLevel = playerGP.getLevel(playerGP.getClassType().getSkillOne());
-		else if (playerGP.getClassType().getSkillTwo() == Skill.POWERFUL_WEAKNESS)
-			skillLevel = playerGP.getLevel(playerGP.getClassType().getSkillTwo());
+		
+		if (gp.getClassType().getSkillOne() == Skill.EXPLOSIVE_WEAKNESS)
+			skillLevel = gp.getLevel(gp.getClassType().getSkillOne());
+		else if (gp.getClassType().getSkillTwo() == Skill.EXPLOSIVE_WEAKNESS)
+			skillLevel = gp.getLevel(gp.getClassType().getSkillTwo());
 		else
 			return;
 		
-		Arena.Type arenaType = playerGP.getGame().getArena().getType();
-		
-		if (!playerGP.hasFallen() && (arenaType == Arena.Type.FFA || arenaType == Arena.Type.TDM))
-			return;
-
-		int health = 16 + (skillLevel - 1);
-
-		if (((Damageable) player).getHealth() < health)
+		if (gp.isExplosiveWeaknessCooldown())
 			return;
 		
-		Collection<PotionEffect> effects = player.getActivePotionEffects();
-		for (PotionEffect e : effects)
-			if (e.getType() == PotionEffectType.SPEED)
-				if (e.getAmplifier() >= 1)
-					return;
-
-		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 1, 0);
-
-		player.addPotionEffect(speed, true);
-
+		int hearts = 7 + skillLevel;
+		
+		if (((Damageable) player).getHealth() != hearts)
+			return;
+		
+		Location loc = entity.getLocation().clone();
+		
+		loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), 4, false, false);
+		
+		if (skillLevel == 9)
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 2), true);
+		
+		gp.setExplosiveWeaknessCooldown(true);
+		
+		final GamePlayer finalGP = gp;
+		
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
+			finalGP.setExplosiveWeaknessCooldown(false);
+		}, 600L);
+		
 		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been deactivated.",
-				ChatColor.AQUA + Skill.POWERFUL_WEAKNESS.getName() + ChatColor.GREEN));
+				ChatColor.AQUA + Skill.EXPLOSIVE_WEAKNESS.getName() + ChatColor.GREEN));
+	}
+	
+	@EventHandler
+	public void onTNTDamagePlayer(EntityDamageByEntityEvent event) {
+		
+		if (event.getDamager().getType() != EntityType.PRIMED_TNT)
+			return;
+		
+		if (!explosiveWeaknessTNT.containsKey(event.getDamager().getUniqueId()))
+			return;
+		
+		if (!(event.getEntity() instanceof Player))
+			return;
+		
+		GamePlayer gp = null;
+		
+		try {
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(((Player) event.getEntity()).getName());
+		} catch (PlayerException e) {
+			e.printStackTrace();
+		}
+		
+		if (explosiveWeaknessTNT.get(event.getDamager().getUniqueId()).getSide() == gp.getSide())
+			event.setCancelled(true);
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -618,7 +607,7 @@ public class PlayerSkillListener implements Listener {
 		TNTPrimed tnt = (TNTPrimed) damaged.getWorld().spawnEntity(damaged.getEyeLocation(), EntityType.PRIMED_TNT);
 
 		tnt.setFuseTicks(60); // 3 second delay before explosion
-		creeperTNT.put(tnt, damaged);
+		creeperTNT.put(tnt.getUniqueId(), damaged);
 
 		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill activated.",
 				ChatColor.AQUA + Skill.SUPPORT.getName() + ChatColor.GREEN));
@@ -639,10 +628,10 @@ public class PlayerSkillListener implements Listener {
 		TNTPrimed tnt = (TNTPrimed) event.getDamager();
 		event.setCancelled(true);
 		
-		if (!creeperTNT.containsKey(tnt))
+		if (!creeperTNT.containsKey(tnt.getUniqueId()))
 			return;
 
-		Player creeper = creeperTNT.get(tnt);
+		Player creeper = creeperTNT.get(tnt.getUniqueId());
 		Player damaged = (Player) event.getEntity();
 		
 		if (creeper.getName().equals(damaged.getName()))

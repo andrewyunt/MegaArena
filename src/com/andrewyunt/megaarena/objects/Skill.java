@@ -28,7 +28,7 @@ public enum Skill implements Upgradable {
 	WEAKENING_ARROW("Weakening Arrow"),
 	RECHARGE("Recharge"),
 	FLURRY("Flurry"),
-	POWERFUL_WEAKNESS("Powerful Weakness"),
+	EXPLOSIVE_WEAKNESS("Explosive Weakness"),
 	SUPPORT("Support"),
 	WEAKENING_SWING("Weakening Swing"),
 	SWIFT_BACKUP("Swift Backup"),

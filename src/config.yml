@@ -394,34 +394,34 @@ classes:
       9:
          title: "Ability - Explode IX"
          description: "Detonate an explosion that deals 7.0 damage to nearby \nenemies with 100% armor penetration and takes 3 seconds to explode"
-    POWERFUL_WEAKNESS:
+    EXPLOSIVE_WEAKNESS:
       1:
-         title: "Skill 1 - Powerful Weakness I"
-         description: "Gain Speed I permanently when you are under 16.0 hearts"
+         title: "Skill 1 - Explosive Weakness I"
+         description: "Detonate an explosion when you reach 8.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
       2:
-         title: "Skill 1 - Powerful Weakness II"
-         description: "Gain Speed I permanently when you are under 17.0 hearts"
+         title: "Skill 1 - Explosive Weakness II"
+         description: "Detonate an explosion when you reach 9.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
       3:
-         title: "Skill 1 - Powerful Weakness III"
-         description: "Gain Speed I permanently when you are under 18.0 hearts"
+         title: "Skill 1 - Explosive Weakness III"
+         description: "Detonate an explosion when you reach 10.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
       4:
-         title: "Skill 1 - Powerful Weakness IV"
-         description: "Gain Speed I permanently when you are under 19.0 hearts"
+         title: "Skill 1 - Explosive Weakness IV"
+         description: "Detonate an explosion when you reach 11.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
       5:
-         title: "Skill 1 - Powerful Weakness V"
-         description: "Gain Speed I permanently when you are under 20.0 hearts"
+         title: "Skill 1 - Explosive Weakness V"
+         description: "Detonate an explosion when you reach 12.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
       6:
-         title: "Skill 1 - Powerful Weakness VI"
-         description: "Gain Speed I permanently when you are under 21.0 hearts"
+         title: "Skill 1 - Explosive Weakness VI"
+         description: "Detonate an explosion when you reach 13.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
       7:
-         title: "Skill 1 - Powerful Weakness VII"
-         description: "Gain Speed I permanently when you are under 22.0 hearts"
+         title: "Skill 1 - Explosive Weakness VII"
+         description: "Detonate an explosion when you reach 14.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
       8:
-         title: "Skill 1 - Powerful Weakness VIII"
-         description: "Gain Speed I permanently when you are under 23.0 hearts"
+         title: "Skill 1 - Explosive Weakness VIII"
+         description: "Detonate an explosion when you reach 15.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
       9:
-         title: "Skill 1 - Powerful Weakness IX"
-         description: "Gain Speed I permanently when you are under 24.0 hearts"
+         title: "Skill 1 - Explosive Weakness IX"
+         description: "Detonate an explosion when you reach 16.0 hearts and gain Speed II for 3 seconds. \n30 second cooldown!"
     SUPPORT:
       1:
          title: "Skill 2 - Support I"
