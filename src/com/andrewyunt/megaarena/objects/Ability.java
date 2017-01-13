@@ -125,11 +125,22 @@ public enum Ability implements Upgradable {
 				((Damageable) bp).setHealth(40D);
 			
 			for (Player effectPlayer : effectPlayers) {
-				Location loc = effectPlayer.getEyeLocation().clone();
+				Location loc = effectPlayer.getEyeLocation();
+				Vector vector = new Vector();
 				
-				loc.getWorld().spigot().playEffect(
-						loc.add(0.0D, 0.8D, 0.0D),
-						Effect.HEART);
+				for (int i = 0; i < 50; i++) {
+					float alpha = ((3.1415927F / 2F) / 50) * i;
+					double phi = Math.pow(Math.abs(Math.sin(2 * 2F * alpha)) + 0.8
+							* Math.abs(Math.sin(2F * alpha)), 1 / 2D);
+					
+					vector.setY(phi * (Math.sin(alpha) + Math.cos(alpha)) * 1);
+					vector.setZ(phi * (Math.cos(alpha) - Math.sin(alpha)) * 1);
+					
+					Location newLoc = loc.clone();
+					Utils.rotateYAxis(vector, 50);
+					newLoc.add(vector);
+					newLoc.getWorld().playEffect(newLoc, Effect.HEART, 1);
+				}
 			}
 			
 			bp.sendMessage(String.format(ChatColor.GREEN + "You have used the %s ability" + 
@@ -341,8 +352,11 @@ public enum Ability implements Upgradable {
 		} else if (this == WITHER_HEADS) {
 			
 			Vector originalVector = bp.getEyeLocation().getDirection();
-			Vector rightVector = Utils.rotateYAxis(originalVector, 25);
-			Vector leftVector = Utils.rotateYAxis(originalVector, -25);
+			Vector rightVector = originalVector.clone();
+			Vector leftVector =originalVector.clone();
+			
+			Utils.rotateYAxis(rightVector, 25);
+			Utils.rotateYAxis(leftVector, -25);
 			
 			WitherSkull originalSkull = bp.launchProjectile(WitherSkull.class, originalVector);
 			originalSkull.setMetadata("MegaArena", new FixedMetadataValue(MegaArena.getInstance(), true));

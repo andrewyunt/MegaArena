@@ -70,16 +70,14 @@ public class Utils {
 	 * 		the vector to rotate
 	 * @param angleD
 	 * 		the angle of the rotation in degrees
-	 * @return
-	 * 		the given vector rotated
 	 */
-	public static Vector rotateYAxis(Vector vector, double angleD) {
+	public static void rotateYAxis(Vector vector, double angleD) {
 		
 		vector = vector.clone();
 		
 		// Validate.notNull(vector);
 		if (angleD == 0.0D)
-			return vector;
+			return;
 		
 		double angleR = Math.toRadians(angleD);
 		double x = vector.getX();
@@ -89,8 +87,6 @@ public class Utils {
 		
 		vector.setX(x * cos + z * (-sin));
 		vector.setZ(x * sin + z * cos);
-		
-		return vector;
 	}
 	
 	public static Inventory fromChest(Inventory inv) {
