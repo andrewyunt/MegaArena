@@ -509,7 +509,7 @@ public class PlayerSkillListener implements Listener {
 		
 		int hearts = 7 + skillLevel;
 		
-		if (((Damageable) player).getHealth() != hearts)
+		if (((Damageable) player).getHealth() <= hearts)
 			return;
 		
 		Location loc = entity.getLocation().clone();
@@ -528,7 +528,7 @@ public class PlayerSkillListener implements Listener {
 			finalGP.setExplosiveWeaknessCooldown(false);
 		}, 600L);
 		
-		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been deactivated.",
+		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated.",
 				ChatColor.AQUA + Skill.EXPLOSIVE_WEAKNESS.getName() + ChatColor.GREEN));
 	}
 	
