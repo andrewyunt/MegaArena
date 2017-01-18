@@ -78,6 +78,9 @@ public class MySQLSource extends DataSource {
 		try {
 			connection.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			// do nothing
 		}
 	}
 

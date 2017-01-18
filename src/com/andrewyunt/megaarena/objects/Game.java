@@ -18,7 +18,10 @@ package com.andrewyunt.megaarena.objects;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SideException;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -26,7 +29,13 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -35,15 +44,21 @@ import java.util.stream.Collectors;
  * @author Andrew Yunt
  */
 public class Game {
-
+	
 	private final Arena arena;
 	private final Set<GamePlayer> players = new HashSet<GamePlayer>();
 	private final Set<Block> placedBlocks = new HashSet<Block>();
 	private final Set<GameSide> sides = new HashSet<GameSide>();
-
+	
+	private int tournamentCountdownID, tournamentCountdownTime = 60;
+	private boolean started = false;
+	
 	public Game(Arena arena) {
 		
 		this.arena = arena;
+		
+		if (!arena.isTournament())
+			started = true;
 		
 		if (arena.getType() == Arena.Type.TDM) {
 			sides.add(new GameSide(this, GameSide.Type.BLUE));
@@ -139,9 +154,7 @@ public class Game {
 	 */
 	public void addPlayer(GamePlayer player, boolean teamBalance) {
 		
-		Player bp = player.getBukkitPlayer();
-		
-		player.setPreviousGameMode(bp.getGameMode());
+		player.setPreviousGameMode(player.getBukkitPlayer().getGameMode());
 		
 		GameSide side = null;
 		
@@ -174,79 +187,41 @@ public class Game {
 			e.printStackTrace();
 		}
 		
+		boolean spawn = false;
+		
+		if (arena.isTournament()) {
+			try {
+				player.getBukkitPlayer().teleport(arena.getQueueLocation());
+			} catch (NullPointerException e) {
+				player.getBukkitPlayer().sendMessage(ChatColor.RED + String.format("There is no queue location"
+						+ " for the arena %s, please notify an administrator.", arena.getName()));
+				return;
+			}
+			
+			if (players.size() == 12)
+				runTournamentCountdown();
+			
+			if (tournamentCountdownTime <= 10)
+				spawn = true;
+		} else
+			spawn = true;
+		
+		if (spawn)
+			try {
+				spawnPlayer(player, side.getSideType(), teamBalance);
+			} catch (IndexOutOfBoundsException e) {
+				player.getBukkitPlayer().sendMessage(ChatColor.RED + String.format(
+						"There are no spawn points defined for the arena %s, please notify"
+						+ " an administrator.", arena.getName()));
+				return;
+			}
+		
 		players.add(player);
 		player.setGame(this);
 		player.setSide(side);
 		
-		for (GamePlayer updatePlayer : players) {
-			Scoreboard scoreboard = updatePlayer.getDisplayBoard().getScoreboard();
-			
-			for (GameSide addSide : sides) {
-				Team team = scoreboard.getTeam(addSide.getSideType().getName());
-				
-				if (team == null)
-					team = scoreboard.registerNewTeam(addSide.getSideType().getName());
-				
-				team.setPrefix(addSide.getSideType().getNameColor() + "");
-				
-				for (GamePlayer addPlayer : getPlayers(addSide))
-					team.addPlayer(addPlayer.getBukkitPlayer());
-			}
-		}
-		
-		player.updateScoreboard();
-		
-		bp.sendMessage(ChatColor.GOLD + ChatColor.BOLD.toString() + "TIP: " + ChatColor.GRAY
-				+ "Use /spawn to return to spawn.");
-		bp.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "Cross-Teaming/Trucing is NOT allowed.");
-		bp.sendMessage("");
-		
-		GameSide.Type sideType = side.getSideType();
-		
-		if (teamBalance)
-			bp.sendMessage(ChatColor.GREEN + String.format(
-					"You have been automatically moved to " + "the %s side by an automatic team balance.",
-					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
-		else
-			bp.sendMessage(ChatColor.GREEN + String.format("You have joined %s.",
-					((sideType == GameSide.Type.SOLO ? ChatColor.AQUA + "FFA" + ChatColor.GREEN :
-						"the " + ChatColor.AQUA + sideType.getName() + ChatColor.GREEN + " team"))));
-		
-		spawnPlayer(player, sideType);
-	}
-
-	/**
-	 * Gets a random spawn of the specified side and checks if it is used if the
-	 * arena is a duel, then spawns them.
-	 * 
-	 * @param player
-	 * 		The specified player to be added to the game.
-	 * @param sideType
-	 * 		The specified side to spawn the player in.
-	 */
-	public void spawnPlayer(GamePlayer player, GameSide.Type sideType) {
-		
-		List<Spawn> spawns = new ArrayList<Spawn>(arena.getSpawns(sideType));
-		
-		if (arena.getType() == Arena.Type.DUEL) {
-			for (Spawn spawn : arena.getSpawns()) {
-				if (spawn.isUsed())
-					continue;
-				
-				player.spawn(spawn);
-				spawn.setUsed(true);
-				
-				break;
-			}
-		} else if (arena.getType() == Arena.Type.FFA) {
-			player.setFallen(false);
-			Collections.shuffle(spawns);
-			player.spawn(spawns.get(0));
-		} else if (arena.getType() == Arena.Type.TDM) {
-			player.setFallen(false);
-			Collections.shuffle(spawns);
-			player.spawn(spawns.get(0));
-		}
+		if (arena.isTournament())
+			player.updateScoreboard();
 	}
 
 	/**
@@ -264,6 +239,9 @@ public class Game {
 		
 		Player bp = player.getBukkitPlayer();
 		
+		// Check players in-game
+		checkPlayers();
+		
 		// Remove player from players set and then set the player's game to null
 		players.remove(player);
 		player.setGame(null);
@@ -274,10 +252,14 @@ public class Game {
 					.removePlayer(player.getBukkitPlayer());
 		
 		// Update teams to remove player
-		for (GameSide side : sides) {
-			Team team = player.getDisplayBoard().getScoreboard().getTeam(side.getSideType().getName());
-			
-			team.getPlayers().forEach(team::removePlayer);
+		try {
+			for (GameSide side : sides) {
+				Team team = player.getDisplayBoard().getScoreboard().getTeam(side.getSideType().getName());
+				
+				team.getPlayers().forEach(team::removePlayer);
+			}
+		} catch (NullPointerException e) {
+			// the player hasn't spawned in yet, but they are in-game so do nothing
 		}
 		
 		// Set the player's side to null
@@ -323,6 +305,173 @@ public class Game {
 	}
 
 	/**
+	 * Gets a random spawn of the specified side and checks if it is used if the
+	 * arena is a duel, then spawns them.
+	 * 
+	 * @param player
+	 * 		The specified player to be added to the game.
+	 * @param sideType
+	 * 		The specified side to spawn the player in.
+	 * @param teamBalance
+	 * 		Set this value to true if the player was spawned due to a team balance.
+	 */
+	public void spawnPlayer(GamePlayer player, GameSide.Type sideType, boolean teamBalance)
+			throws IndexOutOfBoundsException {
+		
+		List<Spawn> spawns = new ArrayList<Spawn>(arena.getSpawns(sideType));
+		
+		if (arena.getType() == Arena.Type.DUEL) {
+			for (Spawn spawn : arena.getSpawns()) {
+				if (spawn.isUsed())
+					continue;
+				
+				player.spawn(spawn);
+				spawn.setUsed(true);
+				
+				break;
+			}
+		} else if (arena.getType() == Arena.Type.FFA) {
+			player.setFallen(false);
+			Collections.shuffle(spawns);
+			player.spawn(spawns.get(0));
+		} else if (arena.getType() == Arena.Type.TDM) {
+			player.setFallen(false);
+			Collections.shuffle(spawns);
+			player.spawn(spawns.get(0));
+		}
+		
+		for (GamePlayer updatePlayer : players) {
+			Scoreboard scoreboard = updatePlayer.getDisplayBoard().getScoreboard();
+			
+			for (GameSide addSide : sides) {
+				Team team = scoreboard.getTeam(addSide.getSideType().getName());
+				
+				if (team == null)
+					team = scoreboard.registerNewTeam(addSide.getSideType().getName());
+				
+				team.setPrefix(addSide.getSideType().getNameColor() + "");
+				
+				for (GamePlayer addPlayer : getPlayers(addSide))
+					team.addPlayer(addPlayer.getBukkitPlayer());
+			}
+		}
+		
+		player.updateScoreboard();
+		
+		Player bp = player.getBukkitPlayer();
+		
+		bp.sendMessage(ChatColor.GOLD + ChatColor.BOLD.toString() + "TIP: " + ChatColor.GRAY
+				+ "Use /spawn to return to spawn.");
+		bp.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "Cross-Teaming/Trucing is NOT allowed.");
+		bp.sendMessage("");
+		
+		if (teamBalance)
+			bp.sendMessage(ChatColor.GREEN + String.format(
+					"You have been automatically moved to " + "the %s side by an automatic team balance.",
+					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
+		else
+			bp.sendMessage(ChatColor.GREEN + String.format("You have joined %s.",
+					((sideType == GameSide.Type.SOLO ? ChatColor.AQUA + "FFA" + ChatColor.GREEN :
+						"the " + ChatColor.AQUA + sideType.getName() + ChatColor.GREEN + " team"))));
+	}
+
+	/**
+	 * Removes all players / placed blocks, and sets the arena game to null.
+	 */
+	public void end() {
+	
+		Set<GamePlayer> toRemovePlayers = new HashSet<GamePlayer>();
+		toRemovePlayers.addAll(players);
+		for (GamePlayer player : toRemovePlayers)
+			try {
+				removePlayer(player);
+			} catch (PlayerException e) {
+				e.printStackTrace();
+			}
+		
+		Set<Block> toRemoveBlocks = new HashSet<Block>();
+		toRemoveBlocks.addAll(placedBlocks);
+		toRemoveBlocks.forEach(this::removePlacedBlock);
+		
+		if (arena.getType() == Arena.Type.DUEL)
+			for (Spawn spawn : arena.getSpawns())
+				spawn.setUsed(false);
+		
+		arena.setGame(null);
+		
+		if (arena.isTournament()) {
+			for (Block block : placedBlocks)
+				block.setType(Material.AIR);
+			
+			MegaArena.getInstance().runNextTournamentCountdown();
+		}
+	}
+	
+	public void runTournamentCountdown() {
+		
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		tournamentCountdownID = scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				
+				tournamentCountdownTime--;
+				
+				String message = null;
+				
+				if (tournamentCountdownTime == 10)
+					for (GamePlayer player : players)
+						spawnPlayer(player, player.getSide().getSideType(), false);
+				
+				switch (tournamentCountdownTime) {
+				case 60:
+					message = ChatColor.GREEN + "The tournament will start in 1 minute.";
+					break;
+				case 45: case 30: case 15:
+				case 10: case 9: case 8:
+				case 7: case 6: case 5:
+				case 4: case 3: case 2:
+				case 1:
+					message = ChatColor.GREEN + String.format("The tournament will start in %s seconds.",
+							ChatColor.AQUA + String.valueOf(tournamentCountdownTime) + ChatColor.GREEN);
+					break;
+				case 0:
+					message = ChatColor.GREEN + "The tournament has started!";
+					scheduler.cancelTask(tournamentCountdownID);
+					break;
+				}
+				
+				for (GamePlayer player : players)
+					player.getBukkitPlayer().sendMessage(message);
+			}
+		}, 0L, 20L);
+	}
+	
+	public void checkPlayers() {
+		
+		boolean won = false;
+		
+		if (arena.isTournament() && started)
+			if (arena.getType() == Arena.Type.FFA && players.size() == 1) {
+				won = true;
+			} else if (arena.getType() == Arena.Type.TDM) {
+				List<GameSide> sidesWithPlayers = new ArrayList<GameSide>();
+				
+				for (GameSide side : sides)
+					if (getPlayers(side).size() > 0)
+						sidesWithPlayers.add(side);
+				
+				if (sidesWithPlayers.size() == 1)
+					won = true;
+			}
+		
+		if (won)
+			for (GamePlayer player : players) {
+				player.addCoins(30);
+				player.getBukkitPlayer().sendMessage(ChatColor.GREEN + "You earned 30 coins for winning the tournament.");
+			}
+	}
+	
+	/**
 	 * Gets all players currently in the game.
 	 * 
 	 * @returns A set of players currently in the game.
@@ -347,36 +496,7 @@ public class Game {
 		
 		return players;
 	}
-
-	/**
-	 * Removes all players / placed blocks, and sets the arena game to null.
-	 */
-	public void end() {
-
-		Set<GamePlayer> toRemovePlayers = new HashSet<GamePlayer>();
-
-		toRemovePlayers.addAll(players);
-
-		for (GamePlayer player : toRemovePlayers)
-			try {
-				removePlayer(player);
-			} catch (PlayerException e) {
-				e.printStackTrace();
-			}
-		
-		Set<Block> toRemoveBlocks = new HashSet<Block>();
-		
-		toRemoveBlocks.addAll(placedBlocks);
-		
-		toRemoveBlocks.forEach(this::removePlacedBlock);
-		
-		if (arena.getType() == Arena.Type.DUEL)
-			for (Spawn spawn : arena.getSpawns())
-				spawn.setUsed(false);
-		
-		arena.setGame(null);
-	}
-
+	
 	/**
 	 * Adds a block to the placed blocks set.
 	 * 
@@ -387,13 +507,15 @@ public class Game {
 		
 		placedBlocks.add(block);
 		
-		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
-			if (!block.getChunk().isLoaded())
-				block.getChunk().load();
-			
-			removePlacedBlock(block);
-		}, 200L);
+		if (!arena.isTournament()) {
+			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
+				if (!block.getChunk().isLoaded())
+					block.getChunk().load();
+				
+				removePlacedBlock(block);
+			}, 200L);
+		}
 	}
 
 	/**
@@ -436,5 +558,15 @@ public class Game {
 				return side;
 
 		throw new SideException("The side of the specified type does not exist.");
+	}
+	
+	public int getTournamentCountdownTime() {
+		
+		return tournamentCountdownTime;
+	}
+	
+	public boolean hasStarted() {
+		
+		return started;
 	}
 }

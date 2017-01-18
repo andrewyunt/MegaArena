@@ -34,9 +34,9 @@ public class ShopMenu implements Listener {
 	}
 	
 	public void openMainMenu(GamePlayer player) {
-
+		
 		inv = Bukkit.createInventory(null, 27, "Shop");
-
+		
 		ItemStack normalClasses = new ItemStack(Material.IRON_SWORD);
 		ItemStack heroClasses = new ItemStack(Material.DIAMOND_SWORD);
 		ItemStack close = new ItemStack(Material.ARROW);
@@ -55,19 +55,19 @@ public class ShopMenu implements Listener {
 		
 		for (int i = 0; i < 12; i++)
 			inv.setItem(i, glassPane);
-
+		
 		inv.setItem(12, normalClasses);
 		inv.setItem(13, glassPane);
 		inv.setItem(14, Utils.addGlow(heroClasses));
-
+		
 		for (int i = 15; i < 22; i++)
 			inv.setItem(i, glassPane);
-
+		
 		inv.setItem(22, close);
-
+		
 		for (int i = 23; i < 27; i++)
 			inv.setItem(i, glassPane);
-
+		
 		player.getBukkitPlayer().openInventory(inv);
 	}
 
@@ -168,9 +168,6 @@ public class ShopMenu implements Listener {
 		String title = inv.getTitle();
 		
 		if (title == null)
-			return;
-		
-		if (!title.equals("Shop - Hero Classes") && !title.equals("Shop - Normal Classes") && !title.equals("Shop"))
 			return;
 		
 		event.setCancelled(true);

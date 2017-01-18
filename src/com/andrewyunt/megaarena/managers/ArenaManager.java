@@ -45,12 +45,14 @@ public class ArenaManager {
 	 * @param type
 	 * 		The type of the arena to be created from the Arena.Type enumeration.
 	 * 		(TDM, FFA, DUEL)
+	 * @param tournament
+	 * 		Set this value to true if the arena is for tournaments instead of regular games.
 	 * @return
 	 * 		The arena that was created and added to the arenas list.
 	 * @throws ArenaException
 	 * 		If the arena already exists, ArenaException is thrown.
 	 */
-	public Arena createArena(String name, Arena.Type type) throws ArenaException {
+	public Arena createArena(String name, Arena.Type type, boolean tournament) throws ArenaException {
 
 		if (name == null || type == null)
 			throw new ArenaException();
@@ -58,7 +60,7 @@ public class ArenaManager {
 		if (arenas.containsKey(name))
 			throw new ArenaException("The arena %s already exists and cannot be created again.");
 
-		Arena arena = new Arena(name, type);
+		Arena arena = new Arena(name, type, tournament);
 
 		arenas.put(name, arena);
 
@@ -185,7 +187,7 @@ public class ArenaManager {
 	public void loadArena(ConfigurationSection section) {
 
 		Arena arena = Arena.loadFromConfig(section);
-
+		
 		if (arenaExists(arena.getName()))
 			arenas.remove(arena.getName());
 

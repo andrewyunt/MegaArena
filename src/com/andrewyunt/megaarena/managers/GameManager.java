@@ -104,14 +104,21 @@ public class GameManager {
 	 * 
 	 * @param type
 	 * 		The type of the arena the games are currently running in.
+	 * @param tournament
+	 * 		Set this value to true if you want tournaments instead of regular games.
 	 * @return
 	 * 		All registered games currently running of the specified arena type.
 	 */
-	public Set<Game> getGames(Arena.Type type) {
+	public Set<Game> getGames(Arena.Type type, boolean tournament) {
 
-		return this.games.stream().filter(game -> game.getArena().getType() == type).collect(Collectors.toSet());
+		if (!tournament)
+			return this.games.stream().filter(game -> game.getArena().getType() == type)
+					.collect(Collectors.toSet());
+		else
+			return this.games.stream().filter(game -> game.getArena().isTournament() == tournament)
+					.collect(Collectors.toSet());
 	}
-
+	
 	/**
 	 * Creates a match for the specified player in an arena of the specified type.
 	 * 
@@ -121,34 +128,36 @@ public class GameManager {
 	 * @param type
 	 * 		The type of the arena you want the game to be running in which the
 	 * 		player is added to.
+	 * @param tournament
+	 * 		Set this value to true if you want tournaments instead of regular games.
 	 * @throws GameException
 	 * 		If the specified arena type is a DUEL, GameException is thrown.
 	 */
-	public void matchMake(GamePlayer player, Arena.Type type) throws GameException {
-
+	public void matchMake(GamePlayer player, Arena.Type type, boolean tournament) throws GameException {
+		
 		if (type == Arena.Type.DUEL)
 			throw new GameException("Matchmaking is not available for duels.");
-
+		
 		Player bp = player.getBukkitPlayer();
-
+		
 		if (player.isInGame()) {
 			bp.sendMessage(ChatColor.RED + "You are already in a game.");
 			return;
 		}
-
+		
 		if (!player.hasSelectedClass()) {
 			bp.sendMessage(ChatColor.RED + "You must select a class before entering a game.");
 			return;
 		}
-
-		List<Game> games = new ArrayList<Game>(getGames(type));
-
+		
+		List<Game> games = new ArrayList<Game>(getGames(type, tournament));
+		
 		if (games.size() < 1) {
-			bp.sendMessage(String.format(ChatColor.RED + "There are not active %s games at the moment.",
-					type.toString()));
+			bp.sendMessage(String.format(ChatColor.RED + "There aren't any active %s at the moment.",
+					tournament ? "tournaments" : type.toString() + " games"));
 			return;
 		}
-
+		
 		Collections.shuffle(games);
 		Game game = games.get(0);
 		

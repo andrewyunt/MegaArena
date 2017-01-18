@@ -15,6 +15,17 @@
  */
 package com.andrewyunt.megaarena.command;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
 import com.andrewyunt.megaarena.exception.GameException;
@@ -24,16 +35,6 @@ import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.GameSide;
 import com.andrewyunt.megaarena.objects.Spawn;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The arena command class which is used as a Bukkit CommandExecutor.
@@ -47,7 +48,8 @@ public class ArenaCommand implements CommandExecutor {
 	static {
 		help.add(ChatColor.DARK_GRAY + "=" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "[ " + ChatColor.AQUA + 
 				"MegaArena Help" + ChatColor.DARK_GRAY + " ]" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "=");
-		help.add(ChatColor.GREEN + "/arena create " + ChatColor.AQUA + "[name] [type]");
+		help.add(ChatColor.GREEN + "/arena list");
+		help.add(ChatColor.GREEN + "/arena create " + ChatColor.AQUA + "[name] [type] [tournament]");
 		help.add(ChatColor.GREEN + "/arena delete");
 		help.add(ChatColor.GREEN + "/arena select " + ChatColor.AQUA + "[name]");
 		help.add(ChatColor.GREEN + "/arena edit");
@@ -132,8 +134,8 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			if (!(args.length >= 3)) {
-				sender.sendMessage(ChatColor.RED + "Usage: /arena create [name] [type]");
+			if (args.length < 4) {
+				sender.sendMessage(ChatColor.RED + "Usage: /arena create [name] [type] [tournament]");
 				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
 				return false;
 			}
@@ -147,11 +149,10 @@ public class ArenaCommand implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
 				return false;
 			}
-			
 			Arena arena = null;
 			
 			try {
-				arena = MegaArena.getInstance().getArenaManager().createArena(args[1], type);
+				arena = MegaArena.getInstance().getArenaManager().createArena(args[1], type, Boolean.valueOf(args[3]));
 			} catch (ArenaException e) {
 				sender.sendMessage(ChatColor.RED + e.getMessage());
 			}
@@ -190,7 +191,7 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			if (arena.isEdit()) {
+			if (!arena.isEdit()) {
 				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
 				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
 				return false;
@@ -260,7 +261,7 @@ public class ArenaCommand implements CommandExecutor {
 			} catch (PlayerException e) {
 			}
 			
-			if (!(arena.isEdit())) {
+			if (!arena.isEdit()) {
 				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
 				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
 				return false;
@@ -312,7 +313,7 @@ public class ArenaCommand implements CommandExecutor {
 			} catch (PlayerException e) {
 			}
 			
-			if (!(arena.isEdit())) {
+			if (!arena.isEdit()) {
 				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
 				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
 				return false;
@@ -328,6 +329,44 @@ public class ArenaCommand implements CommandExecutor {
 			
 			arena.removeSpawn(spawn);
 			
+		} else if (args[0].equalsIgnoreCase("setqueuelocation")) {
+			
+			if (!sender.hasPermission("megaarena.arena.setspawnloc")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
+			
+			Arena arena;
+			
+			try {
+				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
+			} catch (ArenaException e) {
+				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+				return false;
+			} catch (PlayerException e) {
+				e.printStackTrace();
+				return false;
+			}
+			
+			if (!arena.isEdit()) {
+				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command.");
+				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
+				return false;
+			}
+			
+			Location loc = ((Player) sender).getLocation();
+			
+			arena.setQueueLocation(loc);
+			arena.save();
+			
+			sender.sendMessage(String.format(ChatColor.GREEN + "You set the queue location for the arena %s at %s.", 
+					ChatColor.AQUA + arena.getName() + ChatColor.GREEN,
+					String.format("X:%s Y:%s Z:%s world: %s", 
+							ChatColor.AQUA + String.valueOf(loc.getX()) + ChatColor.GREEN,
+							ChatColor.AQUA + String.valueOf(loc.getY()) + ChatColor.GREEN,
+							ChatColor.AQUA + String.valueOf(loc.getZ()) + ChatColor.GREEN,
+							ChatColor.AQUA + loc.getWorld().getName())  + ChatColor.GREEN));
+			
 		} else if (args[0].equalsIgnoreCase("edit")) {
 			
 			if (!sender.hasPermission("megaarena.arena.edit")) {
@@ -342,6 +381,8 @@ public class ArenaCommand implements CommandExecutor {
 			} catch (ArenaException e) {
 				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
 			} catch (PlayerException e) {
+				e.printStackTrace();
+				return false;
 			}
 			
 			if (arena == null)
@@ -378,6 +419,46 @@ public class ArenaCommand implements CommandExecutor {
 			
 			for (Arena arena : MegaArena.getInstance().getArenaManager().getArenas())
 				sender.sendMessage(ChatColor.GREEN + arena.getName());
+			
+		} else if (args[0].equalsIgnoreCase("creategame")) {
+			
+			if (!sender.hasPermission("megaarena.arena.creategame")) {
+				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				return false;
+			}
+			
+			Arena arena = null;
+			
+			try {
+				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
+			} catch (ArenaException e) {
+				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+			} catch (PlayerException e) {
+				e.printStackTrace();
+				return false;
+			}
+			
+			if (arena == null)
+				return false;
+			
+			if (!arena.isTournament()) {
+				sender.sendMessage(ChatColor.RED + "You can only create tournament games.");
+				return false;
+			}
+			
+			if (arena.isEdit()) {
+				sender.sendMessage(ChatColor.RED + "You cannot create a game in an arena in edit mode.");
+				return false;
+			}
+			
+			try {
+				MegaArena.getInstance().getGameManager().createGame(arena);
+			} catch (GameException e) {
+				sender.sendMessage(ChatColor.RED + "Game created unsuccessfully.");
+			}
+			
+			sender.sendMessage(ChatColor.GREEN + String.format("You created a game in the arena %s.",
+					ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
 		}
 		
 		return true;

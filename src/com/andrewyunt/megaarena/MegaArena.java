@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.andrewyunt.megaarena.command.ArenaCommand;
 import com.andrewyunt.megaarena.command.BloodToggleCommand;
@@ -47,6 +48,7 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.managers.SignManager;
 import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
 import com.andrewyunt.megaarena.menu.LayoutEditorMenu;
+import com.andrewyunt.megaarena.menu.PlayMenu;
 import com.andrewyunt.megaarena.menu.ShopMenu;
 import com.andrewyunt.megaarena.menu.UpgradesMenu;
 import com.andrewyunt.megaarena.objects.Arena;
@@ -69,6 +71,7 @@ public class MegaArena extends JavaPlugin {
 	private final UpgradesMenu upgradesMenu = new UpgradesMenu();
 	private final LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
 	private final ShopMenu shopMenu = new ShopMenu();
+	private final PlayMenu playMenu = new PlayMenu();
 	private final Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
@@ -79,6 +82,8 @@ public class MegaArena extends JavaPlugin {
 	private final DataSource dataSource = new MySQLSource();
 	
 	private static MegaArena instance = null;
+	
+	private int nextTournamentCountdownTime = 72000;
 	
 	/**
 	 * Method is executed while the plugin is being enabled.
@@ -125,9 +130,10 @@ public class MegaArena extends JavaPlugin {
 		pm.registerEvents(new PlayerAbilityListener(), this);
 		pm.registerEvents(new PlayerSkillListener(), this);
 		pm.registerEvents(classSelectorMenu, this);
-		pm.registerEvents(shopMenu, this);
 		pm.registerEvents(layoutEditorMenu, this);
 		pm.registerEvents(upgradesMenu, this);
+		pm.registerEvents(shopMenu, this);
+		pm.registerEvents(playMenu, this);
 		
 		// Load all arenas from arenas.yml
 		arenaManager.loadArenas();
@@ -135,23 +141,28 @@ public class MegaArena extends JavaPlugin {
 		// Load all signs from signs.yml
 		signManager.loadSigns();
 		
-		/* Create hotbar items and add them to the map */
+		// Create hotbar items and add them to the map
 		createHotbarItems();
 		
-		/* Create games for FFA and TDM arenas */
+		// Create games for FFA and TDM arenas
 		for (Arena arena : arenaManager.getArenas(Arena.Type.TDM))
-			try {
-				arena.setGame(gameManager.createGame(arena));
-			} catch (GameException e) {
-				getLogger().warning(e.getMessage());
-			}
+			if (!arena.isTournament())
+				try {
+					arena.setGame(gameManager.createGame(arena));
+				} catch (GameException e) {
+					getLogger().warning(e.getMessage());
+				}
 		
 		for (Arena arena : arenaManager.getArenas(Arena.Type.FFA))
-			try {
-				arena.setGame(gameManager.createGame(arena));
-			} catch (GameException e) {
-				getLogger().warning(e.getMessage());
-			}
+			if (!arena.isTournament())
+				try {
+					arena.setGame(gameManager.createGame(arena));
+				} catch (GameException e) {
+					getLogger().warning(e.getMessage());
+				}
+		
+		// Start next tournament countdown
+		runNextTournamentCountdown();
 	}
 	
 	/**
@@ -239,6 +250,11 @@ public class MegaArena extends JavaPlugin {
 		return shopMenu;
 	}
 	
+	public PlayMenu getPlayMenu() {
+		
+		return playMenu;
+	}
+	
 	public LayoutEditorMenu getLayoutEditorMenu() {
 		
 		return layoutEditorMenu;
@@ -250,35 +266,30 @@ public class MegaArena extends JavaPlugin {
 		ItemStack serverSelector = new ItemStack(Material.COMPASS);
 		ItemStack shop = new ItemStack(Material.EMERALD);
 		ItemStack classSelector = new ItemStack(Material.COMMAND);
-		ItemStack playFFA = new ItemStack(Material.IRON_SWORD);
 		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
 		
 		// Get item metas
 		ItemMeta serverSelectorMeta = serverSelector.getItemMeta();
 		ItemMeta shopMeta = shop.getItemMeta();
 		ItemMeta classSelectorMeta = classSelector.getItemMeta();
-		ItemMeta playFFAMeta = playFFA.getItemMeta();
 		ItemMeta playTDMMeta = playTDM.getItemMeta();
 		
 		// Set meta display names
 		serverSelectorMeta.setDisplayName(ChatColor.RED + ChatColor.BOLD.toString() + "Server Selector");
 		shopMeta.setDisplayName(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop");
 		classSelectorMeta.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector");
-		playFFAMeta.setDisplayName(ChatColor.BOLD.toString() + "Play : Free-for-all");
-		playTDMMeta.setDisplayName(ChatColor.BOLD.toString() + "Play : Team-deathmatch");
+		playTDMMeta.setDisplayName(ChatColor.BOLD.toString() + "Play");
 		
 		// Set item metas
 		serverSelector.setItemMeta(serverSelectorMeta);
 		shop.setItemMeta(shopMeta);
 		classSelector.setItemMeta(classSelectorMeta);
-		playFFA.setItemMeta(playFFAMeta);
 		playTDM.setItemMeta(playTDMMeta);
 		
 		// Set hotbar items in map
 		hotbarItems.put(0, serverSelector);
 		hotbarItems.put(1, shop);
 		hotbarItems.put(2, classSelector);
-		hotbarItems.put(7, Utils.addGlow(playFFA));
 		hotbarItems.put(8, Utils.addGlow(playTDM));
 		
 		for (Map.Entry<Integer, ItemStack> entry : hotbarItems.entrySet()) {
@@ -296,5 +307,34 @@ public class MegaArena extends JavaPlugin {
 	public Map<Integer, ItemStack> getHotbarItems() {
 		
 		return hotbarItems;
+	}
+	
+	public int getNextTournamentCountdownTime() {
+		
+		return nextTournamentCountdownTime;
+	}
+	
+	public void runNextTournamentCountdown() {
+		
+		BukkitScheduler scheduler = getServer().getScheduler();
+		scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+			@Override
+			public void run() {
+				
+				nextTournamentCountdownTime--;
+				
+				if (nextTournamentCountdownTime == 0)
+					for (Arena arena : arenaManager.getArenas())
+						if (arena.isTournament()) {
+							try {
+								arena.setGame(gameManager.createGame(arena));
+							} catch (GameException e) {
+								getLogger().warning(e.getMessage());
+							}
+							
+							break;
+						}
+			}
+		}, 0L, 20L);
 	}
 }

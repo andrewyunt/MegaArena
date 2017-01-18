@@ -16,7 +16,6 @@
 package com.andrewyunt.megaarena.listeners;
 
 import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SignException;
 import com.andrewyunt.megaarena.managers.PlayerManager;
@@ -182,18 +181,8 @@ public class PlayerListener implements Listener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (name.contains(ChatColor.BOLD.toString() + "Play : Team-deathmatch")) {
-			try {
-				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.TDM);
-			} catch (GameException e) {
-				player.sendMessage(e.getMessage());
-			}
-		} else if (name.contains(ChatColor.BOLD.toString() + "Play : Free-for-all")) {
-			try {
-				MegaArena.getInstance().getGameManager().matchMake(gp, Arena.Type.FFA);
-			} catch (GameException e) {
-				player.sendMessage(e.getMessage());
-			}
+		} else if (name.contains(ChatColor.BOLD.toString() + "Play")) {
+			MegaArena.getInstance().getPlayMenu().open(gp);
 		} else if (name.contains(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop"))
 			MegaArena.getInstance().getShopMenu().openMainMenu(gp);
 		else if (name.contains(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector"))
@@ -259,6 +248,22 @@ public class PlayerListener implements Listener {
 	}
 	
 	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent event) {
+		
+		GamePlayer gp = null;
+		
+		try {
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
+		} catch (PlayerException e) {
+			e.printStackTrace();
+		}
+		
+		if (gp.isInGame() && gp.getGame().getArena().isTournament()
+				&& gp.getGame().getTournamentCountdownTime() <= 10)
+			event.setCancelled(true);
+	}
+	
+	@EventHandler
 	public void onPlayerDamage(EntityDamageByEntityEvent event) {
 		
 		Entity damager = event.getDamager();
@@ -284,6 +289,11 @@ public class PlayerListener implements Listener {
 		
 		if (!damagedGP.isInGame())
 			return;
+		
+		if (!damagedGP.getGame().hasStarted()) {
+			event.setCancelled(true);
+			return;
+		}
 		
 		if (damagedGP.getGame() != damagerGP.getGame())
 			return;
@@ -399,7 +409,7 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 	}
 
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		
 		GamePlayer player = null;
@@ -415,7 +425,7 @@ public class PlayerListener implements Listener {
 		
 		Block block = event.getBlock();
 		
-		if (block.getType() != Material.COBBLESTONE) {
+		if (!player.getGame().getArena().isTournament() && block.getType() != Material.COBBLESTONE) {
 			event.setCancelled(true);
 			return;
 		}

@@ -18,6 +18,8 @@ package com.andrewyunt.megaarena.objects;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.SpawnException;
 import com.andrewyunt.megaarena.utilities.Utils;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -45,19 +47,27 @@ public class Arena {
 	
 	private final Map<String, Spawn> spawns = new HashMap<String, Spawn>();
 	private final Type type;
+	
 	private String name;
 	private Game game;
-	private boolean isEdit;
+	private boolean tournament, isEdit;
+	private Location queueLocation;
 	
-	public Arena(String name, Type type) {
+	public Arena(String name, Type type, boolean tournament) {
 		
 		this.name = name;
 		this.type = type;
+		this.tournament = tournament;
 	}
 	
 	public Type getType() {
 		
 		return type;
+	}
+	
+	public boolean isTournament() {
+		
+		return tournament;
 	}
 	
 	public void setName(String name) {
@@ -143,12 +153,26 @@ public class Arena {
 		return isEdit;
 	}
 	
+	public void setQueueLocation(Location queueLocation) {
+		
+		this.queueLocation = queueLocation;
+	}
+	
+	public Location getQueueLocation() {
+		
+		return queueLocation;
+	}
+	
 	public void save() {
 		
 		MegaArena plugin = MegaArena.getInstance();
 		FileConfiguration arenaConfig = plugin.getArenaConfig().getConfig();
 		
 		arenaConfig.set("arenas." + name + ".type", type.toString());
+		arenaConfig.set("arenas." + name + ".tournament", tournament);
+		
+		if (tournament)
+			arenaConfig.createSection("arenas." + name + ".queue_location", Utils.serializeLocation(queueLocation));
 		
 		ConfigurationSection spawnsSection = arenaConfig.createSection("arenas." + name + ".spawns");
 		
@@ -166,14 +190,25 @@ public class Arena {
 	
 	public static Arena loadFromConfig(ConfigurationSection section) {
 		
-		Arena arena = new Arena(section.getName(), Arena.Type.valueOf(section.getString("type")));
+		Arena arena = new Arena(section.getName(), Arena.Type.valueOf(section.getString("type")),
+				section.getBoolean("tournament"));
+		
+		try {
+			if (arena.isTournament())
+				arena.queueLocation = Utils.deserializeLocation(section.getConfigurationSection("queue_location"));
+		} catch (NullPointerException e) {
+			MegaArena.getInstance().getLogger().warning(ChatColor.RED + "You have not yet set a"
+					+ " queue location for the arena " + arena.getName());
+		}
 		
 		ConfigurationSection spawnsSection = section.getConfigurationSection("spawns");
 		
 		for (String key : spawnsSection.getKeys(false)) {
-			Location loc = Utils.deserializeLocation(spawnsSection.getConfigurationSection(key).getConfigurationSection("location"));
+			Location loc = Utils.deserializeLocation(spawnsSection.getConfigurationSection(key)
+					.getConfigurationSection("location"));
 			
-			arena.addSpawn(new Spawn(key, arena, loc, GameSide.Type.valueOf(spawnsSection.getConfigurationSection(key).getString("side"))));
+			arena.addSpawn(new Spawn(key, arena, loc, GameSide.Type.valueOf(spawnsSection
+					.getConfigurationSection(key).getString("side"))));
 		}
 		
 		return arena;

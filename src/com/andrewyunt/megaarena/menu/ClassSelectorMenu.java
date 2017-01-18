@@ -190,9 +190,6 @@ public class ClassSelectorMenu implements Listener {
 		if (title == null)
 			return;
 		
-		if (!(title.equals("Hero Classes") || title.equals("Normal Classes") || title.equals("Class Selector")))
-			return;
-		
 		event.setCancelled(true);
 
 		Player player = (Player) event.getWhoClicked();
