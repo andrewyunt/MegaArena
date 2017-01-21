@@ -17,7 +17,11 @@ package com.andrewyunt.megaarena.managers;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.entity.Player;
 
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
@@ -102,5 +106,32 @@ public class PlayerManager {
 			throw new PlayerException("The specified player does not exist.");
 
 		return players.get(name);
+	}
+	
+	public GamePlayer getPlayer(Player player) throws PlayerException {
+		
+		return getPlayer(player.getName());
+	}
+	
+	public Set<GamePlayer> getInGamePlayers() {
+		
+		Set<GamePlayer> inGame = new HashSet<GamePlayer>();
+		
+		for (GamePlayer player : players.values())
+			if (player.isInGame())
+				inGame.add(player);
+		
+		return inGame;
+	}
+	
+	public Set<GamePlayer> getSpectatingPlayers() {
+		
+		Set<GamePlayer> spectating = new HashSet<GamePlayer>();
+		
+		for (GamePlayer player : players.values())
+			if (player.isSpectating())
+				spectating.add(player);
+		
+		return spectating;
 	}
 }

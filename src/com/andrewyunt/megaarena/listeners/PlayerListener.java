@@ -147,12 +147,6 @@ public class PlayerListener implements Listener {
 		if (is == null || !is.hasItemMeta())
 			return;
 		
-		Material type = is.getType();
-		
-		if (type != Material.COMPASS && type != Material.EMERALD && type != Material.COMMAND
-				&& type != Material.IRON_SWORD && type != Material.DIAMOND_SWORD)
-			return;
-		
 		if (!is.hasItemMeta())
 			return;
 		
@@ -181,12 +175,18 @@ public class PlayerListener implements Listener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (name.contains(ChatColor.BOLD.toString() + "Play")) {
+		} else if (name.contains(ChatColor.BOLD.toString() + "Play"))
 			MegaArena.getInstance().getPlayMenu().open(gp);
-		} else if (name.contains(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop"))
+		else if (name.contains(ChatColor.BOLD.toString() + "Spectate"))
+			MegaArena.getInstance().getSpectateMenu().open(gp);
+		else if (name.contains(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop"))
 			MegaArena.getInstance().getShopMenu().openMainMenu(gp);
 		else if (name.contains(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector"))
 			MegaArena.getInstance().getClassSelectorMenu().openMainMenu(gp);
+		else if (name.contains(ChatColor.GREEN + ChatColor.BOLD.toString() + "Teleporter"))
+			MegaArena.getInstance().getSpectateMenu().open(gp);
+		else if (name.contains(ChatColor.RED + ChatColor.BOLD.toString() + "Exit Spectator Mode"))
+			gp.setSpectating(false);
 	}
 
 	@EventHandler

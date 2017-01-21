@@ -190,6 +190,9 @@ public class ClassSelectorMenu implements Listener {
 		if (title == null)
 			return;
 		
+		if (!title.contains("Class"))
+			return;
+		
 		event.setCancelled(true);
 
 		Player player = (Player) event.getWhoClicked();

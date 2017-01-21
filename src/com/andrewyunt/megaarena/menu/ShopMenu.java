@@ -170,6 +170,9 @@ public class ShopMenu implements Listener {
 		if (title == null)
 			return;
 		
+		if (!inv.getTitle().contains("Shop"))
+			return;
+		
 		event.setCancelled(true);
 
 		Player player = (Player) event.getWhoClicked();

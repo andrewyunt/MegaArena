@@ -187,6 +187,10 @@ public class Game {
 			e.printStackTrace();
 		}
 		
+		players.add(player);
+		player.setGame(this);
+		player.setSide(side);
+		
 		boolean spawn = false;
 		
 		if (arena.isTournament()) {
@@ -203,6 +207,8 @@ public class Game {
 			
 			if (tournamentCountdownTime <= 10)
 				spawn = true;
+			
+			player.updateScoreboard();
 		} else
 			spawn = true;
 		
@@ -215,13 +221,6 @@ public class Game {
 						+ " an administrator.", arena.getName()));
 				return;
 			}
-		
-		players.add(player);
-		player.setGame(this);
-		player.setSide(side);
-		
-		if (arena.isTournament())
-			player.updateScoreboard();
 	}
 
 	/**

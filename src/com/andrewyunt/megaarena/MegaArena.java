@@ -15,14 +15,8 @@
  */
 package com.andrewyunt.megaarena;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -42,6 +36,7 @@ import com.andrewyunt.megaarena.exception.GameException;
 import com.andrewyunt.megaarena.listeners.PlayerAbilityListener;
 import com.andrewyunt.megaarena.listeners.PlayerListener;
 import com.andrewyunt.megaarena.listeners.PlayerSkillListener;
+import com.andrewyunt.megaarena.listeners.SpectatorsInteractionsListener;
 import com.andrewyunt.megaarena.managers.ArenaManager;
 import com.andrewyunt.megaarena.managers.GameManager;
 import com.andrewyunt.megaarena.managers.PlayerManager;
@@ -50,11 +45,11 @@ import com.andrewyunt.megaarena.menu.ClassSelectorMenu;
 import com.andrewyunt.megaarena.menu.LayoutEditorMenu;
 import com.andrewyunt.megaarena.menu.PlayMenu;
 import com.andrewyunt.megaarena.menu.ShopMenu;
+import com.andrewyunt.megaarena.menu.SpectateMenu;
 import com.andrewyunt.megaarena.menu.UpgradesMenu;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
-import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The main class in the MegaArena plugin.
@@ -72,7 +67,7 @@ public class MegaArena extends JavaPlugin {
 	private final LayoutEditorMenu layoutEditorMenu = new LayoutEditorMenu();
 	private final ShopMenu shopMenu = new ShopMenu();
 	private final PlayMenu playMenu = new PlayMenu();
-	private final Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
+	private final SpectateMenu spectateMenu = new SpectateMenu();
 	private final ArenaManager arenaManager = new ArenaManager();
 	private final GameManager gameManager = new GameManager();
 	private final PlayerManager playerManager = new PlayerManager();
@@ -129,20 +124,19 @@ public class MegaArena extends JavaPlugin {
 		pm.registerEvents(new PlayerListener(), this);
 		pm.registerEvents(new PlayerAbilityListener(), this);
 		pm.registerEvents(new PlayerSkillListener(), this);
+		pm.registerEvents(new SpectatorsInteractionsListener(), this);
 		pm.registerEvents(classSelectorMenu, this);
 		pm.registerEvents(layoutEditorMenu, this);
 		pm.registerEvents(upgradesMenu, this);
 		pm.registerEvents(shopMenu, this);
 		pm.registerEvents(playMenu, this);
+		pm.registerEvents(spectateMenu, this);
 		
 		// Load all arenas from arenas.yml
 		arenaManager.loadArenas();
 		
 		// Load all signs from signs.yml
 		signManager.loadSigns();
-		
-		// Create hotbar items and add them to the map
-		createHotbarItems();
 		
 		// Create games for FFA and TDM arenas
 		for (Arena arena : arenaManager.getArenas(Arena.Type.TDM))
@@ -245,6 +239,11 @@ public class MegaArena extends JavaPlugin {
 		return upgradesMenu;
 	}
 	
+	public LayoutEditorMenu getLayoutEditorMenu() {
+		
+		return layoutEditorMenu;
+	}
+	
 	public ShopMenu getShopMenu() {
 		
 		return shopMenu;
@@ -255,58 +254,9 @@ public class MegaArena extends JavaPlugin {
 		return playMenu;
 	}
 	
-	public LayoutEditorMenu getLayoutEditorMenu() {
+	public SpectateMenu getSpectateMenu() {
 		
-		return layoutEditorMenu;
-	}
-	
-	public void createHotbarItems() {
-		
-		// Create items
-		ItemStack serverSelector = new ItemStack(Material.COMPASS);
-		ItemStack shop = new ItemStack(Material.EMERALD);
-		ItemStack classSelector = new ItemStack(Material.COMMAND);
-		ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
-		
-		// Get item metas
-		ItemMeta serverSelectorMeta = serverSelector.getItemMeta();
-		ItemMeta shopMeta = shop.getItemMeta();
-		ItemMeta classSelectorMeta = classSelector.getItemMeta();
-		ItemMeta playTDMMeta = playTDM.getItemMeta();
-		
-		// Set meta display names
-		serverSelectorMeta.setDisplayName(ChatColor.RED + ChatColor.BOLD.toString() + "Server Selector");
-		shopMeta.setDisplayName(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop");
-		classSelectorMeta.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector");
-		playTDMMeta.setDisplayName(ChatColor.BOLD.toString() + "Play");
-		
-		// Set item metas
-		serverSelector.setItemMeta(serverSelectorMeta);
-		shop.setItemMeta(shopMeta);
-		classSelector.setItemMeta(classSelectorMeta);
-		playTDM.setItemMeta(playTDMMeta);
-		
-		// Set hotbar items in map
-		hotbarItems.put(0, serverSelector);
-		hotbarItems.put(1, shop);
-		hotbarItems.put(2, classSelector);
-		hotbarItems.put(8, Utils.addGlow(playTDM));
-		
-		for (Map.Entry<Integer, ItemStack> entry : hotbarItems.entrySet()) {
-			ItemStack is = entry.getValue();
-			
-			if (is == null || !is.hasItemMeta())
-				continue;
-			
-			ItemMeta im = is.getItemMeta();
-			im.setDisplayName(im.getDisplayName() + ChatColor.GRAY + " (Right Click)");
-			is.setItemMeta(im);
-		}
-	}
-	
-	public Map<Integer, ItemStack> getHotbarItems() {
-		
-		return hotbarItems;
+		return spectateMenu;
 	}
 	
 	public int getNextTournamentCountdownTime() {

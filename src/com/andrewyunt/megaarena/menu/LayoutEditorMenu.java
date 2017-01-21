@@ -115,7 +115,9 @@ public class LayoutEditorMenu implements Listener {
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
 				try  {
-					for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
+					GamePlayer gp = MegaArena.getInstance().getPlayerManager().getPlayer((Player) event.getWhoClicked());
+					
+					for (ItemStack hotbarItem : gp.getHotbarItems().values()) {
 						ItemMeta hotbarMeta = hotbarItem.getItemMeta();
 						
 						if (hotbarMeta == null)
@@ -156,15 +158,23 @@ public class LayoutEditorMenu implements Listener {
 		
 		if (!is.hasItemMeta())
 			return;
+		
+		Player player = (Player) event.getWhoClicked();
+		GamePlayer gp = null;
+		
+		try {
+			gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
+		} catch (PlayerException e) {
+			e.printStackTrace();
+		}
 
 		String name = is.getItemMeta().getDisplayName();
 		
-		for (ItemStack hotbarItem : MegaArena.getInstance().getHotbarItems().values()) {
-			if (!name.equals(hotbarItem.getItemMeta().getDisplayName()))
-				continue;
-			
-			event.setCancelled(true);
-			return;
+		for (ItemStack hotbarItem : gp.getHotbarItems().values()) {
+			if (name.equals(hotbarItem.getItemMeta().getDisplayName())) {
+				event.setCancelled(true);
+				return;
+			}
 		}
 		
 		if (name.equals(ChatColor.RESET + "" + ChatColor.DARK_RED + "Health Potion")
@@ -176,50 +186,44 @@ public class LayoutEditorMenu implements Listener {
 			return;
 		}
 		
-		Player player = (Player) event.getWhoClicked();
-		
 		if (name.equals("Close")) {
 			player.closeInventory();
 			event.setCancelled(true);
 			return;
 		}
 		
-		try {
-			final GamePlayer gp = MegaArena.getInstance().getPlayerManager().getPlayer(player.getName());
-			
-			if (name.equals("Go Back")) {
-				if (title.startsWith("Layout Editor -")) {
-					Class classType = Class.valueOf(title.replace("Layout Editor - ", "").replace(" ", "_").toUpperCase());
-					
-					MegaArena.getInstance().getUpgradesMenu().openClassUpgradeMenu(gp, classType);
-					
-					event.setCancelled(true);
-				}
-				return;
+		if (name.equals("Go Back")) {
+			if (title.startsWith("Layout Editor -")) {
+				Class classType = Class.valueOf(title.replace("Layout Editor - ", "").replace(" ", "_").toUpperCase());
+				
+				MegaArena.getInstance().getUpgradesMenu().openClassUpgradeMenu(gp, classType);
+				
+				event.setCancelled(true);
 			}
-			
-			if (name.equals("Reset Layout")) {
-				if (title.startsWith("Layout Editor -")) {
-					open(gp, Class.valueOf(title.replace("Layout Editor - ", "")
-							.replace(" ", "_").toUpperCase()), false);
-					event.setCancelled(true);
-				}
-				return;
-			}
-			
-			event.setCancelled(true);
-			
-			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
-				try  {
-					open(gp, Class.valueOf(name.replace(" ", "_").toUpperCase()), true);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				}
-			}, 1L);
-		} catch (PlayerException e) {
-			e.printStackTrace();
+			return;
 		}
+		
+		if (name.equals("Reset Layout")) {
+			if (title.startsWith("Layout Editor -")) {
+				open(gp, Class.valueOf(title.replace("Layout Editor - ", "")
+						.replace(" ", "_").toUpperCase()), false);
+				event.setCancelled(true);
+			}
+			return;
+		}
+		
+		event.setCancelled(true);
+		
+		final GamePlayer finalGP = gp;
+		
+		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
+			try  {
+				open(finalGP, Class.valueOf(name.replace(" ", "_").toUpperCase()), true);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+		}, 1L);
 	}
 	
 	@EventHandler
