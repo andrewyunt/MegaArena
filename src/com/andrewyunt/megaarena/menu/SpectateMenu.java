@@ -33,6 +33,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 public class SpectateMenu implements Listener {
 	
@@ -49,7 +50,7 @@ public class SpectateMenu implements Listener {
 	public void open(GamePlayer player) {
 		
 		if (MegaArena.getInstance().getPlayerManager().getInGamePlayers().size() == 0) {
-			player.getBukkitPlayer().sendMessage(ChatColor.RED + "There are no players to spectate.");
+			player.getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.no-players-spectate"));
 			return;
 		}
 		

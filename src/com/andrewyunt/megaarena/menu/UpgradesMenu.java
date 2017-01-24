@@ -242,10 +242,10 @@ public class UpgradesMenu implements Listener {
 			return;
 		
 		if (is.getDurability() == 14) {
-			player.sendMessage(ChatColor.RED + "You must unlock the preceding upgrades or you cannot afford that upgrade.");
+			player.sendMessage(Utils.getFormattedMessage("messages.unlock-preceding-upgrades"));
 			return;
 		} else if (is.getDurability() == 5) {
-			player.sendMessage(ChatColor.RED + "You have already puchased that class upgrade.");
+			player.sendMessage(Utils.getFormattedMessage("messages.upgrade-already-purchased"));
 			return;
 		}
 		
@@ -273,8 +273,9 @@ public class UpgradesMenu implements Listener {
 		gp.removeCoins(cost);
 		gp.setClassLevel(upgradable, slot);
 		
-		gp.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s upgrade purchased successfully.",
-					upgradable.getName() + ChatColor.GREEN));
+		gp.getBukkitPlayer().sendMessage(String.format(
+				Utils.getFormattedMessage("messages.upgrade-purchased-successfully"),
+				upgradable.getName()));
 		
 		openClassUpgradeMenu(gp, classType);
 	}

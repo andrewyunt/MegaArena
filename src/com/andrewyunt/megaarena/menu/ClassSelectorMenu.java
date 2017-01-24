@@ -22,7 +22,6 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.utilities.Utils;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -226,14 +225,15 @@ public class ClassSelectorMenu implements Listener {
 			String classStr = name.replace(" ", "_").toUpperCase();
 
 			if (!player.hasPermission("megaarena.class." + classStr.toLowerCase()))  {
-				player.sendMessage(ChatColor.RED + "You do not have permission to select that class.");
+				player.sendMessage(Utils.getFormattedMessage("messages.no-permission-select-class"));
 				return;
 			}
 			
 			gp.setClassType(Class.valueOf(classStr));
 			
-			player.sendMessage(String.format(ChatColor.GREEN + "You selected the %s class.",
-					ChatColor.AQUA + name + ChatColor.GREEN));
+			player.sendMessage(String.format(
+					Utils.getFormattedMessage("class-selected-successfully"),
+					name));
 			
 			player.closeInventory();
 			

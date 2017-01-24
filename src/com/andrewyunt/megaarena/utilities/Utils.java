@@ -253,4 +253,9 @@ public class Utils {
 			player.playEffect(loc.add(0.0D, 0.8D, 0.0D), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
 		}
 	}
+	
+	public static String getFormattedMessage(String configPath) {
+		
+		return ChatColor.translateAlternateColorCodes('&', MegaArena.getInstance().getConfig().getString(configPath));
+	}
 }

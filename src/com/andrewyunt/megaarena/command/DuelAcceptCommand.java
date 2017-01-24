@@ -15,7 +15,6 @@
  */
 package com.andrewyunt.megaarena.command;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,6 +26,7 @@ import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The duelaccept command class which is used as a Bukkit CommandExecutor
@@ -45,7 +45,7 @@ public class DuelAcceptCommand implements CommandExecutor {
 		}
 		
 		if (!sender.hasPermission("megaarena.duelaccept")) {
-			sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 			return false;
 		}
 		
@@ -60,7 +60,7 @@ public class DuelAcceptCommand implements CommandExecutor {
 			return false;
 		
 		if (player.isInGame()) {
-			sender.sendMessage(ChatColor.RED + "You are currently in a game and cannot accept a duel request.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.in-game-cannot-accept-duel-request"));
 			return false;
 		}
 		
@@ -72,15 +72,15 @@ public class DuelAcceptCommand implements CommandExecutor {
 					? plugin.getPlayerManager().getPlayer(plugin.getServer().getPlayer(args[0]).getName())
 					: player.getLastRequestingPlayer();
 		} catch (PlayerException e) {
-			sender.sendMessage(ChatColor.RED + "The specified player does not exist.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.specified-player-not-exists"));
 			return false;
 		} catch (NullPointerException e) {
-			sender.sendMessage(ChatColor.RED + "You currently have no active duel requests.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.no-duel-requests"));
 			return false;
 		}
 		
 		if (!player.getRequestingPlayers().contains(requestingPlayer)) {
-			sender.sendMessage(ChatColor.RED + "The specified player is not requesting you to a duel.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.specified-player-not-requesting-duel"));
 			return false;
 		}
 		
@@ -88,14 +88,15 @@ public class DuelAcceptCommand implements CommandExecutor {
 		
 		if (requestingPlayer.isInGame()) {
 			sender.sendMessage(String.format(
-					ChatColor.RED + "The player %s is currently in a game and cannot duel.",
+					Utils.getFormattedMessage("messages.cannot-duel-in-game"),
 					requestingPlayer.getName()));
 			return false;
 		}
 		
 		if (!player.hasSelectedClass()) {
-			player.getBukkitPlayer().sendMessage(ChatColor.RED + "You must select a class before accepting a duel.");
-			requestingPlayer.getBukkitPlayer().sendMessage(ChatColor.RED + "The player you requested to duel must select a class before accepting to duel.");
+			player.getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.select-class-accept-duel"));
+			requestingPlayer.getBukkitPlayer().sendMessage(Utils.getFormattedMessage(
+					"messages.player-req-select-class-accept-duel"));
 			return false;
 		}
 		
@@ -114,7 +115,7 @@ public class DuelAcceptCommand implements CommandExecutor {
 		}
 		
 		if (arena == null) {
-			sender.sendMessage(ChatColor.RED + "There are currently no arenas available for a duel.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.no-arenas-available-duel"));
 			return false;
 		}
 		

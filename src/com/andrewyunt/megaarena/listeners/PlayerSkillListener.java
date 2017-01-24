@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
@@ -50,6 +49,7 @@ import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Class;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.Skill;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The listener class used for skills which holds methods to listen on events.
@@ -134,8 +134,9 @@ public class PlayerSkillListener implements Listener {
 
 		shooter.getInventory().addItem(new ItemStack(Material.ARROW));
 
-		shooter.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.BOOMERANG.getName() + ChatColor.GREEN));
+		shooter.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.BOOMERANG.getName()));
 	}
 
 	@EventHandler
@@ -194,9 +195,11 @@ public class PlayerSkillListener implements Listener {
 		shooter.addPotionEffect(regen, true);
 		damaged.addPotionEffect(weakness, true);
 
-		shooter.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.WEAKENING_ARROW.getName() + ChatColor.GREEN));
-		damaged.sendMessage(String.format(ChatColor.RED + "%s's arrow inflicted you with Weakness II for %s seconds.",
+		shooter.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.WEAKENING_ARROW.getName()));
+		damaged.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.weakening-arrow-inflicted"),
 				shooter.getName(), String.valueOf(duration / 20)));
 	}
 
@@ -252,8 +255,9 @@ public class PlayerSkillListener implements Listener {
 
 		damaged.addPotionEffect(resistance, true);
 
-		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.RESIST.getName() + ChatColor.GREEN));
+		damaged.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.RESIST.getName()));
 	}
 
 	@EventHandler
@@ -319,8 +323,9 @@ public class PlayerSkillListener implements Listener {
 		
 		damaged.addPotionEffect(speed, true);
 
-		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.SWIFTNESS.getName() + ChatColor.GREEN));
+		damaged.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.SWIFTNESS.getName()));
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -387,8 +392,9 @@ public class PlayerSkillListener implements Listener {
 		damager.addPotionEffect(regen, true);
 		damager.addPotionEffect(resistance, true);
 
-		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.RECHARGE.getName() + ChatColor.GREEN));
+		damager.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.RECHARGE.getName()));
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -453,8 +459,9 @@ public class PlayerSkillListener implements Listener {
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
 		damager.addPotionEffect(speed, true);
 
-		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.FLURRY.getName() + ChatColor.GREEN));
+		damager.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.FLURRY.getName()));
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -528,8 +535,9 @@ public class PlayerSkillListener implements Listener {
 			finalGP.setExplosiveWeaknessCooldown(false);
 		}, 600L);
 		
-		player.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated.",
-				ChatColor.AQUA + Skill.EXPLOSIVE_WEAKNESS.getName() + ChatColor.GREEN));
+		player.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.EXPLOSIVE_WEAKNESS.getName()));
 	}
 	
 	@EventHandler
@@ -609,8 +617,9 @@ public class PlayerSkillListener implements Listener {
 		tnt.setFuseTicks(60); // 3 second delay before explosion
 		creeperTNT.put(tnt.getUniqueId(), damaged);
 
-		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill activated.",
-				ChatColor.AQUA + Skill.SUPPORT.getName() + ChatColor.GREEN));
+		damaged.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.SUPPORT.getName()));
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -714,10 +723,13 @@ public class PlayerSkillListener implements Listener {
 
 		damaged.addPotionEffect(weakness, false);
 		
-		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.WEAKENING_SWING.getName() + ChatColor.GREEN));
-		damaged.sendMessage(String.format(ChatColor.RED + "%s's hit inflicted you with Weakness for %s seconds.",
-				damager.getName(), duration + ""));
+		damager.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.WEAKENING_SWING.getName()));
+		damaged.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.weakening-swing-inflicted"),
+				damager.getName(),
+				String.valueOf(duration)));
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -768,8 +780,9 @@ public class PlayerSkillListener implements Listener {
 		if (Math.random() > 0.1D)
 			return;
 		
-		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.SWIFT_BACKUP.getName() + ChatColor.GREEN));
+		damaged.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.SWIFT_BACKUP.getName()));
 
 		Wolf wolf = (Wolf) damaged.getWorld().spawnEntity(damaged.getLocation(), EntityType.WOLF);
 		wolf.setOwner((AnimalTamer) damaged);
@@ -840,8 +853,9 @@ public class PlayerSkillListener implements Listener {
 		else
 			((Damageable) damager).setHealth(((Damageable) damager).getHealth() + 1.0);
 
-		damager.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.SOUL_SUCKER.getName() + ChatColor.GREEN));
+		damager.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.SOUL_SUCKER.getName()));
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -901,7 +915,8 @@ public class PlayerSkillListener implements Listener {
 		else
 			((Damageable) damaged).setHealth(((Damageable) damaged).getHealth() + 1.0);
 
-		damaged.sendMessage(String.format(ChatColor.GREEN + "Your %s skill has been activated!",
-				ChatColor.AQUA + Skill.UNDEAD.getName() + ChatColor.GREEN));
+		damaged.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.skill-activated"),
+				Skill.UNDEAD.getName()));
 	}
 }

@@ -18,6 +18,8 @@ package com.andrewyunt.megaarena.objects;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.exception.SideException;
+import com.andrewyunt.megaarena.utilities.Utils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -197,8 +199,9 @@ public class Game {
 			try {
 				player.getBukkitPlayer().teleport(arena.getQueueLocation());
 			} catch (NullPointerException e) {
-				player.getBukkitPlayer().sendMessage(ChatColor.RED + String.format("There is no queue location"
-						+ " for the arena %s, please notify an administrator.", arena.getName()));
+				player.getBukkitPlayer().sendMessage(String.format(
+						Utils.getFormattedMessage("messages.no-queue-location"),
+						arena.getName()));
 				return;
 			}
 			
@@ -216,9 +219,9 @@ public class Game {
 			try {
 				spawnPlayer(player, side.getSideType(), teamBalance);
 			} catch (IndexOutOfBoundsException e) {
-				player.getBukkitPlayer().sendMessage(ChatColor.RED + String.format(
-						"There are no spawn points defined for the arena %s, please notify"
-						+ " an administrator.", arena.getName()));
+				player.getBukkitPlayer().sendMessage(String.format(
+						Utils.getFormattedMessage("messages.no-spawn-points"),
+						arena.getName()));
 				return;
 			}
 	}
@@ -359,19 +362,18 @@ public class Game {
 		
 		Player bp = player.getBukkitPlayer();
 		
-		bp.sendMessage(ChatColor.GOLD + ChatColor.BOLD.toString() + "TIP: " + ChatColor.GRAY
-				+ "Use /spawn to return to spawn.");
-		bp.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "Cross-Teaming/Trucing is NOT allowed.");
+		bp.sendMessage(Utils.getFormattedMessage("messages.join-tip"));
+		bp.sendMessage(Utils.getFormattedMessage("messages.cross-teaming-not-allowed"));
 		bp.sendMessage("");
 		
 		if (teamBalance)
-			bp.sendMessage(ChatColor.GREEN + String.format(
-					"You have been automatically moved to " + "the %s side by an automatic team balance.",
-					ChatColor.AQUA + sideType.getName() + ChatColor.GREEN));
+			bp.sendMessage(String.format(
+					Utils.getFormattedMessage("messages.side-joined-balance"),
+					sideType.getName()));
 		else
-			bp.sendMessage(ChatColor.GREEN + String.format("You have joined %s.",
-					((sideType == GameSide.Type.SOLO ? ChatColor.AQUA + "FFA" + ChatColor.GREEN :
-						"the " + ChatColor.AQUA + sideType.getName() + ChatColor.GREEN + " team"))));
+			bp.sendMessage(String.format(
+					Utils.getFormattedMessage("messages.side-joined"),
+					sideType.getName()));
 	}
 
 	/**
@@ -423,15 +425,16 @@ public class Game {
 				
 				switch (tournamentCountdownTime) {
 				case 60:
-					message = ChatColor.GREEN + "The tournament will start in 1 minute.";
+					message = Utils.getFormattedMessage("messages.tournament-start-one-minute");
 					break;
 				case 45: case 30: case 15:
 				case 10: case 9: case 8:
 				case 7: case 6: case 5:
 				case 4: case 3: case 2:
 				case 1:
-					message = ChatColor.GREEN + String.format("The tournament will start in %s seconds.",
-							ChatColor.AQUA + String.valueOf(tournamentCountdownTime) + ChatColor.GREEN);
+					message = String.format(
+							Utils.getFormattedMessage("messages.tournament-start-x-seconds"),
+							String.valueOf(tournamentCountdownTime));
 					break;
 				case 0:
 					message = ChatColor.GREEN + "The tournament has started!";
@@ -466,7 +469,9 @@ public class Game {
 		if (won)
 			for (GamePlayer player : players) {
 				player.addCoins(30);
-				player.getBukkitPlayer().sendMessage(ChatColor.GREEN + "You earned 30 coins for winning the tournament.");
+				player.getBukkitPlayer().sendMessage(String.format(
+						Utils.getFormattedMessage("messages.tournament-win-coins-received"),
+						String.valueOf(30)));
 			}
 	}
 	

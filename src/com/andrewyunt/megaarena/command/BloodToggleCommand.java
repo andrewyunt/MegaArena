@@ -15,7 +15,6 @@
  */
 package com.andrewyunt.megaarena.command;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,6 +23,7 @@ import org.bukkit.entity.Player;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The bloodtoggle command class which is used as a Bukkit CommandExecutor
@@ -42,7 +42,7 @@ public class BloodToggleCommand implements CommandExecutor {
 		}
 		
 		if (!sender.hasPermission("megaarena.bloodtoggle")) {
-			sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 			return false;
 		}
 		
@@ -57,9 +57,9 @@ public class BloodToggleCommand implements CommandExecutor {
 		
 		player.setBloodEffect(hasBloodEffect);
 		
-		player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format(
-				"Blood particles toggled %s successfully.",
-				ChatColor.AQUA + (hasBloodEffect ? "on" : "off") + ChatColor.GREEN));
+		player.getBukkitPlayer().sendMessage(String.format(
+				Utils.getFormattedMessage("messages.blood-toggled"),
+				hasBloodEffect ? "on" : "off"));
 		
 		return true;
 	}

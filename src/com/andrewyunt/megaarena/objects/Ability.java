@@ -15,25 +15,29 @@
  */
 package com.andrewyunt.megaarena.objects;
 
-import com.andrewyunt.megaarena.MegaArena;
-import com.andrewyunt.megaarena.exception.PlayerException;
-import com.andrewyunt.megaarena.utilities.Utils;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
-import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
-
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import com.andrewyunt.megaarena.MegaArena;
+import com.andrewyunt.megaarena.exception.PlayerException;
+import com.andrewyunt.megaarena.utilities.Utils;
+
+import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
 /**
  * The enumeration for abilities, their names, and the method to use them.
@@ -113,8 +117,9 @@ public enum Ability implements Upgradable {
 					
 					effectPlayers.add((Player) ep);
 					
-					ep.sendMessage(String.format(ChatColor.GREEN + "You have been healed by %s.",
-							ChatColor.AQUA + player.getName() + ChatColor.GREEN));
+					ep.sendMessage(String.format(
+							Utils.getFormattedMessage(Utils.getFormattedMessage("messsages.healed-by-team")),
+							player.getName()));
 			}
 			
 			double newHealth = ((Damageable) bp).getHealth() + hearts;
@@ -143,10 +148,7 @@ public enum Ability implements Upgradable {
 				}
 			}
 			
-			bp.sendMessage(String.format(ChatColor.GREEN + "You have used the %s ability" + 
-			(((Damageable) bp).getHealth() < 40 ? String.format(" and have restored %s hearts.",
-					ChatColor.AQUA + String.valueOf(hearts / 2) + ChatColor.GREEN) : "."),
-			ChatColor.AQUA + name + ChatColor.GREEN));
+			bp.sendMessage(String.format(Utils.getFormattedMessage("messages.heal-ability-used")));
 			
 		} else if (this == EXPLOSIVE_ARROW) {
 			
@@ -192,12 +194,13 @@ public enum Ability implements Upgradable {
 			}
 			
 			if (count == 0) {
-				player.getBukkitPlayer().sendMessage(ChatColor.RED + "No targets within range found!");
+				player.getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.no-targets-in-range"));
 				return;
 			}
 			
-			player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format("You have used the %s ability.",
-					ChatColor.AQUA + name + ChatColor.GREEN));
+			player.getBukkitPlayer().sendMessage(String.format(
+					Utils.getFormattedMessage("messages.ability-used"),
+					name));
 			
 		} else if (this == EXPLODE) {
 			

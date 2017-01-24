@@ -23,8 +23,7 @@ import org.bukkit.entity.Player;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
-
-import net.md_5.bungee.api.ChatColor;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The dueldeny command class which is used as a Bukkit CommandExecutor
@@ -43,7 +42,7 @@ public class DuelDenyCommand implements CommandExecutor {
 		}
 		
 		if (!sender.hasPermission("megaarena.dueldeny")) {
-			sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 			return false;
 		}
 		
@@ -62,23 +61,23 @@ public class DuelDenyCommand implements CommandExecutor {
 					? plugin.getPlayerManager().getPlayer(plugin.getServer().getPlayer(args[0]).getName())
 					: player.getLastRequestingPlayer();
 		} catch (PlayerException e) {
-			sender.sendMessage(ChatColor.RED + "The specified player does not exist.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.specified-player-not-exists"));
 			return false;
 		} catch (NullPointerException e) {
-			sender.sendMessage(ChatColor.RED + "You currently have no active duel requests.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.no-duel-requests"));
 			return false;
 		}
 		
 		if (!player.getRequestingPlayers().contains(requestingPlayer)) {
-			sender.sendMessage(ChatColor.RED + "The specified player is not requesting you to a duel.");
+			sender.sendMessage(Utils.getFormattedMessage("messages.specified-player-not-requesting-duel"));
 			return false;
 		}
 		
-		player.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format("You denied %s's request to a duel.",
-				ChatColor.AQUA + requestingPlayer.getName() + ChatColor.GREEN));
+		player.getBukkitPlayer().sendMessage(String.format(Utils.getFormattedMessage("messages.duel-denied-receiver"),
+				requestingPlayer.getName()));
 		
-		requestingPlayer.getBukkitPlayer().sendMessage(ChatColor.AQUA + String.format("%s denied your request to a duel.",
-				player.getName() + ChatColor.GREEN));
+		requestingPlayer.getBukkitPlayer().sendMessage(String.format(Utils.getFormattedMessage("messages.duel-denied-sender"),
+				player.getName()));
 		
 		requestingPlayer.removeRequestingPlayer(requestingPlayer);
 		

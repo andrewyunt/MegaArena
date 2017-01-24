@@ -139,16 +139,8 @@ public class MegaArena extends JavaPlugin {
 		signManager.loadSigns();
 		
 		// Create games for FFA and TDM arenas
-		for (Arena arena : arenaManager.getArenas(Arena.Type.TDM))
-			if (!arena.isTournament())
-				try {
-					arena.setGame(gameManager.createGame(arena));
-				} catch (GameException e) {
-					getLogger().warning(e.getMessage());
-				}
-		
-		for (Arena arena : arenaManager.getArenas(Arena.Type.FFA))
-			if (!arena.isTournament())
+		for (Arena arena : arenaManager.getArenas())
+			if (arena.getType() != Arena.Type.DUEL && !arena.isTournament())
 				try {
 					arena.setGame(gameManager.createGame(arena));
 				} catch (GameException e) {

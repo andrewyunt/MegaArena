@@ -24,6 +24,7 @@ import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The spawn command class which is used as a Bukkit CommandExecutor.
@@ -35,8 +36,15 @@ public class SpawnCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (!(sender instanceof Player))
+		if (!(sender instanceof Player)) {
+			System.out.println("You may not execute that command from the console.");
 			return false;
+		}
+		
+		if (!sender.hasPermission("megaarena.spawn")) {
+			sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
+			return false;
+		}
 		
 		Player player = (Player) sender;
 		GamePlayer gp = null;

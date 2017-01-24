@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -206,7 +205,7 @@ public class ShopMenu implements Listener {
 			String classStr = name.replace(" ", "_").toUpperCase();
 
 			if (!player.hasPermission("megaarena.class." + classStr.toLowerCase()))  {
-				player.sendMessage(ChatColor.RED + "You do not own that class.");
+				player.sendMessage(Utils.getFormattedMessage("messages.class-not-owned"));
 				return;
 			}
 			

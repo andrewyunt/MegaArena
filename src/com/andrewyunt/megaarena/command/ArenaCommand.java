@@ -35,6 +35,7 @@ import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.objects.GameSide;
 import com.andrewyunt.megaarena.objects.Spawn;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The arena command class which is used as a Bukkit CommandExecutor.
@@ -63,7 +64,7 @@ public class ArenaCommand implements CommandExecutor {
 		if (!(args.length > 0)) {
 			
 			if (!sender.hasPermission("megaarena.arena.help")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
@@ -76,12 +77,12 @@ public class ArenaCommand implements CommandExecutor {
 		if (args[0].equalsIgnoreCase("addcoins")) {
 			
 			if (sender instanceof Player) {
-				System.out.println("You may only execute that command from the console.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.only-execute-console"));
 				return false;
 			}
 			
 			if (!(args.length >= 3)) {
-				sender.sendMessage(ChatColor.RED + "Usage: /arena addcoins [player] [amount]");
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-addcoins-usage"));
 				return false;
 			}
 			
@@ -98,15 +99,16 @@ public class ArenaCommand implements CommandExecutor {
 			try {
 				coins = Integer.valueOf(args[2]);
 			} catch (NumberFormatException e) {
-				sender.sendMessage(ChatColor.RED + "Usage: /arena addcoins [player] [amount]");
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-addcoins-usage"));
 				return false;
 			}
 			
 			coinsGP.addCoins(coins);
-			coinsGP.getBukkitPlayer().sendMessage(ChatColor.GREEN + String.format("You received %s coins from %s.", 
-					ChatColor.AQUA + String.valueOf(coins) + ChatColor.GREEN ,
-					ChatColor.AQUA + sender.getName() + ChatColor.GREEN));
-			
+			coinsGP.getBukkitPlayer().sendMessage(String.format(
+					Utils.getFormattedMessage("messages.coins-received-addcoins"), 
+					String.valueOf(coins),
+					sender.getName()));
+		
 			return true;
 		}
 		
@@ -118,7 +120,7 @@ public class ArenaCommand implements CommandExecutor {
 		if (args[0].equalsIgnoreCase("help")) {
 			
 			if (!sender.hasPermission("megaarena.arena.help")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
@@ -130,13 +132,13 @@ public class ArenaCommand implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("create")) {
 			
 			if (!sender.hasPermission("megaarena.arena.create")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
 			if (args.length < 4) {
-				sender.sendMessage(ChatColor.RED + "Usage: /arena create [name] [type] [tournament]");
-				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-create-usage"));
+				sender.sendMessage(Utils.getFormattedMessage("messages.possible-arena-types"));
 				return false;
 			}
 			
@@ -145,8 +147,8 @@ public class ArenaCommand implements CommandExecutor {
 			try {
 				type = Arena.Type.valueOf(args[2].toUpperCase());
 			} catch (IllegalArgumentException e) {
-				sender.sendMessage(ChatColor.RED + "Error: Invalid arena type specified.");
-				sender.sendMessage(ChatColor.RED + "Possible Arena Types: DUEL, FFA, TDM");
+				sender.sendMessage(Utils.getFormattedMessage("messages.invalid-arena-type-specified"));
+				sender.sendMessage(Utils.getFormattedMessage("messages.possible-arena-types"));
 				return false;
 			}
 			Arena arena = null;
@@ -167,15 +169,13 @@ public class ArenaCommand implements CommandExecutor {
 			
 			arena.setEdit(true);
 			
-			sender.sendMessage(String.format(ChatColor.GREEN + "You have"
-					+ " created the arena %s, "
-					+ "selected the arena, and set it to edit mode.",
-					ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+			sender.sendMessage(String.format(Utils.getFormattedMessage("messages.arena-created-successfully"),
+					arena.getName()));
 			
 		} else if (args[0].equalsIgnoreCase("delete")) {
-
+			
 			if (!sender.hasPermission("megaarena.arena.delete")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
@@ -185,40 +185,43 @@ public class ArenaCommand implements CommandExecutor {
 				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
 			} catch (ArenaException | PlayerException e) {
 			}
-
+			
 			if (arena == null) {
-				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.select-arena-first"));
 				return false;
 			}
 			
 			if (!arena.isEdit()) {
-				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
-				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
+				sender.sendMessage(Utils.getFormattedMessage("messages.edit-arena-first"));
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-edit-usage"));
 				return false;
 			}
 			
 			if (arena.isInUse()) {
-				MegaArena.getInstance().getGameManager().deleteGame(arena.getGame(), 
-						ChatColor.RED + "The arena you were playing in has been deleted.");
+				MegaArena.getInstance().getGameManager().deleteGame(
+						arena.getGame(),
+						Utils.getFormattedMessage("messages.arena-playing-deleted"));
 				
 				try {
 					MegaArena.getInstance().getArenaManager().deleteArena(arena);
 				} catch (ArenaException e) {
+					e.printStackTrace();
 				}
 			}
 			
-			sender.sendMessage(ChatColor.GREEN + String.format("You deleted the arena %s successfully.",
-					ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+			sender.sendMessage(String.format(
+					Utils.getFormattedMessage("messages.arena-deleted-successfully"),
+					arena.getName()));
 			
 		} else if (args[0].equalsIgnoreCase("select")) {
 			
 			if (!sender.hasPermission("megaarena.arena.select")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
 			if (!(args.length >= 2)) {
-				sender.sendMessage(ChatColor.RED + "Usage: /arena select [name]");
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-select-usage"));
 				return false;
 			}
 			
@@ -237,18 +240,19 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			sender.sendMessage(String.format(ChatColor.GREEN + "You have selected the arena %s.",
-					ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+			sender.sendMessage(String.format(
+					Utils.getFormattedMessage("messages.arena-selected"),
+					arena.getName()));
 			
 		} else if (args[0].equalsIgnoreCase("addspawn")) {
 			
 			if (!sender.hasPermission("megaarena.arena.addspawn")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
 			if (args.length < 3) {
-				sender.sendMessage(ChatColor.RED + "Usage: /arena addspawn [name] [side]");
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-addspawn-usage"));
 				return false;
 			}
 			
@@ -257,25 +261,25 @@ public class ArenaCommand implements CommandExecutor {
 			try {
 				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
 			} catch (ArenaException e) {
-				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.select-arena-first"));
 			} catch (PlayerException e) {
 			}
 			
 			if (!arena.isEdit()) {
-				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
-				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
+				sender.sendMessage(Utils.getFormattedMessage("messages.edit-arena-first"));
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-edit-usage"));
 				return false;
 			}
 			
 			for (Spawn itrSpawn : arena.getSpawns())
 				if (itrSpawn.getName().equalsIgnoreCase(args[1])) {
-					sender.sendMessage(ChatColor.RED + "A spawn with that name already exists.");
+					sender.sendMessage(Utils.getFormattedMessage("messages.spawn-exists"));
 					return false;
 				}
 			
 			if (arena.getType() == Arena.Type.FFA || arena.getType() == Arena.Type.DUEL)
 				if (!args[2].equalsIgnoreCase("solo")) {
-					sender.sendMessage(ChatColor.RED + "You can only add Solo spawns to a Duel or TDM arena.");
+					sender.sendMessage(Utils.getFormattedMessage("messages.cannot-add-solo-spawns-tdm"));
 					return false;
 				}
 			
@@ -283,24 +287,24 @@ public class ArenaCommand implements CommandExecutor {
 			
 			Spawn spawn = arena.addSpawn(args[1], arena, loc, GameSide.Type.valueOf(args[2]));
 			
-			sender.sendMessage(String.format(ChatColor.GREEN + "You have created the spawn %s in the arena %s at %s.", 
-					ChatColor.AQUA + spawn.getName() + ChatColor.GREEN,
-					ChatColor.AQUA + arena.getName() + ChatColor.GREEN,
-					String.format("X:%s Y:%s Z:%s world: %s", 
-							ChatColor.AQUA + String.valueOf(loc.getX()) + ChatColor.GREEN,
-							ChatColor.AQUA + String.valueOf(loc.getY()) + ChatColor.GREEN,
-							ChatColor.AQUA + String.valueOf(loc.getZ()) + ChatColor.GREEN,
-							ChatColor.AQUA + loc.getWorld().getName())  + ChatColor.GREEN));
+			sender.sendMessage(String.format(
+					Utils.getFormattedMessage("messages.spawn-created-successfully"), 
+					spawn.getName(),
+					arena.getName(),
+					String.valueOf(loc.getX()),
+					String.valueOf(loc.getY()),
+					String.valueOf(loc.getZ()),
+					loc.getWorld().getName()));
 			
 		} else if (args[0].equalsIgnoreCase("removespawn")) {
 			
 			if (!sender.hasPermission("megaarena.arena.removespawn")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
 			if (args.length < 2) {
-				sender.sendMessage(ChatColor.RED + "Usage: /arena removespawn [name]");
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-removespawn-usage"));
 				return false;
 			}
 			
@@ -309,13 +313,13 @@ public class ArenaCommand implements CommandExecutor {
 			try {
 				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
 			} catch (ArenaException e) {
-				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.select-arena-first"));
 			} catch (PlayerException e) {
 			}
 			
 			if (!arena.isEdit()) {
-				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command");
-				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
+				sender.sendMessage(Utils.getFormattedMessage("messages.edit-arena-first"));
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-edit-usage"));
 				return false;
 			}
 			
@@ -332,7 +336,7 @@ public class ArenaCommand implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("setqueuelocation")) {
 			
 			if (!sender.hasPermission("megaarena.arena.setspawnloc")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
@@ -341,7 +345,7 @@ public class ArenaCommand implements CommandExecutor {
 			try {
 				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
 			} catch (ArenaException e) {
-				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.select-arena-first"));
 				return false;
 			} catch (PlayerException e) {
 				e.printStackTrace();
@@ -349,8 +353,8 @@ public class ArenaCommand implements CommandExecutor {
 			}
 			
 			if (!arena.isEdit()) {
-				sender.sendMessage(ChatColor.RED + "You must set the arena to edit mode before using that command.");
-				sender.sendMessage(ChatColor.RED + "Usage: /arena edit");
+				sender.sendMessage(Utils.getFormattedMessage("messages.edit-arena-first"));
+				sender.sendMessage(Utils.getFormattedMessage("messages.arena-edit-usage"));
 				return false;
 			}
 			
@@ -359,18 +363,18 @@ public class ArenaCommand implements CommandExecutor {
 			arena.setQueueLocation(loc);
 			arena.save();
 			
-			sender.sendMessage(String.format(ChatColor.GREEN + "You set the queue location for the arena %s at %s.", 
-					ChatColor.AQUA + arena.getName() + ChatColor.GREEN,
-					String.format("X:%s Y:%s Z:%s world: %s", 
-							ChatColor.AQUA + String.valueOf(loc.getX()) + ChatColor.GREEN,
-							ChatColor.AQUA + String.valueOf(loc.getY()) + ChatColor.GREEN,
-							ChatColor.AQUA + String.valueOf(loc.getZ()) + ChatColor.GREEN,
-							ChatColor.AQUA + loc.getWorld().getName())  + ChatColor.GREEN));
+			sender.sendMessage(String.format(
+					Utils.getFormattedMessage("messages.queue-location-set-successfully"), 
+					arena.getName(),
+					String.valueOf(loc.getX()),
+					String.valueOf(loc.getY()),
+					String.valueOf(loc.getZ()),
+					loc.getWorld().getName()));
 			
 		} else if (args[0].equalsIgnoreCase("edit")) {
 			
 			if (!sender.hasPermission("megaarena.arena.edit")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
@@ -379,7 +383,7 @@ public class ArenaCommand implements CommandExecutor {
 			try {
 				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
 			} catch (ArenaException e) {
-				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.select-arena-first"));
 			} catch (PlayerException e) {
 				e.printStackTrace();
 				return false;
@@ -396,21 +400,24 @@ public class ArenaCommand implements CommandExecutor {
 				} catch (GameException e) {
 				}
 				
-				sender.sendMessage(String.format(ChatColor.GREEN + "You have disabled edit mode for the arena %s.",
-						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+				sender.sendMessage(String.format(
+						Utils.getFormattedMessage("messages.edit-mode-disabled"),
+						ChatColor.AQUA + arena.getName()));
 			} else {
 				if (arena.isInUse())
-					MegaArena.getInstance().getGameManager().deleteGame(arena.getGame(),
-							ChatColor.RED + "The game you were in has ended due to admins setting the arena to edit mode.");
+					MegaArena.getInstance().getGameManager().deleteGame(
+							arena.getGame(),
+							Utils.getFormattedMessage("messages.game-ended-edit"));
 				arena.setEdit(true);
-				sender.sendMessage(String.format(ChatColor.GREEN + "You have enabled edit mode for the arena %s.",
-						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+				sender.sendMessage(String.format(
+						Utils.getFormattedMessage("messages.edit-mode-enabled"),
+						arena.getName()));
 			}
 		
 		} else if (args[0].equalsIgnoreCase("list")) {
 			
 			if (!sender.hasPermission("megaarena.arena.list")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
@@ -423,7 +430,7 @@ public class ArenaCommand implements CommandExecutor {
 		} else if (args[0].equalsIgnoreCase("creategame")) {
 			
 			if (!sender.hasPermission("megaarena.arena.creategame")) {
-				sender.sendMessage(ChatColor.RED + "You do not have access to that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}
 			
@@ -432,7 +439,7 @@ public class ArenaCommand implements CommandExecutor {
 			try {
 				arena = MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).getSelectedArena();
 			} catch (ArenaException e) {
-				sender.sendMessage(ChatColor.RED + "You must select an arena using before using that command.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.select-arena-first"));
 			} catch (PlayerException e) {
 				e.printStackTrace();
 				return false;
@@ -442,23 +449,24 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			
 			if (!arena.isTournament()) {
-				sender.sendMessage(ChatColor.RED + "You can only create tournament games.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.only-able-create-tournament-games"));
 				return false;
 			}
 			
 			if (arena.isEdit()) {
-				sender.sendMessage(ChatColor.RED + "You cannot create a game in an arena in edit mode.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.cannot-create-game-edit-mode"));
 				return false;
 			}
 			
 			try {
 				MegaArena.getInstance().getGameManager().createGame(arena);
 			} catch (GameException e) {
-				sender.sendMessage(ChatColor.RED + "Game created unsuccessfully.");
+				sender.sendMessage(Utils.getFormattedMessage("messages.game-created-unsuccessfully"));
 			}
 			
-			sender.sendMessage(ChatColor.GREEN + String.format("You created a game in the arena %s.",
-					ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+			sender.sendMessage(String.format(
+					Utils.getFormattedMessage("messages.game-created-successfully"),
+					arena.getName()));
 		}
 		
 		return true;

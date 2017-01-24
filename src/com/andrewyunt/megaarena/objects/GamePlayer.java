@@ -342,9 +342,6 @@ public class GamePlayer {
 		loc.setY(loc.getY() + 1);
 
 		bp.teleport(loc, TeleportCause.COMMAND);
-
-		if (game.getArena().getType() == null)
-			Bukkit.getServer().broadcastMessage("test");
 		
 		if (game.getArena().getType() == Arena.Type.DUEL)
 			return;
@@ -382,11 +379,9 @@ public class GamePlayer {
 			if (!sentActivate) {
 				sentActivate = true;
 				if (classType == Class.SKELETON)
-					getBukkitPlayer().sendMessage(ChatColor.AQUA + "Left click " + ChatColor.GREEN
-							+ "using your bow to activate your ability!");
+					getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.left-click-bow-ability"));
 				else
-					getBukkitPlayer().sendMessage(ChatColor.AQUA + "Right click " + ChatColor.GREEN
-							+ "using your sword to activate your ability!");
+					getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.right-click-sword-ability"));
 			}
 
 		getBukkitPlayer().setLevel(this.energy);
@@ -628,8 +623,9 @@ public class GamePlayer {
 		else
 			kLD.setHealth(kLD.getHealth() + 4);
 
-		killerBP.sendMessage(ChatColor.LIGHT_PURPLE
-				+ String.format("You restored 2 hearts for killing %s.", getBukkitPlayer().getDisplayName()));
+		killerBP.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.hearts-restored-kill"),
+				getBukkitPlayer().getDisplayName()));
 
 		int killCoins = 12;
 
@@ -640,8 +636,10 @@ public class GamePlayer {
 			killCoins = 36;
 
 		lastDamager.addCoins(killCoins);
-		killerBP.sendMessage(ChatColor.GREEN + String.format("You killed %s and received %s coins.",
-				ChatColor.AQUA + name + ChatColor.GREEN, ChatColor.AQUA + String.valueOf(killCoins) + ChatColor.GREEN));
+		killerBP.sendMessage(String.format(
+				Utils.getFormattedMessage("messages.kill-coins-received"),
+				name,
+				String.valueOf(killCoins)));
 
 		if (lastDamager.getKillStreak() > 1) {
 			int killStreakCoins = lastDamager.getKillStreak();
@@ -652,9 +650,10 @@ public class GamePlayer {
 				killStreakCoins = killStreakCoins * 2;
 
 			lastDamager.addCoins(killStreakCoins);
-			killerBP.sendMessage(ChatColor.GREEN + String.format("You earned %s coins for a killstreak of %s.",
-					ChatColor.AQUA + String.valueOf(killStreakCoins) + ChatColor.GREEN,
-					ChatColor.AQUA + String.valueOf(lastDamager.getKillStreak()) + ChatColor.GREEN));
+			killerBP.sendMessage(String.format(
+					Utils.getFormattedMessage("messages.killstreak-coins-received"),
+					String.valueOf(killStreakCoins),
+					String.valueOf(lastDamager.getKillStreak())));
 		}
 
 		for (GamePlayer assistGP : assistPlayers) {
@@ -675,9 +674,10 @@ public class GamePlayer {
 
 			assistGP.addCoins(assistCoins);
 			assistPlayer
-					.sendMessage(ChatColor.GREEN + String.format("You earned %s coins for assisting the kill of %s.",
-							ChatColor.AQUA + String.valueOf(assistCoins) + ChatColor.GREEN,
-							ChatColor.AQUA + name + ChatColor.GREEN));
+					.sendMessage(String.format(
+							Utils.getFormattedMessage("messages.assist-coins-received"),
+							String.valueOf(assistCoins),
+							name));
 		}
 	}
 
