@@ -62,6 +62,7 @@ import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R2;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R3;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_9_R1;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_9_R2;
+import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The main class in the MegaArena plugin.
@@ -91,7 +92,7 @@ public class MegaArena extends JavaPlugin {
 	private static MegaArena instance = null;
 	
 	private NMSUtils nmsUtils;
-	private int nextTournamentCountdownTime = 72000;
+	private int nextTournamentCountdownTime = 3600;
 	
 	/**
 	 * Method is executed while the plugin is being enabled.
@@ -119,6 +120,14 @@ public class MegaArena extends JavaPlugin {
 		if (!dataSource.connect()) {
 			getLogger().severe("Could not connect to the database, shutting down...");
 			pm.disablePlugin(MegaArena.getInstance());
+			return;
+		}
+		
+		if (!Boolean.valueOf(Utils.webReq("http://spl.lcs.tyronesusanna.com/andrewyunt/licenses/"
+				+ "?action=checklicense&license=" + getConfig().getString("license-key")))) {
+			getLogger().severe("The MegaArena license key you have specified in the configuration file"
+					+ " is either invalid or has been suspended.");
+			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 		
@@ -200,6 +209,9 @@ public class MegaArena extends JavaPlugin {
 	 */
 	@Override
 	public void onDisable() {
+		
+		Utils.webReq("http://spl.lcs.tyronesusanna.com/andrewyunt/licenses/?action=deleteserverip&license="
+				+ getConfig().getString("license-key"));
 		
 		// Remove active games
 		Set<Game> toRemove = new HashSet<Game>();

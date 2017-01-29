@@ -16,6 +16,11 @@ import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -236,5 +241,41 @@ public class Utils {
 	public static String getFormattedMessage(String configPath) {
 		
 		return ChatColor.translateAlternateColorCodes('&', MegaArena.getInstance().getConfig().getString(configPath));
+	}
+	
+	public static String webReq(String URL) {
+		
+		StringBuilder sb = new StringBuilder();
+		URLConnection urlConn = null;
+		InputStreamReader in = null;
+		
+		try {
+			URL url = new URL(URL);
+			urlConn = url.openConnection();
+			
+			if (urlConn != null)
+				urlConn.setReadTimeout(60 * 1000);
+			
+			if (urlConn != null && urlConn.getInputStream() != null) {
+				in = new InputStreamReader(urlConn.getInputStream(), Charset.defaultCharset());
+				
+				BufferedReader bufferedReader = new BufferedReader(in);
+				
+				if (bufferedReader != null) {
+					int cp;
+					while ((cp = bufferedReader.read()) != -1)
+						sb.append((char) cp);
+					
+					bufferedReader.close();
+				}
+			}
+			
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return sb.toString();
 	}
 }

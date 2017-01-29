@@ -1,3 +1,6 @@
+# License Key
+license-key: "put your license key here"
+
 # MySQL Connection Details
 database-ip: 127.0.0.1
 database-port: 3306
