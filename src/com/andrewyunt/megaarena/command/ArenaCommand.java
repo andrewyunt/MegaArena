@@ -335,7 +335,7 @@ public class ArenaCommand implements CommandExecutor {
 			
 		} else if (args[0].equalsIgnoreCase("setqueuelocation")) {
 			
-			if (!sender.hasPermission("megaarena.arena.setspawnloc")) {
+			if (!sender.hasPermission("megaarena.arena.setqueuelocation")) {
 				sender.sendMessage(Utils.getFormattedMessage("messages.no-permission-command"));
 				return false;
 			}

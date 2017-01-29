@@ -28,6 +28,7 @@ commands:
     permission: megaarena.bloodtoggle
   spawn:
     description: Kills the player if they are in a normal FFA or TDM arena.
+    permission: megaarena.spawn
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -38,21 +39,27 @@ permissions:
    megaarena.*:
      description: Gives access to all MegaArena commands.
      children:
-       megaarena.arena: true
-       megaarena.createarena: true
-       megaarena.deletearena: true
-       megaarena.addspawn: true
-       megaarena.removespawn: true
+       megaarena.arena.*: true
+       megaarena.spawn: true
+       megaarena.bloodtoggle: true
+       megaarena.duelstoggle: true
        megaarena.duel: true
        megaarena.duelaccept: true
+       megaarena.dueldeny: true
+       megaarena.coins.double: true
+       megaarena.coins.triple: true
    megaarena.arena.*:
      description: Gives access to all MegaArena arena management commands.
      children:
-       megaarena.arena: true
        megaarena.arena.create: true
        megaarena.arena.delete: true
+       megaarena.arena.select: true
+       megaarena.arena.edit: true
        megaarena.arena.addspawn: true
        megaarena.arena.removespawn: true
+       megaarena.arena.setqueuelocation: true
+       megaarena.arena.list: true
+       megaarena.arena.help: true
    megaarena.arena.help:
      description: Gives you access to the arena help menu.
      default: op
@@ -92,3 +99,12 @@ permissions:
    megaarena.bloodtoggle:
      description: Allows you to toggle blood particles on or off.
      default: true
+   megaarena.spawn:
+     description: Allows you to quit games.
+     default: op
+   megaarena.coins.double:
+     description: Gives you 2x coins.
+     default: op
+   megaarena.coins.triple:
+     description: Gives you 3x coins.
+     default: op
