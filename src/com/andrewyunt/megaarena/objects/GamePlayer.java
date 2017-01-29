@@ -43,8 +43,6 @@ import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.ArenaException;
 import com.andrewyunt.megaarena.utilities.Utils;
 
-import net.shortninja.staffplus.StaffPlus;
-
 /**
  * The class used to store player's information.
  * 
@@ -226,11 +224,6 @@ public class GamePlayer {
 
 		return selectedArena;
 	}
-
-	public boolean isStaffMode() {
-
-		return StaffPlus.get().modeCoordinator.isInMode(getBukkitPlayer().getUniqueId());
-	}
 	
 	public Map<Integer, ItemStack> getHotbarItems() {
 		
@@ -240,12 +233,6 @@ public class GamePlayer {
 	public void updateHotbar() {
 		
 		PlayerInventory inv = getBukkitPlayer().getInventory();
-		
-		inv.setHelmet(new ItemStack(Material.AIR));
-		inv.setChestplate(new ItemStack(Material.AIR));
-		inv.setLeggings(new ItemStack(Material.AIR));
-		inv.setBoots(new ItemStack(Material.AIR));
-		inv.clear();
 		
 		hotbarItems.clear();
 		
@@ -265,35 +252,30 @@ public class GamePlayer {
 			hotbarItems.put(0, teleporter);
 			hotbarItems.put(8, exit);
 		} else {
-			ItemStack serverSelector = new ItemStack(Material.COMPASS);
 			ItemStack shop = new ItemStack(Material.EMERALD);
 			ItemStack classSelector = new ItemStack(Material.COMMAND);
 			ItemStack spectate = new ItemStack(Material.REDSTONE_TORCH_ON);
 			ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
 			
-			ItemMeta serverSelectorMeta = serverSelector.getItemMeta();
 			ItemMeta shopMeta = shop.getItemMeta();
 			ItemMeta classSelectorMeta = classSelector.getItemMeta();
 			ItemMeta spectateMeta = spectate.getItemMeta();
 			ItemMeta playTDMMeta = playTDM.getItemMeta();
 			
-			serverSelectorMeta.setDisplayName(ChatColor.RED + ChatColor.BOLD.toString() + "Server Selector");
 			shopMeta.setDisplayName(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop");
 			classSelectorMeta.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector");
 			spectateMeta.setDisplayName(ChatColor.BOLD.toString() + "Spectate");
 			playTDMMeta.setDisplayName(ChatColor.BOLD.toString() + "Play");
 			
-			serverSelector.setItemMeta(serverSelectorMeta);
 			shop.setItemMeta(shopMeta);
 			classSelector.setItemMeta(classSelectorMeta);
 			spectate.setItemMeta(spectateMeta);
 			playTDM.setItemMeta(playTDMMeta);
 			
-			hotbarItems.put(0, serverSelector);
 			hotbarItems.put(1, shop);
 			hotbarItems.put(2, classSelector);
 			hotbarItems.put(7, spectate);
-			hotbarItems.put(8, Utils.addGlow(playTDM));
+			hotbarItems.put(8, MegaArena.getInstance().getNMSUtils().addGlow(playTDM));
 		}
 		
 		for (Map.Entry<Integer, ItemStack> entry : hotbarItems.entrySet()) {

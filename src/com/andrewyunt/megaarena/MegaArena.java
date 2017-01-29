@@ -17,6 +17,8 @@ package com.andrewyunt.megaarena;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -50,6 +52,16 @@ import com.andrewyunt.megaarena.menu.UpgradesMenu;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.NMSUtils;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R1;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R2;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R3;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R4;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R1;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R2;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R3;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_9_R1;
+import com.andrewyunt.megaarena.utilities.NMSUtilsv1_9_R2;
 
 /**
  * The main class in the MegaArena plugin.
@@ -78,6 +90,7 @@ public class MegaArena extends JavaPlugin {
 	
 	private static MegaArena instance = null;
 	
+	private NMSUtils nmsUtils;
 	private int nextTournamentCountdownTime = 72000;
 	
 	/**
@@ -102,10 +115,36 @@ public class MegaArena extends JavaPlugin {
 		
 		PluginManager pm = getServer().getPluginManager();
 		
-		// Connect to the database */
+		// Connect to the database
 		if (!dataSource.connect()) {
 			getLogger().severe("Could not connect to the database, shutting down...");
 			pm.disablePlugin(MegaArena.getInstance());
+			return;
+		}
+		
+		String version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
+		
+		if (version.equals("v1_7_R1"))
+			nmsUtils = new NMSUtilsv1_7_R1();
+		else if (version.equals("v1_7_R2"))
+			nmsUtils = new NMSUtilsv1_7_R2();
+		else if (version.equals("v1_7_R3"))
+			nmsUtils = new NMSUtilsv1_7_R3();
+		else if (version.equals("v1_7_R4"))
+			nmsUtils = new NMSUtilsv1_7_R4();
+		else if (version.equals("v1_8_R1"))
+			nmsUtils = new NMSUtilsv1_8_R1();
+		else if (version.equals("v1_8_R2"))
+			nmsUtils = new NMSUtilsv1_8_R2();
+		else if (version.equals("v1_8_R3"))
+			nmsUtils = new NMSUtilsv1_8_R3();
+		else if (version.equals("v1_9_R1"))
+			nmsUtils = new NMSUtilsv1_9_R1();
+		else if (version.equals("v1_9_R2"))
+			nmsUtils = new NMSUtilsv1_9_R2();
+		else {
+			getLogger().severe("MegaArena is not supported for your Minecraft server version.");
+			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 		
@@ -249,6 +288,11 @@ public class MegaArena extends JavaPlugin {
 	public SpectateMenu getSpectateMenu() {
 		
 		return spectateMenu;
+	}
+	
+	public NMSUtils getNMSUtils() {
+		
+		return nmsUtils;
 	}
 	
 	public int getNextTournamentCountdownTime() {

@@ -21,7 +21,6 @@ import java.util.Set;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -36,8 +35,6 @@ import org.bukkit.util.Vector;
 import com.andrewyunt.megaarena.MegaArena;
 import com.andrewyunt.megaarena.exception.PlayerException;
 import com.andrewyunt.megaarena.utilities.Utils;
-
-import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
 /**
  * The enumeration for abilities, their names, and the method to use them.
@@ -264,18 +261,14 @@ public enum Ability implements Upgradable {
 						double x = Math.sin(y * radius);
 						double z = Math.cos(y * radius);
 						
-						PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-								"snowshovel",
-								((float) (location.getX() + x)),
-								((float) (location.getY() + y)),
-								((float) (location.getZ() + z)),
-								0, 0, 0, 1, 0);
+						Location newLoc = new Location(location.getWorld(), location.getX() + x,
+								location.getY() + y, location.getZ() + z);
 						
 						for (Entity entity : Utils.getNearbyEntities(bp.getLocation(), 50)) {
 							if (!(entity instanceof Player))
-								return;
+								continue;
 							
-							((CraftPlayer) entity).getHandle().playerConnection.sendPacket(packet);
+							MegaArena.getInstance().getNMSUtils().playParticle((Player) entity, newLoc, "snowshovel");
 						}
 					}
 					
@@ -283,18 +276,14 @@ public enum Ability implements Upgradable {
 						float xRand = new Random().nextInt(2) - 1;
 						float zRand = new Random().nextInt(2) - 1;
 						
-						PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(
-								"largesmoke",
-								((float) (location.getX() + xRand)),
-								((float) location.getY()),
-								((float) (location.getZ() + zRand)),
-								0, 0, 0, 1, 0);
+						Location newLoc = new Location(location.getWorld(), location.getX() + xRand,
+								location.getY(), location.getZ() + zRand);
 						
 						for (Entity entity : Utils.getNearbyEntities(bp.getLocation(), 50)) {
 							if (!(entity instanceof Player))
-								return;
+								continue;
 							
-							((CraftPlayer) entity).getHandle().playerConnection.sendPacket(packet);
+							MegaArena.getInstance().getNMSUtils().playParticle((Player) entity, newLoc, "largesmoke");
 						}
 					}
 					

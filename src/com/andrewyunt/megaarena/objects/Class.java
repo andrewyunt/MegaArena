@@ -280,7 +280,7 @@ public enum Class implements Upgradable {
 		Inventory inv = Bukkit.createInventory(bp, 36);
 		int kitLevel = player.getLevel(this);
 
-		/* Health potion */
+		// Health potion
 		ItemStack potH = new ItemStack(Material.POTION, 1);
 		PotionMeta pmH = (PotionMeta) potH.getItemMeta();
 		PotionEffect effectH = new PotionEffect(PotionEffectType.HEAL, 1, 2, false);
@@ -294,7 +294,7 @@ public enum Class implements Upgradable {
 		ItemStack potH2 = new ItemStack(Material.POTION, 2);
 		potH2.setItemMeta(pmH);
 
-		/* Speed potion */
+		// Speed potion
 		ItemStack potS = new ItemStack(Material.POTION, 1);
 		PotionMeta pmS = (PotionMeta) potS.getItemMeta();
 		PotionEffect effectS = new PotionEffect(PotionEffectType.SPEED, (15 * 20), 1, false);

@@ -77,7 +77,7 @@ public class ClassSelectorMenu implements Listener {
 
 		inv.setItem(12, normalClasses);
 		inv.setItem(13, glassPane);
-		inv.setItem(14, Utils.addGlow(heroClasses));
+		inv.setItem(14, MegaArena.getInstance().getNMSUtils().addGlow(heroClasses));
 
 		for (int i = 15; i < 22; i++)
 			inv.setItem(i, glassPane);
@@ -232,7 +232,7 @@ public class ClassSelectorMenu implements Listener {
 			gp.setClassType(Class.valueOf(classStr));
 			
 			player.sendMessage(String.format(
-					Utils.getFormattedMessage("class-selected-successfully"),
+					Utils.getFormattedMessage("messages.class-selected-successfully"),
 					name));
 			
 			player.closeInventory();

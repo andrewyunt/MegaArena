@@ -22,8 +22,6 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
-import SebucoHD.Selector.Main;
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -45,12 +43,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
@@ -165,17 +161,7 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (name.contains(ChatColor.RED + ChatColor.BOLD.toString() + "Server Selector")) {
-			Method method = null;
-			
-			try {
-				method = Main.getInstance().getClass().getDeclaredMethod("getInv", Player.class);
-				method.setAccessible(true);
-				player.openInventory((Inventory) method.invoke(Main.getInstance(), player));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (name.contains(ChatColor.BOLD.toString() + "Play"))
+		if (name.contains(ChatColor.BOLD.toString() + "Play"))
 			MegaArena.getInstance().getPlayMenu().open(gp);
 		else if (name.contains(ChatColor.BOLD.toString() + "Spectate"))
 			MegaArena.getInstance().getSpectateMenu().open(gp);
@@ -187,37 +173,6 @@ public class PlayerListener implements Listener {
 			MegaArena.getInstance().getSpectateMenu().open(gp);
 		else if (name.contains(ChatColor.RED + ChatColor.BOLD.toString() + "Exit Spectator Mode"))
 			gp.setSpectating(false);
-	}
-
-	@EventHandler
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		
-		GamePlayer player = null;
-		
-		try {
-			player = MegaArena.getInstance().getPlayerManager().getPlayer(event.getPlayer().getName());
-		} catch (PlayerException e) {
-			e.printStackTrace();
-		}
-		
-		String message = event.getMessage();
-		
-		if (message.startsWith("/tp") && !(message.equalsIgnoreCase("/tps"))) {
-			
-			if (!(player.isStaffMode())) {
-				player.getBukkitPlayer()
-						.sendMessage(ChatColor.RED + "You must enter staff mode before using that command.");
-				player.getBukkitPlayer().sendMessage(ChatColor.RED + "Usage: /staff");
-				event.setCancelled(true);
-			}
-			
-		} else if (message.startsWith("/staff")) {
-			
-			if (player.isInGame()) {
-				player.getBukkitPlayer().sendMessage(ChatColor.RED + "You cannot use that command while in-game.");
-				event.setCancelled(true);
-			}
-		}
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
