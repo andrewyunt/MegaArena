@@ -468,7 +468,7 @@ public class Game {
 		
 		if (won)
 			for (GamePlayer player : players) {
-				player.addCoins(30);
+				player.addCoins(MegaArena.getInstance().getConfig().getInt("win-coins"));
 				player.getBukkitPlayer().sendMessage(String.format(
 						Utils.getFormattedMessage("messages.tournament-win-coins-received"),
 						String.valueOf(30)));

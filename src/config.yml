@@ -8,6 +8,11 @@ database-name: MegaArena
 database-user: user
 database-pass: password
 
+# Coins given for kills, assists, and wins
+kill-coins: 12
+assist-coins: 6
+win-coins: 30
+
 # Coins needed for each tier upgrade (Tier 1 is not included as it is default)
 tier-2-upgrade-cost: 50
 tier-3-upgrade-cost: 125

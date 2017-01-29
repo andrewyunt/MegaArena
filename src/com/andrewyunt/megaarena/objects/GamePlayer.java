@@ -609,7 +609,7 @@ public class GamePlayer {
 				Utils.getFormattedMessage("messages.hearts-restored-kill"),
 				getBukkitPlayer().getDisplayName()));
 
-		int killCoins = 12;
+		int killCoins = MegaArena.getInstance().getConfig().getInt("kill-coins");
 
 		if (killerBP.hasPermission("megaarena.coins.double"))
 			killCoins = 24;
@@ -646,7 +646,7 @@ public class GamePlayer {
 				continue;
 
 			Player assistPlayer = assistGP.getBukkitPlayer();
-			int assistCoins = 6;
+			int assistCoins = MegaArena.getInstance().getConfig().getInt("assist-coins");
 
 			if (assistPlayer.hasPermission("megaarena.coins.double"))
 				assistCoins = 12;
