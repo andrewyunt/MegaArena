@@ -22,6 +22,8 @@ import com.andrewyunt.megaarena.managers.PlayerManager;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
+import com.andrewyunt.megaarena.utilities.Utils;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -161,17 +163,17 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (name.contains(ChatColor.BOLD.toString() + "Play"))
+		if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.play.title")))
 			MegaArena.getInstance().getPlayMenu().open(gp);
-		else if (name.contains(ChatColor.BOLD.toString() + "Spectate"))
+		else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.spectate.title")))
 			MegaArena.getInstance().getSpectateMenu().open(gp);
-		else if (name.contains(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop"))
+		else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.shop.title")))
 			MegaArena.getInstance().getShopMenu().openMainMenu(gp);
-		else if (name.contains(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector"))
+		else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.class-selector.title")))
 			MegaArena.getInstance().getClassSelectorMenu().openMainMenu(gp);
-		else if (name.contains(ChatColor.GREEN + ChatColor.BOLD.toString() + "Teleporter"))
+		else if (name.equals(Utils.getFormattedMessage("hotbar-items.spectator-items.teleporter.title")))
 			MegaArena.getInstance().getSpectateMenu().open(gp);
-		else if (name.contains(ChatColor.RED + ChatColor.BOLD.toString() + "Exit Spectator Mode"))
+		else if (name.equals(Utils.getFormattedMessage("hotbar-items.spectator-items.exit-spectator-mode.title")))
 			gp.setSpectating(false);
 	}
 	

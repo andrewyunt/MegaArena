@@ -29,6 +29,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -236,6 +237,8 @@ public class GamePlayer {
 		
 		hotbarItems.clear();
 		
+		FileConfiguration config = MegaArena.getInstance().getConfig();
+		
 		if (isSpectating()) {
 			ItemStack teleporter = new ItemStack(Material.COMPASS);
 			ItemStack exit = new ItemStack(Material.IRON_DOOR);
@@ -243,53 +246,44 @@ public class GamePlayer {
 			ItemMeta teleporterMeta = teleporter.getItemMeta();
 			ItemMeta exitMeta = exit.getItemMeta();
 			
-			teleporterMeta.setDisplayName(ChatColor.GREEN + ChatColor.BOLD.toString() + "Teleporter");
-			exitMeta.setDisplayName(ChatColor.RED + ChatColor.BOLD.toString() + "Exit Spectator Mode");
+			teleporterMeta.setDisplayName(Utils.getFormattedMessage("hotbar-items.spectator-items.teleporter.title"));
+			exitMeta.setDisplayName(Utils.getFormattedMessage("hotbar-items.spectator-items.exit-spectator-mode.title"));
 			
 			teleporter.setItemMeta(teleporterMeta);
 			exit.setItemMeta(exitMeta);
 			
-			hotbarItems.put(0, teleporter);
-			hotbarItems.put(8, exit);
+			hotbarItems.put(config.getInt("hotbar-items.spectator-items.teleporter.slot") - 1, teleporter);
+			hotbarItems.put(config.getInt("hotbar-items.spectator-items.exit-spectator-mode.slot") - 1, exit);
 		} else {
 			ItemStack shop = new ItemStack(Material.EMERALD);
 			ItemStack classSelector = new ItemStack(Material.COMMAND);
 			ItemStack spectate = new ItemStack(Material.REDSTONE_TORCH_ON);
-			ItemStack playTDM = new ItemStack(Material.DIAMOND_SWORD);
+			ItemStack play = new ItemStack(Material.DIAMOND_SWORD);
 			
 			ItemMeta shopMeta = shop.getItemMeta();
 			ItemMeta classSelectorMeta = classSelector.getItemMeta();
 			ItemMeta spectateMeta = spectate.getItemMeta();
-			ItemMeta playTDMMeta = playTDM.getItemMeta();
+			ItemMeta playMeta = play.getItemMeta();
 			
-			shopMeta.setDisplayName(ChatColor.GREEN + ChatColor.BOLD.toString() + "Shop");
-			classSelectorMeta.setDisplayName(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Class Selector");
-			spectateMeta.setDisplayName(ChatColor.BOLD.toString() + "Spectate");
-			playTDMMeta.setDisplayName(ChatColor.BOLD.toString() + "Play");
+			shopMeta.setDisplayName(Utils.getFormattedMessage("hotbar-items.lobby-items.shop.title"));
+			classSelectorMeta.setDisplayName(Utils.getFormattedMessage("hotbar-items.lobby-items.class-selector.title"));
+			spectateMeta.setDisplayName(Utils.getFormattedMessage("hotbar-items.lobby-items.spectate.title"));
+			playMeta.setDisplayName(Utils.getFormattedMessage("hotbar-items.lobby-items.play.title"));
 			
 			shop.setItemMeta(shopMeta);
 			classSelector.setItemMeta(classSelectorMeta);
 			spectate.setItemMeta(spectateMeta);
-			playTDM.setItemMeta(playTDMMeta);
+			play.setItemMeta(playMeta);
 			
-			hotbarItems.put(1, shop);
-			hotbarItems.put(2, classSelector);
-			hotbarItems.put(7, spectate);
-			hotbarItems.put(8, MegaArena.getInstance().getNMSUtils().addGlow(playTDM));
+			hotbarItems.put(config.getInt("hotbar-items.lobby-items.shop.slot") - 1, shop);
+			hotbarItems.put(config.getInt("hotbar-items.lobby-items.class-selector.slot") - 1, classSelector);
+			hotbarItems.put(config.getInt("hotbar-items.lobby-items.spectate.slot") - 1, spectate);
+			hotbarItems.put(config.getInt("hotbar-items.lobby-items.play.slot") - 1,
+					MegaArena.getInstance().getNMSUtils().addGlow(play));
 		}
 		
-		for (Map.Entry<Integer, ItemStack> entry : hotbarItems.entrySet()) {
-			ItemStack is = entry.getValue();
-			
-			if (is == null || !is.hasItemMeta())
-				continue;
-			
-			ItemMeta im = is.getItemMeta();
-			im.setDisplayName(im.getDisplayName() + ChatColor.GRAY + " (Right Click)");
-			is.setItemMeta(im);
-			
-			inv.setItem(entry.getKey(), is);
-		}
+		for (Map.Entry<Integer, ItemStack> entry : hotbarItems.entrySet())
+			inv.setItem(entry.getKey(), entry.getValue());
 	}
 	
 	public GameSide getSide() {
@@ -518,7 +512,7 @@ public class GamePlayer {
 		displayBoard.putField(ChatColor.RESET + "   ");
 
 		// Display server's IP
-		displayBoard.putField(ChatColor.YELLOW + "mc.amosita.net");
+		displayBoard.putField(ChatColor.YELLOW + MegaArena.getInstance().getConfig().getString("server-ip"));
 
 		// Display board to player
 		displayBoard.display();

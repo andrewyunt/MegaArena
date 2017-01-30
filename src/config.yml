@@ -33,6 +33,32 @@ tier-7-hero-upgrade-cost: 17000
 tier-8-hero-upgrade-cost: 20000
 tier-9-hero-upgrade-cost: 40000
 
+# The server ip to be displayed on the scoreboard
+server-ip: "test ip"
+
+# The slots and titles for hotbar items
+hotbar-items:
+  lobby-items:
+    shop:
+      slot: 1
+      title: "&a&lShop &7(Right Click)"
+    class-selector:
+      slot: 2
+      title: "&e&lClass Selector &7(Right Click)"
+    spectate:
+      slot: 8
+      title: "&lSpectate &7(Right Click)"
+    play:
+      slot: 9
+      title: "&lPlay &7(Right Click)"
+  spectator-items:
+    teleporter:
+      slot: 1
+      title: "&a&lTeleporter &7(Right Click)"
+    exit-spectator-mode:
+      slot: 9
+      title: "&c&lExit Spectator Mode &7(Right Click)"
+
 classes:
   ZOMBIE:
     HEAL:
