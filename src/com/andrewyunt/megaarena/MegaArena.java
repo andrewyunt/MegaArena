@@ -123,8 +123,8 @@ public class MegaArena extends JavaPlugin {
 			return;
 		}
 		
-		if (!Boolean.valueOf(Utils.webReq("http://spl.lcs.tyronesusanna.com/andrewyunt/licenses/"
-				+ "?action=checklicense&license=" + getConfig().getString("license-key")))) {
+		if (!Boolean.valueOf(Utils.webReq("http://spl.lcs.tyronesusanna.com/andrewyunt/licenses/?action="
+				+ "checklicense&license=" + getConfig().getString("license-key") + "&plugin=MegaArena"))) {
 			getLogger().severe("The MegaArena license key you have specified in the configuration file"
 					+ " is either invalid or has been suspended.");
 			getServer().getPluginManager().disablePlugin(this);
