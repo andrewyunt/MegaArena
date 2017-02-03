@@ -52,7 +52,7 @@ public class Game {
 	private final Set<Block> placedBlocks = new HashSet<Block>();
 	private final Set<GameSide> sides = new HashSet<GameSide>();
 	
-	private int tournamentCountdownID, tournamentCountdownTime = 60;
+	private int tournamentCountdownID, tournamentCountdownTime = 10;
 	private boolean started = false;
 	
 	public Game(Arena arena) {
@@ -86,7 +86,7 @@ public class Game {
 			
 			int bluePlayers = getPlayers(blue).size();
 			int greenPlayers = getPlayers(green).size();
-			int totalPlayers = bluePlayers + greenPlayers;
+			int totalPlayers = bluePlayers + greenPlayers; 
 			
 			GameSide morePlayers = null;
 			
@@ -196,6 +196,15 @@ public class Game {
 		boolean spawn = false;
 		
 		if (arena.isTournament()) {
+			if (players.size() > 12) {
+				return;
+			} else if (players.size() == 12) {
+				for (GamePlayer toSpawn : players)
+					spawnPlayer(toSpawn, toSpawn.getSide().getSideType(), false);
+				
+				runTournamentCountdown();
+			}
+			
 			try {
 				player.getBukkitPlayer().teleport(arena.getQueueLocation());
 			} catch (NullPointerException e) {
@@ -205,13 +214,17 @@ public class Game {
 				return;
 			}
 			
-			if (players.size() == 12)
-				runTournamentCountdown();
-			
 			if (tournamentCountdownTime <= 10)
 				spawn = true;
 			
 			player.updateScoreboard();
+			
+			if (!started)
+				for (GamePlayer toSend : players)
+					toSend.getBukkitPlayer().sendMessage(String.format(
+							Utils.getFormattedMessage("messages.tournament-join"),
+							player.getBukkitPlayer().getDisplayName(),
+							players.size()));
 		} else
 			spawn = true;
 		
@@ -247,6 +260,15 @@ public class Game {
 		// Remove player from players set and then set the player's game to null
 		players.remove(player);
 		player.setGame(null);
+		
+		if (arena.isTournament())
+			if (!started)
+				for (GamePlayer toSend : players)
+					toSend.getBukkitPlayer().sendMessage(String.format(
+							Utils.getFormattedMessage("messages.tournament-leave"),
+							player.getBukkitPlayer().getDisplayName()));
+			else
+				checkPlayers();
 		
 		// Remove player from scoreboard teams
 		for (GamePlayer toRemove : players)
@@ -419,31 +441,24 @@ public class Game {
 				
 				String message = null;
 				
-				if (tournamentCountdownTime == 10)
-					for (GamePlayer player : players)
-						spawnPlayer(player, player.getSide().getSideType(), false);
-				
 				switch (tournamentCountdownTime) {
-				case 60:
-					message = Utils.getFormattedMessage("messages.tournament-start-one-minute");
-					break;
-				case 45: case 30: case 15:
-				case 10: case 9: case 8:
-				case 7: case 6: case 5:
-				case 4: case 3: case 2:
+				case 9: case 8: case 7: case 6:
+				case 5: case 4: case 3: case 2:
 				case 1:
 					message = String.format(
 							Utils.getFormattedMessage("messages.tournament-start-x-seconds"),
 							String.valueOf(tournamentCountdownTime));
 					break;
 				case 0:
-					message = ChatColor.GREEN + "The tournament has started!";
+					started = true;
 					scheduler.cancelTask(tournamentCountdownID);
+					message = ChatColor.GREEN + "The tournament has started!";
 					break;
 				}
 				
 				for (GamePlayer player : players)
-					player.getBukkitPlayer().sendMessage(message);
+					if (message != null)
+						player.getBukkitPlayer().sendMessage(message);
 			}
 		}, 0L, 20L);
 	}

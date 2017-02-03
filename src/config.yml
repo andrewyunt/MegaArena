@@ -809,7 +809,6 @@ messages:
   cross-teaming-not-allowed: "&cCross-Teaming/Trucing is NOT allowed."
   side-joined: "&aYou have joined the &b%s&a side."
   side-joined-balance: "&aYou have been automatically moved to the &b%s &aside by an automatic team balance."
-  tournament-start-one-minute: "&aThe tournament will start in &b1 &aminute."
   tournament-start-x-seconds: "&aThe tournament will start in &b%s &aseconds."
   tournament-win-coins-received: "&aYou earned &b%s &acoins for winning the tournament."
   ability-used: "&aYou have used the &b%s &aability."
@@ -819,6 +818,8 @@ messages:
   skill-activated: "&aYour &b%s &askill has been activated!"
   weakening-arrow-inflicted: "&c%s's arrow inflicted you with Weakness II for %s seconds."
   weakening-swing-inflicted: "&c%s's hit inflicted you with Weakness for %s seconds."
+  tournament-join: "&7%s &ehas joined (&b%s&e/&b100&e)!"
+  tournament-leave: "&7%s &ehas quit!"
 
 death-messages:
   melee:

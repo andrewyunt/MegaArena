@@ -215,8 +215,12 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (gp.isInGame() && gp.getGame().getArena().isTournament()
-				&& gp.getGame().getTournamentCountdownTime() <= 10)
+		if (!gp.isInGame())
+			return;
+		
+		Game game = gp.getGame();
+		
+		if (game.getArena().isTournament() && game.getTournamentCountdownTime() <= 10 && !game.hasStarted())
 			event.setCancelled(true);
 	}
 	

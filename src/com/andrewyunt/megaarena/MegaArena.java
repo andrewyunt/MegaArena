@@ -50,7 +50,6 @@ import com.andrewyunt.megaarena.menu.ShopMenu;
 import com.andrewyunt.megaarena.menu.SpectateMenu;
 import com.andrewyunt.megaarena.menu.UpgradesMenu;
 import com.andrewyunt.megaarena.objects.Arena;
-import com.andrewyunt.megaarena.objects.Game;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.utilities.NMSUtils;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R1;
@@ -212,14 +211,6 @@ public class MegaArena extends JavaPlugin {
 		
 		Utils.webReq("http://spl.lcs.tyronesusanna.com/andrewyunt/licenses/?action=deleteserverip&license="
 				+ getConfig().getString("license-key"));
-		
-		// Remove active games
-		Set<Game> toRemove = new HashSet<Game>();
-
-		toRemove.addAll(gameManager.getGames());
-		
-		for (Game game : toRemove)
-			gameManager.deleteGame(game, "Server is shutting down...");
 		
 		// Save players to the database
 		Set<GamePlayer> toSave = new HashSet<GamePlayer>();
