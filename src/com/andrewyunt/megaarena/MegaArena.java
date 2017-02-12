@@ -61,7 +61,6 @@ import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R2;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R3;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_9_R1;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_9_R2;
-import com.andrewyunt.megaarena.utilities.Utils;
 
 /**
  * The main class in the MegaArena plugin.
@@ -122,35 +121,37 @@ public class MegaArena extends JavaPlugin {
 			return;
 		}
 		
-		if (!Boolean.valueOf(Utils.webReq("http://spl.lcs.tyronesusanna.com/andrewyunt/licenses/?action="
-				+ "checklicense&license=" + getConfig().getString("license-key") + "&plugin=MegaArena"))) {
-			getLogger().severe("The MegaArena license key you have specified in the configuration file"
-					+ " is either invalid or has been suspended.");
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
-		
 		String version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
 		
-		if (version.equals("v1_7_R1"))
+		switch (version) {
+		case "v1_7_R1":
 			nmsUtils = new NMSUtilsv1_7_R1();
-		else if (version.equals("v1_7_R2"))
+			break;
+		case "v1_7_R2":
 			nmsUtils = new NMSUtilsv1_7_R2();
-		else if (version.equals("v1_7_R3"))
+			break;
+		case "v1_7_R3":
 			nmsUtils = new NMSUtilsv1_7_R3();
-		else if (version.equals("v1_7_R4"))
+			break;
+		case "v1_7_R4":
 			nmsUtils = new NMSUtilsv1_7_R4();
-		else if (version.equals("v1_8_R1"))
+			break;
+		case "v1_8_R1":
 			nmsUtils = new NMSUtilsv1_8_R1();
-		else if (version.equals("v1_8_R2"))
+			break;
+		case "v1_8_R2":
 			nmsUtils = new NMSUtilsv1_8_R2();
-		else if (version.equals("v1_8_R3"))
+			break;
+		case "v1_8_R3":
 			nmsUtils = new NMSUtilsv1_8_R3();
-		else if (version.equals("v1_9_R1"))
+			break;
+		case "v1_9_R1":
 			nmsUtils = new NMSUtilsv1_9_R1();
-		else if (version.equals("v1_9_R2"))
+			break;
+		case "v1_9_R2":
 			nmsUtils = new NMSUtilsv1_9_R2();
-		else {
+			break;
+		default:
 			getLogger().severe("MegaArena is not supported for your Minecraft server version.");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
@@ -208,9 +209,6 @@ public class MegaArena extends JavaPlugin {
 	 */
 	@Override
 	public void onDisable() {
-		
-		Utils.webReq("http://spl.lcs.tyronesusanna.com/andrewyunt/licenses/?action=deleteserverip&license="
-				+ getConfig().getString("license-key"));
 		
 		// Save players to the database
 		Set<GamePlayer> toSave = new HashSet<GamePlayer>();

@@ -1,7 +1,6 @@
 name: MegaArena
 main: com.andrewyunt.megaarena.MegaArena
-version: 1.0
-depend: [StaffPlus,Selector]
+version: 1.2
 
 ############################################################
 # +------------------------------------------------------+ #
