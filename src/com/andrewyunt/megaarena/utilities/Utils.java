@@ -44,7 +44,7 @@ public class Utils {
 	
 	public static Map<String, Object> serializeLocation(Location loc) {
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		
 		map.put("w", loc.getWorld().getName());
 		map.put("x", loc.getX());
@@ -80,8 +80,9 @@ public class Utils {
 		vector = vector.clone();
 		
 		// Validate.notNull(vector);
-		if (angleD == 0.0D)
-			return;
+		if (angleD == 0.0D) {
+            return;
+        }
 		
 		double angleR = Math.toRadians(angleD);
 		double x = vector.getX();
@@ -100,8 +101,9 @@ public class Utils {
 		for (int i = 0; i <= 26; i++) {
 			ItemStack is = inv.getItem(i);
 			
-			if (is == null)
-				continue;
+			if (is == null) {
+                continue;
+            }
 			
 			newInv.setItem(i + 9, is.clone());
 		}
@@ -109,8 +111,9 @@ public class Utils {
 		for (int i = 27; i <= 35; i++) {
 			ItemStack is = inv.getItem(i);
 			
-			if (is == null)
-				continue;
+			if (is == null) {
+                continue;
+            }
 			
 			newInv.setItem(i - 27, is.clone());
 		}
@@ -125,8 +128,9 @@ public class Utils {
 		for (int i = 0; i <= 8; i++) {
 			ItemStack is = inv.getItem(i);
 			
-			if (is == null)
-				continue;
+			if (is == null) {
+                continue;
+            }
 			
 			newInv.setItem(i + 27, is.clone());
 		}
@@ -134,8 +138,9 @@ public class Utils {
 		for (int i = 9; i <= 34; i++) {
 			ItemStack is = inv.getItem(i);
 			
-			if (is == null)
-				continue;
+			if (is == null) {
+                continue;
+            }
 			
 			newInv.setItem(i - 9, is.clone());
 		}
@@ -147,19 +152,22 @@ public class Utils {
 		
 		int highest = 0;
 		
-		if (section == null)
-			return 1;
+		if (section == null) {
+            return 1;
+        }
 		
 		Set<String> keys = section.getKeys(false);
 		
-		if (keys.size() == 0)
-			return 0;
+		if (keys.size() == 0) {
+            return 0;
+        }
 		
 		for (String key : section.getKeys(false)) {
 			int num = Integer.valueOf(key);
 			
-			if (highest < num)
-				highest = num;
+			if (highest < num) {
+                highest = num;
+            }
 		}
 		
 		return highest;
@@ -169,8 +177,9 @@ public class Utils {
 		
 		num = num % 100;
 		
-		if (num >= 11 && num <= 13)
-			return "th";
+		if (num >= 11 && num <= 13) {
+            return "th";
+        }
 		
 		switch (num % 10) {
 		case 1:
@@ -207,14 +216,16 @@ public class Utils {
 			e.printStackTrace();
 		}
 		
-		if (!damagedGP.isInGame())
-			return;
+		if (!damagedGP.isInGame()) {
+            return;
+        }
 		
 		Location loc = damagedPlayer.getLocation();
 		
 		for (Entity entity : Utils.getNearbyEntities(loc, bloodRadius)) {
-			if (!(entity instanceof Player))
-				continue;
+			if (!(entity instanceof Player)) {
+                continue;
+            }
 			
 			Player player = (Player) entity;
 			GamePlayer gp = null;
@@ -225,14 +236,17 @@ public class Utils {
 				e.printStackTrace();
 			}
 			
-			if (player == damagedPlayer)
-				continue;
+			if (player == damagedPlayer) {
+                continue;
+            }
 			
-			if (!gp.isInGame())
-				continue;
+			if (!gp.isInGame()) {
+                continue;
+            }
 			
-			if (!gp.hasBloodEffect())
-				continue;
+			if (!gp.hasBloodEffect()) {
+                continue;
+            }
 			
 			player.playEffect(loc.add(0.0D, 0.8D, 0.0D), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
 		}
@@ -253,8 +267,9 @@ public class Utils {
 			URL url = new URL(URL);
 			urlConn = url.openConnection();
 			
-			if (urlConn != null)
-				urlConn.setReadTimeout(60 * 1000);
+			if (urlConn != null) {
+                urlConn.setReadTimeout(60 * 1000);
+            }
 			
 			if (urlConn != null && urlConn.getInputStream() != null) {
 				in = new InputStreamReader(urlConn.getInputStream(), Charset.defaultCharset());
@@ -263,8 +278,9 @@ public class Utils {
 				
 				if (bufferedReader != null) {
 					int cp;
-					while ((cp = bufferedReader.read()) != -1)
-						sb.append((char) cp);
+					while ((cp = bufferedReader.read()) != -1) {
+                        sb.append((char) cp);
+                    }
 					
 					bufferedReader.close();
 				}

@@ -89,8 +89,9 @@ public class PlayerListener implements Listener {
 			
 			Chunk chunk = loc.getChunk();
 			
-			if (!chunk.isLoaded())
-				chunk.load();
+			if (!chunk.isLoaded()) {
+                chunk.load();
+            }
 			
 			loc.setY(loc.getY() + 1);
 			
@@ -113,10 +114,11 @@ public class PlayerListener implements Listener {
 		if (gp.isInGame()) {
 			Game game = gp.getGame();
 			
-			if (game.getArena().getType() == Arena.Type.DUEL)
-				MegaArena.getInstance().getGameManager().deleteGame(game, 
-						String.format("%s has left the game and has left you victorious!",
-						ChatColor.AQUA + gp.getName() + ChatColor.GREEN));
+			if (game.getArena().getType() == Arena.Type.DUEL) {
+                MegaArena.getInstance().getGameManager().deleteGame(game,
+                        String.format("%s has left the game and has left you victorious!",
+                                ChatColor.AQUA + gp.getName() + ChatColor.GREEN));
+            }
 			
 			gp.kill();
 			
@@ -137,21 +139,25 @@ public class PlayerListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		
-		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
-			return;
+		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
 		
 		ItemStack is = event.getItem();
 		
-		if (is == null || !is.hasItemMeta())
-			return;
+		if (is == null || !is.hasItemMeta()) {
+            return;
+        }
 		
-		if (!is.hasItemMeta())
-			return;
+		if (!is.hasItemMeta()) {
+            return;
+        }
 		
 		ItemMeta meta = is.getItemMeta();
 		
-		if (!meta.hasDisplayName())
-			return;
+		if (!meta.hasDisplayName()) {
+            return;
+        }
 		
 		String name = meta.getDisplayName();
 		Player player = event.getPlayer();
@@ -163,28 +169,31 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.play.title")))
-			MegaArena.getInstance().getPlayMenu().open(gp);
-		else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.spectate.title")))
-			MegaArena.getInstance().getSpectateMenu().open(gp);
-		else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.shop.title")))
-			MegaArena.getInstance().getShopMenu().openMainMenu(gp);
-		else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.class-selector.title")))
-			MegaArena.getInstance().getClassSelectorMenu().openMainMenu(gp);
-		else if (name.equals(Utils.getFormattedMessage("hotbar-items.spectator-items.teleporter.title")))
-			MegaArena.getInstance().getSpectateMenu().open(gp);
-		else if (name.equals(Utils.getFormattedMessage("hotbar-items.spectator-items.exit-spectator-mode.title")))
-			gp.setSpectating(false);
+		if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.play.title"))) {
+            MegaArena.getInstance().getPlayMenu().open(gp);
+        } else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.spectate.title"))) {
+            MegaArena.getInstance().getSpectateMenu().open(gp);
+        } else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.shop.title"))) {
+            MegaArena.getInstance().getShopMenu().openMainMenu(gp);
+        } else if (name.equals(Utils.getFormattedMessage("hotbar-items.lobby-items.class-selector.title"))) {
+            MegaArena.getInstance().getClassSelectorMenu().openMainMenu(gp);
+        } else if (name.equals(Utils.getFormattedMessage("hotbar-items.spectator-items.teleporter.title"))) {
+            MegaArena.getInstance().getSpectateMenu().open(gp);
+        } else if (name.equals(Utils.getFormattedMessage("hotbar-items.spectator-items.exit-spectator-mode.title"))) {
+            gp.setSpectating(false);
+        }
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerFall(EntityDamageEvent event) {
 		
-		if (event.getCause() != DamageCause.FALL)
-			return;
+		if (event.getCause() != DamageCause.FALL) {
+            return;
+        }
 		
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 		
 		GamePlayer gp = null;
 		
@@ -194,14 +203,17 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!gp.isInGame())
-			return;
+		if (!gp.isInGame()) {
+            return;
+        }
 		
-		if (gp.getGame().getArena().getType() != Arena.Type.FFA)
-			return;
+		if (gp.getGame().getArena().getType() != Arena.Type.FFA) {
+            return;
+        }
 		
-		if (!gp.hasFallen())
-			event.setCancelled(true);
+		if (!gp.hasFallen()) {
+            event.setCancelled(true);
+        }
 	}
 	
 	@EventHandler
@@ -215,13 +227,15 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!gp.isInGame())
-			return;
+		if (!gp.isInGame()) {
+            return;
+        }
 		
 		Game game = gp.getGame();
 		
-		if (game.getArena().isTournament() && game.getTournamentCountdownTime() <= 10 && !game.hasStarted())
-			event.setCancelled(true);
+		if (game.getArena().isTournament() && game.getTournamentCountdownTime() <= 10 && !game.hasStarted()) {
+            event.setCancelled(true);
+        }
 	}
 	
 	@EventHandler
@@ -230,13 +244,15 @@ public class PlayerListener implements Listener {
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
 		
-		if (damager instanceof Wolf)
-			damager = (Player) ((Wolf) damager).getOwner();
-		else if (damager instanceof Projectile)
-			damager = (Player) ((Projectile) damager).getShooter();
+		if (damager instanceof Wolf) {
+            damager = (Player) ((Wolf) damager).getOwner();
+        } else if (damager instanceof Projectile) {
+            damager = (Player) ((Projectile) damager).getShooter();
+        }
 		
-		if (!(damager instanceof Player) || !(damaged instanceof Player))
-			return;
+		if (!(damager instanceof Player) || !(damaged instanceof Player)) {
+            return;
+        }
 		
 		GamePlayer damagedGP = null;
 		GamePlayer damagerGP = null;
@@ -248,16 +264,18 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!damagedGP.isInGame())
-			return;
+		if (!damagedGP.isInGame()) {
+            return;
+        }
 		
 		if (!damagedGP.getGame().hasStarted()) {
 			event.setCancelled(true);
 			return;
 		}
 		
-		if (damagedGP.getGame() != damagerGP.getGame())
-			return;
+		if (damagedGP.getGame() != damagerGP.getGame()) {
+            return;
+        }
 		
 		if (damagedGP.getGame().getArena().getType() == Arena.Type.TDM && damagedGP.getSide() == damagerGP.getSide()) {
 			event.setCancelled(true);
@@ -273,19 +291,22 @@ public class PlayerListener implements Listener {
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
 		
-		if (!(damaged instanceof Player) || (!(damager instanceof Player) && !(damager instanceof Projectile)))
-			return;
+		if (!(damaged instanceof Player) || (!(damager instanceof Player) && !(damager instanceof Projectile))) {
+            return;
+        }
 		
 		PlayerManager playerManager = MegaArena.getInstance().getPlayerManager();
 		Player damagerPlayer = null;
 		
 		if (damager instanceof Projectile) {
-			if (!(((Projectile) damager).getShooter() instanceof Player))
-				return;
+			if (!(((Projectile) damager).getShooter() instanceof Player)) {
+                return;
+            }
 			
 			damagerPlayer = (Player) ((Projectile) damager).getShooter();
-		} else
-			damagerPlayer = (Player) damager;
+		} else {
+            damagerPlayer = (Player) damager;
+        }
 		
 		Player damagedPlayer = (Player) damaged;
 		GamePlayer damagerGP = null;
@@ -298,17 +319,21 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (damagedGP.getGame() != damagerGP.getGame())
-			return;
+		if (damagedGP.getGame() != damagerGP.getGame()) {
+            return;
+        }
 		
-		if (damagedGP.getLastDamageCause() != DamageCause.CUSTOM)
-			damagedGP.setLastDamageCause(event.getCause());
+		if (damagedGP.getLastDamageCause() != DamageCause.CUSTOM) {
+            damagedGP.setLastDamageCause(event.getCause());
+        }
 		
-		if (damagedGP.getGame().getArena().getType() == Arena.Type.DUEL)
-			return;
+		if (damagedGP.getGame().getArena().getType() == Arena.Type.DUEL) {
+            return;
+        }
 		
 		if (damagedGP.getGame().getArena().getType() == Arena.Type.TDM && damagedGP.getSide() == damagerGP.getSide()) {
 			event.setCancelled(true);
@@ -321,15 +346,17 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onWolfDamageByEntity(EntityDamageByEntityEvent event) {
 		
-		if (!(event.getEntity() instanceof Wolf))
-			return;
+		if (!(event.getEntity() instanceof Wolf)) {
+            return;
+        }
 		
 		Wolf wolf = (Wolf) event.getEntity();
 		
 		AnimalTamer owner = wolf.getOwner();
 		
-		if (!(owner instanceof Player))
-			return;
+		if (!(owner instanceof Player)) {
+            return;
+        }
 		
 		GamePlayer ownerGP = null;
 		
@@ -339,13 +366,15 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!ownerGP.isInGame())
-			return;
+		if (!ownerGP.isInGame()) {
+            return;
+        }
 		
 		Entity damager = event.getDamager();
 		
-		if (!(damager instanceof Player))
-			return;
+		if (!(damager instanceof Player)) {
+            return;
+        }
 		
 		Player damagerPlayer = (Player) damager;
 		
@@ -366,8 +395,9 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 		}
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == ownerGP.getSide())
-			event.setCancelled(true);
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == ownerGP.getSide()) {
+            event.setCancelled(true);
+        }
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
@@ -381,8 +411,9 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!player.isInGame())
-			return;
+		if (!player.isInGame()) {
+            return;
+        }
 		
 		Block block = event.getBlock();
 		
@@ -391,8 +422,9 @@ public class PlayerListener implements Listener {
 			return;
 		}
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		player.getGame().addPlacedBlock(block);
 	}
@@ -408,11 +440,13 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!player.isInGame())
-			return;
+		if (!player.isInGame()) {
+            return;
+        }
 		
-		if (player.getGame().getPlacedBlocks().contains(event.getBlock()))
-			return;
+		if (player.getGame().getPlacedBlocks().contains(event.getBlock())) {
+            return;
+        }
 		
 		event.setCancelled(true);
 	}
@@ -431,17 +465,20 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!playerGP.isInGame())
-			return;
+		if (!playerGP.isInGame()) {
+            return;
+        }
 		
 		Game game = playerGP.getGame();
 		
 		if (playerGP.getGame().getArena().getType() == Arena.Type.DUEL) {
 			GamePlayer opponentGP = null;
 			
-			for (GamePlayer curGP : game.getPlayers())
-				if (curGP != playerGP)
-					opponentGP = curGP;
+			for (GamePlayer curGP : game.getPlayers()) {
+                if (curGP != playerGP) {
+                    opponentGP = curGP;
+                }
+            }
 			
 			MegaArena.getInstance().getGameManager().deleteGame(game,
 					String.format(ChatColor.AQUA + "%s suffered a bitter defeat to %s.",
@@ -476,13 +513,15 @@ public class PlayerListener implements Listener {
 		if (!killedGP.isInGame()) {
 			event.setDeathMessage("");
 			return;
-		} else
-			killedColor = killedGP.getSide().getSideType().getNameColor();
+		} else {
+            killedColor = killedGP.getSide().getSideType().getNameColor();
+        }
 		
 		EntityDamageEvent entityDamageEvent = killed.getLastDamageCause();
 		
-		if (entityDamageEvent.getEntityType() == null)
-			return;
+		if (entityDamageEvent.getEntityType() == null) {
+            return;
+        }
 		
 		String msg = null;
 		ChatColor killerColor = ChatColor.GRAY;
@@ -491,16 +530,18 @@ public class PlayerListener implements Listener {
 			killer = event.getEntity().getKiller();
 			GamePlayer killerGP = null;
 			
-			if (!(killer instanceof Player))
-				return;
+			if (!(killer instanceof Player)) {
+                return;
+            }
 			
 			try {
 				killerGP = MegaArena.getInstance().getPlayerManager().getPlayer(killer.getName());
 			} catch (PlayerException e) {
 			}
 			
-			if (killerGP.isInGame())
-				killerColor = killerGP.getSide().getSideType().getNameColor();
+			if (killerGP.isInGame()) {
+                killerColor = killerGP.getSide().getSideType().getNameColor();
+            }
 			
 			ConfigurationSection deathMessagesSection = MegaArena.getInstance().getConfig()
 					.getConfigurationSection("death-messages");
@@ -540,18 +581,21 @@ public class PlayerListener implements Listener {
 	@EventHandler (priority = EventPriority.NORMAL)
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		
-		if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM)
-			event.getEntity().remove();
+		if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM) {
+            event.getEntity().remove();
+        }
 	}
 	
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		
-		if (event.getLine(0) == null || event.getLine(1) == null)
-			return;
+		if (event.getLine(0) == null || event.getLine(1) == null) {
+            return;
+        }
 		
-		if (!event.getLine(0).equalsIgnoreCase("[Leaderboard]"))
-			return;
+		if (!event.getLine(0).equalsIgnoreCase("[Leaderboard]")) {
+            return;
+        }
 		
 		Player player = event.getPlayer();
 		
@@ -597,11 +641,13 @@ public class PlayerListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (!gp.isInGame())
-			return;
+		if (!gp.isInGame()) {
+            return;
+        }
 		
-		if (event.getSlotType() == SlotType.ARMOR)
-			event.setCancelled(true);
+		if (event.getSlotType() == SlotType.ARMOR) {
+            event.setCancelled(true);
+        }
 	}
 	
 	@EventHandler
@@ -609,8 +655,9 @@ public class PlayerListener implements Listener {
 		
 		Entity entity = event.getEntity();
 		
-		if (!(entity instanceof Player))
-			return;
+		if (!(entity instanceof Player)) {
+            return;
+        }
 		
 		Player player = (Player) entity;
 		GamePlayer gp = null;
@@ -631,12 +678,6 @@ public class PlayerListener implements Listener {
 		final GamePlayer finalGP = gp;
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				
-				finalGP.setBowCooldown(false);
-			}
-		}, 25L);
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> finalGP.setBowCooldown(false), 25L);
 	}
 }

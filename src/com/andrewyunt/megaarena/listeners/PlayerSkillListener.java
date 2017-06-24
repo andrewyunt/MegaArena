@@ -59,49 +59,49 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class PlayerSkillListener implements Listener {
 
-	private HashMap<UUID, Player> creeperTNT = new HashMap<UUID, Player>();
-	private HashMap<UUID, GamePlayer> explosiveWeaknessTNT = new HashMap<UUID, GamePlayer>();
+	private HashMap<UUID, Player> creeperTNT = new HashMap<>();
+	private HashMap<UUID, GamePlayer> explosiveWeaknessTNT = new HashMap<>();
 	
 	@EventHandler
 	public void removeEffects(PlayerDeathEvent e) {
 		
-		if (!(e.getEntity() instanceof Player))
-			return;
+		if (!(e.getEntity() instanceof Player)) {
+            return;
+        }
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				
-				e.getEntity().getActivePotionEffects().clear();
-			}
-		}, 20L);
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> e.getEntity().getActivePotionEffects().clear(), 20L);
 	}
 	
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void boomerangSkill(EntityDamageByEntityEvent event) {
 
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		// Checking for a bow hit from a player to a player
-		if (!(event.getDamager() instanceof Arrow))
-			return;
+		if (!(event.getDamager() instanceof Arrow)) {
+            return;
+        }
 
 		final Arrow arrow = (Arrow) event.getDamager();
 
-		if (!(arrow.getShooter() instanceof Player))
-			return;
+		if (!(arrow.getShooter() instanceof Player)) {
+            return;
+        }
 		
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players
 		Player shooter = (Player) arrow.getShooter();
 		Player damaged = (Player) event.getEntity();
 		
-		if (shooter == damaged)
-			return;
+		if (shooter == damaged) {
+            return;
+        }
 
 		GamePlayer shooterGP = null;
 		GamePlayer damagedGP = null;
@@ -114,23 +114,27 @@ public class PlayerSkillListener implements Listener {
 		}
 
 		// Check if players are in-game
-		if (!shooterGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!shooterGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 
-		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
-			return;
+		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 
 		double percentage = 0;
 
-		if (shooterGP.getClassType().getSkillOne() == Skill.BOOMERANG)
-			percentage = 0.2 * shooterGP.getLevel(shooterGP.getClassType().getSkillOne());
-		else if (shooterGP.getClassType().getSkillTwo() == Skill.BOOMERANG)
-			percentage = 0.2 * shooterGP.getLevel(shooterGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (shooterGP.getClassType().getSkillOne() == Skill.BOOMERANG) {
+            percentage = 0.2 * shooterGP.getLevel(shooterGP.getClassType().getSkillOne());
+        } else if (shooterGP.getClassType().getSkillTwo() == Skill.BOOMERANG) {
+            percentage = 0.2 * shooterGP.getLevel(shooterGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 
-		if (Math.random() > percentage)
-			return;
+		if (Math.random() > percentage) {
+            return;
+        }
 
 		shooter.getInventory().addItem(new ItemStack(Material.ARROW));
 
@@ -143,23 +147,27 @@ public class PlayerSkillListener implements Listener {
 	public void weakeningArrow(EntityDamageByEntityEvent event) {
 		
 		// Checking for a bow hit from a player to a player
-		if (!(event.getDamager() instanceof Arrow))
-			return;
+		if (!(event.getDamager() instanceof Arrow)) {
+            return;
+        }
 		
 		Arrow arrow = (Arrow) event.getDamager();
 
-		if (!(arrow.getShooter() instanceof Player))
-			return;
+		if (!(arrow.getShooter() instanceof Player)) {
+            return;
+        }
 		
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 		
 		// Casting to players
 		Player shooter = (Player) arrow.getShooter();
 		Player damaged = (Player) event.getEntity();
 
-		if (shooter == damaged)
-			return;
+		if (shooter == damaged) {
+            return;
+        }
 		
 		GamePlayer shooterGP = null;
 		GamePlayer damagedGP = null;
@@ -172,20 +180,23 @@ public class PlayerSkillListener implements Listener {
 		}
 
 		// Check if players are in-game
-		if (!shooterGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!shooterGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
-			return;
+		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 		
 		int skillLevel = 0;
 
-		if (shooterGP.getClassType().getSkillOne() == Skill.WEAKENING_ARROW)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
-		else if (shooterGP.getClassType().getSkillTwo() == Skill.WEAKENING_ARROW)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (shooterGP.getClassType().getSkillOne() == Skill.WEAKENING_ARROW) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
+        } else if (shooterGP.getClassType().getSkillTwo() == Skill.WEAKENING_ARROW) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 		
 		// Apply effects
 		int duration = (int) (2 + 0.5 * (skillLevel - 1)) * 20;
@@ -206,15 +217,18 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void resist(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		// Check if damager and damaged entities are players
-		if (!(event.getDamager() instanceof Player))
-			return;
+		if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
 
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players
 		Player damager = (Player) event.getDamager();
@@ -231,25 +245,29 @@ public class PlayerSkillListener implements Listener {
 		}
 
 		// Check if players are in-game
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 		
 		int skillLevel = 0;
 
-		if (damagedGP.getClassType().getSkillOne() == Skill.RESIST)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.RESIST)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagedGP.getClassType().getSkillOne() == Skill.RESIST) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
+        } else if (damagedGP.getClassType().getSkillTwo() == Skill.RESIST) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 		
 		double percentage = 0.11 + 0.03 * (skillLevel - 1);
 
-		if (Math.random() > percentage)
-			return;
+		if (Math.random() > percentage) {
+            return;
+        }
 
 		PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 0, true);
 
@@ -264,16 +282,19 @@ public class PlayerSkillListener implements Listener {
 	public void swiftness(EntityDamageByEntityEvent event) {
 		
 		// Checking for a bow hit from a player to a player
-		if (!(event.getDamager() instanceof Arrow))
-			return;
+		if (!(event.getDamager() instanceof Arrow)) {
+            return;
+        }
 
 		final Arrow arrow = (Arrow) event.getDamager();
 
-		if (!(arrow.getShooter() instanceof Player))
-			return;
+		if (!(arrow.getShooter() instanceof Player)) {
+            return;
+        }
 
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players
 		Player shooter = (Player) arrow.getShooter();
@@ -290,36 +311,42 @@ public class PlayerSkillListener implements Listener {
 		}
 
 		// Check if players are in-game
-		if (!shooterGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!shooterGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide())
-			return;
+		if (shooterGP.getGame().getArena().getType() == Arena.Type.TDM && shooterGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 		
 		int skillLevel = 0;
 		
-		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFTNESS)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFTNESS)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFTNESS) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
+        } else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFTNESS) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 		
 		double percentage = 0.10 + 0.05 * (skillLevel - 1);
 		
-		if (Math.random() > percentage)
-			return;
+		if (Math.random() > percentage) {
+            return;
+        }
 		
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 60, 1, true);
 		
 		Collection<PotionEffect> effects = damaged.getActivePotionEffects();
-		for (PotionEffect e : effects)
-			if (e.getType() == PotionEffectType.SPEED)
-				if (e.getAmplifier() >= 2)
-					return;
-				else
-					if (e.getDuration() >= 60)
-						return;
+		for (PotionEffect e : effects) {
+            if (e.getType() == PotionEffectType.SPEED) {
+                if (e.getAmplifier() >= 2) {
+                    return;
+                } else if (e.getDuration() >= 60) {
+                    return;
+                }
+            }
+        }
 		
 		damaged.addPotionEffect(speed, true);
 
@@ -331,12 +358,14 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void recharge(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		// Checking if damaged is a player
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players
 		Player damaged = (Player) event.getEntity();
@@ -351,24 +380,28 @@ public class PlayerSkillListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (damagerGP == null)
-			return;
+		if (damagerGP == null) {
+            return;
+        }
 		
 		// Check if players are in-game
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 		
 		int skillLevel = 0;
 		
-		if (damagerGP.getClassType().getSkillOne() == Skill.RECHARGE)
-			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
-		else if (damagerGP.getClassType().getSkillTwo() == Skill.RECHARGE)
-			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagerGP.getClassType().getSkillOne() == Skill.RECHARGE) {
+            skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
+        } else if (damagerGP.getClassType().getSkillTwo() == Skill.RECHARGE) {
+            skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 
 		// Checking if killed
 		boolean dead = false;
@@ -376,12 +409,14 @@ public class PlayerSkillListener implements Listener {
 		if (event.getDamage() < 0.0001D) {
 			double dmg = 1.0 + 0.5 * (skillLevel - 1);
 
-			if (((Damageable) damaged).getHealth() - dmg < 0)
-				dead = true;
+			if (((Damageable) damaged).getHealth() - dmg < 0) {
+                dead = true;
+            }
 		}
 
-		if (((Damageable) damaged).getHealth() - event.getFinalDamage() > 0 && !dead)
-			return;
+		if (((Damageable) damaged).getHealth() - event.getFinalDamage() > 0 && !dead) {
+            return;
+        }
 
 		double seconds = 2 + 0.5 * (skillLevel - 1);
 		PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, (int) (seconds * 20), 0, true);
@@ -400,18 +435,22 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void flurry(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		// Checking if damager and damaged are players
-		if (!(event.getDamager() instanceof Player))
-			return;
+		if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
 		
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 		
-		if (event.getDamage() < 0.001D)
-			return;
+		if (event.getDamage() < 0.001D) {
+            return;
+        }
 		
 		// Casting to players
 		Player damager = (Player) event.getDamager();
@@ -428,33 +467,40 @@ public class PlayerSkillListener implements Listener {
 		}
 
 		// Check if players are in-game
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 
 		int skillLevel = 0;
 		
-		if (damagerGP.getClassType().getSkillOne() == Skill.FLURRY)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
-		else if (damagerGP.getClassType().getSkillTwo() == Skill.FLURRY)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagerGP.getClassType().getSkillOne() == Skill.FLURRY) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
+        } else if (damagerGP.getClassType().getSkillTwo() == Skill.FLURRY) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 
 		double percentage = 0.1 + 0.05 * (skillLevel - 1);
 
-		if (Math.random() > percentage)
-			return;
+		if (Math.random() > percentage) {
+            return;
+        }
 		
 		Collection<PotionEffect> effects = damager.getActivePotionEffects();
-		for (PotionEffect e : effects)
-			if (e.getType() == PotionEffectType.SPEED)
-				if (e.getAmplifier() >= 1)
-					return;
-				else if (e.getDuration() >= 40)
-					return;
+		for (PotionEffect e : effects) {
+            if (e.getType() == PotionEffectType.SPEED) {
+                if (e.getAmplifier() >= 1) {
+                    return;
+                } else if (e.getDuration() >= 40) {
+                    return;
+                }
+            }
+        }
 		
 		PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 40, 0, true);
 		damager.addPotionEffect(speed, true);
@@ -467,8 +513,9 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void explosiveWeakness(EntityDamageEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		explosiveWeakness(event.getEntity());
 	}
@@ -476,8 +523,9 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void explosiveWeakness(EntityRegainHealthEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		explosiveWeakness(event.getEntity());
 	}
@@ -485,8 +533,9 @@ public class PlayerSkillListener implements Listener {
 	public void explosiveWeakness(Entity entity) {
 		
 		// Check if the entity is player
-		if (!(entity instanceof Player))
-			return;
+		if (!(entity instanceof Player)) {
+            return;
+        }
 		
 		// Casting to players
 		Player player = (Player) entity;
@@ -499,32 +548,37 @@ public class PlayerSkillListener implements Listener {
 		}
 		
 		// Check if players are in-game
-		if (!gp.isInGame())
-			return;
+		if (!gp.isInGame()) {
+            return;
+        }
 		
 		int skillLevel = 0;
 		
-		if (gp.getClassType().getSkillOne() == Skill.EXPLOSIVE_WEAKNESS)
-			skillLevel = gp.getLevel(gp.getClassType().getSkillOne());
-		else if (gp.getClassType().getSkillTwo() == Skill.EXPLOSIVE_WEAKNESS)
-			skillLevel = gp.getLevel(gp.getClassType().getSkillTwo());
-		else
-			return;
+		if (gp.getClassType().getSkillOne() == Skill.EXPLOSIVE_WEAKNESS) {
+            skillLevel = gp.getLevel(gp.getClassType().getSkillOne());
+        } else if (gp.getClassType().getSkillTwo() == Skill.EXPLOSIVE_WEAKNESS) {
+            skillLevel = gp.getLevel(gp.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 		
-		if (gp.isExplosiveWeaknessCooldown())
-			return;
+		if (gp.isExplosiveWeaknessCooldown()) {
+            return;
+        }
 		
 		int hearts = 7 + skillLevel;
 		
-		if (((Damageable) player).getHealth() <= hearts)
-			return;
+		if (((Damageable) player).getHealth() <= hearts) {
+            return;
+        }
 		
 		Location loc = entity.getLocation().clone();
 		
 		loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), 4, false, false);
 		
-		if (skillLevel == 9)
-			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 2), true);
+		if (skillLevel == 9) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 2), true);
+        }
 		
 		gp.setExplosiveWeaknessCooldown(true);
 		
@@ -543,14 +597,17 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler
 	public void onTNTDamagePlayer(EntityDamageByEntityEvent event) {
 		
-		if (event.getDamager().getType() != EntityType.PRIMED_TNT)
-			return;
+		if (event.getDamager().getType() != EntityType.PRIMED_TNT) {
+            return;
+        }
 		
-		if (!explosiveWeaknessTNT.containsKey(event.getDamager().getUniqueId()))
-			return;
+		if (!explosiveWeaknessTNT.containsKey(event.getDamager().getUniqueId())) {
+            return;
+        }
 		
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 		
 		GamePlayer gp = null;
 		
@@ -560,22 +617,26 @@ public class PlayerSkillListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (explosiveWeaknessTNT.get(event.getDamager().getUniqueId()).getSide() == gp.getSide())
-			event.setCancelled(true);
+		if (explosiveWeaknessTNT.get(event.getDamager().getUniqueId()).getSide() == gp.getSide()) {
+            event.setCancelled(true);
+        }
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void support(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		// Checking if damager and damaged are players
-		if (!(event.getDamager() instanceof Player))
-			return;
+		if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
 
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players 
 		Player damager = (Player) event.getDamager();
@@ -592,25 +653,29 @@ public class PlayerSkillListener implements Listener {
 		}
 
 		// Check if players are in-game
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 
 		int skillLevel = 0;
 		
-		if (damagedGP.getClassType().getSkillOne() == Skill.SUPPORT)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.SUPPORT)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagedGP.getClassType().getSkillOne() == Skill.SUPPORT) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
+        } else if (damagedGP.getClassType().getSkillTwo() == Skill.SUPPORT) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 
 		double percentage = 0.06 + 0.005 * (skillLevel - 1);
 
-		if (Math.random() > percentage)
-			return;
+		if (Math.random() > percentage) {
+            return;
+        }
 
 		TNTPrimed tnt = (TNTPrimed) damaged.getWorld().spawnEntity(damaged.getEyeLocation(), EntityType.PRIMED_TNT);
 
@@ -625,26 +690,31 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void disableTNT(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
-		if (!(event.getDamager() instanceof TNTPrimed))
-			return;
+		if (!(event.getDamager() instanceof TNTPrimed)) {
+            return;
+        }
 
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		TNTPrimed tnt = (TNTPrimed) event.getDamager();
 		event.setCancelled(true);
 		
-		if (!creeperTNT.containsKey(tnt.getUniqueId()))
-			return;
+		if (!creeperTNT.containsKey(tnt.getUniqueId())) {
+            return;
+        }
 
 		Player creeper = creeperTNT.get(tnt.getUniqueId());
 		Player damaged = (Player) event.getEntity();
 		
-		if (creeper.getName().equals(damaged.getName()))
-			return;
+		if (creeper.getName().equals(damaged.getName())) {
+            return;
+        }
 
 		GamePlayer creeperAP = null;
 		GamePlayer damagedGP = null;
@@ -657,32 +727,38 @@ public class PlayerSkillListener implements Listener {
 		}
 
 		// Check if players are in-game
-		if (!creeperAP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!creeperAP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 
-		if (creeperAP.getGame().getArena().getType() == Arena.Type.TDM && creeperAP.getSide() == damagedGP.getSide())
-			return;
+		if (creeperAP.getGame().getArena().getType() == Arena.Type.TDM && creeperAP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 
 		Damageable dmgPlayer = (Damageable) damaged;
 
-		if (dmgPlayer.getHealth() <= 2.0)
-			dmgPlayer.setHealth(0.0D);
-		else
-			dmgPlayer.setHealth(dmgPlayer.getHealth() - 2.0D);
+		if (dmgPlayer.getHealth() <= 2.0) {
+            dmgPlayer.setHealth(0.0D);
+        } else {
+            dmgPlayer.setHealth(dmgPlayer.getHealth() - 2.0D);
+        }
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void weakeningSwing(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		// Checking if damager and damaged are players
-		if (!(event.getDamager() instanceof Player))
-			return;
+		if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
 
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players
 		Player damager = (Player) event.getDamager();
@@ -699,25 +775,29 @@ public class PlayerSkillListener implements Listener {
 		}
 		
 		// Check if players are in-game
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 		
 		int skillLevel = 0;
 		
-		if (damagerGP.getClassType().getSkillOne() == Skill.WEAKENING_SWING)
-			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
-		else if (damagerGP.getClassType().getSkillTwo() == Skill.WEAKENING_SWING)
-			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagerGP.getClassType().getSkillOne() == Skill.WEAKENING_SWING) {
+            skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
+        } else if (damagerGP.getClassType().getSkillTwo() == Skill.WEAKENING_SWING) {
+            skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 		
 		double duration = 2 + 0.5 * (skillLevel - 1);
 		
-		if (Math.random() > 0.15D)
-			return;
+		if (Math.random() > 0.15D) {
+            return;
+        }
 		
 		PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, (int) (duration * 20), 0, true);
 
@@ -735,15 +815,18 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void swiftBackup(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		// Checking if damager and damaged are players
-		if (!(event.getDamager() instanceof Player))
-			return;
+		if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
 		
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players
 		Player damager = (Player) event.getDamager();
@@ -760,25 +843,29 @@ public class PlayerSkillListener implements Listener {
 		}
 		
 		// Check if players are in-game
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 		
 		int skillLevel = 0;
 		
-		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFT_BACKUP)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFT_BACKUP)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagedGP.getClassType().getSkillOne() == Skill.SWIFT_BACKUP) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
+        } else if (damagedGP.getClassType().getSkillTwo() == Skill.SWIFT_BACKUP) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 		
 		double duration = 4 + (skillLevel - 1);
 		
-		if (Math.random() > 0.1D)
-			return;
+		if (Math.random() > 0.1D) {
+            return;
+        }
 		
 		damaged.sendMessage(String.format(
 				Utils.getFormattedMessage("messages.skill-activated"),
@@ -803,15 +890,18 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void soulSucker(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 
 		// Checking if damager and damaged are players
-		if (!(event.getDamager() instanceof Player))
-			return;
+		if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
 
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players
 		Player damager = (Player) event.getDamager();
@@ -828,30 +918,35 @@ public class PlayerSkillListener implements Listener {
 		}
 		
 		// Check if players are in-game
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 		
 		int skillLevel = 0;
 		
-		if (damagerGP.getClassType().getSkillOne() == Skill.SOUL_SUCKER)
-			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
-		else if (damagerGP.getClassType().getSkillTwo() == Skill.SOUL_SUCKER)
-			skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagerGP.getClassType().getSkillOne() == Skill.SOUL_SUCKER) {
+            skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillOne());
+        } else if (damagerGP.getClassType().getSkillTwo() == Skill.SOUL_SUCKER) {
+            skillLevel = damagerGP.getLevel(damagerGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 
 		double percentage = 0.12 + (skillLevel - 1) / 100;
 
-		if (Math.random() > percentage)
-			return;
+		if (Math.random() > percentage) {
+            return;
+        }
 
-		if (((Damageable) damager).getHealth() > ((Damageable) damager).getMaxHealth() - 1.0)
-			((Damageable) damager).setHealth(40.0);
-		else
-			((Damageable) damager).setHealth(((Damageable) damager).getHealth() + 1.0);
+		if (((Damageable) damager).getHealth() > ((Damageable) damager).getMaxHealth() - 1.0) {
+            ((Damageable) damager).setHealth(40.0);
+        } else {
+            ((Damageable) damager).setHealth(((Damageable) damager).getHealth() + 1.0);
+        }
 
 		damager.sendMessage(String.format(
 				Utils.getFormattedMessage("messages.skill-activated"),
@@ -861,15 +956,18 @@ public class PlayerSkillListener implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void undead(EntityDamageByEntityEvent event) {
 		
-		if (event.isCancelled())
-			return;
+		if (event.isCancelled()) {
+            return;
+        }
 		
 		// Checking if damager and damaged are players
-		if (!(event.getDamager() instanceof Player))
-			return;
+		if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
 
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 
 		// Casting to players
 		Player damager = (Player) event.getDamager();
@@ -886,34 +984,40 @@ public class PlayerSkillListener implements Listener {
 		}
 		
 		// Check if players are in-game
-		if (!damagerGP.isInGame() || !damagedGP.isInGame())
-			return;
+		if (!damagerGP.isInGame() || !damagedGP.isInGame()) {
+            return;
+        }
 		
-		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide())
-			return;
+		if (damagerGP.getGame().getArena().getType() == Arena.Type.TDM && damagerGP.getSide() == damagedGP.getSide()) {
+            return;
+        }
 
 		// Checking that the damaged player is a WITHER MINION
-		if (damagedGP.getClassType() != Class.WITHER_MINION)
-			return;
+		if (damagedGP.getClassType() != Class.WITHER_MINION) {
+            return;
+        }
 
 		int skillLevel = 0;
 
-		if (damagedGP.getClassType().getSkillOne() == Skill.UNDEAD)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
-		else if (damagedGP.getClassType().getSkillTwo() == Skill.UNDEAD)
-			skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
-		else
-			return;
+		if (damagedGP.getClassType().getSkillOne() == Skill.UNDEAD) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillOne());
+        } else if (damagedGP.getClassType().getSkillTwo() == Skill.UNDEAD) {
+            skillLevel = damagedGP.getLevel(damagedGP.getClassType().getSkillTwo());
+        } else {
+            return;
+        }
 
 		double percentage = 0.07 + (skillLevel - 1) / 100;
 
-		if (Math.random() > percentage)
-			return;
+		if (Math.random() > percentage) {
+            return;
+        }
 
-		if (((Damageable) damaged).getHealth() > ((Damageable) damaged).getMaxHealth() - 1.0)
-			((Damageable) damaged).setHealth(40.0);
-		else
-			((Damageable) damaged).setHealth(((Damageable) damaged).getHealth() + 1.0);
+		if (((Damageable) damaged).getHealth() > ((Damageable) damaged).getMaxHealth() - 1.0) {
+            ((Damageable) damaged).setHealth(40.0);
+        } else {
+            ((Damageable) damaged).setHealth(((Damageable) damaged).getHealth() + 1.0);
+        }
 
 		damaged.sendMessage(String.format(
 				Utils.getFormattedMessage("messages.skill-activated"),

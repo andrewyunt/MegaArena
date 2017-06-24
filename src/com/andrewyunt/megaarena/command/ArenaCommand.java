@@ -44,7 +44,7 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class ArenaCommand implements CommandExecutor {
 	
-	private static final List<String> help = new ArrayList<String>();
+	private static final List<String> help = new ArrayList<>();
 
 	static {
 		help.add(ChatColor.DARK_GRAY + "=" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "[ " + ChatColor.AQUA + 
@@ -68,8 +68,9 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			for (String line : help)
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
+			for (String line : help) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
+            }
 			
 			return false;
 		}
@@ -124,8 +125,9 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			for (String line : help)
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
+			for (String line : help) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', line));
+            }
 			
 			return false;
 			
@@ -159,8 +161,9 @@ public class ArenaCommand implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED + e.getMessage());
 			}
 			
-			if (arena == null)
-				return false;
+			if (arena == null) {
+                return false;
+            }
 			
 			try {
 				MegaArena.getInstance().getPlayerManager().getPlayer(sender.getName()).selectArena(arena);
@@ -271,17 +274,19 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			for (Spawn itrSpawn : arena.getSpawns())
-				if (itrSpawn.getName().equalsIgnoreCase(args[1])) {
-					sender.sendMessage(Utils.getFormattedMessage("messages.spawn-exists"));
-					return false;
-				}
+			for (Spawn itrSpawn : arena.getSpawns()) {
+                if (itrSpawn.getName().equalsIgnoreCase(args[1])) {
+                    sender.sendMessage(Utils.getFormattedMessage("messages.spawn-exists"));
+                    return false;
+                }
+            }
 			
-			if (arena.getType() == Arena.Type.FFA || arena.getType() == Arena.Type.DUEL)
-				if (!args[2].equalsIgnoreCase("solo")) {
-					sender.sendMessage(Utils.getFormattedMessage("messages.cannot-add-solo-spawns-tdm"));
-					return false;
-				}
+			if (arena.getType() == Arena.Type.FFA || arena.getType() == Arena.Type.DUEL) {
+                if (!args[2].equalsIgnoreCase("solo")) {
+                    sender.sendMessage(Utils.getFormattedMessage("messages.cannot-add-solo-spawns-tdm"));
+                    return false;
+                }
+            }
 			
 			Location loc = ((Player) sender).getLocation();
 			
@@ -389,8 +394,9 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			if (arena == null)
-				return false;
+			if (arena == null) {
+                return false;
+            }
 			
 			if (arena.isEdit()) {
 				arena.setEdit(false);
@@ -404,10 +410,11 @@ public class ArenaCommand implements CommandExecutor {
 						Utils.getFormattedMessage("messages.edit-mode-disabled"),
 						ChatColor.AQUA + arena.getName()));
 			} else {
-				if (arena.isInUse())
-					MegaArena.getInstance().getGameManager().deleteGame(
-							arena.getGame(),
-							Utils.getFormattedMessage("messages.game-ended-edit"));
+				if (arena.isInUse()) {
+                    MegaArena.getInstance().getGameManager().deleteGame(
+                            arena.getGame(),
+                            Utils.getFormattedMessage("messages.game-ended-edit"));
+                }
 				arena.setEdit(true);
 				sender.sendMessage(String.format(
 						Utils.getFormattedMessage("messages.edit-mode-enabled"),
@@ -424,8 +431,9 @@ public class ArenaCommand implements CommandExecutor {
 			sender.sendMessage(ChatColor.DARK_GRAY + "=" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "[ " + ChatColor.AQUA + 
 				"Arenas List" + ChatColor.DARK_GRAY + " ]" + ChatColor.GRAY + "------------" + ChatColor.DARK_GRAY + "=");
 			
-			for (Arena arena : MegaArena.getInstance().getArenaManager().getArenas())
-				sender.sendMessage(ChatColor.GREEN + arena.getName());
+			for (Arena arena : MegaArena.getInstance().getArenaManager().getArenas()) {
+                sender.sendMessage(ChatColor.GREEN + arena.getName());
+            }
 			
 		} else if (args[0].equalsIgnoreCase("creategame")) {
 			
@@ -445,8 +453,9 @@ public class ArenaCommand implements CommandExecutor {
 				return false;
 			}
 			
-			if (arena == null)
-				return false;
+			if (arena == null) {
+                return false;
+            }
 			
 			if (!arena.isTournament()) {
 				sender.sendMessage(Utils.getFormattedMessage("messages.only-able-create-tournament-games"));

@@ -34,7 +34,7 @@ import com.andrewyunt.megaarena.objects.GamePlayer;
  */
 public class PlayerManager {
 
-	private final Map<String, GamePlayer> players = new HashMap<String, GamePlayer>();
+	private final Map<String, GamePlayer> players = new HashMap<>();
 
 	/**
 	 * Creates a GamePlayer with the specified name and adds it to the players map.
@@ -48,8 +48,9 @@ public class PlayerManager {
 	 */
 	public GamePlayer createPlayer(String name) throws PlayerException {
 
-		if (players.containsKey(name))
-			throw new PlayerException(String.format("The player %s already exists.", name));
+		if (players.containsKey(name)) {
+            throw new PlayerException(String.format("The player %s already exists.", name));
+        }
 
 		GamePlayer player = new GamePlayer(name);
 
@@ -70,8 +71,9 @@ public class PlayerManager {
 	 */
 	public void deletePlayer(GamePlayer player) throws PlayerException {
 		
-		if (!players.containsKey(player.getName()))
-			throw new PlayerException("The player specified is not in the plugin's records.");
+		if (!players.containsKey(player.getName())) {
+            throw new PlayerException("The player specified is not in the plugin's records.");
+        }
 		
 		MegaArena.getInstance().getDataSource().savePlayer(player);
 		
@@ -102,8 +104,9 @@ public class PlayerManager {
 	 */
 	public GamePlayer getPlayer(String name) throws PlayerException {
 
-		if (!players.containsKey(name))
-			throw new PlayerException("The specified player does not exist.");
+		if (!players.containsKey(name)) {
+            throw new PlayerException("The specified player does not exist.");
+        }
 
 		return players.get(name);
 	}
@@ -115,22 +118,26 @@ public class PlayerManager {
 	
 	public Set<GamePlayer> getInGamePlayers() {
 		
-		Set<GamePlayer> inGame = new HashSet<GamePlayer>();
+		Set<GamePlayer> inGame = new HashSet<>();
 		
-		for (GamePlayer player : players.values())
-			if (player.isInGame())
-				inGame.add(player);
+		for (GamePlayer player : players.values()) {
+            if (player.isInGame()) {
+                inGame.add(player);
+            }
+        }
 		
 		return inGame;
 	}
 	
 	public Set<GamePlayer> getSpectatingPlayers() {
 		
-		Set<GamePlayer> spectating = new HashSet<GamePlayer>();
+		Set<GamePlayer> spectating = new HashSet<>();
 		
-		for (GamePlayer player : players.values())
-			if (player.isSpectating())
-				spectating.add(player);
+		for (GamePlayer player : players.values()) {
+            if (player.isSpectating()) {
+                spectating.add(player);
+            }
+        }
 		
 		return spectating;
 	}

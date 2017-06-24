@@ -21,7 +21,7 @@ public class DisplayBoard {
 	private final Scoreboard scoreboard;
 	private Objective objective;
 	private String title = null;
-	private final HashMap<String, Score> fields = new HashMap<String, Score>();
+	private final HashMap<String, Score> fields = new HashMap<>();
 
 	public DisplayBoard(Player player, String title) {
 		
@@ -37,31 +37,35 @@ public class DisplayBoard {
 	/**
 	 * Puts a field on the DisplayBoard which is displayed to the player.
 	 * 
-	 * @param name
+	 * @param text
 	 * 		The display name of the field to be added.
 	 */
 	public void putField(String text) {
 		
 		int originalLength = text.length();
 		
-		while (text.length() < 16)
-			text += " ";
+		while (text.length() < 16) {
+            text += " ";
+        }
 
 		while (true) {
-			if (!fields.keySet().contains(text))
-				break;
+			if (!fields.keySet().contains(text)) {
+                break;
+            }
 
 			text = text.substring(0, text.length() - 1);
 
-			if (text.length() < originalLength)
-				return;
+			if (text.length() < originalLength) {
+                return;
+            }
 		}
 
 		fields.put(text, objective.getScore(text));
 		fields.get(text).setScore(0);
 		
-		for (String str : fields.keySet())
-			fields.get(str).setScore(fields.get(str).getScore() + 1);
+		for (String str : fields.keySet()) {
+            fields.get(str).setScore(fields.get(str).getScore() + 1);
+        }
 	}
 
 	/**

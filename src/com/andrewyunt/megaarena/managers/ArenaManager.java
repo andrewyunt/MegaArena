@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 public class ArenaManager {
 
-	private final Map<String, Arena> arenas = new HashMap<String, Arena>();
+	private final Map<String, Arena> arenas = new HashMap<>();
 
 	/**
 	 * Creates an arena with the specified name and arena type.
@@ -54,11 +54,13 @@ public class ArenaManager {
 	 */
 	public Arena createArena(String name, Arena.Type type, boolean tournament) throws ArenaException {
 
-		if (name == null || type == null)
-			throw new ArenaException();
+		if (name == null || type == null) {
+            throw new ArenaException();
+        }
 
-		if (arenas.containsKey(name))
-			throw new ArenaException("The arena %s already exists and cannot be created again.");
+		if (arenas.containsKey(name)) {
+            throw new ArenaException("The arena %s already exists and cannot be created again.");
+        }
 
 		Arena arena = new Arena(name, type, tournament);
 
@@ -84,8 +86,9 @@ public class ArenaManager {
 	 */
 	public void deleteArena(Arena arena) throws ArenaException {
 
-		if (arena == null)
-			throw new ArenaException();
+		if (arena == null) {
+            throw new ArenaException();
+        }
 
 		arenas.remove(arena);
 		
@@ -105,13 +108,14 @@ public class ArenaManager {
 	 */
 	public Set<Arena> getArenas(Arena.Type type) {
 
-		Set<Arena> arenas = new HashSet<Arena>();
+		Set<Arena> arenas = new HashSet<>();
 
 		for (Map.Entry<String, Arena> entry : this.arenas.entrySet()) {
 			Arena arena = entry.getValue();
 
-			if (arena.getType() == type)
-				arenas.add(arena);
+			if (arena.getType() == type) {
+                arenas.add(arena);
+            }
 		}
 
 		return arenas;
@@ -140,8 +144,9 @@ public class ArenaManager {
 	 */
 	public Arena getArena(String name) throws ArenaException {
 
-		if (!arenas.containsKey(name))
-			throw new ArenaException("The specified arena does not exist.");
+		if (!arenas.containsKey(name)) {
+            throw new ArenaException("The specified arena does not exist.");
+        }
 
 		return arenas.get(name);
 	}
@@ -166,14 +171,16 @@ public class ArenaManager {
 
 		arenas.clear(); // Clear the current arenas list
 
-		if (!MegaArena.getInstance().getArenaConfig().getConfig().contains("arenas"))
-			return;
+		if (!MegaArena.getInstance().getArenaConfig().getConfig().contains("arenas")) {
+            return;
+        }
 
 		ConfigurationSection arenas = MegaArena.getInstance().getArenaConfig().getConfig()
 				.getConfigurationSection("arenas");
 
-		for (String name : arenas.getValues(false).keySet())
-			loadArena(arenas.getConfigurationSection(name));
+		for (String name : arenas.getValues(false).keySet()) {
+            loadArena(arenas.getConfigurationSection(name));
+        }
 	}
 
 	/**
@@ -188,8 +195,9 @@ public class ArenaManager {
 
 		Arena arena = Arena.loadFromConfig(section);
 		
-		if (arenaExists(arena.getName()))
-			arenas.remove(arena.getName());
+		if (arenaExists(arena.getName())) {
+            arenas.remove(arena.getName());
+        }
 
 		arenas.put(arena.getName(), arena);
 	}

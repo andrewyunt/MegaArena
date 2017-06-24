@@ -40,8 +40,9 @@ public class SignConfiguration {
 	
 	public void reloadConfig() {
 		
-		if (configFile == null)
-			configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
+		if (configFile == null) {
+            configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
+        }
 		
 		config = YamlConfiguration.loadConfiguration(configFile);
 		
@@ -61,16 +62,18 @@ public class SignConfiguration {
 	
 	public FileConfiguration getConfig() {
 		
-		if (config == null)
-			reloadConfig();
+		if (config == null) {
+            reloadConfig();
+        }
 		
 		return config;
 	}
 	
 	public void saveConfig() {
 		
-		if (config == null || configFile == null)
-			return;
+		if (config == null || configFile == null) {
+            return;
+        }
 		
 		try {
 			getConfig().save(configFile);
@@ -80,10 +83,12 @@ public class SignConfiguration {
 	}
 	
 	public void saveDefaultConfig() {
-		if (configFile == null)
-			configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
+		if (configFile == null) {
+            configFile = new File(MegaArena.getInstance().getDataFolder(), "signs.yml");
+        }
 		
-		if (!configFile.exists())
-			MegaArena.getInstance().saveResource("signs.yml", false);
+		if (!configFile.exists()) {
+            MegaArena.getInstance().saveResource("signs.yml", false);
+        }
 	}
 }

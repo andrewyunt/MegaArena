@@ -57,8 +57,9 @@ public class PlayerAbilityListener implements Listener {
 		
 		ItemStack item = event.getItem();
 		
-		if (item == null)
-			return;
+		if (item == null) {
+            return;
+        }
 		
 		Material type = item.getType();
 		Action action = event.getAction();
@@ -73,36 +74,44 @@ public class PlayerAbilityListener implements Listener {
 		
 		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
 			
-			if (!gp.isInGame())
-				return;
+			if (!gp.isInGame()) {
+                return;
+            }
 			
-			if (gp.getClassType() == SKELETON)
-				return;
+			if (gp.getClassType() == SKELETON) {
+                return;
+            }
 			
-			if (!type.toString().toLowerCase().contains("sword"))
-				return;
+			if (!type.toString().toLowerCase().contains("sword")) {
+                return;
+            }
 			
 			gp.getClassType().getAbility().use(gp);
 			
 		} else if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
 			
-			if (!gp.isInGame())
-				return;
+			if (!gp.isInGame()) {
+                return;
+            }
 			
-			if (gp.getClassType() == SKELETON)
-				if (type == Material.BOW)
-					gp.getClassType().getAbility().use(gp);
+			if (gp.getClassType() == SKELETON) {
+                if (type == Material.BOW) {
+                    gp.getClassType().getAbility().use(gp);
+                }
+            }
 		}
 	}
 	
 	@EventHandler (priority = EventPriority.NORMAL)
 	public void EPC(EntityDamageByEntityEvent event) {
 		
-		if (event.getCause() == DamageCause.FALL)
-			return;
+		if (event.getCause() == DamageCause.FALL) {
+            return;
+        }
 		
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 		
 		Player damaged = (Player) event.getEntity();
 		GamePlayer damagedGP = null;
@@ -115,9 +124,9 @@ public class PlayerAbilityListener implements Listener {
 		
 		final GamePlayer finalDamagedGP = damagedGP;
 		
-		if (damagedGP.isEPCCooldown())
-			event.setCancelled(true);
-		else {
+		if (damagedGP.isEPCCooldown()) {
+            event.setCancelled(true);
+        } else {
 			damagedGP.setEPCCooldown(true);
 			
 			new BukkitRunnable() {
@@ -142,19 +151,23 @@ public class PlayerAbilityListener implements Listener {
 				e.printStackTrace();
 			}
 		
-			if (!(gpDamaged.isInGame() && gpDamager.isInGame()))
-				return;
+			if (!(gpDamaged.isInGame() && gpDamager.isInGame())) {
+                return;
+            }
 			
-			if (gpDamaged.getGame() != gpDamager.getGame())
-				return;
+			if (gpDamaged.getGame() != gpDamager.getGame()) {
+                return;
+            }
 			
-			if (gpDamager.getGame().getArena().getType() == Arena.Type.TDM && gpDamager.getSide() == gpDamaged.getSide())
-				return;
+			if (gpDamager.getGame().getArena().getType() == Arena.Type.TDM && gpDamager.getSide() == gpDamaged.getSide()) {
+                return;
+            }
 			
-			if (gpDamager.getClassType() != SKELETON)
-				gpDamager.addEnergy(gpDamager.getClassType().getEnergyPerClick());
-			else
-				gpDamager.addEnergy(3); // Since SKELETON enum only contains the player's bow hit energy.
+			if (gpDamager.getClassType() != SKELETON) {
+                gpDamager.addEnergy(gpDamager.getClassType().getEnergyPerClick());
+            } else {
+                gpDamager.addEnergy(3); // Since SKELETON enum only contains the player's bow hit energy.
+            }
 			
 			Utils.playBloodEffect(damaged, 10);
 			
@@ -164,8 +177,9 @@ public class PlayerAbilityListener implements Listener {
 		if (event.getDamager() instanceof Arrow) {
 			Arrow arrow = (Arrow) event.getDamager();
 			
-			if (!(arrow.getShooter() instanceof Player))
-				return;
+			if (!(arrow.getShooter() instanceof Player)) {
+                return;
+            }
 			
 			Player damager = (Player) arrow.getShooter();
 			GamePlayer gpDamager=null;
@@ -179,13 +193,17 @@ public class PlayerAbilityListener implements Listener {
 			}
 			
 			if (event.isCancelled()) // Don't give energy if the shot person is red
-				return;
+            {
+                return;
+            }
 			
-			if (gpDamaged == gpDamager)
-				return;
+			if (gpDamaged == gpDamager) {
+                return;
+            }
 			
-			if (gpDamager.getClassType() != SKELETON)
-				return;
+			if (gpDamager.getClassType() != SKELETON) {
+                return;
+            }
 			
 			gpDamager.addEnergy(gpDamager.getClassType().getEnergyPerClick());
 			
@@ -198,14 +216,17 @@ public class PlayerAbilityListener implements Listener {
 	@EventHandler (priority = EventPriority.NORMAL)
 	public void EPC(EntityDamageEvent event) {
 		
-		if (event.getCause() == DamageCause.FALL)
-			return;
+		if (event.getCause() == DamageCause.FALL) {
+            return;
+        }
 		
-		if (event instanceof EntityDamageByEntityEvent)
-			return;
+		if (event instanceof EntityDamageByEntityEvent) {
+            return;
+        }
 		
-		if (!(event.getEntity() instanceof Player))
-			return;
+		if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
 		
 		Player damaged = (Player) event.getEntity();
 		GamePlayer damagedGP = null;
@@ -218,9 +239,9 @@ public class PlayerAbilityListener implements Listener {
 		
 		final GamePlayer finalDamagedGP = damagedGP;
 		
-		if (damagedGP.isEPCCooldown())
-			event.setCancelled(true);
-		else {
+		if (damagedGP.isEPCCooldown()) {
+            event.setCancelled(true);
+        } else {
 			damagedGP.setEPCCooldown(true);
 			
 			new BukkitRunnable() {
@@ -236,8 +257,9 @@ public class PlayerAbilityListener implements Listener {
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent event) {
 		
-		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT))
-				event.setCancelled(true);
+		if (event.getCause() == DamageCause.ENTITY_EXPLOSION && (event.getDamager().getType() != EntityType.PRIMED_TNT)) {
+            event.setCancelled(true);
+        }
 	}
 
 	@EventHandler
@@ -245,11 +267,13 @@ public class PlayerAbilityListener implements Listener {
 		
 		Entity entity = event.getEntity();
 		
-		if (entity.getType() != EntityType.WITHER_SKULL)
-			return;
+		if (entity.getType() != EntityType.WITHER_SKULL) {
+            return;
+        }
 		
-		if (entity.hasMetadata("MegaArena"))
-			event.setCancelled(true);
+		if (entity.hasMetadata("MegaArena")) {
+            event.setCancelled(true);
+        }
 	}
 
 	@EventHandler
@@ -257,8 +281,9 @@ public class PlayerAbilityListener implements Listener {
 		
 		Entity entity = event.getEntity();
 		
-		if (!entity.hasMetadata("MegaArena"))
-			return;
+		if (!entity.hasMetadata("MegaArena")) {
+            return;
+        }
 		
 		Player shooter = (Player) ((Projectile) entity).getShooter();
 		GamePlayer shooterGP = null;
@@ -275,11 +300,13 @@ public class PlayerAbilityListener implements Listener {
 				Effect.EXPLOSION_HUGE);
 		
 		for (Entity nearby : entity.getNearbyEntities(5D, 3D, 5D)) {
-			if (!(nearby instanceof Player))
-				continue;
+			if (!(nearby instanceof Player)) {
+                continue;
+            }
 			
-			if (nearby == shooter)
-				continue;
+			if (nearby == shooter) {
+                continue;
+            }
 			
 			Player nearbyPlayer = (Player) nearby;
 			
@@ -291,11 +318,13 @@ public class PlayerAbilityListener implements Listener {
 				e.printStackTrace();
 			}
 			
-			if (!nearbyGP.isInGame())
-				continue;
+			if (!nearbyGP.isInGame()) {
+                continue;
+            }
 			
-			if (nearbyGP.getGame().getArena().getType() == Arena.Type.TDM && nearbyGP.getSide() == shooterGP.getSide())
-				continue;
+			if (nearbyGP.getGame().getArena().getType() == Arena.Type.TDM && nearbyGP.getSide() == shooterGP.getSide()) {
+                continue;
+            }
 			
 			double dmg = 1.5 + (shooterGP.getLevel(shooterGP.getClassType().getAbility()) * .5);
 			Damageable dmgPlayer = (Damageable) nearbyPlayer;
@@ -304,8 +333,9 @@ public class PlayerAbilityListener implements Listener {
 			if (dmgPlayer.getHealth() < dmg) {
 				dmgPlayer.setHealth(0D);
 				return;
-			} else
-				nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
+			} else {
+                nearbyPlayer.setHealth(((Damageable) nearbyPlayer).getHealth() - dmg);
+            }
 		}
 	}
 }

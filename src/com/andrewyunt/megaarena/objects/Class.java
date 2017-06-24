@@ -284,7 +284,7 @@ public enum Class implements Upgradable {
 		ItemStack potH = new ItemStack(Material.POTION, 1);
 		PotionMeta pmH = (PotionMeta) potH.getItemMeta();
 		PotionEffect effectH = new PotionEffect(PotionEffectType.HEAL, 1, 2, false);
-		List<String> lstH = new ArrayList<String>();
+		List<String> lstH = new ArrayList<>();
 		lstH.add(ChatColor.RESET + "HEAL 8" + ChatColor.RED + "\u2764");
 		pmH.setDisplayName(ChatColor.RESET + "" + ChatColor.DARK_RED + "Health Potion");
 		pmH.setLore(lstH);
@@ -298,7 +298,7 @@ public enum Class implements Upgradable {
 		ItemStack potS = new ItemStack(Material.POTION, 1);
 		PotionMeta pmS = (PotionMeta) potS.getItemMeta();
 		PotionEffect effectS = new PotionEffect(PotionEffectType.SPEED, (15 * 20), 1, false);
-		List<String> lstS = new ArrayList<String>();
+		List<String> lstS = new ArrayList<>();
 		lstS.add(ChatColor.RESET + "Duration: " + ChatColor.GRAY + "15s");
 		pmS.setLore(lstS);
 		pmS.setDisplayName(ChatColor.RESET + "" + ChatColor.AQUA + "Speed Potion");
@@ -683,8 +683,9 @@ public enum Class implements Upgradable {
 		if (loadFromDB) {
 			Inventory loadedInv = MegaArena.getInstance().getDataSource().loadLayout(player, this);
 		
-			if (loadedInv != null)
-				inv = loadedInv;
+			if (loadedInv != null) {
+                inv = loadedInv;
+            }
 		}
 			
 		return inv;

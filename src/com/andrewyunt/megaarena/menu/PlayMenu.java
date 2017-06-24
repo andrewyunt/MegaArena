@@ -42,7 +42,7 @@ public class PlayMenu implements Listener {
 		
 		ItemMeta glassPaneMeta = glassPane.getItemMeta();
 		glassPaneMeta.setDisplayName(" ");
-		glassPaneMeta.setLore(new ArrayList<String>());
+		glassPaneMeta.setLore(new ArrayList<>());
 		glassPane.setItemMeta(glassPaneMeta);
 	}
 	
@@ -50,8 +50,9 @@ public class PlayMenu implements Listener {
 		
 		Inventory inv = Bukkit.createInventory(null, 27, "Play");
 		
-		for (int i = 0; i < 12; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 0; i < 12; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		ItemStack FFA = new ItemStack(Material.IRON_SWORD);
 		ItemStack TDM = new ItemStack(Material.DIAMOND_SWORD);
@@ -77,13 +78,15 @@ public class PlayMenu implements Listener {
 		inv.setItem(13, TDM);
 		inv.setItem(14, tournament);
 		
-		for (int i = 15; i < 22; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 15; i < 22; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		inv.setItem(22, close);
 		
-		for (int i = 23; i < 27; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 23; i < 27; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		player.getBukkitPlayer().openInventory(inv);
 	}
@@ -93,16 +96,19 @@ public class PlayMenu implements Listener {
 		
 		Inventory inv = event.getClickedInventory();
 		
-		if (inv == null)
-			return;
+		if (inv == null) {
+            return;
+        }
 		
 		String title = inv.getTitle();
 		
-		if (title == null)
-			return;
+		if (title == null) {
+            return;
+        }
 		
-		if (!title.equals("Play"))
-			return;
+		if (!title.equals("Play")) {
+            return;
+        }
 		
 		event.setCancelled(true);
 
@@ -116,11 +122,13 @@ public class PlayMenu implements Listener {
 		
 		ItemStack is = event.getCurrentItem();
 		
-		if(is == null || is.getType() == Material.AIR)
-			return;
+		if(is == null || is.getType() == Material.AIR) {
+            return;
+        }
 		
-		if (!is.hasItemMeta())
-			return;
+		if (!is.hasItemMeta()) {
+            return;
+        }
 
 		String name = is.getItemMeta().getDisplayName();
 		
@@ -142,7 +150,8 @@ public class PlayMenu implements Listener {
 			} catch (GameException e) {
 				player.sendMessage(e.getMessage());
 			}
-		} else if (name.equals(ChatColor.RED + "Close"))
-			player.closeInventory();
+		} else if (name.equals(ChatColor.RED + "Close")) {
+            player.closeInventory();
+        }
 	}
 }

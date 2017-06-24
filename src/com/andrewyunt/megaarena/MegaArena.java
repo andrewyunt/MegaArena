@@ -187,13 +187,15 @@ public class MegaArena extends JavaPlugin {
 		signManager.loadSigns();
 		
 		// Create games for FFA and TDM arenas
-		for (Arena arena : arenaManager.getArenas())
-			if (arena.getType() != Arena.Type.DUEL && !arena.isTournament())
+		for (Arena arena : arenaManager.getArenas()) {
+			if (arena.getType() != Arena.Type.DUEL && !arena.isTournament()) {
 				try {
 					arena.setGame(gameManager.createGame(arena));
 				} catch (GameException e) {
 					getLogger().warning(e.getMessage());
 				}
+			}
+		}
 		
 		// Start next tournament countdown
 		runNextTournamentCountdown();
@@ -211,12 +213,13 @@ public class MegaArena extends JavaPlugin {
 	public void onDisable() {
 		
 		// Save players to the database
-		Set<GamePlayer> toSave = new HashSet<GamePlayer>();
+		Set<GamePlayer> toSave = new HashSet<>();
 
 		toSave.addAll(playerManager.getPlayers());
 		
-		for (GamePlayer gp : toSave)
+		for (GamePlayer gp : toSave) {
 			dataSource.savePlayer(gp);
+		}
 		
 		dataSource.disconnect();
 	}
@@ -304,24 +307,23 @@ public class MegaArena extends JavaPlugin {
 	public void runNextTournamentCountdown() {
 		
 		BukkitScheduler scheduler = getServer().getScheduler();
-		scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
-			@Override
-			public void run() {
-				
-				nextTournamentCountdownTime--;
-				
-				if (nextTournamentCountdownTime == 0)
-					for (Arena arena : arenaManager.getArenas())
-						if (arena.isTournament()) {
-							try {
-								arena.setGame(gameManager.createGame(arena));
-							} catch (GameException e) {
-								getLogger().warning(e.getMessage());
-							}
-							
-							break;
-						}
-			}
-		}, 0L, 20L);
+		scheduler.scheduleSyncRepeatingTask(this, () -> {
+
+            nextTournamentCountdownTime--;
+
+            if (nextTournamentCountdownTime == 0) {
+                for (Arena arena : arenaManager.getArenas()) {
+                    if (arena.isTournament()) {
+                        try {
+                            arena.setGame(gameManager.createGame(arena));
+                        } catch (GameException e) {
+                            getLogger().warning(e.getMessage());
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }, 0L, 20L);
 	}
 }

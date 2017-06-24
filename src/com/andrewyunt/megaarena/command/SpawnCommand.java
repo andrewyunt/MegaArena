@@ -55,11 +55,13 @@ public class SpawnCommand implements CommandExecutor {
 			e.printStackTrace();
 		}
 		
-		if (!gp.isInGame())
-			return false;
+		if (!gp.isInGame()) {
+            return false;
+        }
 		
-		if (gp.getGame().getArena().getType() == Arena.Type.DUEL)
-			return false;
+		if (gp.getGame().getArena().getType() == Arena.Type.DUEL) {
+            return false;
+        }
 		
 		player.setHealth(0D);
 		

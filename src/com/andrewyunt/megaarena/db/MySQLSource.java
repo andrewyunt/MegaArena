@@ -34,8 +34,6 @@ import java.util.UUID;
 
 public class MySQLSource extends DataSource {
 
-	private String ip, database, user, pass;
-	private int port;
 	private Connection connection;
 	private Statement statement;
 
@@ -44,15 +42,16 @@ public class MySQLSource extends DataSource {
 
 		FileConfiguration config = MegaArena.getInstance().getConfig();
 
-		ip = config.getString("database-ip");
-		port = config.getInt("database-port");
-		database = config.getString("database-name");
-		user = config.getString("database-user");
-		pass = config.getString("database-pass");
+		String ip = config.getString("database-ip");
+		int port = config.getInt("database-port");
+		String database = config.getString("database-name");
+		String user = config.getString("database-user");
+		String pass = config.getString("database-pass");
 
 		try {
-			if (connection != null && !connection.isClosed() && statement != null)
-				return true;
+			if (connection != null && !connection.isClosed() && statement != null) {
+                return true;
+            }
 
 			synchronized (this) {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -87,8 +86,9 @@ public class MySQLSource extends DataSource {
 	@Override
 	public void savePlayer(GamePlayer player) {
 
-		if (!player.isLoaded())
-			return;
+		if (!player.isLoaded()) {
+            return;
+        }
 
 		String uuid = MegaArena.getInstance().getServer().getOfflinePlayer(player.getName()).getUniqueId().toString();
 
@@ -152,8 +152,9 @@ public class MySQLSource extends DataSource {
 				while (resultSet.next()) {
 					String classStr = resultSet.getString("class");
 
-					if (!classStr.equals("none"))
-						player.setClassType(com.andrewyunt.megaarena.objects.Class.valueOf(classStr));
+					if (!classStr.equals("none")) {
+                        player.setClassType(com.andrewyunt.megaarena.objects.Class.valueOf(classStr));
+                    }
 
 					player.setAcceptingDuels(resultSet.getInt("accepting_duels") == 1);
 					player.setBloodEffect(resultSet.getInt("blood_particles") == 1);
@@ -226,7 +227,7 @@ public class MySQLSource extends DataSource {
 	@Override
 	public Map<Integer, Map.Entry<OfflinePlayer, Integer>> getMostKills() {
 
-		Map<Integer, Map.Entry<OfflinePlayer, Integer>> mostKills = new HashMap<Integer, Map.Entry<OfflinePlayer, Integer>>();
+		Map<Integer, Map.Entry<OfflinePlayer, Integer>> mostKills = new HashMap<>();
 
 		ResultSet resultSet = null;
 
@@ -243,7 +244,7 @@ public class MySQLSource extends DataSource {
 				OfflinePlayer op = Bukkit.getServer().getOfflinePlayer(UUID.fromString(resultSet.getString("uuid")));
 
 				mostKills.put(place,
-						new AbstractMap.SimpleEntry<OfflinePlayer, Integer>(op, resultSet.getInt("kills")));
+						new AbstractMap.SimpleEntry<>(op, resultSet.getInt("kills")));
 
 				place++;
 			}
@@ -269,8 +270,9 @@ public class MySQLSource extends DataSource {
 		}
 
 		try {
-			while (resultSet.next())
-				return resultSet.getInt("level");
+			while (resultSet.next()) {
+                return resultSet.getInt("level");
+            }
 		} catch (SQLException e) {
 			e.printStackTrace();
 			MegaArena.getInstance().getLogger().severe(String.format(

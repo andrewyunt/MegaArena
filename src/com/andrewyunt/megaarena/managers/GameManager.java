@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  */
 public class GameManager {
 
-	public final Set<Game> games = new HashSet<Game>();
+	public final Set<Game> games = new HashSet<>();
 
 	/**
 	 * Creates an empty game in the specified arena and adds it to the games set.
@@ -46,21 +46,25 @@ public class GameManager {
 	 */
 	public Game createGame(Arena arena) throws GameException {
 		
-		if (arena == null)
-			throw new GameException("The specified arena cannot be null.");
+		if (arena == null) {
+            throw new GameException("The specified arena cannot be null.");
+        }
 
-		if (arena.getType() == Arena.Type.DUEL)
-			if (arena.getSpawns().size() < 2)
-				throw new GameException(ChatColor.GREEN + String.format(
-						"The match for the arena %s was not able to start because the minimum number"
-								+ " of Solo spawns were not defined.",
-						ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
-			else if (arena.getType() == Arena.Type.TDM)
-				if (arena.getSpawns(GameSide.Type.GREEN).size() < 1 || arena.getSpawns(GameSide.Type.BLUE).size() < 1)
-					throw new GameException(ChatColor.GREEN + String.format(
-							"The TDM match for the arena %s was not able to start because the"
-									+ " minimum number of spawns for each team were not defined.",
-							ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+		if (arena.getType() == Arena.Type.DUEL) {
+            if (arena.getSpawns().size() < 2) {
+                throw new GameException(ChatColor.GREEN + String.format(
+                        "The match for the arena %s was not able to start because the minimum number"
+                                + " of Solo spawns were not defined.",
+                        ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+            } else if (arena.getType() == Arena.Type.TDM) {
+                if (arena.getSpawns(GameSide.Type.GREEN).size() < 1 || arena.getSpawns(GameSide.Type.BLUE).size() < 1) {
+                    throw new GameException(ChatColor.GREEN + String.format(
+                            "The TDM match for the arena %s was not able to start because the"
+                                    + " minimum number of spawns for each team were not defined.",
+                            ChatColor.AQUA + arena.getName() + ChatColor.GREEN));
+                }
+            }
+        }
 
 		Game game = new Game(arena);
 
@@ -81,8 +85,9 @@ public class GameManager {
 	 */
 	public void deleteGame(Game game, String msg) {
 
-		for (GamePlayer player : game.getPlayers())
-			player.getBukkitPlayer().sendMessage(msg);
+		for (GamePlayer player : game.getPlayers()) {
+            player.getBukkitPlayer().sendMessage(msg);
+        }
 		
 		games.remove(game);
 		game.end();
@@ -111,12 +116,13 @@ public class GameManager {
 	 */
 	public Set<Game> getGames(Arena.Type type, boolean tournament) {
 
-		if (!tournament)
-			return this.games.stream().filter(game -> game.getArena().getType() == type)
-					.collect(Collectors.toSet());
-		else
-			return this.games.stream().filter(game -> game.getArena().isTournament() == tournament)
-					.collect(Collectors.toSet());
+		if (!tournament) {
+            return this.games.stream().filter(game -> game.getArena().getType() == type)
+                    .collect(Collectors.toSet());
+        } else {
+            return this.games.stream().filter(game -> game.getArena().isTournament() == tournament)
+                    .collect(Collectors.toSet());
+        }
 	}
 	
 	/**
@@ -135,8 +141,9 @@ public class GameManager {
 	 */
 	public void matchMake(GamePlayer player, Arena.Type type, boolean tournament) throws GameException {
 		
-		if (type == Arena.Type.DUEL)
-			throw new GameException("Matchmaking is not available for duels.");
+		if (type == Arena.Type.DUEL) {
+            throw new GameException("Matchmaking is not available for duels.");
+        }
 		
 		Player bp = player.getBukkitPlayer();
 		
@@ -150,7 +157,7 @@ public class GameManager {
 			return;
 		}
 		
-		List<Game> games = new ArrayList<Game>(getGames(type, tournament));
+		List<Game> games = new ArrayList<>(getGames(type, tournament));
 		
 		if (games.size() < 1) {
 			bp.sendMessage(String.format(ChatColor.RED + "There aren't any active %s at the moment.",

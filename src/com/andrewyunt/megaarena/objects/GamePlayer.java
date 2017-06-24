@@ -52,11 +52,11 @@ import com.andrewyunt.megaarena.utilities.Utils;
 public class GamePlayer {
 
 	private final String name;
-	private final Set<GamePlayer> assistPlayers = new HashSet<GamePlayer>();
-	private final List<GamePlayer> requestingPlayers = new ArrayList<GamePlayer>();
-	private final List<GamePlayer> skullHitPlayers = new ArrayList<GamePlayer>();
-	private final Map<Upgradable, Integer> upgradeLevels = new HashMap<Upgradable, Integer>();
-	private final Map<Integer, ItemStack> hotbarItems = new HashMap<Integer, ItemStack>();
+	private final Set<GamePlayer> assistPlayers = new HashSet<>();
+	private final List<GamePlayer> requestingPlayers = new ArrayList<>();
+	private final List<GamePlayer> skullHitPlayers = new ArrayList<>();
+	private final Map<Upgradable, Integer> upgradeLevels = new HashMap<>();
+	private final Map<Integer, ItemStack> hotbarItems = new HashMap<>();
 
 	private Game game;
 	private Class classType;
@@ -98,16 +98,14 @@ public class GamePlayer {
 		// Repeating task to remove withering
 		OfflinePlayer op = Bukkit.getServer().getOfflinePlayer(name);
 
-		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
+		scheduler.scheduleSyncRepeatingTask(MegaArena.getInstance(), () -> {
 
-				if (!op.isOnline())
-					return;
+            if (!op.isOnline()) {
+return;
+}
 
-				getBukkitPlayer().removePotionEffect(PotionEffectType.WITHER);
-			}
-		}, 0L, 20L);
+            getBukkitPlayer().removePotionEffect(PotionEffectType.WITHER);
+        }, 0L, 20L);
 
 		// Set up scoreboard
 		String title = ChatColor.AQUA + "" + ChatColor.BOLD + "MegaArena";
@@ -157,8 +155,9 @@ public class GamePlayer {
 
 		int size = requestingPlayers.size();
 
-		if (size < 1)
-			return null;
+		if (size < 1) {
+            return null;
+        }
 
 		return requestingPlayers.get(size - 1);
 	}
@@ -220,8 +219,9 @@ public class GamePlayer {
 
 	public Arena getSelectedArena() throws ArenaException {
 
-		if (selectedArena == null)
-			throw new ArenaException("The player has not selected an arena");
+		if (selectedArena == null) {
+            throw new ArenaException("The player has not selected an arena");
+        }
 
 		return selectedArena;
 	}
@@ -282,8 +282,9 @@ public class GamePlayer {
 					MegaArena.getInstance().getNMSUtils().addGlow(play));
 		}
 		
-		for (Map.Entry<Integer, ItemStack> entry : hotbarItems.entrySet())
-			inv.setItem(entry.getKey(), entry.getValue());
+		for (Map.Entry<Integer, ItemStack> entry : hotbarItems.entrySet()) {
+            inv.setItem(entry.getKey(), entry.getValue());
+        }
 	}
 	
 	public GameSide getSide() {
@@ -312,24 +313,20 @@ public class GamePlayer {
 		Location loc = spawn.getLocation().clone();
 		Chunk chunk = loc.getChunk();
 
-		if (!chunk.isLoaded())
-			chunk.load();
+		if (!chunk.isLoaded()) {
+            chunk.load();
+        }
 
 		loc.setY(loc.getY() + 1);
 
 		bp.teleport(loc, TeleportCause.COMMAND);
 		
-		if (game.getArena().getType() == Arena.Type.DUEL)
-			return;
+		if (game.getArena().getType() == Arena.Type.DUEL) {
+            return;
+        }
 
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-
-				hasFallen = true;
-			}
-		}, 100L);
+		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> hasFallen = true, 100L);
 	}
 
 	public void addEnergy(int energy) {
@@ -346,19 +343,22 @@ public class GamePlayer {
 
 		this.energy = energy;
 
-		if (this.energy > 100)
-			this.energy = 100;
-		else
-			sentActivate = false;
+		if (this.energy > 100) {
+            this.energy = 100;
+        } else {
+            sentActivate = false;
+        }
 
-		if (this.energy == 100)
-			if (!sentActivate) {
-				sentActivate = true;
-				if (classType == Class.SKELETON)
-					getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.left-click-bow-ability"));
-				else
-					getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.right-click-sword-ability"));
-			}
+		if (this.energy == 100) {
+            if (!sentActivate) {
+                sentActivate = true;
+                if (classType == Class.SKELETON) {
+                    getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.left-click-bow-ability"));
+                } else {
+                    getBukkitPlayer().sendMessage(Utils.getFormattedMessage("messages.right-click-sword-ability"));
+                }
+            }
+        }
 
 		getBukkitPlayer().setLevel(this.energy);
 		getBukkitPlayer().setExp(this.energy / 100.0F);
@@ -553,16 +553,18 @@ public class GamePlayer {
 
 	public void setClassLevel(Upgradable upgradable, int level) {
 
-		if (upgradeLevels.containsKey(upgradable))
-			upgradeLevels.remove(upgradable);
+		if (upgradeLevels.containsKey(upgradable)) {
+            upgradeLevels.remove(upgradable);
+        }
 
 		upgradeLevels.put(upgradable, level);
 	}
 
 	public int getLevel(Upgradable upgradable) {
 
-		if (upgradeLevels.containsKey(upgradable))
-			return upgradeLevels.get(upgradable);
+		if (upgradeLevels.containsKey(upgradable)) {
+            return upgradeLevels.get(upgradable);
+        }
 
 		return 1;
 	}
@@ -574,30 +576,35 @@ public class GamePlayer {
 
 	public void kill() {
 
-		if (lastDamager == null)
-			return;
+		if (lastDamager == null) {
+            return;
+        }
 
-		if (lastDamager.getName().equals(name))
-			return;
+		if (lastDamager.getName().equals(name)) {
+            return;
+        }
 
-		if (!(lastDamager.isInGame()))
-			return;
+		if (!(lastDamager.isInGame())) {
+            return;
+        }
 
 		lastDamager.addKill();
 
 		Game game = lastDamager.getGame();
 
-		if (game.getArena().getType() == Arena.Type.DUEL)
-			return;
+		if (game.getArena().getType() == Arena.Type.DUEL) {
+            return;
+        }
 
 		Player killerBP = lastDamager.getBukkitPlayer();
 		Damageable kLD = ((Damageable) killerBP);
 		double previousHealth = kLD.getHealth();
 
-		if (previousHealth + 4 > kLD.getMaxHealth())
-			kLD.setHealth(kLD.getMaxHealth());
-		else
-			kLD.setHealth(kLD.getHealth() + 4);
+		if (previousHealth + 4 > kLD.getMaxHealth()) {
+            kLD.setHealth(kLD.getMaxHealth());
+        } else {
+            kLD.setHealth(kLD.getHealth() + 4);
+        }
 
 		killerBP.sendMessage(String.format(
 				Utils.getFormattedMessage("messages.hearts-restored-kill"),
@@ -605,11 +612,13 @@ public class GamePlayer {
 
 		int killCoins = MegaArena.getInstance().getConfig().getInt("kill-coins");
 
-		if (killerBP.hasPermission("megaarena.coins.double"))
-			killCoins = 24;
+		if (killerBP.hasPermission("megaarena.coins.double")) {
+            killCoins = 24;
+        }
 
-		if (killerBP.hasPermission("megaarena.coins.triple"))
-			killCoins = 36;
+		if (killerBP.hasPermission("megaarena.coins.triple")) {
+            killCoins = 36;
+        }
 
 		lastDamager.addCoins(killCoins);
 		killerBP.sendMessage(String.format(
@@ -620,10 +629,11 @@ public class GamePlayer {
 		if (lastDamager.getKillStreak() > 1) {
 			int killStreakCoins = lastDamager.getKillStreak();
 
-			if (killerBP.hasPermission("megaarena.coins.triple"))
-				killStreakCoins = killStreakCoins * 3;
-			else if (killerBP.hasPermission("megaarena.coins.double"))
-				killStreakCoins = killStreakCoins * 2;
+			if (killerBP.hasPermission("megaarena.coins.triple")) {
+                killStreakCoins = killStreakCoins * 3;
+            } else if (killerBP.hasPermission("megaarena.coins.double")) {
+                killStreakCoins = killStreakCoins * 2;
+            }
 
 			lastDamager.addCoins(killStreakCoins);
 			killerBP.sendMessage(String.format(
@@ -633,20 +643,24 @@ public class GamePlayer {
 		}
 
 		for (GamePlayer assistGP : assistPlayers) {
-			if (assistGP.getName().equals(lastDamager.getName()))
-				continue;
+			if (assistGP.getName().equals(lastDamager.getName())) {
+                continue;
+            }
 
-			if (!assistGP.isInGame())
-				continue;
+			if (!assistGP.isInGame()) {
+                continue;
+            }
 
 			Player assistPlayer = assistGP.getBukkitPlayer();
 			int assistCoins = MegaArena.getInstance().getConfig().getInt("assist-coins");
 
-			if (assistPlayer.hasPermission("megaarena.coins.double"))
-				assistCoins = 12;
+			if (assistPlayer.hasPermission("megaarena.coins.double")) {
+                assistCoins = 12;
+            }
 
-			if (assistPlayer.hasPermission("megaarena.coins.triple"))
-				assistCoins = 18;
+			if (assistPlayer.hasPermission("megaarena.coins.triple")) {
+                assistCoins = 18;
+            }
 
 			assistGP.addCoins(assistCoins);
 			assistPlayer
@@ -705,21 +719,20 @@ public class GamePlayer {
 		
 		if (spectating) {
 			BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
-			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					player.setAllowFlight(true);
-					player.setFireTicks(0);
-					
-					for (GamePlayer toShow : MegaArena.getInstance().getPlayerManager().getSpectatingPlayers())
-						player.showPlayer(toShow.getBukkitPlayer());
-					
-					for (GamePlayer toHide : MegaArena.getInstance().getPlayerManager().getInGamePlayers())
-						toHide.getBukkitPlayer().hidePlayer(player);
-					
-					updateScoreboard();
-				}
-			}, 5L);
+			scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> {
+                player.setAllowFlight(true);
+                player.setFireTicks(0);
+
+                for (GamePlayer toShow : MegaArena.getInstance().getPlayerManager().getSpectatingPlayers()) {
+player.showPlayer(toShow.getBukkitPlayer());
+}
+
+                for (GamePlayer toHide : MegaArena.getInstance().getPlayerManager().getInGamePlayers()) {
+toHide.getBukkitPlayer().hidePlayer(player);
+}
+
+                updateScoreboard();
+            }, 5L);
 		} else {
 			player.setAllowFlight(false);
 			

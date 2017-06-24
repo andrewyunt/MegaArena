@@ -48,7 +48,7 @@ public class ClassSelectorMenu implements Listener {
 		
 		ItemMeta glassPaneMeta = glassPane.getItemMeta();
 		glassPaneMeta.setDisplayName(" ");
-		glassPaneMeta.setLore(new ArrayList<String>());
+		glassPaneMeta.setLore(new ArrayList<>());
 		glassPane.setItemMeta(glassPaneMeta);
 	}
 
@@ -72,20 +72,23 @@ public class ClassSelectorMenu implements Listener {
 		heroClasses.setItemMeta(heroClassesMeta);
 		close.setItemMeta(closeMeta);
 		
-		for (int i = 0; i < 12; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 0; i < 12; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		inv.setItem(12, normalClasses);
 		inv.setItem(13, glassPane);
 		inv.setItem(14, MegaArena.getInstance().getNMSUtils().addGlow(heroClasses));
 
-		for (int i = 15; i < 22; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 15; i < 22; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		inv.setItem(22, close);
 
-		for (int i = 23; i < 27; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 23; i < 27; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		player.getBukkitPlayer().openInventory(inv);
 	}
@@ -118,8 +121,9 @@ public class ClassSelectorMenu implements Listener {
 		herobrine.setItemMeta(herobrineMeta);
 		goBack.setItemMeta(goBackMeta);
 		
-		for (int i = 0; i < 11; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 0; i < 11; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		inv.setItem(11, zombie);
 		inv.setItem(12, skeleton);
@@ -127,13 +131,15 @@ public class ClassSelectorMenu implements Listener {
 		inv.setItem(14, creeper);
 		inv.setItem(15, herobrine);
 
-		for (int i = 16; i < 22; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 16; i < 22; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		inv.setItem(22, goBack);
 
-		for (int i = 23; i < 27; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 23; i < 27; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		player.getBukkitPlayer().openInventory(inv);
 	}
@@ -158,20 +164,23 @@ public class ClassSelectorMenu implements Listener {
 		spiritWarrior.setItemMeta(spiritWarriorMeta);
 		witherMinion.setItemMeta(witherMinionMeta);
 
-		for (int i = 0; i < 12; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 0; i < 12; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		inv.setItem(12, witherMinion);
 		inv.setItem(13, glassPane);
 		inv.setItem(14, spiritWarrior);
 
-		for (int i = 15; i < 22; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 15; i < 22; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		inv.setItem(22, goBack);
 
-		for (int i = 23; i < 27; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 23; i < 27; i++) {
+            inv.setItem(i, glassPane);
+        }
 
 		player.getBukkitPlayer().openInventory(inv);
 	}
@@ -181,16 +190,19 @@ public class ClassSelectorMenu implements Listener {
 		
 		Inventory inv = event.getClickedInventory();
 		
-		if (inv == null)
-			return;
+		if (inv == null) {
+            return;
+        }
 		
 		String title = inv.getTitle();
 		
-		if (title == null)
-			return;
+		if (title == null) {
+            return;
+        }
 		
-		if (!title.contains("Class"))
-			return;
+		if (!title.contains("Class")) {
+            return;
+        }
 		
 		event.setCancelled(true);
 
@@ -204,18 +216,21 @@ public class ClassSelectorMenu implements Listener {
 		
 		ItemStack is = event.getCurrentItem();
 		
-		if(is == null || is.getType() == Material.AIR)
-			return;
+		if(is == null || is.getType() == Material.AIR) {
+            return;
+        }
 		
-		if (!is.hasItemMeta())
-			return;
+		if (!is.hasItemMeta()) {
+            return;
+        }
 
 		String name = is.getItemMeta().getDisplayName();
 
 		if (title.equals("Normal Classes") || title.equals("Hero Classes")) {
 			
-			if (name == null || Objects.equals(name, " "))
-				return;
+			if (name == null || Objects.equals(name, " ")) {
+                return;
+            }
 
 			if (name.equals("Go Back")) {
 				openMainMenu(gp);

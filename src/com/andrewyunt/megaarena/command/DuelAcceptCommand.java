@@ -56,8 +56,9 @@ public class DuelAcceptCommand implements CommandExecutor {
 		} catch (PlayerException e) {
 		}
 		
-		if (!(player.hasRequestingPlayer()))
-			return false;
+		if (!(player.hasRequestingPlayer())) {
+            return false;
+        }
 		
 		if (player.isInGame()) {
 			sender.sendMessage(Utils.getFormattedMessage("messages.in-game-cannot-accept-duel-request"));
@@ -103,12 +104,14 @@ public class DuelAcceptCommand implements CommandExecutor {
 		Arena arena = null;
 		
 		for (Arena duelArena : MegaArena.getInstance().getArenaManager().getArenas(Arena.Type.DUEL)) {
-			if (duelArena.isEdit())
-				continue;
+			if (duelArena.isEdit()) {
+                continue;
+            }
 			
 			if (!duelArena.isInUse()) {
-				if (duelArena.getSpawns().size() < 2)
-					continue;
+				if (duelArena.getSpawns().size() < 2) {
+                    continue;
+                }
 				arena = duelArena;
 				break;
 			}

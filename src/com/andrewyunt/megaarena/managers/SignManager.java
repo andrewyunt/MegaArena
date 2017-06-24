@@ -29,12 +29,13 @@ import java.util.Set;
 
 public class SignManager {
 	
-	public final Set<SignDisplay> signs = new HashSet<SignDisplay>();
+	public final Set<SignDisplay> signs = new HashSet<>();
 
 	public SignDisplay createSign(Location loc, int place, long updateInterval) throws SignException {
 		
-		if (place == 0 || loc == null || updateInterval < 1)
-			throw new SignException();
+		if (place == 0 || loc == null || updateInterval < 1) {
+            throw new SignException();
+        }
 		
 		SignDisplay sign = new SignDisplay(
 				Utils.getHighestEntry(MegaArena.getInstance().getSignConfig().getConfig()
@@ -47,8 +48,9 @@ public class SignManager {
 	
 	public void deleteSign(SignDisplay sign) throws SignException {
 
-		if (sign == null)
-			throw new SignException();
+		if (sign == null) {
+            throw new SignException();
+        }
 
 		signs.remove(sign);
 		
@@ -81,10 +83,13 @@ public class SignManager {
 	 */
 	public SignDisplay getSign(Location loc) throws SignException {
 		
-		for (SignDisplay signDisplay : signs)
-			if (signDisplay.getBukkitSign() != null)
-				if (loc == signDisplay.getBukkitSign().getLocation())
-					return signDisplay;
+		for (SignDisplay signDisplay : signs) {
+            if (signDisplay.getBukkitSign() != null) {
+                if (loc == signDisplay.getBukkitSign().getLocation()) {
+                    return signDisplay;
+                }
+            }
+        }
 			
 		throw new SignException("The specified sign does not exist.");
 	}
@@ -107,19 +112,22 @@ public class SignManager {
 
 		signs.clear(); // Clear the current signs list
 
-		if (!MegaArena.getInstance().getSignConfig().getConfig().contains("signs"))
-			return;
+		if (!MegaArena.getInstance().getSignConfig().getConfig().contains("signs")) {
+            return;
+        }
 
 		ConfigurationSection signs = MegaArena.getInstance().getSignConfig().getConfig()
 				.getConfigurationSection("signs");
 		
-		if (signs == null)
-			return;
+		if (signs == null) {
+            return;
+        }
 
 		Map<String, Object> cfgValues = signs.getValues(false);
 		
-		for (String name : cfgValues.keySet())
-			loadSign(signs.getConfigurationSection(name));
+		for (String name : cfgValues.keySet()) {
+            loadSign(signs.getConfigurationSection(name));
+        }
 	}
 
 	/**
@@ -136,8 +144,9 @@ public class SignManager {
 
 		Location loc = Utils.deserializeLocation(section.getConfigurationSection("location"));
 		
-		if (signExists(loc))
-			signs.remove(loc);
+		if (signExists(loc)) {
+            signs.remove(loc);
+        }
 
 		signs.add(sign);
 

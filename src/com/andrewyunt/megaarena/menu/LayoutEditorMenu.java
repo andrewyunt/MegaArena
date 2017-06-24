@@ -43,15 +43,14 @@ import java.util.ArrayList;
  * @author Andrew Yunt
  */
 public class LayoutEditorMenu implements Listener {
-	
-	private Inventory inv;
+
 	private final ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
 
 	public LayoutEditorMenu() {
 		
 		ItemMeta glassPaneMeta = glassPane.getItemMeta();
 		glassPaneMeta.setDisplayName(" ");
-		glassPaneMeta.setLore(new ArrayList<String>());
+		glassPaneMeta.setLore(new ArrayList<>());
 		glassPane.setItemMeta(glassPaneMeta);
 	}
 	
@@ -59,14 +58,15 @@ public class LayoutEditorMenu implements Listener {
 		
 		BukkitScheduler scheduler = MegaArena.getInstance().getServer().getScheduler();
 		scheduler.scheduleSyncDelayedTask(MegaArena.getInstance(), () -> player.getBukkitPlayer().getInventory().clear(), 6L);
-		
-		inv = Bukkit.createInventory(null, 45, "Layout Editor - " + classType.getName());
+
+		Inventory inv = Bukkit.createInventory(null, 45, "Layout Editor - " + classType.getName());
 		
 		ItemStack[] contents = Utils.toChest(classType.getKitInventoryItems(player, loadFromDB)).getContents();
 		inv.setContents(contents);
 		
-		for (int i = 36; i < 40; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 36; i < 40; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		ItemStack goBack = new ItemStack(Material.ARROW);
 		ItemMeta goBackMeta = goBack.getItemMeta();
@@ -80,8 +80,9 @@ public class LayoutEditorMenu implements Listener {
 		reset.setItemMeta(resetMeta);
 		inv.setItem(41, reset);
 		
-		for (int i = 42; i < 45; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 42; i < 45; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		player.getBukkitPlayer().openInventory(inv);
 	}
@@ -89,8 +90,9 @@ public class LayoutEditorMenu implements Listener {
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onMoveItemBetweenInventory(InventoryClickEvent event){
 		
-		if (!event.getInventory().getTitle().startsWith("Layout Editor"))
-			return;
+		if (!event.getInventory().getTitle().startsWith("Layout Editor")) {
+            return;
+        }
 		
 		Inventory clickedInventory = event.getClickedInventory();
 		
@@ -120,16 +122,19 @@ public class LayoutEditorMenu implements Listener {
 					for (ItemStack hotbarItem : gp.getHotbarItems().values()) {
 						ItemMeta hotbarMeta = hotbarItem.getItemMeta();
 						
-						if (hotbarMeta == null)
-							continue;
+						if (hotbarMeta == null) {
+                            continue;
+                        }
 						
 						ItemStack targetItem = clickedInventory.getItem(event.getSlot());
 						
-						if (targetItem == null)
-							continue;
+						if (targetItem == null) {
+                            continue;
+                        }
 						
-						if (!targetItem.getItemMeta().getDisplayName().equals(hotbarMeta.getDisplayName()))
-							continue;
+						if (!targetItem.getItemMeta().getDisplayName().equals(hotbarMeta.getDisplayName())) {
+                            continue;
+                        }
 						
 						clickedInventory.setItem(event.getSlot(), new ItemStack(Material.AIR));
 						MegaArena.getInstance().getPlayerManager().getPlayer(event.getWhoClicked()
@@ -148,16 +153,19 @@ public class LayoutEditorMenu implements Listener {
 		
 		String title = event.getInventory().getTitle();
 		
-		if (!title.startsWith("Layout Editor"))
-			return;
+		if (!title.startsWith("Layout Editor")) {
+            return;
+        }
 		
 		ItemStack is = event.getCurrentItem();
 		
-		if (is == null || is.getType() == Material.AIR)
-			return;
+		if (is == null || is.getType() == Material.AIR) {
+            return;
+        }
 		
-		if (!is.hasItemMeta())
-			return;
+		if (!is.hasItemMeta()) {
+            return;
+        }
 		
 		Player player = (Player) event.getWhoClicked();
 		GamePlayer gp = null;
@@ -178,8 +186,9 @@ public class LayoutEditorMenu implements Listener {
 		}
 		
 		if (name.equals(ChatColor.RESET + "" + ChatColor.DARK_RED + "Health Potion")
-				|| name.equals(ChatColor.RESET + "" + ChatColor.AQUA + "Speed Potion"))
-			return;
+				|| name.equals(ChatColor.RESET + "" + ChatColor.AQUA + "Speed Potion")) {
+            return;
+        }
 		
 		if (name.equals(" ")) {
 			event.setCancelled(true);
@@ -232,8 +241,9 @@ public class LayoutEditorMenu implements Listener {
 		Inventory inv = event.getInventory();
 		String title = inv.getTitle();
 		
-		if (!title.startsWith("Layout Editor -"))
-			return;
+		if (!title.startsWith("Layout Editor -")) {
+            return;
+        }
 		
 		Class classType = Class.valueOf(title.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
 		

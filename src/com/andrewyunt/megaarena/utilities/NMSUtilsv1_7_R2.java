@@ -36,8 +36,9 @@ public class NMSUtilsv1_7_R2 extends NMSUtils {
 			nmsStack.setTag(tag);
 		}
 		
-		if (tag == null)
-			tag = nmsStack.getTag();
+		if (tag == null) {
+            tag = nmsStack.getTag();
+        }
 		
 		NBTTagList ench = new NBTTagList();
 		tag.set("ench", ench);

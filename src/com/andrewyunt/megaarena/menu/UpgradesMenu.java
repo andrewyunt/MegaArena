@@ -48,20 +48,19 @@ import com.andrewyunt.megaarena.utilities.Utils;
  */
 public class UpgradesMenu implements Listener {
 
-	private Inventory inv;
-	private final ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+    private final ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
 
 	public UpgradesMenu() {
 		
 		ItemMeta glassPaneMeta = glassPane.getItemMeta();
 		glassPaneMeta.setDisplayName(" ");
-		glassPaneMeta.setLore(new ArrayList<String>());
+		glassPaneMeta.setLore(new ArrayList<>());
 		glassPane.setItemMeta(glassPaneMeta);
 	}
 
 	public void openClassUpgradeMenu(GamePlayer player, Class classType) {
-		
-		inv = Bukkit.createInventory(null, 45, "Class Upgrades - " + classType.getName());
+
+        Inventory inv = Bukkit.createInventory(null, 45, "Class Upgrades - " + classType.getName());
 
 		Ability ability = classType.getAbility();
 		Skill skillOne = classType.getSkillOne();
@@ -122,7 +121,7 @@ public class UpgradesMenu implements Listener {
 				
 				if (section.contains("title") && section.contains("description")) {
 					name = section.getString("title");
-					lore = new ArrayList<String>(Arrays.asList(section.getString("description").split("\\r?\\n")));
+					lore = new ArrayList<>(Arrays.asList(section.getString("description").split("\\r?\\n")));
 				}
 				
 				lore.add("");
@@ -181,14 +180,16 @@ public class UpgradesMenu implements Listener {
 		goBack.setItemMeta(goBackMeta);
 		layoutEditor.setItemMeta(layoutEditorMeta);
 		
-		for (int i = 36; i < 40; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 36; i < 40; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		inv.setItem(40, goBack);
 		inv.setItem(41,layoutEditor);
 		
-		for (int i = 42; i < 45; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 42; i < 45; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		player.getBukkitPlayer().openInventory(inv);
 	}
@@ -196,24 +197,29 @@ public class UpgradesMenu implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 
-		if (event.getClickedInventory() == null)
-			return;
+		if (event.getClickedInventory() == null) {
+            return;
+        }
 		
 		String title = event.getClickedInventory().getTitle();
 		
-		if (title == null)
-			return;
+		if (title == null) {
+            return;
+        }
 		
-		if (!title.startsWith("Class Upgrades"))
-			return;
+		if (!title.startsWith("Class Upgrades")) {
+            return;
+        }
 		
 		ItemStack is = event.getCurrentItem();
 		
-		if(is == null || is.getType() == Material.AIR)
-			return;
+		if(is == null || is.getType() == Material.AIR) {
+            return;
+        }
 		
-		if (!is.hasItemMeta())
-			return;
+		if (!is.hasItemMeta()) {
+            return;
+        }
 		
 		event.setCancelled(true);
 		
@@ -227,19 +233,21 @@ public class UpgradesMenu implements Listener {
 		
 		Class classType = Class.valueOf(title.split("\\-", -1)[1].toUpperCase().substring(1).replace(' ', '_'));
 		
-		if (is.getType() == Material.CHEST)
-			MegaArena.getInstance().getLayoutEditorMenu().open(gp, classType, true);
-		else if (is.getType() == Material.ARROW) {
-			if (classType.isHero())
-				MegaArena.getInstance().getShopMenu().openHeroClasses(gp);
-			else
-				MegaArena.getInstance().getShopMenu().openNormalClasses(gp);
+		if (is.getType() == Material.CHEST) {
+            MegaArena.getInstance().getLayoutEditorMenu().open(gp, classType, true);
+        } else if (is.getType() == Material.ARROW) {
+			if (classType.isHero()) {
+                MegaArena.getInstance().getShopMenu().openHeroClasses(gp);
+            } else {
+                MegaArena.getInstance().getShopMenu().openNormalClasses(gp);
+            }
 			
 			return;
 		}
 		
-		if (is.getType() != Material.STAINED_CLAY)
-			return;
+		if (is.getType() != Material.STAINED_CLAY) {
+            return;
+        }
 		
 		if (is.getDurability() == 14) {
 			player.sendMessage(Utils.getFormattedMessage("messages.unlock-preceding-upgrades"));

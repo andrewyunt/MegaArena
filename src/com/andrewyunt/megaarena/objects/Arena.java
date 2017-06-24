@@ -45,7 +45,7 @@ public class Arena {
 		TDM
 	}
 	
-	private final Map<String, Spawn> spawns = new HashMap<String, Spawn>();
+	private final Map<String, Spawn> spawns = new HashMap<>();
 	private final Type type;
 	
 	private String name;
@@ -118,8 +118,9 @@ public class Arena {
 	
 	public Spawn getSpawn(String name) throws SpawnException {
 		
-		if (!spawns.containsKey(name))
-			throw new SpawnException(String.format("The spawn %s does not exist in the arena %s.", name, this.name));
+		if (!spawns.containsKey(name)) {
+            throw new SpawnException(String.format("The spawn %s does not exist in the arena %s.", name, this.name));
+        }
 		
 		return spawns.get(name);
 	}
@@ -131,13 +132,14 @@ public class Arena {
 	
 	public Collection<Spawn> getSpawns(GameSide.Type sideType) {
 		
-		Collection<Spawn> spawns = new HashSet<Spawn>();
+		Collection<Spawn> spawns = new HashSet<>();
 		
 		for (Map.Entry<String, Spawn> entry : this.spawns.entrySet()) {
 			Spawn spawn = entry.getValue();
 			
-			if (spawn.getSide() == sideType)
-				spawns.add(spawn);
+			if (spawn.getSide() == sideType) {
+                spawns.add(spawn);
+            }
 		}
 		
 		return spawns;
@@ -171,8 +173,9 @@ public class Arena {
 		arenaConfig.set("arenas." + name + ".type", type.toString());
 		arenaConfig.set("arenas." + name + ".tournament", tournament);
 		
-		if (tournament)
-			arenaConfig.createSection("arenas." + name + ".queue_location", Utils.serializeLocation(queueLocation));
+		if (tournament) {
+            arenaConfig.createSection("arenas." + name + ".queue_location", Utils.serializeLocation(queueLocation));
+        }
 		
 		ConfigurationSection spawnsSection = arenaConfig.createSection("arenas." + name + ".spawns");
 		
@@ -194,8 +197,9 @@ public class Arena {
 				section.getBoolean("tournament"));
 		
 		try {
-			if (arena.isTournament())
-				arena.queueLocation = Utils.deserializeLocation(section.getConfigurationSection("queue_location"));
+			if (arena.isTournament()) {
+                arena.queueLocation = Utils.deserializeLocation(section.getConfigurationSection("queue_location"));
+            }
 		} catch (NullPointerException e) {
 			MegaArena.getInstance().getLogger().warning(ChatColor.RED + "You have not yet set a"
 					+ " queue location for the arena " + arena.getName());

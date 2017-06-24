@@ -27,5 +27,5 @@ public interface Upgradable {
 	/**
 	 * @return The display name for the Upgradable.
 	 */
-	public String getName();
+	String getName();
 }

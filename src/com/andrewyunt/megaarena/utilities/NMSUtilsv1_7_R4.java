@@ -5,7 +5,6 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.NBTTagList;
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
@@ -36,8 +35,9 @@ public class NMSUtilsv1_7_R4 extends NMSUtils {
 			nmsStack.setTag(tag);
 		}
 		
-		if (tag == null)
+		if (tag == null) {
 			tag = nmsStack.getTag();
+		}
 		
 		NBTTagList ench = new NBTTagList();
 		tag.set("ench", ench);

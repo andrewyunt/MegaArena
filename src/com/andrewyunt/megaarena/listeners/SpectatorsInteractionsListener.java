@@ -142,8 +142,9 @@ public class SpectatorsInteractionsListener implements Listener {
 	public void onBlockBreak(final BlockBreakEvent ev) {
 		
 		try {
-			if (pm.getPlayer(ev.getPlayer()).isSpectating())
-				ev.setCancelled(true);
+			if (pm.getPlayer(ev.getPlayer()).isSpectating()) {
+                ev.setCancelled(true);
+            }
 		} catch (PlayerException e) {
 			e.printStackTrace();
 		}
@@ -165,11 +166,12 @@ public class SpectatorsInteractionsListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (damagerGP != null)
-			if (damagerGP.isSpectating()) {
-				event.setCancelled(true);
-				return;
-			}
+		if (damagerGP != null) {
+            if (damagerGP.isSpectating()) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 		
 		GamePlayer damagedGP = null;
 		
@@ -179,9 +181,11 @@ public class SpectatorsInteractionsListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (damagedGP != null)
-			if (damagedGP.isSpectating())
-				event.setCancelled(true);
+		if (damagedGP != null) {
+            if (damagedGP.isSpectating()) {
+                event.setCancelled(true);
+            }
+        }
 	}
 
 	/**
@@ -209,24 +213,18 @@ public class SpectatorsInteractionsListener implements Listener {
 						PlayerTeleportEvent.TeleportCause.PLUGIN);
 
 				// Prevents the arrow from bouncing on the entity
-				Bukkit.getScheduler().runTaskLater(MegaArena.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						ev.getDamager().teleport(initialProjectileLocation);
-						ev.getDamager().setVelocity(initialProjectileVelocity);
-					}
-				}, 1L);
+				Bukkit.getScheduler().runTaskLater(MegaArena.getInstance(), () -> {
+                    ev.getDamager().teleport(initialProjectileLocation);
+                    ev.getDamager().setVelocity(initialProjectileVelocity);
+                }, 1L);
 
 				// Teleports back the spectator
-				Bukkit.getScheduler().runTaskLater(MegaArena.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						spectatorInvolved.teleport(
-								initialSpectatorLocation.setDirection(spectatorInvolved.getLocation().getDirection()),
-								PlayerTeleportEvent.TeleportCause.PLUGIN);
-						spectatorInvolved.setFlying(wasFlying);
-					}
-				}, 5L);
+				Bukkit.getScheduler().runTaskLater(MegaArena.getInstance(), () -> {
+                    spectatorInvolved.teleport(
+                            initialSpectatorLocation.setDirection(spectatorInvolved.getLocation().getDirection()),
+                            PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    spectatorInvolved.setFlying(wasFlying);
+                }, 5L);
 			}
 		} catch (IllegalArgumentException | PlayerException e) {
 			e.printStackTrace();
@@ -241,14 +239,16 @@ public class SpectatorsInteractionsListener implements Listener {
 		
 		final ArrayList<UUID> spectatorsAffected = new ArrayList<>();
 
-		for (LivingEntity player : ev.getAffectedEntities())
-			try {
-				if (player instanceof Player && !player.hasMetadata("NPC")
-						&& pm.getPlayer(((Player) player)).isSpectating())
-					spectatorsAffected.add(player.getUniqueId());
-			} catch (PlayerException e) {
-				e.printStackTrace();
-			}
+		for (LivingEntity player : ev.getAffectedEntities()) {
+            try {
+                if (player instanceof Player && !player.hasMetadata("NPC")
+                        && pm.getPlayer(((Player) player)).isSpectating()) {
+                    spectatorsAffected.add(player.getUniqueId());
+                }
+            } catch (PlayerException e) {
+                e.printStackTrace();
+            }
+        }
 
 		/*
 		 * If there isn't any spectator affected, it's a splash on players only
@@ -272,15 +272,18 @@ public class SpectatorsInteractionsListener implements Listener {
 
 			Boolean teleportationNeeded = false;
 
-			for (Entity entity : ev.getEntity().getNearbyEntities(2, 2, 2))
-				try {
-					if (entity instanceof Player && !entity.hasMetadata("NPC")
-							&& pm.getPlayer(((Player) entity)).isSpectating())
-						// The potion hits a spectator
-						teleportationNeeded = true;
-				} catch (PlayerException e) {
-					e.printStackTrace();
-				}
+			for (Entity entity : ev.getEntity().getNearbyEntities(2, 2, 2)) {
+                try {
+                    if (entity instanceof Player && !entity.hasMetadata("NPC")
+                            && pm.getPlayer(((Player) entity)).isSpectating())
+                    // The potion hits a spectator
+                    {
+                        teleportationNeeded = true;
+                    }
+                } catch (PlayerException e) {
+                    e.printStackTrace();
+                }
+            }
 
 			final HashMap<UUID, Boolean> oldFlyMode = new HashMap<>();
 
@@ -304,49 +307,43 @@ public class SpectatorsInteractionsListener implements Listener {
 				final Vector initialProjectileVelocity = ev.getEntity().getVelocity();
 
 				// Prevents the potion from splashing on the entity
-				Bukkit.getServer().getScheduler().runTaskLater(MegaArena.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						/*
-						 *  Because the original entity is, one tick later,
-						 *  destroyed, we need to spawn a new one.
-						 *  Cancelling the event only cancels the effect.
-						 */
-						ThrownPotion clonedEntity = (ThrownPotion) ev.getEntity().getWorld()
-								.spawnEntity(initialProjectileLocation, ev.getEntity().getType());
+				Bukkit.getServer().getScheduler().runTaskLater(MegaArena.getInstance(), () -> {
+                    /*
+                     *  Because the original entity is, one tick later,
+                     *  destroyed, we need to spawn a new one.
+                     *  Cancelling the event only cancels the effect.
+                     */
+                    ThrownPotion clonedEntity = (ThrownPotion) ev.getEntity().getWorld()
+                            .spawnEntity(initialProjectileLocation, ev.getEntity().getType());
 
-						// For other plugins (may be used)
-						clonedEntity.setShooter(ev.getEntity().getShooter());
-						clonedEntity.setTicksLived(ev.getEntity().getTicksLived());
-						clonedEntity.setFallDistance(ev.getEntity().getFallDistance());
-						clonedEntity.setBounce(ev.getEntity().doesBounce());
-						if (ev.getEntity().getPassenger() != null) {
-							clonedEntity.setPassenger(ev.getEntity().getPassenger()); // hey, why not
-						}
+                    // For other plugins (may be used)
+                    clonedEntity.setShooter(ev.getEntity().getShooter());
+                    clonedEntity.setTicksLived(ev.getEntity().getTicksLived());
+                    clonedEntity.setFallDistance(ev.getEntity().getFallDistance());
+                    clonedEntity.setBounce(ev.getEntity().doesBounce());
+                    if (ev.getEntity().getPassenger() != null) {
+                        clonedEntity.setPassenger(ev.getEntity().getPassenger()); // hey, why not
+                    }
 
-						// Clones the effects
-						clonedEntity.setItem(ev.getEntity().getItem());
+                    // Clones the effects
+                    clonedEntity.setItem(ev.getEntity().getItem());
 
-						// Clones the speed/direction
-						clonedEntity.setVelocity(initialProjectileVelocity);
+                    // Clones the speed/direction
+                    clonedEntity.setVelocity(initialProjectileVelocity);
 
-						// Just in case
-						ev.getEntity().remove();
-					}
-				}, 1L);
+                    // Just in case
+                    ev.getEntity().remove();
+                }, 1L);
 
 				// Teleports back the spectators
-				Bukkit.getServer().getScheduler().runTaskLater(MegaArena.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						for (UUID spectatorUUID : spectatorsAffected) {
-							Player spectator = Bukkit.getServer().getPlayer(spectatorUUID);
+				Bukkit.getServer().getScheduler().runTaskLater(MegaArena.getInstance(), () -> {
+                    for (UUID spectatorUUID : spectatorsAffected) {
+                        Player spectator = Bukkit.getServer().getPlayer(spectatorUUID);
 
-							spectator.teleport(spectator.getLocation().add(0, -10, 0));
-							spectator.setFlying(oldFlyMode.get(spectatorUUID));
-						}
-					}
-				}, 5L);
+                        spectator.teleport(spectator.getLocation().add(0, -10, 0));
+                        spectator.setFlying(oldFlyMode.get(spectatorUUID));
+                    }
+                }, 5L);
 
 				/*
 				 * Cancels the effect for everyone (because the thrown potion is
@@ -374,8 +371,9 @@ public class SpectatorsInteractionsListener implements Listener {
 		// Check to make sure it isn't an NPC
 		try {
 			if (ev.getTarget() instanceof Player && !ev.getTarget().hasMetadata("NPC")
-					&& pm.getPlayer(((Player) ev.getTarget())).isSpectating())
-				ev.setCancelled(true);
+					&& pm.getPlayer(((Player) ev.getTarget())).isSpectating()) {
+                ev.setCancelled(true);
+            }
 		} catch (PlayerException e) {
 			e.printStackTrace();
 		}
@@ -407,8 +405,9 @@ public class SpectatorsInteractionsListener implements Listener {
 	public void onPlayerInteractEntity(final PlayerInteractEntityEvent ev) {
 		
 		try {
-			if (!ev.getPlayer().hasMetadata("NPC") && pm.getPlayer(ev.getPlayer()).isSpectating())
-				ev.setCancelled(true);
+			if (!ev.getPlayer().hasMetadata("NPC") && pm.getPlayer(ev.getPlayer()).isSpectating()) {
+                ev.setCancelled(true);
+            }
 		} catch (PlayerException e) {
 			e.printStackTrace();
 		}
@@ -422,8 +421,9 @@ public class SpectatorsInteractionsListener implements Listener {
 	public void onPlayerInteract(final PlayerInteractEvent ev) {
 		
 		try {
-			if (pm.getPlayer(ev.getPlayer()).isSpectating())
-				ev.setCancelled(true);
+			if (pm.getPlayer(ev.getPlayer()).isSpectating()) {
+                ev.setCancelled(true);
+            }
 		} catch (PlayerException e) {
 			e.printStackTrace();
 		}
@@ -437,8 +437,9 @@ public class SpectatorsInteractionsListener implements Listener {
 	public void onHangingBreakByEntity(final HangingBreakByEntityEvent ev) {
 		
 		try {
-			if (ev.getRemover() instanceof Player && pm.getPlayer((Player) ev.getRemover()).isSpectating())
-				ev.setCancelled(true);
+			if (ev.getRemover() instanceof Player && pm.getPlayer((Player) ev.getRemover()).isSpectating()) {
+                ev.setCancelled(true);
+            }
 		} catch (PlayerException e) {
 			e.printStackTrace();
 		}
@@ -453,8 +454,9 @@ public class SpectatorsInteractionsListener implements Listener {
 	public void onPlayerDropItem(final PlayerDropItemEvent ev) {
 		
 		try {
-			if (pm.getPlayer(ev.getPlayer()).isSpectating())
-				ev.setCancelled(true);
+			if (pm.getPlayer(ev.getPlayer()).isSpectating()) {
+                ev.setCancelled(true);
+            }
 		} catch (PlayerException e) {
 			e.printStackTrace();
 		}
@@ -467,8 +469,9 @@ public class SpectatorsInteractionsListener implements Listener {
 	public void onPlayerPickupItem(final PlayerPickupItemEvent ev) {
 		
 		try {
-			if (pm.getPlayer(ev.getPlayer()).isSpectating())
-				ev.setCancelled(true);
+			if (pm.getPlayer(ev.getPlayer()).isSpectating()) {
+                ev.setCancelled(true);
+            }
 		} catch (PlayerException e) {
 			e.printStackTrace();
 		}
@@ -609,8 +612,9 @@ public class SpectatorsInteractionsListener implements Listener {
 	public void onVehicleEnter(final VehicleEnterEvent e) {
 		
 		try {
-			if (e.getEntered() instanceof Player && pm.getPlayer((Player) e.getEntered()).isSpectating())
-				e.setCancelled(true);
+			if (e.getEntered() instanceof Player && pm.getPlayer((Player) e.getEntered()).isSpectating()) {
+                e.setCancelled(true);
+            }
 		} catch (PlayerException e1) {
 			e1.printStackTrace();
 		}
@@ -623,8 +627,9 @@ public class SpectatorsInteractionsListener implements Listener {
 	public void onVehicleDamage(final VehicleDamageEvent e) {
 		
 		try {
-			if (e.getAttacker() instanceof Player && pm.getPlayer((Player) e.getAttacker()).isSpectating())
-				e.setCancelled(true);
+			if (e.getAttacker() instanceof Player && pm.getPlayer((Player) e.getAttacker()).isSpectating()) {
+                e.setCancelled(true);
+            }
 		} catch (PlayerException e1) {
 			e1.printStackTrace();
 		}
@@ -641,7 +646,8 @@ public class SpectatorsInteractionsListener implements Listener {
 			e.printStackTrace();
 		}
 		
-		if (gp.isSpectating())
-			event.setCancelled(true);
+		if (gp.isSpectating()) {
+            event.setCancelled(true);
+        }
 	}
 }

@@ -43,7 +43,7 @@ public class SpectateMenu implements Listener {
 		
 		ItemMeta glassPaneMeta = glassPane.getItemMeta();
 		glassPaneMeta.setDisplayName(" ");
-		glassPaneMeta.setLore(new ArrayList<String>());
+		glassPaneMeta.setLore(new ArrayList<>());
 		glassPane.setItemMeta(glassPaneMeta);
 	}
 	
@@ -56,16 +56,18 @@ public class SpectateMenu implements Listener {
 		
 		Inventory inv = Bukkit.createInventory(null, 54, player.isSpectating() ? "Teleporter" : "Spectate");
 		
-		for (int i = 0; i < 9; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 0; i < 9; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		for (int i = 9; i < 45; i = i + 9) {
 			inv.setItem(i, glassPane);
 			inv.setItem(i + 8, glassPane);
 		}
 		
-		for (int i = 45; i < 54; i++)
-			inv.setItem(i, glassPane);
+		for (int i = 45; i < 54; i++) {
+            inv.setItem(i, glassPane);
+        }
 		
 		ItemStack goBack = new ItemStack(Material.ARROW, 1);
 		ItemMeta goBackMeta = goBack.getItemMeta();
@@ -73,7 +75,7 @@ public class SpectateMenu implements Listener {
 		goBack.setItemMeta(goBackMeta);
 		inv.setItem(49, goBack);
 		
-		List<ItemStack> toAdd = new ArrayList<ItemStack>();
+		List<ItemStack> toAdd = new ArrayList<>();
 		
 		for (GamePlayer inGame : MegaArena.getInstance().getPlayerManager().getInGamePlayers()) {
 			ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
@@ -88,13 +90,14 @@ public class SpectateMenu implements Listener {
 		for (int i = 0; i < 45; i++) {
 			ItemStack is = inv.getItem(i);
 			
-			if (is == null || is.getType() == Material.AIR)
-				try {
-					inv.setItem(i, toAdd.get(0));
-					toAdd.remove(0);
-				} catch (IndexOutOfBoundsException e) {
-					break;
-				}
+			if (is == null || is.getType() == Material.AIR) {
+                try {
+                    inv.setItem(i, toAdd.get(0));
+                    toAdd.remove(0);
+                } catch (IndexOutOfBoundsException e) {
+                    break;
+                }
+            }
 		}
 		
 		player.getBukkitPlayer().openInventory(inv);
@@ -105,16 +108,19 @@ public class SpectateMenu implements Listener {
 		
 		Inventory inv = event.getClickedInventory();
 		
-		if (inv == null)
-			return;
+		if (inv == null) {
+            return;
+        }
 		
 		String title = inv.getTitle();
 		
-		if (title == null)
-			return;
+		if (title == null) {
+            return;
+        }
 		
-		if (!title.equals("Spectate") && !title.equals("Teleporter"))
-			return;
+		if (!title.equals("Spectate") && !title.equals("Teleporter")) {
+            return;
+        }
 		
 		event.setCancelled(true);
 		
@@ -122,19 +128,23 @@ public class SpectateMenu implements Listener {
 		
 		ItemStack is = event.getCurrentItem();
 		
-		if (is.getType() == Material.STAINED_GLASS_PANE)
-			return;
+		if (is.getType() == Material.STAINED_GLASS_PANE) {
+            return;
+        }
 		
-		if(is == null || is.getType() == Material.AIR)
-			return;
+		if(is == null || is.getType() == Material.AIR) {
+            return;
+        }
 		
-		if (!is.hasItemMeta())
-			return;
+		if (!is.hasItemMeta()) {
+            return;
+        }
 		
 		String name = is.getItemMeta().getDisplayName();
 		
-		if (name == null)
-			return;
+		if (name == null) {
+            return;
+        }
 		
 		if (name.equals(ChatColor.RED + "Close")) {
 			player.closeInventory();

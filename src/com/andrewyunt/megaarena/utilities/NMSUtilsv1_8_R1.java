@@ -31,10 +31,11 @@ public class NMSUtilsv1_8_R1 extends NMSUtils {
 	@Override
 	public void playParticle(Player player, Location loc, String particleType) {
 		
-		if (particleType.equals("snowshovel"))
-			playParticle(player, loc, EnumParticle.SNOW_SHOVEL);
-		else if (particleType.equals("largesmoke"))
-			playParticle(player, loc, EnumParticle.SMOKE_LARGE);
+		if (particleType.equals("snowshovel")) {
+            playParticle(player, loc, EnumParticle.SNOW_SHOVEL);
+        } else if (particleType.equals("largesmoke")) {
+            playParticle(player, loc, EnumParticle.SMOKE_LARGE);
+        }
 	}
 	
 	public void playParticle(Player player, Location loc, EnumParticle particleType) {
@@ -62,8 +63,9 @@ public class NMSUtilsv1_8_R1 extends NMSUtils {
 			nmsStack.setTag(tag);
 		}
 		
-		if (tag == null)
-			tag = nmsStack.getTag();
+		if (tag == null) {
+            tag = nmsStack.getTag();
+        }
 		
 		NBTTagList ench = new NBTTagList();
 		tag.set("ench", ench);
