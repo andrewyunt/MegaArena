@@ -52,9 +52,6 @@ import com.andrewyunt.megaarena.menu.UpgradesMenu;
 import com.andrewyunt.megaarena.objects.Arena;
 import com.andrewyunt.megaarena.objects.GamePlayer;
 import com.andrewyunt.megaarena.utilities.NMSUtils;
-import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R1;
-import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R2;
-import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R3;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_7_R4;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R1;
 import com.andrewyunt.megaarena.utilities.NMSUtilsv1_8_R2;
@@ -124,15 +121,6 @@ public class MegaArena extends JavaPlugin {
 		String version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
 		
 		switch (version) {
-		case "v1_7_R1":
-			nmsUtils = new NMSUtilsv1_7_R1();
-			break;
-		case "v1_7_R2":
-			nmsUtils = new NMSUtilsv1_7_R2();
-			break;
-		case "v1_7_R3":
-			nmsUtils = new NMSUtilsv1_7_R3();
-			break;
 		case "v1_7_R4":
 			nmsUtils = new NMSUtilsv1_7_R4();
 			break;
